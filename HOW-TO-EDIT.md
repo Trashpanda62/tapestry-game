@@ -10,7 +10,7 @@ Add `?edit` to the end of the URL:
 An **✎ EDIT** toolbar appears at the bottom and the gate opens straight to the farm.
 
 ## What you can do
-- **Move the glowing pips & lanterns** — just drag them onto the right animal / spot. They stay put on every screen size.
+- **Move the glowing pips** — just drag them onto the right animal. They stay put on every screen size.
 - **Rewrite any text** — click a headline, paragraph, button label, etc. (they show a dashed outline) and type. Click away to keep it.
 - **Swap a scene's photo** — use the 📷 dropdown at the top of each scene to pick a different background, **or click ⤴ to upload your own photo** from your computer. Uploaded photos are auto-shrunk for the web and saved right into the site when you Export (no need to copy files anywhere).
 - **Move a plaque** — the **L / C / R** buttons set that scene's text box to the left, center, or right.

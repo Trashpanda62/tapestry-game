@@ -83,15 +83,14 @@
   .panel.right{justify-content:flex-end}
   .panel.center{justify-content:center; text-align:center}
 
-  .plaque{max-width:440px; background:rgba(251,246,233,.92); border:1px solid var(--cardborder); border-radius:16px;
-    padding:24px 28px; backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
-    box-shadow:0 18px 50px -18px rgba(15,12,7,.7); transform:translateY(26px); opacity:0;
+  .plaque{max-width:360px; background:var(--card); border:1px solid var(--cardborder); border-radius:16px;
+    padding:18px 22px; box-shadow:0 18px 50px -18px rgba(15,12,7,.7); transform:translateY(26px); opacity:0;
     transition:transform .8s cubic-bezier(.2,.7,.2,1), opacity .8s}
-  .panel.center .plaque{max-width:640px}
+  .panel.center .plaque{max-width:500px}
   .panel.inview .plaque{transform:none; opacity:1}
   .kicker{font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--accent); font-weight:700; margin:0 0 8px}
-  .plaque h2{font-family:var(--serif); font-size:clamp(28px,4.4vw,46px); line-height:1.04; margin:0 0 14px; letter-spacing:-.01em}
-  .plaque p{font-size:16px; line-height:1.6; margin:0 0 16px; color:#43402c}
+  .plaque h2{font-family:var(--serif); font-size:clamp(24px,3.6vw,38px); line-height:1.05; margin:0 0 10px; letter-spacing:-.01em}
+  .plaque p{font-size:15px; line-height:1.55; margin:0 0 12px; color:#43402c}
   .plaque .small{font-size:13px; color:var(--muted); margin-top:12px}
 
   .btn{display:inline-flex; align-items:center; gap:8px; border:none; border-radius:999px; padding:13px 20px;
@@ -237,16 +236,25 @@
   .map-note{font-size:12px; color:var(--muted); margin-top:10px; line-height:1.5}
 
   @media (max-width:720px){
-    .panel{padding:9vh 5vw; align-items:flex-end}
-    .panel.right,.panel.center{justify-content:flex-start}
-    .plaque{max-width:100%; width:100%}
+    .panel{padding:8vh 5vw 96px; align-items:flex-end}
+    .panel.right{justify-content:flex-start}
+    .panel.center{justify-content:center; align-items:center; text-align:center}
+    .plaque{max-width:100%; width:100%; padding:15px 18px}
+    .plaque h2{font-size:clamp(22px,6.5vw,32px); margin-bottom:8px}
+    .plaque p{font-size:14.5px; margin-bottom:10px}
+    .biglogo{width:96px!important; height:96px!important}
+    .ftruck{width:84px; height:84px}
     #trail,#wagon{display:none}
-    #tracker{top:auto; bottom:70px; right:12px; flex-direction:column; align-items:flex-end; gap:8px}
-    #brand{top:12px; left:12px; padding:4px 13px 4px 4px} #brand img{width:30px;height:30px} #brand b{font-size:12px; letter-spacing:.1em}
-    #chapterflag{top:50px; left:12px; max-width:56vw}
-    #bookpill span.lbl{display:none}
-    #skip{left:auto; right:12px; top:12px; transform:none; font-size:11.5px; padding:6px 11px}
+    #tracker{top:10px; right:10px; bottom:auto; flex-direction:row; align-items:center; gap:8px}
+    .meterbox{padding:6px 9px} #lantern{font-size:18px}
+    #herddots i{width:9px;height:9px}
+    #brand{top:10px; left:10px; padding:4px 12px 4px 4px} #brand img{width:28px;height:28px} #brand b{font-size:11px; letter-spacing:.08em}
+    #chapterflag{top:auto; bottom:62px; left:10px; max-width:70vw}
+    #cluster{right:10px; bottom:12px} #bookpill span.lbl{display:none}
+    #satchel{left:10px; bottom:12px}
+    #skip{display:none}
     #mprog{display:block}
+    #editbar{bottom:62px; font-size:12px; padding:7px 10px}
   }
   #mprog{display:none; position:fixed; left:0; right:0; bottom:0; height:4px; background:rgba(255,255,255,.2); z-index:7}
   #mprog i{display:block; height:100%; width:0; background:var(--lantern)}
@@ -358,16 +366,11 @@
 
   <!-- 5 STAY ON THE FARM (night) -->
   <section class="panel" data-bg="5" data-flag="VI · Stay on the Farm" id="hollowpanel">
-    <button class="lantern2" style="left:16%; top:66%">🏮</button>
-    <button class="lantern2" style="left:34%; top:74%">🏮</button>
-    <button class="lantern2" style="left:64%; top:58%">🏮</button>
-    <button class="lantern2" style="left:80%; top:70%">🏮</button>
     <div class="plaque">
       <p class="kicker">Chapter VI</p>
       <img class="ftruck" src="assets/cards/foodtruck.jpg" alt="To The Max food truck">
       <h2>Stay on the Farm</h2>
       <p>Wake to the hum of the pasture — farm stays and glamping under wide Cumberland skies. <em>Slow down. Stay a while. The farm will do the rest.</em></p>
-      <p class="small">🔦 Tap the lanterns to light the hollow.</p>
       <div class="btnrow"><button class="btn accent" data-add="farm-stay">Add a Farm Stay / Glamping night</button></div>
       <p class="small">On event days: the <b>To The Max</b> food truck &amp; the <b>Farm Store</b> — alpaca socks, blankets &amp; handmade soaps from $4 · <a href="https://woaksyarns.com" target="_blank" rel="noopener" style="color:var(--lake);font-weight:700;text-decoration:none">Woaks Yarns →</a></p>
     </div>
@@ -475,18 +478,12 @@
     'william-wallace':{emoji:'🐮',name:'William Wallace',breed:'Scottish Highland · herd sire',rarity:'legendary',
       stats:[['Horns','★★★★★'],['Shagginess','★★★★★'],['Majesty','★★★★★']],
       lore:'Bull and herd sire of the Tapestry Highland fold — long horns, longer patience.',add:'farm-tour'},
-    blonde:{emoji:'🐮',name:'Blonde',breed:'Scottish Highland · cow',rarity:'rare',
-      stats:[['Fluff','★★★★★'],['Calm','★★★★★'],['Expecting','✓']],
-      lore:'A blonde Highland cow grazing the buttercups — and expecting a calf.',add:'farm-tour'},
     bubbles:{emoji:'🐐',name:'Bubbles',breed:'Nigerian Dwarf goat',rarity:'common',
       stats:[['Friendliness','★★★★★'],['Size','★☆☆☆☆'],['Mischief','★★★★☆']],
       lore:'Two years old, too small to breed, and the friendliest goat on the knoll.',add:'virtual-tour'},
     fiona:{emoji:'🐐',name:'Fiona',breed:'Goat · milking doe',rarity:'common',
       stats:[['Milk','★★★★★'],['Manners','★★★★☆'],['Opinions','★★★★★']],
-      lore:'A milking doe with strong opinions and excellent manners.',add:null},
-    pigs:{emoji:'🐷',name:'The Pigs',breed:'Pigs · the barnyard',rarity:'common',
-      stats:[['Cuteness','★★★★★'],['Naps','★★★★★'],['Hustle','★☆☆☆☆']],
-      lore:'The farm pigs — and this little one fit right in your arms.',add:null}
+      lore:'A milking doe with strong opinions and excellent manners.',add:null}
   };
   var HERD_TOTAL = Object.keys(HERD).length;
   var met = {};
@@ -601,13 +598,11 @@
   document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeCard(); });
   // ---- image-anchored pips (sit on the real animals at any screen size) ----
   var PIPS=[
-    {scene:1,key:'joey',emoji:'🦙',fx:0.43,fy:0.60},
-    {scene:1,key:'peggy-sue',emoji:'🦙',fx:0.60,fy:0.52},
-    {scene:2,key:'william-wallace',emoji:'🐮',fx:0.31,fy:0.60},
-    {scene:2,key:'blonde',emoji:'🐮',fx:0.52,fy:0.47},
-    {scene:3,key:'bubbles',emoji:'🐐',fx:0.45,fy:0.56},
-    {scene:3,key:'fiona',emoji:'🐐',fx:0.58,fy:0.60},
-    {scene:3,key:'pigs',emoji:'🐷',fx:0.52,fy:0.76}
+    {scene:1,key:'joey',emoji:'🦙',fx:0.42,fy:0.66},
+    {scene:1,key:'peggy-sue',emoji:'🦙',fx:0.60,fy:0.50},
+    {scene:2,key:'william-wallace',emoji:'🐮',fx:0.40,fy:0.52},
+    {scene:3,key:'bubbles',emoji:'🐐',fx:0.47,fy:0.42},
+    {scene:3,key:'fiona',emoji:'🐐',fx:0.63,fy:0.48}
   ];
   PIPS.forEach(function(pp){ var o=O.pips[pp.key]; if(o){ pp.fx=o.fx; pp.fy=o.fy; } });   // apply saved positions
   var pipsWrap=document.getElementById('pips');
