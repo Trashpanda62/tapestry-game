@@ -545,7 +545,10 @@
       lore:'A cream Highland cow in the Tapestry fold — gentle, fuzzy, and always up for a scratch.',add:'farm-tour'},
     bubbles:{emoji:'🐐',name:'Bubbles',breed:'Nigerian Dwarf goat',rarity:'common',
       stats:[['Friendliness','★★★★★'],['Size','★☆☆☆☆'],['Mischief','★★★★☆']],
-      lore:'Two years old, too small to breed, and the friendliest goat on the knoll.',add:'virtual-tour'}
+      lore:'Two years old, too small to breed, and the friendliest goat on the knoll.',add:'virtual-tour'},
+    casper:{emoji:'🦙',name:'Casper',breed:'Alpaca · fiber herd',rarity:'rare',
+      stats:[['Fleece','★★★★★'],['Chill','★★★★★'],['Photogenic','★★★★☆']],
+      lore:'A snowy-white fiber boy — most likely found sunbathing by the pavilion where the Farm Store sets up.',add:'alpaca-walk'}
   };
   var HERD_TOTAL = Object.keys(HERD).length;
   var met = {};
@@ -680,7 +683,8 @@
     {scene:1,key:'joey',emoji:'🦙',fx:0.42,fy:0.66},
     {scene:1,key:'peggy-sue',emoji:'🦙',fx:0.60,fy:0.50},
     {scene:2,key:'daisy',emoji:'🐮',fx:0.40,fy:0.54},
-    {scene:3,key:'bubbles',emoji:'🐐',fx:0.47,fy:0.44}
+    {scene:3,key:'bubbles',emoji:'🐐',fx:0.47,fy:0.44},
+    {scene:7,key:'casper',emoji:'🦙',fx:0.40,fy:0.28}
   ];
   PIPS.forEach(function(pp){ var o=O.pips[pp.key]; if(o){ pp.fx=o.fx; pp.fy=o.fy; } });   // apply saved positions
   var pipsWrap=document.getElementById('pips');
