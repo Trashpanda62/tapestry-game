@@ -1,0 +1,6 @@
+Tapestry Acres — "Down the Farm Lane" scroll-journey site
+Scene backgrounds (scene1..scene5.png) generated with Gemini (Flash3.1), one connected
+golden-hour Cumberland Plateau farm world: gate -> alpaca meadow -> highland pasture ->
+goose pond -> glamping hollow / Dale Hollow bluff at dusk.
+Art direction chained scene-to-scene for visual continuity (the reference-video discipline).
+Build date: 2026-06-28.
