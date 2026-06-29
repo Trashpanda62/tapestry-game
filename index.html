@@ -855,7 +855,7 @@
       if(!iw){ pipHide(el); continue; }
       var W=innerWidth, H=innerHeight, portrait=W<=720, ZOOM=1.4, s=portrait?Math.min(W/iw,H/ih)*ZOOM:Math.max(W/iw,H/ih), dw=iw*s, dh=ih*s, ox=(W-dw)/2, oy=(H-dh)/2;
       var m=portrait?22:42, x=Math.max(m,Math.min(W-m, ox+pp.fx*dw)), y=Math.max(80,Math.min(H-110, oy+pp.fy*dh));
-      el.style.left=x+'px'; el.style.top=y+'px'; el.style.opacity=String(op);
+      el.style.left=x+'px'; el.style.top=y+'px'; el.style.opacity=String(op*(portrait?0.25:1));   // mobile: 25% so the dot doesn't cover the animal
       var live=op>0.5; el.style.pointerEvents=live?'auto':'none';          // only fully-visible pips are interactive…
       el.tabIndex=(live&&!EDIT)?0:-1;                                       // …and keyboard-reachable (not while drag-editing)
       if(live) el.removeAttribute('aria-hidden'); else el.setAttribute('aria-hidden','true');
