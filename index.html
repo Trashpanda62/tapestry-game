@@ -614,12 +614,23 @@
     daisy:{emoji:'🐮',name:'Daisy',breed:'Scottish Highland · cow',rarity:'rare',
       stats:[['Horns','★★★★★'],['Fluffiness','★★★★★'],['Sweetness','★★★★★']],
       lore:'A cream Highland cow in the Tapestry fold — gentle, fuzzy, and always up for a scratch.',add:'farm-tour'},
-    bubbles:{emoji:'🐐',name:'Bubbles',breed:'Nigerian Dwarf goat',rarity:'common',
-      stats:[['Friendliness','★★★★★'],['Size','★☆☆☆☆'],['Mischief','★★★★☆']],
-      lore:'Two years old, too small to breed, and the friendliest goat on the knoll.',add:'virtual-tour'},
     casper:{emoji:'🦙',name:'Casper',breed:'Alpaca · fiber herd',rarity:'rare',
       stats:[['Fleece','★★★★★'],['Chill','★★★★★'],['Photogenic','★★★★☆']],
-      lore:'A snowy-white fiber boy — most likely found sunbathing by the pavilion where the Farm Store sets up.',add:'alpaca-walk'}
+      lore:'A snowy-white fiber boy — most likely found sunbathing by the pavilion where the Farm Store sets up.',add:'alpaca-walk'},
+    "et":{emoji:"🦙", name:"ET", breed:"Alpaca · boy", rarity:"rare", stats:[["Status", "Breeding"], ["Sex", "Male ♂"]], lore:"Halter-trained boy — the alpacas that go on walks.", add:"alpaca-walk"},
+    "captain":{emoji:"🦙", name:"Captain", breed:"Alpaca · boy", rarity:"common", stats:[["Status", "Active"], ["Sex", "Male ♂"]], lore:"Halter-trained boy — the alpacas that go on walks.", add:"alpaca-walk"},
+    "olaf":{emoji:"🦙", name:"Olaf", breed:"Alpaca · boy", rarity:"common", stats:[["Status", "Active"], ["Sex", "Male ♂"]], lore:"Halter-trained boy — the alpacas that go on walks.", add:"alpaca-walk"},
+    "chord":{emoji:"🦙", name:"Chord", breed:"Alpaca · boy", rarity:"common", stats:[["Status", "Active"], ["Sex", "Male ♂"]], lore:"Halter-trained boy — the alpacas that go on walks.", add:"alpaca-walk"},
+    "fancy":{emoji:"🐐", name:"Fancy", breed:"Goat · girl", rarity:"common", stats:[["Status", "Active"], ["Sex", "Female ♀"]], lore:"Milking doe.", add:"virtual-tour"},
+    "fiona":{emoji:"🐐", name:"Fiona", breed:"Goat · girl", rarity:"rare", stats:[["Status", "Breeding"], ["Sex", "Female ♀"]], lore:"Milking doe.", add:"virtual-tour"},
+    "agnis":{emoji:"🦙", name:"Agnis", breed:"Alpaca · girl", rarity:"common", stats:[["Status", "Active"], ["Sex", "Female ♀"]], lore:"Fiber-herd girl.", add:"alpaca-walk"},
+    "avalanche":{emoji:"🦙", name:"Avalanche", breed:"Alpaca · girl", rarity:"rare", stats:[["Status", "Breeding"], ["Sex", "Female ♀"]], lore:"Fiber-herd girl.", add:"alpaca-walk"},
+    "bailey":{emoji:"🦙", name:"Bailey", breed:"Alpaca · girl", rarity:"common", stats:[["Status", "Active"], ["Sex", "Female ♀"]], lore:"Fiber-herd girl.", add:"alpaca-walk"},
+    "bianca":{emoji:"🦙", name:"Bianca", breed:"Alpaca · girl", rarity:"common", stats:[["Status", "Active"], ["Sex", "Female ♀"]], lore:"Fiber-herd girl.", add:"alpaca-walk"},
+    "donna":{emoji:"🦙", name:"Donna", breed:"Alpaca · girl", rarity:"common", stats:[["Status", "Active"], ["Sex", "Female ♀"]], lore:"Fiber-herd girl.", add:"alpaca-walk"},
+    "eve":{emoji:"🦙", name:"Eve", breed:"Alpaca · girl", rarity:"common", stats:[["Status", "Active"], ["Sex", "Female ♀"]], lore:"Fiber-herd girl.", add:"alpaca-walk"},
+    "kalua":{emoji:"🦙", name:"Kalua", breed:"Alpaca · girl", rarity:"rare", stats:[["Status", "Breeding"], ["Sex", "Female ♀"]], lore:"Fiber-herd girl.", add:"alpaca-walk"},
+    "snowflake":{emoji:"🦙", name:"Snowflake", breed:"Alpaca · girl", rarity:"common", stats:[["Status", "Active"], ["Sex", "Female ♀"]], lore:"Fiber-herd girl.", add:"alpaca-walk"}
   };
   var HERD_TOTAL = Object.keys(HERD).length;
   var met = {};
@@ -645,7 +656,7 @@
   var trail=document.getElementById('trail'), wagon=document.getElementById('wagon'), mprog=document.querySelector('#mprog i');
 
   herdcount.textContent='0/'+HERD_TOTAL;
-  for(var d=0; d<HERD_TOTAL; d++){ herddots.appendChild(document.createElement('i')); }
+  if(HERD_TOTAL<=12){ for(var d=0; d<HERD_TOTAL; d++){ herddots.appendChild(document.createElement('i')); } }   // too many pips → show the X/Y count only
   panels.forEach(function(p,idx){
     if(idx>0){ var s=document.createElement('div'); s.className='seg'; trail.appendChild(s); }
     var n=document.createElement('div'); n.className='node'; n.title=p.getAttribute('data-flag');
@@ -765,19 +776,39 @@
   });
   // ---- image-anchored pips (sit on the real animals at any screen size) ----
   var PIPS=[
-    {scene:1,key:'joey',emoji:'🦙',fx:0.42,fy:0.66},
-    {scene:1,key:'peggy-sue',emoji:'🦙',fx:0.60,fy:0.50},
-    {scene:2,key:'daisy',emoji:'🐮',fx:0.40,fy:0.54},
-    {scene:3,key:'bubbles',emoji:'🐐',fx:0.47,fy:0.44},
-    {scene:7,key:'casper',emoji:'🦙',fx:0.47,fy:0.40}
+    {scene:0, key:"et", emoji:"🦙", fx:0.50, fy:0.55},
+    {scene:1, key:"agnis", emoji:"🦙", fx:0.20, fy:0.40},
+    {scene:1, key:"avalanche", emoji:"🦙", fx:0.35, fy:0.55},
+    {scene:1, key:"bailey", emoji:"🦙", fx:0.50, fy:0.40},
+    {scene:1, key:"bianca", emoji:"🦙", fx:0.65, fy:0.55},
+    {scene:1, key:"donna", emoji:"🦙", fx:0.80, fy:0.40},
+    {scene:1, key:"eve", emoji:"🦙", fx:0.25, fy:0.70},
+    {scene:1, key:"kalua", emoji:"🦙", fx:0.50, fy:0.68},
+    {scene:1, key:"peggy-sue", emoji:"🦙", fx:0.70, fy:0.70},
+    {scene:1, key:"snowflake", emoji:"🦙", fx:0.85, fy:0.60},
+    {scene:2, key:"daisy", emoji:"🐮", fx:0.40, fy:0.54},
+    {scene:3, key:"fancy", emoji:"🐐", fx:0.30, fy:0.50},
+    {scene:3, key:"fiona", emoji:"🐐", fx:0.55, fy:0.45},
+    {scene:3, key:"unnamed-kid", emoji:"🐐", unnamed:true, fx:0.45, fy:0.62},
+    {scene:3, key:"unnamed-dappled", emoji:"🐐", unnamed:true, fx:0.20, fy:0.50},
+    {scene:4, key:"chord", emoji:"🦙", fx:0.50, fy:0.50},
+    {scene:5, key:"captain", emoji:"🦙", fx:0.25, fy:0.45},
+    {scene:5, key:"joey", emoji:"🦙", fx:0.42, fy:0.45},
+    {scene:5, key:"et-stay", animal:"et", emoji:"🦙", fx:0.58, fy:0.45},
+    {scene:5, key:"olaf", emoji:"🦙", fx:0.75, fy:0.45},
+    {scene:7, key:"casper", emoji:"🦙", fx:0.47, fy:0.40}
   ];
   PIPS.forEach(function(pp){ var o=O.pips[pp.key]; if(o){ pp.fx=o.fx; pp.fy=o.fy; } });   // apply saved positions
   var pipsWrap=document.getElementById('pips');
   PIPS.forEach(function(pp){
-    var el=document.createElement('button'); el.type='button'; el.className='pip'; el.setAttribute('aria-label','Meet '+(HERD[pp.key]?HERD[pp.key].name:pp.key));
+    var ak=pp.animal||pp.key, ha=HERD[ak];
+    var el=document.createElement('button'); el.type='button'; el.className='pip';
+    el.setAttribute('aria-label', pp.unnamed ? 'Help name this animal in Meet the Herd' : ('Meet '+(ha?ha.name:ak)));
     el.tabIndex=-1; el.setAttribute('aria-hidden','true');   // hidden from keyboard/AT until its scene is active (set in positionPips)
     el.innerHTML=pp.emoji+'<span class="ring"></span>';
-    el.addEventListener('click',function(){ if(EDIT) return; el.classList.add('met'); openCard(pp.key); });
+    el.addEventListener('click',function(){ if(EDIT) return;
+      if(pp.unnamed){ var hb=document.getElementById('herdpill'); if(hb) hb.click(); return; }   // unnamed → open Meet the Herd "Help name me" board
+      el.classList.add('met'); openCard(ak); });
     pp.el=el; pipsWrap.appendChild(el);
   });
   function pipHide(el){ el.style.opacity='0'; el.style.pointerEvents='none'; el.tabIndex=-1; el.setAttribute('aria-hidden','true'); }
