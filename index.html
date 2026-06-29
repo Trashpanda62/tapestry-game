@@ -120,6 +120,8 @@
     display:grid; place-items:center; font-size:22px; opacity:0; pointer-events:none;
     animation:pulse 2.4s ease-in-out infinite; transition:opacity .4s, transform .15s}
   .pip:hover{transform:translate(-50%,-50%) scale(1.12)}
+  .pip:focus-visible{outline:none; box-shadow:0 0 0 3px #1c160d, 0 0 0 6px rgba(255,255,255,.95), 0 0 22px 6px rgba(244,200,115,.7)}
+  @media (forced-colors: active){ .pip:focus-visible{outline:3px solid Highlight; outline-offset:2px} }   /* box-shadow is dropped in High Contrast */
   .pip.met{background:rgba(255,255,255,.45); box-shadow:0 0 0 2px rgba(255,255,255,.5); animation:none; filter:saturate(.5)}
   .pip .ring{position:absolute; inset:-8px; border-radius:50%; border:2px solid rgba(255,255,255,.55); animation:halo 2.4s ease-out infinite}
   @keyframes pulse{0%,100%{box-shadow:0 0 0 3px rgba(255,255,255,.6),0 0 18px 4px rgba(244,200,115,.55)}
@@ -260,6 +262,24 @@
   .ta-maptap{position:absolute; inset:0; border:0; cursor:pointer; color:#fff; font-weight:800; font-size:15px;
     background:rgba(20,16,10,.30); text-shadow:0 1px 8px rgba(0,0,0,.7)}
   .ta-maptap.hide{display:none}
+
+  /* ---- Meet-the-Herd embedded game overlay (Apps Script /exec) ---- */
+  #herdwrap{position:fixed; inset:0; z-index:80; display:none; background:rgba(12,10,6,.72); backdrop-filter:blur(3px); padding:16px}
+  #herdwrap.open{display:grid; place-items:center}
+  .herd-frame{display:flex; flex-direction:column; width:min(1000px,100%); height:min(88vh,920px); height:min(88svh,920px);
+    background:var(--card); border:1px solid var(--cardborder); border-radius:18px; overflow:hidden; box-shadow:0 34px 90px -22px rgba(0,0,0,.85)}
+  .herd-bar{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:11px 14px; border-bottom:1px solid var(--line); background:#fbf6e9; flex:0 0 auto}
+  .herd-title{font-family:var(--serif); font-weight:700; font-size:17px; color:var(--ink)}
+  .herd-actions{display:flex; align-items:center; gap:12px}
+  .herd-open{font-size:13px; font-weight:700; color:var(--lake); text-decoration:none; white-space:nowrap}
+  .herd-open:hover{text-decoration:underline}
+  .herd-close{background:rgba(255,255,255,.75); border:1px solid var(--cardborder); width:34px; height:34px; border-radius:50%; font-size:16px; line-height:1; cursor:pointer; flex:0 0 auto}
+  #herdframe{flex:1 1 auto; width:100%; border:0; display:block; background:#f7f4ec}
+  #herdpill{background:rgba(251,246,233,.94); color:var(--ink)}
+  #herdpill:hover{filter:brightness(1.04)}
+  body.herd-open{overflow:hidden}
+  .herd-guard{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); border:0}   /* focus-wrap sentinels (visually hidden, still tabbable) */
+  @media (max-width:720px){ #herdwrap{padding:8px} .herd-frame{width:100%; height:100%; border-radius:12px} .herd-title{font-size:15px} .herd-open{font-size:12px} }
   .ta-shelf{display:flex; gap:10px; overflow-x:auto; padding:6px 2px 12px; margin:4px 0 8px; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch}
   .ta-shelf::-webkit-scrollbar{height:6px}
   .ta-shelf::-webkit-scrollbar-thumb{background:rgba(120,100,70,.4); border-radius:3px}
@@ -303,6 +323,8 @@
     #trail,#wagon{display:none}
     #tracker{top:10px; right:10px; bottom:auto; flex-direction:row; align-items:center; gap:8px}
     #herddots i{width:9px;height:9px}
+    .pip{width:52px; height:52px; font-size:24px}
+    #herdpill span.lbl{display:none}
     #brand{top:10px; left:10px; padding:4px 12px 4px 4px} #brand img{width:28px;height:28px} #brand b{font-size:11px; letter-spacing:.08em}
     #chapterflag{display:none}
     #soundbtn{display:none}
@@ -512,6 +534,7 @@
   </div>
   <div id="cluster">
     <button class="iconbtn pill" id="soundbtn" title="Sound on/off" aria-label="Toggle sound" style="padding:0">🔇</button>
+    <button class="pill" id="herdpill" type="button" aria-haspopup="dialog" title="Meet the whole herd, take the quiz &amp; help name the animals">🐾 <span class="lbl">Meet the herd</span></button>
     <a class="pill" id="bookpill" href="https://www.tapestryacres.com/stay#/search" target="_blank" rel="noopener">📅 <span class="lbl">Book a Stay</span></a>
   </div>
   <button id="skip" class="hud-el">Skip to booking ↓</button>
@@ -532,11 +555,26 @@
 </div>
 
 <div id="modalwrap">
-  <div class="tcard">
-    <button id="modalclose" aria-label="Close">✕</button>
+  <div class="tcard" role="dialog" aria-modal="true" aria-labelledby="cardname" tabindex="-1">
+    <button id="modalclose" type="button" aria-label="Close">✕</button>
     <div class="top"><img id="cardimg" alt=""><span class="emoji" id="cardemoji" style="display:none">🦙</span><span class="seal" id="cardseal">Common</span></div>
     <div class="body"><h3 id="cardname">Name</h3><div class="breed" id="cardbreed">Breed</div>
       <div id="cardstats"></div><p class="lore" id="cardlore">Lore</p><div class="cardcta" id="cardcta"></div></div>
+  </div>
+</div>
+
+<div id="herdwrap" role="dialog" aria-modal="true" aria-labelledby="herdtitle">
+  <div class="herd-frame">
+    <div class="herd-guard" id="herdguardtop" tabindex="0" aria-hidden="true"></div>
+    <div class="herd-bar">
+      <span class="herd-title" id="herdtitle">🐾 Meet the Whole Herd</span>
+      <span class="herd-actions">
+        <a class="herd-open" id="herdopen" href="https://script.google.com/macros/s/AKfycbwZV6h4w5j_K1n4aCO-Cp1w_ZbFGl6caMHS39SKxC0WM0ZQU0GGhhqmHr0LZvQZb5K6/exec" target="_blank" rel="noopener">Open in new tab ↗</a>
+        <button class="herd-close" id="herdclose" type="button" aria-label="Close">✕</button>
+      </span>
+    </div>
+    <iframe id="herdframe" title="Meet the Herd — browse the herd, take the quiz, and help name the animals" data-src="https://script.google.com/macros/s/AKfycbwZV6h4w5j_K1n4aCO-Cp1w_ZbFGl6caMHS39SKxC0WM0ZQU0GGhhqmHr0LZvQZb5K6/exec"></iframe>
+    <div class="herd-guard" id="herdguardbot" tabindex="0" aria-hidden="true"></div>
   </div>
 </div>
 
@@ -684,7 +722,11 @@
   function scrollToPanel(idx){ window.scrollTo({top:panels[idx].offsetTop+2, behavior:reduce?'auto':'smooth'}); }
 
   /* cards */
-  var modal=document.getElementById('modalwrap');
+  var modal=document.getElementById('modalwrap'), cardLastFocus=null;
+  // While a dialog is open, make the rest of the page inert — removes it from BOTH the tab order
+  // and the AT browse tree, so screen-reader/keyboard users can't wander behind the dialog.
+  function setBgInert(on){ ['#loader','#stage','#pips','main','#hud','#intro','#editbar'].forEach(function(sel){
+    var el=document.querySelector(sel); if(!el) return; if(on) el.setAttribute('inert',''); else el.removeAttribute('inert'); }); }
   function openCard(key){ var a=HERD[key]; if(!a) return;
     var img=document.getElementById('cardimg'), emo=document.getElementById('cardemoji'), src=PHOTOS[key];
     if(src){ img.src=src; img.alt=a.name+' — '+a.breed; img.style.display='block'; emo.style.display='none'; }
@@ -700,10 +742,13 @@
     if(a.add){ var e=EXP[a.add]; var btn=document.createElement('button'); btn.className='btn accent'; btn.textContent='Add '+e.label+' — '+e.price;
       btn.addEventListener('click',function(){ addToCart(a.add); btn.textContent='✓ Added'; btn.classList.add('added'); }); cta.appendChild(btn); }
     var cl=document.createElement('button'); cl.className='btn ghost'; cl.textContent='Back to the farm'; cl.addEventListener('click',closeCard); cta.appendChild(cl);
-    modal.classList.add('open');
+    cardLastFocus=document.activeElement;          // remember the pip so we can restore focus on close
+    modal.classList.add('open'); setBgInert(true);
+    var card=modal.querySelector('.tcard'); if(card) card.focus();   // move focus into the dialog (AT announces the name)
     if(!met[key]){ met[key]=true; updateHerd(); sfxHum(); reward(document.querySelector('.tcard')); }
   }
-  function closeCard(){ modal.classList.remove('open'); }
+  function closeCard(){ if(!modal.classList.contains('open')) return; modal.classList.remove('open'); setBgInert(false);
+    if(cardLastFocus && cardLastFocus.focus){ try{ cardLastFocus.focus(); }catch(e){} } cardLastFocus=null; }
   function updateHerd(){ var c=Object.keys(met).length; herdcount.textContent=c+'/'+HERD_TOTAL;
     var dots=herddots.children; for(var k=0;k<dots.length;k++){ dots[k].classList.toggle('lit',k<c); }
     if(c>0 && dots[c-1]){ var d=dots[c-1]; d.classList.add('pop'); setTimeout(function(){ d.classList.remove('pop'); },520); }
@@ -711,6 +756,13 @@
   modal.addEventListener('click',function(e){ if(e.target===modal) closeCard(); });
   document.getElementById('modalclose').addEventListener('click',closeCard);
   document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeCard(); });
+  modal.addEventListener('keydown',function(e){   // trap Tab within the open card dialog
+    if(e.key!=='Tab' || !modal.classList.contains('open')) return;
+    var f=[].slice.call(modal.querySelectorAll('button, a[href]')).filter(function(el){ return el.offsetParent!==null && !el.disabled; });
+    if(!f.length) return; var first=f[0], last=f[f.length-1], a=document.activeElement;
+    if(e.shiftKey){ if(a===first || a===modal.querySelector('.tcard')){ e.preventDefault(); last.focus(); } }
+    else if(a===last){ e.preventDefault(); first.focus(); }
+  });
   // ---- image-anchored pips (sit on the real animals at any screen size) ----
   var PIPS=[
     {scene:1,key:'joey',emoji:'🦙',fx:0.42,fy:0.66},
@@ -722,19 +774,24 @@
   PIPS.forEach(function(pp){ var o=O.pips[pp.key]; if(o){ pp.fx=o.fx; pp.fy=o.fy; } });   // apply saved positions
   var pipsWrap=document.getElementById('pips');
   PIPS.forEach(function(pp){
-    var el=document.createElement('button'); el.className='pip'; el.setAttribute('aria-label','Meet '+(HERD[pp.key]?HERD[pp.key].name:pp.key));
+    var el=document.createElement('button'); el.type='button'; el.className='pip'; el.setAttribute('aria-label','Meet '+(HERD[pp.key]?HERD[pp.key].name:pp.key));
+    el.tabIndex=-1; el.setAttribute('aria-hidden','true');   // hidden from keyboard/AT until its scene is active (set in positionPips)
     el.innerHTML=pp.emoji+'<span class="ring"></span>';
     el.addEventListener('click',function(){ if(EDIT) return; el.classList.add('met'); openCard(pp.key); });
     pp.el=el; pipsWrap.appendChild(el);
   });
+  function pipHide(el){ el.style.opacity='0'; el.style.pointerEvents='none'; el.tabIndex=-1; el.setAttribute('aria-hidden','true'); }
   function positionPips(scene, op){
     for(var i=0;i<PIPS.length;i++){ var pp=PIPS[i], el=pp.el;
-      if(pp.scene!==scene || op<=0.05){ el.style.opacity='0'; el.style.pointerEvents='none'; continue; }
+      if(pp.scene!==scene || op<=0.05){ pipHide(el); continue; }
       var img=bgs[scene] && bgs[scene].querySelector('.sharp'), iw=img&&img.naturalWidth, ih=img&&img.naturalHeight;
-      if(!iw){ el.style.opacity='0'; continue; }
+      if(!iw){ pipHide(el); continue; }
       var W=innerWidth, H=innerHeight, s=Math.max(W/iw,H/ih), dw=iw*s, dh=ih*s, ox=(W-dw)/2, oy=(H-dh)/2;
       var x=Math.max(42,Math.min(W-42, ox+pp.fx*dw)), y=Math.max(100,Math.min(H-110, oy+pp.fy*dh));
-      el.style.left=x+'px'; el.style.top=y+'px'; el.style.opacity=String(op); el.style.pointerEvents=op>0.5?'auto':'none';
+      el.style.left=x+'px'; el.style.top=y+'px'; el.style.opacity=String(op);
+      var live=op>0.5; el.style.pointerEvents=live?'auto':'none';          // only fully-visible pips are interactive…
+      el.tabIndex=(live&&!EDIT)?0:-1;                                       // …and keyboard-reachable (not while drag-editing)
+      if(live) el.removeAttribute('aria-hidden'); else el.setAttribute('aria-hidden','true');
     }
   }
 
@@ -937,6 +994,27 @@
   (function(){ var mp=document.getElementById('mappanel'); if(!mp) return; var fr=mp.querySelector('iframe'), tap=mp.querySelector('.ta-maptap');
     if(fr){ var mo=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting && !fr.src){ fr.src=fr.getAttribute('data-src'); mo.disconnect(); } }); },{rootMargin:'700px'}); mo.observe(mp);
       fr.style.pointerEvents='none'; if(tap) tap.addEventListener('click',function(){ fr.style.pointerEvents='auto'; tap.classList.add('hide'); }); } })();
+
+  /* meet-the-herd — open the Apps Script "Meet the Herd" game in a full-screen overlay.
+     The game's dynamic features (Name Them, name-suggestions, votes) run on google.script.run,
+     so it must stay Apps-Script-served; the backend sets X-Frame ALLOWALL to be embedded here.
+     The ~1MB iframe loads only on first open. Focus is NOT trapped (Tab into the game is wanted). */
+  (function(){ var wrap=document.getElementById('herdwrap'); if(!wrap) return;
+    var frame=document.getElementById('herdframe'), openBtn=document.getElementById('herdpill'), closeBtn=document.getElementById('herdclose'), last=null;
+    function openHerd(){ if(EDIT) return; last=document.activeElement;
+      if(frame && !frame.src){ frame.src=frame.getAttribute('data-src'); }
+      wrap.classList.add('open'); document.body.classList.add('herd-open'); setBgInert(true); if(closeBtn) closeBtn.focus(); }
+    function closeHerd(){ wrap.classList.remove('open'); document.body.classList.remove('herd-open'); setBgInert(false);
+      if(last && last.focus){ try{ last.focus(); }catch(e){} } last=null; }
+    if(openBtn) openBtn.addEventListener('click',openHerd);
+    if(closeBtn) closeBtn.addEventListener('click',closeHerd);
+    wrap.addEventListener('click',function(e){ if(e.target===wrap) closeHerd(); });
+    wrap.addEventListener('keydown',function(e){ if(e.key==='Escape') closeHerd(); });
+    // focus-wrap around the cross-origin game iframe (background is already inert, so this just keeps Tab cycling inside the dialog)
+    var gTop=document.getElementById('herdguardtop'), gBot=document.getElementById('herdguardbot');
+    if(gTop) gTop.addEventListener('focus',function(){ setTimeout(function(){ if(frame) frame.focus(); },0); });                         // Shift+Tab off the first control → the game iframe (last)
+    if(gBot) gBot.addEventListener('focus',function(){ setTimeout(function(){ var o=document.getElementById('herdopen')||closeBtn; if(o) o.focus(); },0); });   // Tab off the iframe → first control
+  })();
 
   function hideLoader(){ var l=document.getElementById('loader'); if(l && !l.classList.contains('gone')){ l.classList.add('gone'); setTimeout(function(){ l.style.display='none'; },700); } }
   if(document.readyState==='complete') setTimeout(hideLoader,300); else window.addEventListener('load',hideLoader);
