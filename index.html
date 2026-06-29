@@ -208,6 +208,7 @@
   #modalwrap{position:fixed; inset:0; z-index:60; display:none; place-items:center; padding:20px; background:rgba(12,10,6,.62); backdrop-filter:blur(3px)}
   #modalwrap.open{display:grid}
   .tcard{width:330px; max-width:92vw; background:var(--card); border:1px solid var(--cardborder); border-radius:20px; overflow:hidden; box-shadow:0 30px 80px -20px rgba(0,0,0,.8); animation:pop .3s cubic-bezier(.2,.8,.2,1)}
+  .tcard.small{width:280px}  .tcard.small .top{height:150px}   /* unnamed "help name me" cards */
   @keyframes pop{from{transform:scale(.9) translateY(10px);opacity:0}to{transform:none;opacity:1}}
   .tcard .top{position:relative; height:210px; background:#e7dcc2; overflow:hidden}
   .tcard .top img{width:100%; height:100%; object-fit:cover; display:block}
@@ -630,9 +631,11 @@
     "donna":{emoji:"🦙", name:"Donna", breed:"Alpaca · girl", rarity:"common", stats:[["Status", "Active"], ["Sex", "Female ♀"]], lore:"Fiber-herd girl.", add:"alpaca-walk"},
     "eve":{emoji:"🦙", name:"Eve", breed:"Alpaca · girl", rarity:"common", stats:[["Status", "Active"], ["Sex", "Female ♀"]], lore:"Fiber-herd girl.", add:"alpaca-walk"},
     "kalua":{emoji:"🦙", name:"Kalua", breed:"Alpaca · girl", rarity:"rare", stats:[["Status", "Breeding"], ["Sex", "Female ♀"]], lore:"Fiber-herd girl.", add:"alpaca-walk"},
-    "snowflake":{emoji:"🦙", name:"Snowflake", breed:"Alpaca · girl", rarity:"common", stats:[["Status", "Active"], ["Sex", "Female ♀"]], lore:"Fiber-herd girl.", add:"alpaca-walk"}
+    "snowflake":{emoji:"🦙", name:"Snowflake", breed:"Alpaca · girl", rarity:"common", stats:[["Status", "Active"], ["Sex", "Female ♀"]], lore:"Fiber-herd girl.", add:"alpaca-walk"},
+    "unnamed-kid":{emoji:"🐐", name:"Help name me!", breed:"Goat kid · no name yet", unnamed:true, lore:"I'm one of the newest at Tapestry — but I don't have a name yet."},
+    "unnamed-dappled":{emoji:"🐐", name:"Help name me!", breed:"Dappled goat · no name yet", unnamed:true, lore:"This dappled one is still waiting on a name."}
   };
-  var HERD_TOTAL = Object.keys(HERD).length;
+  var HERD_TOTAL = Object.keys(HERD).filter(function(k){ return !HERD[k].unnamed; }).length;   // unnamed "help name me" cards don't count toward the herd-met goal
   var met = {};
 
   var STAY_URL='https://www.tapestryacres.com/stay#/search';   // HotelRunner lodging search
@@ -739,24 +742,27 @@
   function setBgInert(on){ ['#loader','#stage','#pips','main','#hud','#intro','#editbar'].forEach(function(sel){
     var el=document.querySelector(sel); if(!el) return; if(on) el.setAttribute('inert',''); else el.removeAttribute('inert'); }); }
   function openCard(key){ var a=HERD[key]; if(!a) return;
+    var card=modal.querySelector('.tcard'); if(card) card.classList.toggle('small', !!a.unnamed);
     var img=document.getElementById('cardimg'), emo=document.getElementById('cardemoji'), src=PHOTOS[key];
     if(src){ img.src=src; img.alt=a.name+' — '+a.breed; img.style.display='block'; emo.style.display='none'; }
     else { img.style.display='none'; emo.style.display='grid'; emo.textContent=a.emoji; }
     document.getElementById('cardname').textContent=a.name;
     document.getElementById('cardbreed').textContent=a.breed;
-    var seal=document.getElementById('cardseal'); seal.textContent=a.rarity;
-    seal.style.background=a.rarity==='legendary'?'var(--legendary)':(a.rarity==='rare'?'var(--rare)':'var(--common)');
+    var seal=document.getElementById('cardseal'); seal.style.display=a.unnamed?'none':'';
+    if(!a.unnamed){ seal.textContent=a.rarity; seal.style.background=a.rarity==='legendary'?'var(--legendary)':(a.rarity==='rare'?'var(--rare)':'var(--common)'); }
     var st=document.getElementById('cardstats'); st.innerHTML='';
-    a.stats.forEach(function(s){ var r=document.createElement('div'); r.className='stat'; r.innerHTML='<span>'+s[0]+'</span><b>'+s[1]+'</b>'; st.appendChild(r); });
-    document.getElementById('cardlore').textContent='“'+a.lore+'”';
+    (a.stats||[]).forEach(function(s){ var r=document.createElement('div'); r.className='stat'; r.innerHTML='<span>'+s[0]+'</span><b>'+s[1]+'</b>'; st.appendChild(r); });
+    document.getElementById('cardlore').textContent=a.lore?'“'+a.lore+'”':'';
     var cta=document.getElementById('cardcta'); cta.innerHTML='';
-    if(a.add){ var e=EXP[a.add]; var btn=document.createElement('button'); btn.className='btn accent'; btn.textContent='Add '+e.label+' — '+e.price;
+    if(a.unnamed){ var nb=document.createElement('button'); nb.className='btn accent'; nb.textContent='💡 Help name them!';   // → open Meet the Herd "Help name me" board
+      nb.addEventListener('click',function(){ closeCard(); var hb=document.getElementById('herdpill'); if(hb) hb.click(); }); cta.appendChild(nb); }
+    else if(a.add){ var e=EXP[a.add]; var btn=document.createElement('button'); btn.className='btn accent'; btn.textContent='Add '+e.label+' — '+e.price;
       btn.addEventListener('click',function(){ addToCart(a.add); btn.textContent='✓ Added'; btn.classList.add('added'); }); cta.appendChild(btn); }
     var cl=document.createElement('button'); cl.className='btn ghost'; cl.textContent='Back to the farm'; cl.addEventListener('click',closeCard); cta.appendChild(cl);
     cardLastFocus=document.activeElement;          // remember the pip so we can restore focus on close
     modal.classList.add('open'); setBgInert(true);
-    var card=modal.querySelector('.tcard'); if(card) card.focus();   // move focus into the dialog (AT announces the name)
-    if(!met[key]){ met[key]=true; updateHerd(); sfxHum(); reward(document.querySelector('.tcard')); }
+    if(card) card.focus();   // move focus into the dialog (AT announces the name)
+    if(!a.unnamed && !met[key]){ met[key]=true; updateHerd(); sfxHum(); reward(card); }   // unnamed cards don't count toward "herd met"
   }
   function closeCard(){ if(!modal.classList.contains('open')) return; modal.classList.remove('open'); setBgInert(false);
     if(cardLastFocus && cardLastFocus.focus){ try{ cardLastFocus.focus(); }catch(e){} } cardLastFocus=null; }
@@ -803,12 +809,10 @@
   PIPS.forEach(function(pp){
     var ak=pp.animal||pp.key, ha=HERD[ak];
     var el=document.createElement('button'); el.type='button'; el.className='pip';
-    el.setAttribute('aria-label', pp.unnamed ? 'Help name this animal in Meet the Herd' : ('Meet '+(ha?ha.name:ak)));
+    el.setAttribute('aria-label', pp.unnamed ? 'Help name this unnamed animal' : ('Meet '+(ha?ha.name:ak)));
     el.tabIndex=-1; el.setAttribute('aria-hidden','true');   // hidden from keyboard/AT until its scene is active (set in positionPips)
     el.innerHTML=pp.emoji+'<span class="ring"></span>';
-    el.addEventListener('click',function(){ if(EDIT) return;
-      if(pp.unnamed){ var hb=document.getElementById('herdpill'); if(hb) hb.click(); return; }   // unnamed → open Meet the Herd "Help name me" board
-      el.classList.add('met'); openCard(ak); });
+    el.addEventListener('click',function(){ if(EDIT) return; el.classList.add('met'); openCard(ak); });   // unnamed pips open a small card with a "Help name them!" link
     pp.el=el; pipsWrap.appendChild(el);
   });
   function pipHide(el){ el.style.opacity='0'; el.style.pointerEvents='none'; el.tabIndex=-1; el.setAttribute('aria-hidden','true'); }
