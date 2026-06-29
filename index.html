@@ -79,15 +79,15 @@
 
   /* ---- scroll content ---- */
   #scroll{position:relative; z-index:2}
-  .panel{min-height:100svh; min-height:100vh; position:relative; display:flex; align-items:center; padding:7vh 6vw}
+  .panel{min-height:100vh; min-height:100dvh; position:relative; display:flex; align-items:center; padding:7vh 6vw}
   .panel.right{justify-content:flex-end}
   .panel.center{justify-content:center; text-align:center}
 
-  .plaque{max-width:360px; background:var(--card); border:1px solid var(--cardborder); border-radius:16px;
-    padding:18px 22px; box-shadow:0 18px 50px -18px rgba(15,12,7,.7); transform:translateY(26px); opacity:0;
-    transition:transform .8s cubic-bezier(.2,.7,.2,1), opacity .8s}
-  .panel.center .plaque{max-width:500px}
-  .panel.inview .plaque{transform:none; opacity:1}
+  .plaque{max-width:340px; background:var(--card); border:1px solid var(--cardborder); border-radius:16px;
+    padding:16px 20px; box-shadow:0 18px 50px -18px rgba(15,12,7,.7); transform:translateY(20px);
+    transition:transform .7s cubic-bezier(.2,.7,.2,1)}
+  .panel.center .plaque{max-width:480px}
+  .panel.inview .plaque{transform:none}
   .kicker{font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--accent); font-weight:700; margin:0 0 8px}
   .plaque h2{font-family:var(--serif); font-size:clamp(24px,3.6vw,38px); line-height:1.05; margin:0 0 10px; letter-spacing:-.01em}
   .plaque p{font-size:15px; line-height:1.55; margin:0 0 12px; color:#43402c}
@@ -237,15 +237,17 @@
   .map-note{font-size:12px; color:var(--muted); margin-top:10px; line-height:1.5}
 
   @media (max-width:720px){
-    .panel{padding:6vh 5vw 104px; align-items:flex-end}
+    .panel{padding:5vh 4vw 84px; align-items:flex-end}
     .panel.right{justify-content:flex-start}
     .panel.center{justify-content:center; align-items:flex-start; text-align:center}
-    .plaque{max-width:100%; width:100%; padding:15px 18px}
-    .plaque h2{font-size:clamp(22px,6.5vw,30px); margin-bottom:8px}
-    .plaque p{font-size:14.5px; margin-bottom:10px}
-    .plaque .small{margin-top:8px}
-    .biglogo{width:92px!important; height:92px!important}
-    .ftruck{width:80px; height:80px}
+    .plaque{max-width:100%; width:100%; padding:13px 16px; border-radius:14px}
+    .plaque .kicker{font-size:11px; margin-bottom:5px}
+    .plaque h2{font-size:clamp(20px,5.5vw,26px); margin-bottom:6px; line-height:1.05}
+    .plaque p{font-size:13.5px; line-height:1.5; margin-bottom:8px}
+    .plaque .small{font-size:12px; margin-top:6px}
+    .btn{padding:11px 15px; font-size:13.5px}
+    .biglogo{width:86px!important; height:86px!important}
+    .ftruck{width:74px; height:74px}
     #trail,#wagon{display:none}
     #tracker{top:10px; right:10px; bottom:auto; flex-direction:row; align-items:center; gap:8px}
     #herddots i{width:9px;height:9px}
@@ -335,7 +337,7 @@
     <div class="plaque">
       <p class="kicker">Chapter III</p>
       <h2>The Highland Fold</h2>
-      <p>Shaggy Scottish Highland cattle led by William Wallace, the herd sire — famously calm, famously photogenic.</p>
+      <p>Shaggy Scottish Highland cattle — famously calm, famously photogenic. Daisy and the fold love a slow scratch at the fence.</p>
       <p class="small">✨ Tap the cattle to meet the fold.</p>
       <div class="btnrow"><button class="btn" data-add="farm-tour">Add Private Farm Tour — from $100</button></div>
     </div>
