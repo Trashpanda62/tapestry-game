@@ -238,6 +238,21 @@
   .lantern2.lit{filter:none; text-shadow:0 0 22px var(--lantern), 0 0 40px rgba(244,200,115,.7)}
   .map-note{font-size:12px; color:var(--muted); margin-top:10px; line-height:1.5}
 
+  /* ---- area-map + farm-store scenes ---- */
+  .ta-mapwrap{position:relative; width:100%; height:min(54vh,460px); border-radius:14px; overflow:hidden; border:1px solid var(--cardborder); background:#dfe6dd; margin:6px 0}
+  .ta-mapwrap iframe{width:100%; height:100%; border:0; display:block}
+  .ta-maptap{position:absolute; inset:0; border:0; cursor:pointer; color:#fff; font-weight:800; font-size:15px;
+    background:rgba(20,16,10,.30); text-shadow:0 1px 8px rgba(0,0,0,.7)}
+  .ta-maptap.hide{display:none}
+  .ta-shelf{display:flex; gap:10px; overflow-x:auto; padding:6px 2px 12px; margin:4px 0 8px; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch}
+  .ta-shelf::-webkit-scrollbar{height:6px}
+  .ta-shelf::-webkit-scrollbar-thumb{background:rgba(120,100,70,.4); border-radius:3px}
+  .ta-prod{flex:0 0 auto; width:128px; scroll-snap-align:start; text-decoration:none; color:var(--ink);
+    background:rgba(251,246,233,.92); border:1px solid var(--cardborder); border-radius:12px; overflow:hidden; transition:transform .12s}
+  .ta-prod:hover{transform:translateY(-3px)}
+  .ta-prod img{width:100%; height:128px; object-fit:cover; display:block; background:#e7dcc2}
+  .ta-prod .pn{font-size:11.5px; font-weight:700; line-height:1.25; padding:7px 8px; display:block}
+
   /* ---- game-feel FX ---- */
   .plaque>*{opacity:0; transform:translateY(10px); transition:opacity .5s ease, transform .5s cubic-bezier(.2,.7,.2,1)}
   .panel.inview .plaque>*{opacity:1; transform:none}
@@ -324,6 +339,7 @@
   <div class="bg"><div class="fill" style="background-image:url(assets/bg/rv.webp)"></div><img class="sharp" src="assets/bg/rv.webp" alt="An RV parked by the fence with alpacas at golden hour" decoding="async"></div>
   <div class="bg"><div class="fill" style="background-image:url(assets/bg/stay.webp)"></div><img class="sharp" src="assets/bg/stay.webp" alt="Greeting a Highland cow at sunset on the farm" decoding="async"></div>
   <div class="bg"><div class="fill" style="background-image:url(assets/bg/finale.webp)"></div><img class="sharp" src="assets/bg/finale.webp" alt="Cattle grazing under a rainbow over the pasture" decoding="async"></div>
+  <div class="bg" style="background:radial-gradient(120% 90% at 50% 12%, #f3ead4, #e7d9b8 55%, #c9b487 100%)"></div>
   <canvas id="fx"></canvas>
   <div id="lighting"></div><div id="nighttint"></div><div id="vignette"></div>
 </div>
@@ -390,10 +406,21 @@
     </div>
   </section>
 
-  <!-- 5 STAY ON THE FARM (night) -->
-  <section class="panel" data-bg="5" data-flag="VI · Stay on the Farm" id="hollowpanel">
+  <!-- EXPLORE THE AREA (embedded map) -->
+  <section class="panel center" data-bg="4" data-flag="VI · Explore the Area" id="mappanel">
+    <div class="plaque" style="max-width:min(94vw,880px); width:min(94vw,880px)">
+      <p class="kicker">Chapter VI · Plan your days</p>
+      <h2>Explore the Area</h2>
+      <p>Dale Hollow Lake, state parks, history &amp; good eats — all within easy reach. Tap a pin to map your day.</p>
+      <div class="ta-mapwrap"><iframe data-src="https://trashpanda62.github.io/tapestry-area-map/" title="Map of activities near Tapestry Acres" loading="lazy"></iframe><button class="ta-maptap" type="button">🗺️ Tap to explore the map</button></div>
+      <p class="small">🚐 RV-safe route: take TN-294 / Old Stover Rd — avoid Jaybird Rd.</p>
+    </div>
+  </section>
+
+  <!-- STAY ON THE FARM -->
+  <section class="panel" data-bg="5" data-flag="VII · Stay on the Farm" id="hollowpanel">
     <div class="plaque">
-      <p class="kicker">Chapter VI</p>
+      <p class="kicker">Chapter VII</p>
       <img class="ftruck" src="assets/cards/foodtruck.jpg" alt="To The Max food truck">
       <h2>Stay on the Farm</h2>
       <p>Wake to the hum of the pasture — farm stays and glamping under wide Cumberland skies. <em>Slow down. Stay a while. The farm will do the rest.</em></p>
@@ -402,8 +429,19 @@
     </div>
   </section>
 
-  <!-- 6 FINALE -->
-  <section class="panel center" data-bg="6" data-flag="VII · Stay a While" id="finale">
+  <!-- FARM STORE -->
+  <section class="panel center" data-bg="7" data-flag="VIII · The Farm Store" id="storepanel">
+    <div class="plaque" style="max-width:min(95vw,920px); width:min(95vw,920px)">
+      <p class="kicker">Chapter VIII</p>
+      <h2>The Farm Store</h2>
+      <p>Alpaca socks, blankets, handmade soaps &amp; small-batch yarn — straight from the herd you just met.</p>
+      <div class="ta-shelf" id="shelf"></div>
+      <div class="btnrow" style="justify-content:center"><a class="btn accent" href="https://www.tapestryacres.com/category/all-products" target="_blank" rel="noopener">See all in the shop →</a></div>
+    </div>
+  </section>
+
+  <!-- FINALE -->
+  <section class="panel center" data-bg="6" data-flag="IX · Stay a While" id="finale">
     <div class="plaque">
       <img class="biglogo" src="assets/logo-crest.png" alt="Tapestry Acres" style="width:92px;height:92px;margin:0 auto 4px">
       <h2 style="margin-top:8px">Stay a while.</h2>
@@ -479,6 +517,7 @@
 
 <script src="assets/herd.js"></script>
 <script src="edits.js"></script>
+<script src="products.js"></script>
 <script>
 (function(){
   "use strict";
@@ -789,18 +828,21 @@
   }
   function addSceneControl(panel, idx){
     var c=document.createElement('div'); c.className='ta-scenectl';
-    var cur=bgs[idx].querySelector('.sharp').getAttribute('src'), current=O.bg[idx]||cur;
-    var lab=document.createElement('span'); lab.textContent='📷'; c.appendChild(lab);
-    var sel=document.createElement('select');
-    if(isData(current)){ var u=document.createElement('option'); u.value=current; u.textContent='★ uploaded'; u.selected=true; sel.appendChild(u); }
-    PHOTO_LIST.forEach(function(src){ var o=document.createElement('option'); o.value=src; o.textContent=src.replace('assets/',''); if(src===current) o.selected=true; sel.appendChild(o); });
-    sel.addEventListener('change',function(){ var src=sel.value; if(isData(src)) return; var img=bgs[idx].querySelector('.sharp'); img.onload=function(){ measure(); }; setBg(idx,src); O.bg[idx]=src; saveDraft(); });
-    c.appendChild(sel);
-    var up=document.createElement('button'); up.textContent='⤴'; up.title='Upload your own photo for this scene';
-    var fi=document.createElement('input'); fi.type='file'; fi.accept='image/*'; fi.style.display='none';
-    up.addEventListener('click',function(){ fi.click(); });
-    fi.addEventListener('change',function(){ if(fi.files && fi.files[0]) handleUpload(idx, fi.files[0], sel); fi.value=''; });
-    c.appendChild(up); c.appendChild(fi);
+    var bgIdx=+panel.getAttribute('data-bg'); var sharp=bgs[bgIdx] && bgs[bgIdx].querySelector('.sharp');
+    if(sharp){
+      var cur=sharp.getAttribute('src'), current=O.bg[bgIdx]||cur;
+      var lab=document.createElement('span'); lab.textContent='📷'; c.appendChild(lab);
+      var sel=document.createElement('select');
+      if(isData(current)){ var u=document.createElement('option'); u.value=current; u.textContent='★ uploaded'; u.selected=true; sel.appendChild(u); }
+      PHOTO_LIST.forEach(function(src){ var o=document.createElement('option'); o.value=src; o.textContent=src.replace('assets/',''); if(src===current) o.selected=true; sel.appendChild(o); });
+      sel.addEventListener('change',function(){ var src=sel.value; if(isData(src)) return; var im=bgs[bgIdx].querySelector('.sharp'); im.onload=function(){ measure(); }; setBg(bgIdx,src); O.bg[bgIdx]=src; saveDraft(); });
+      c.appendChild(sel);
+      var up=document.createElement('button'); up.textContent='⤴'; up.title='Upload your own photo for this scene';
+      var fi=document.createElement('input'); fi.type='file'; fi.accept='image/*'; fi.style.display='none';
+      up.addEventListener('click',function(){ fi.click(); });
+      fi.addEventListener('change',function(){ if(fi.files && fi.files[0]) handleUpload(bgIdx, fi.files[0], sel); fi.value=''; });
+      c.appendChild(up); c.appendChild(fi);
+    }
     [['L','left'],['C','center'],['R','right']].forEach(function(a){ var b=document.createElement('button'); b.textContent=a[0]; b.title='Align '+a[1];
       var curAlign=panel.classList.contains('right')?'right':(panel.classList.contains('center')?'center':'left');
       if(a[1]===curAlign) b.classList.add('on');
@@ -844,6 +886,20 @@
   applyOverrides();
   buildConstellation(); renderCart(); measure();
   if(EDIT) initEditor();
+
+  /* farm store shelf — featured products from the Wix store */
+  (function(){ var shelf=document.getElementById('shelf'), P=window.TA_PRODUCTS||[]; if(!shelf||!P.length) return;
+    var nonyarn=P.filter(function(p){return !/yarn/i.test(p.n);}), yarn=P.filter(function(p){return /yarn/i.test(p.n);});
+    var feat=nonyarn.slice(0,16).concat(yarn.slice(0,10));
+    feat.forEach(function(p){ var a=document.createElement('a'); a.className='ta-prod'; a.href=p.u; a.target='_blank'; a.rel='noopener';
+      var im=document.createElement('img'); im.loading='lazy'; im.src=p.i; im.alt=p.n;
+      var nm=document.createElement('span'); nm.className='pn'; nm.textContent=p.n;
+      a.appendChild(im); a.appendChild(nm); shelf.appendChild(a); }); })();
+
+  /* area map — lazy-load the iframe, tap-to-interact (prevents scroll trap) */
+  (function(){ var mp=document.getElementById('mappanel'); if(!mp) return; var fr=mp.querySelector('iframe'), tap=mp.querySelector('.ta-maptap');
+    if(fr){ var mo=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting && !fr.src){ fr.src=fr.getAttribute('data-src'); mo.disconnect(); } }); },{rootMargin:'700px'}); mo.observe(mp);
+      fr.style.pointerEvents='none'; if(tap) tap.addEventListener('click',function(){ fr.style.pointerEvents='auto'; tap.classList.add('hide'); }); } })();
 
   function hideLoader(){ var l=document.getElementById('loader'); if(l && !l.classList.contains('gone')){ l.classList.add('gone'); setTimeout(function(){ l.style.display='none'; },700); } }
   if(document.readyState==='complete') setTimeout(hideLoader,300); else window.addEventListener('load',hideLoader);
