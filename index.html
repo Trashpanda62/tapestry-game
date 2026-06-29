@@ -83,10 +83,11 @@
   .panel.right{justify-content:flex-end}
   .panel.center{justify-content:center; text-align:center}
 
-  .plaque{max-width:340px; background:rgba(251,246,233,.5); border:1px solid rgba(255,255,255,.55); border-radius:16px;
-    padding:16px 20px; backdrop-filter:blur(12px) saturate(1.15); -webkit-backdrop-filter:blur(12px) saturate(1.15);
+  .plaque{max-width:340px; background:rgba(251,246,233,.25); border:1px solid rgba(255,255,255,.4); border-radius:16px;
+    padding:16px 20px; backdrop-filter:blur(16px) saturate(1.2); -webkit-backdrop-filter:blur(16px) saturate(1.2);
     box-shadow:0 18px 50px -18px rgba(15,12,7,.7); transform:translateY(20px);
     transition:transform .7s cubic-bezier(.2,.7,.2,1)}
+  .plaque h2, .plaque .kicker, .plaque p, .plaque .small{text-shadow:0 1px 10px rgba(247,244,236,.65)}
   .panel.center .plaque{max-width:480px}
   .panel.inview .plaque{transform:none}
   .kicker{font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--accent); font-weight:700; margin:0 0 8px}
@@ -237,6 +238,25 @@
   .lantern2.lit{filter:none; text-shadow:0 0 22px var(--lantern), 0 0 40px rgba(244,200,115,.7)}
   .map-note{font-size:12px; color:var(--muted); margin-top:10px; line-height:1.5}
 
+  /* ---- game-feel FX ---- */
+  .plaque>*{opacity:0; transform:translateY(10px); transition:opacity .5s ease, transform .5s cubic-bezier(.2,.7,.2,1)}
+  .panel.inview .plaque>*{opacity:1; transform:none}
+  .panel.inview .plaque>*:nth-child(2){transition-delay:.08s}
+  .panel.inview .plaque>*:nth-child(3){transition-delay:.16s}
+  .panel.inview .plaque>*:nth-child(4){transition-delay:.24s}
+  .panel.inview .plaque>*:nth-child(5){transition-delay:.32s}
+  .panel.inview .plaque>*:nth-child(6){transition-delay:.40s}
+  .bob{display:inline-block; animation:ta-bob 1.6s ease-in-out infinite}
+  @keyframes ta-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+  #herddots i.pop{animation:ta-dotpop .5s ease}
+  @keyframes ta-dotpop{0%{transform:scale(1)}40%{transform:scale(2)}100%{transform:scale(1.12)}}
+  .ta-spark{position:fixed; z-index:69; width:9px; height:9px; border-radius:50%; pointer-events:none;
+    background:radial-gradient(circle,#fff7e0,var(--lantern)); box-shadow:0 0 8px var(--lantern)}
+  .ta-confetti{position:fixed; top:-14px; z-index:71; width:9px; height:14px; border-radius:2px; pointer-events:none}
+  .ta-plus{position:fixed; z-index:70; font-weight:800; color:var(--accent); font-size:18px; pointer-events:none;
+    transform:translateX(-50%); text-shadow:0 1px 6px rgba(255,255,255,.7); animation:ta-plus 1s ease forwards}
+  @keyframes ta-plus{0%{opacity:0; transform:translate(-50%,0) scale(.8)}20%{opacity:1}100%{opacity:0; transform:translate(-50%,-36px) scale(1.1)}}
+
   @media (max-width:720px){
     .panel{padding:5vh 4vw 82px; align-items:flex-end; justify-content:center}
     .panel.center{align-items:flex-start; text-align:center}
@@ -265,7 +285,8 @@
   #mprog i{display:block; height:100%; width:0; background:var(--lantern)}
   @media (prefers-reduced-motion:reduce){
     .bg{transition:none!important} .plaque{transition:opacity .3s!important; transform:none!important}
-    .pip{animation:none} .pip .ring{display:none} .chev{animation:none}
+    .plaque>*{opacity:1!important; transform:none!important; transition:none!important}
+    .pip{animation:none} .pip .ring{display:none} .chev{animation:none} .bob{animation:none}
   }
 
   /* ---- Edit Mode (only active with ?edit) ---- */
@@ -317,7 +338,7 @@
       <img class="biglogo" src="assets/logo-crest.png" alt="Tapestry Acres" style="width:118px;height:118px;margin:0 auto 4px">
       <h2 style="margin-top:8px">Come Meet the Herd.</h2>
       <p>110 acres on the Cumberland Plateau, near Dale Hollow Lake — Monroe, Tennessee. Slow down. Stay a while. The farm will do the rest.</p>
-      <p class="small">Keep scrolling to walk the lane ↓</p>
+      <p class="small">Keep scrolling to walk the lane <span class="bob">↓</span></p>
     </div>
   </section>
 
@@ -533,7 +554,7 @@
   /* particles */
   var fx=document.getElementById('fx'), ctx=fx.getContext('2d'), parts=[], prog=0;
   function sizeFx(){ fx.width=innerWidth; fx.height=innerHeight; }
-  function seed(){ parts=[]; var n=reduce?0:40; for(var i=0;i<n;i++){ parts.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,vx:(Math.random()-.5)*.25,vy:-.15-Math.random()*.4,r:1+Math.random()*2.2,ph:Math.random()*6.28}); } }
+  function seed(){ parts=[]; var n=reduce?0:60; for(var i=0;i<n;i++){ parts.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,vx:(Math.random()-.5)*.3,vy:-.18-Math.random()*.45,r:1.2+Math.random()*2.6,ph:Math.random()*6.28}); } }
   function tickFx(){ if(reduce)return; ctx.clearRect(0,0,fx.width,fx.height);
     for(var i=0;i<parts.length;i++){ var p=parts[i]; p.x+=p.vx; p.y+=p.vy; p.ph+=.03;
       if(p.y<-10){p.y=innerHeight+10;p.x=Math.random()*innerWidth;} if(p.x<-10)p.x=innerWidth+10; if(p.x>innerWidth+10)p.x=-10;
@@ -541,6 +562,21 @@
       ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,6.28); ctx.fillStyle='rgba('+R+','+G+','+B+','+(.5*tw)+')';
       ctx.shadowColor='rgba('+R+','+G+','+B+',.9)'; ctx.shadowBlur=prog>.6?10:4; ctx.fill(); }
     requestAnimationFrame(tickFx); }
+
+  /* game FX */
+  function reward(el){ if(reduce||!el) return; var r=el.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2;
+    for(var i=0;i<10;i++){ (function(a){ var s=document.createElement('span'); s.className='ta-spark'; s.style.left=(cx-4)+'px'; s.style.top=(cy-4)+'px';
+      s.style.transition='transform .75s ease-out, opacity .75s ease-out'; document.body.appendChild(s);
+      requestAnimationFrame(function(){ var d=46+Math.random()*34; s.style.transform='translate('+(Math.cos(a)*d)+'px,'+(Math.sin(a)*d)+'px) scale(.3)'; s.style.opacity='0'; });
+      setTimeout(function(){ if(s.parentNode) s.remove(); },800); })(i/10*6.283); } }
+  function confettiBurst(){ if(reduce) return; var cols=['#c0492f','#e0a23c','#4b6b3c','#f4c873','#6b8e4e'];
+    for(var i=0;i<50;i++){ (function(){ var c=document.createElement('span'); c.className='ta-confetti'; c.style.left=(Math.random()*100)+'vw'; c.style.background=cols[Math.floor(Math.random()*cols.length)];
+      c.style.transition='transform '+(2+Math.random()*1.3)+'s linear, opacity .5s ease '+(1.7+Math.random())+'s'; document.body.appendChild(c);
+      requestAnimationFrame(function(){ c.style.transform='translateY('+(innerHeight+60)+'px) rotate('+(Math.random()*720-360)+'deg)'; c.style.opacity='0'; });
+      setTimeout(function(){ if(c.parentNode) c.remove(); },3500); })(); } }
+  function plusOne(){ if(reduce) return; var sb=document.getElementById('satchelbtn'); if(!sb) return; var b=sb.getBoundingClientRect();
+    var p=document.createElement('div'); p.className='ta-plus'; p.textContent='+1'; p.style.left=(b.left+b.width/2)+'px'; p.style.top=(b.top-4)+'px'; document.body.appendChild(p);
+    setTimeout(function(){ if(p.parentNode) p.remove(); },1000); }
 
   /* scroll engine */
   var centers=[], vh=innerHeight, maxScroll=1, ticking=false;
@@ -553,9 +589,10 @@
     var frac=Math.max(0,Math.min(1,(vc-centers[i])/span));
     for(var b=0;b<bgs.length;b++){ bgs[b].style.opacity='0'; bgs[b].style.visibility='hidden'; }
     var ca=order[i], cb=order[next];
+    var t=Math.max(0,Math.min(1,(frac-0.42)/0.16)); t=t*t*(3-2*t);   // hold each scene, crossfade only in a quick band
     if(ca===cb){ bgs[ca].style.opacity='1'; bgs[ca].style.visibility='visible'; }
-    else { bgs[ca].style.opacity=String(1-frac); bgs[cb].style.opacity=String(frac); bgs[ca].style.visibility='visible'; bgs[cb].style.visibility='visible'; }
-    positionPips(frac<.5?ca:cb, frac<.5?(1-frac):frac);
+    else { bgs[ca].style.opacity=String(1-t); bgs[cb].style.opacity=String(t); bgs[ca].style.visibility='visible'; bgs[cb].style.visibility='visible'; }
+    positionPips(t<.5?ca:cb, t<.5?(1-t):t);
     prog=Math.max(0,Math.min(1,y/maxScroll));
     lightingEl.style.opacity='0';   // all-daytime real photos — no forced night tint
     lantern.style.filter='grayscale('+(.6-prog*.6)+') brightness('+(.8+prog*.6)+')';
@@ -589,12 +626,13 @@
       btn.addEventListener('click',function(){ addToCart(a.add); btn.textContent='✓ Added'; btn.classList.add('added'); }); cta.appendChild(btn); }
     var cl=document.createElement('button'); cl.className='btn ghost'; cl.textContent='Back to the farm'; cl.addEventListener('click',closeCard); cta.appendChild(cl);
     modal.classList.add('open');
-    if(!met[key]){ met[key]=true; updateHerd(); sfxHum(); }
+    if(!met[key]){ met[key]=true; updateHerd(); sfxHum(); reward(document.querySelector('.tcard')); }
   }
   function closeCard(){ modal.classList.remove('open'); }
   function updateHerd(){ var c=Object.keys(met).length; herdcount.textContent=c+'/'+HERD_TOTAL;
     var dots=herddots.children; for(var k=0;k<dots.length;k++){ dots[k].classList.toggle('lit',k<c); }
-    if(c>=HERD_TOTAL){ document.getElementById('badge9').classList.add('show'); } }
+    if(c>0 && dots[c-1]){ var d=dots[c-1]; d.classList.add('pop'); setTimeout(function(){ d.classList.remove('pop'); },520); }
+    if(c>=HERD_TOTAL){ document.getElementById('badge9').classList.add('show'); confettiBurst(); } }
   modal.addEventListener('click',function(e){ if(e.target===modal) closeCard(); });
   document.getElementById('modalclose').addEventListener('click',closeCard);
   document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeCard(); });
@@ -627,7 +665,7 @@
   /* cart */
   var drawer=document.getElementById('drawer'), drawerlist=document.getElementById('drawerlist'),
       draweremptymsg=document.getElementById('draweremptymsg'), satchelbadge=document.getElementById('satchelbadge');
-  function addToCart(id){ if(!EXP[id]||cart[id]){ renderCart(); return; } cart[id]=true; sfxChime(); renderCart(); flashSatchel(); }
+  function addToCart(id){ if(!EXP[id]||cart[id]){ renderCart(); return; } cart[id]=true; sfxChime(); renderCart(); flashSatchel(); plusOne(); }
   function removeFromCart(id){ delete cart[id]; renderCart(); }
   function renderCart(){ var keys=Object.keys(cart); satchelbadge.textContent=keys.length; drawerlist.innerHTML='';
     keys.forEach(function(id){ var e=EXP[id]; var li=document.createElement('li');
