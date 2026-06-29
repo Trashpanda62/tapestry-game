@@ -231,6 +231,22 @@
   #constell circle{cursor:pointer}
   .badge9{display:none; margin:6px auto 0; background:var(--legendary); color:#2c2410; font-weight:800; border-radius:999px; padding:8px 16px; width:max-content; font-size:13px}
   .badge9.show{display:block; animation:pop .4s ease}
+  /* ---- finale contact footer (opaque card for readability over the photo) ---- */
+  .ta-footer{margin:18px auto 0; max-width:520px; width:100%; background:var(--card); border:1px solid var(--cardborder);
+    border-radius:16px; padding:18px 18px 12px; box-shadow:0 16px 44px -18px rgba(15,12,7,.65); text-align:left}
+  .ta-foot-brand{display:flex; align-items:center; gap:12px; padding-bottom:12px; border-bottom:1px solid var(--line)}
+  .ta-foot-logo{width:48px; height:48px; border-radius:11px; background:#fff; padding:3px; flex:0 0 auto; box-shadow:0 2px 8px rgba(0,0,0,.08)}
+  .ta-foot-name{font-family:var(--serif); font-weight:700; font-size:20px; color:var(--ink); line-height:1.05}
+  .ta-foot-tag{font-size:12px; color:var(--muted); margin-top:3px}
+  .ta-foot-rows{display:flex; flex-direction:column; gap:1px; margin-top:8px}
+  .ta-foot-row{display:flex; align-items:center; gap:11px; padding:8px 6px; border-radius:9px; text-decoration:none;
+    color:var(--ink); font-size:14px; font-weight:600; transition:background .12s}
+  .ta-foot-row:hover{background:rgba(192,73,47,.09)}
+  .ta-foot-row .ic{width:20px; text-align:center; flex:0 0 auto; font-size:15px}
+  .ta-foot-tags{display:flex; flex-wrap:wrap; gap:6px; margin:10px 2px 2px}
+  .ta-tag{font-size:11.5px; font-weight:700; color:#6a4a2a; background:#f1e6cc; border:1px solid var(--cardborder);
+    border-radius:999px; padding:5px 11px}
+  .ta-foot-copy{text-align:center; font-size:11.5px; color:var(--muted); margin-top:12px; border-top:1px solid var(--line); padding-top:11px}
 
   .ftruck{float:right; width:104px; height:104px; border-radius:12px; object-fit:cover; margin:0 0 8px 12px; border:1px solid var(--cardborder)}
   .lantern2{position:absolute; font-size:30px; cursor:pointer; transform:translate(-50%,-50%); filter:grayscale(.7) brightness(.6); transition:filter .3s, transform .2s; z-index:3}
@@ -453,10 +469,27 @@
         <button class="btn ghost" id="sharebtn">Share my farm card</button>
       </div>
       <div class="badge9" id="badge9">🏅 You met the whole herd — you're practically family.</div>
-      <svg id="constell" width="540" height="90" viewBox="0 0 540 90" aria-label="Your journey"></svg>
-      <p class="contact"><b>Tapestry Acres</b> · 396 Taylor Crossroads Road, Monroe, TN<br/>
-      <a href="tel:19318233266">(931) 823-3266</a> · <a href="mailto:tapestryacres@gmail.com">tapestryacres@gmail.com</a> · <a href="https://tapestryacres.com" target="_blank" rel="noopener">tapestryacres.com</a><br/>
-      <span style="color:var(--muted)">On-farm: To The Max food truck (event days) · Farm Store · Woaks Yarns fiber shop</span></p>
+      <div class="ta-footer">
+        <div class="ta-foot-brand">
+          <img class="ta-foot-logo" src="assets/logo-crest.png" alt="">
+          <div>
+            <div class="ta-foot-name">Tapestry Acres</div>
+            <div class="ta-foot-tag">Heritage farm · stays · events — Monroe, Tennessee</div>
+          </div>
+        </div>
+        <div class="ta-foot-rows">
+          <a class="ta-foot-row" href="https://www.google.com/maps/search/?api=1&query=396+Taylor+Crossroads+Road+Monroe+TN" target="_blank" rel="noopener"><span class="ic">📍</span>396 Taylor Crossroads Road, Monroe, TN</a>
+          <a class="ta-foot-row" href="tel:19318233266"><span class="ic">📞</span>(931) 823-3266</a>
+          <a class="ta-foot-row" href="mailto:tapestryacres@gmail.com"><span class="ic">✉️</span>tapestryacres@gmail.com</a>
+          <a class="ta-foot-row" href="https://tapestryacres.com" target="_blank" rel="noopener"><span class="ic">🌐</span>tapestryacres.com</a>
+        </div>
+        <div class="ta-foot-tags">
+          <span class="ta-tag">🚚 To The Max food truck</span>
+          <span class="ta-tag">🛍️ Farm Store</span>
+          <span class="ta-tag">🧶 Woaks Yarns</span>
+        </div>
+        <div class="ta-foot-copy">© Tapestry Acres · Come meet the herd.</div>
+      </div>
     </div>
   </section>
 
@@ -684,7 +717,7 @@
     {scene:1,key:'peggy-sue',emoji:'🦙',fx:0.60,fy:0.50},
     {scene:2,key:'daisy',emoji:'🐮',fx:0.40,fy:0.54},
     {scene:3,key:'bubbles',emoji:'🐐',fx:0.47,fy:0.44},
-    {scene:7,key:'casper',emoji:'🦙',fx:0.40,fy:0.28}
+    {scene:7,key:'casper',emoji:'🦙',fx:0.47,fy:0.40}
   ];
   PIPS.forEach(function(pp){ var o=O.pips[pp.key]; if(o){ pp.fx=o.fx; pp.fy=o.fy; } });   // apply saved positions
   var pipsWrap=document.getElementById('pips');
