@@ -322,6 +322,9 @@
     .biglogo{width:50px!important; height:50px!important; padding:6px}
     .ftruck{width:56px; height:56px}
     #trail,#wagon{display:none}
+    /* portrait: show the whole landscape photo (no side-crop) over a blurred fill, so pips land on the real animals */
+    .bg .sharp{object-fit:contain}
+    .bg .fill{display:block; position:absolute; inset:0; background-size:cover; background-position:center; transform:scale(1.12); filter:blur(26px) brightness(.55)}
     #tracker{top:10px; right:10px; bottom:auto; flex-direction:row; align-items:center; gap:8px}
     #herddots i{width:9px;height:9px}
     .pip{width:52px; height:52px; font-size:24px}
@@ -849,7 +852,7 @@
       if(pp.scene!==scene || op<=0.05){ pipHide(el); continue; }
       var img=bgs[scene] && bgs[scene].querySelector('.sharp'), iw=img&&img.naturalWidth, ih=img&&img.naturalHeight;
       if(!iw){ pipHide(el); continue; }
-      var W=innerWidth, H=innerHeight, s=Math.max(W/iw,H/ih), dw=iw*s, dh=ih*s, ox=(W-dw)/2, oy=(H-dh)/2;
+      var W=innerWidth, H=innerHeight, portrait=W<=720, s=portrait?Math.min(W/iw,H/ih):Math.max(W/iw,H/ih), dw=iw*s, dh=ih*s, ox=(W-dw)/2, oy=(H-dh)/2;
       var x=Math.max(42,Math.min(W-42, ox+pp.fx*dw)), y=Math.max(100,Math.min(H-110, oy+pp.fy*dh));
       el.style.left=x+'px'; el.style.top=y+'px'; el.style.opacity=String(op);
       var live=op>0.5; el.style.pointerEvents=live?'auto':'none';          // only fully-visible pips are interactive…
