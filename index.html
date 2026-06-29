@@ -142,6 +142,7 @@
 
   #tracker{position:absolute; top:16px; right:16px; display:flex; align-items:center; gap:12px}
   .meterbox{background:rgba(251,246,233,.92); border:1px solid var(--cardborder); border-radius:14px; padding:8px 12px; box-shadow:0 8px 22px -12px rgba(0,0,0,.6)}
+  #lanternbox{display:none}
   #lantern{font-size:22px; filter:grayscale(.6) brightness(.8); transition:filter .3s, text-shadow .3s}
   #herdbox .lbl{font-size:11px; font-weight:700; letter-spacing:.04em; color:var(--muted)}
   #herddots{display:flex; gap:4px; margin-top:5px}
@@ -236,25 +237,26 @@
   .map-note{font-size:12px; color:var(--muted); margin-top:10px; line-height:1.5}
 
   @media (max-width:720px){
-    .panel{padding:8vh 5vw 96px; align-items:flex-end}
+    .panel{padding:6vh 5vw 104px; align-items:flex-end}
     .panel.right{justify-content:flex-start}
-    .panel.center{justify-content:center; align-items:center; text-align:center}
+    .panel.center{justify-content:center; align-items:flex-start; text-align:center}
     .plaque{max-width:100%; width:100%; padding:15px 18px}
-    .plaque h2{font-size:clamp(22px,6.5vw,32px); margin-bottom:8px}
+    .plaque h2{font-size:clamp(22px,6.5vw,30px); margin-bottom:8px}
     .plaque p{font-size:14.5px; margin-bottom:10px}
-    .biglogo{width:96px!important; height:96px!important}
-    .ftruck{width:84px; height:84px}
+    .plaque .small{margin-top:8px}
+    .biglogo{width:92px!important; height:92px!important}
+    .ftruck{width:80px; height:80px}
     #trail,#wagon{display:none}
     #tracker{top:10px; right:10px; bottom:auto; flex-direction:row; align-items:center; gap:8px}
-    .meterbox{padding:6px 9px} #lantern{font-size:18px}
     #herddots i{width:9px;height:9px}
     #brand{top:10px; left:10px; padding:4px 12px 4px 4px} #brand img{width:28px;height:28px} #brand b{font-size:11px; letter-spacing:.08em}
-    #chapterflag{top:auto; bottom:62px; left:10px; max-width:70vw}
-    #cluster{right:10px; bottom:12px} #bookpill span.lbl{display:none}
-    #satchel{left:10px; bottom:12px}
+    #chapterflag{display:none}
+    #soundbtn{display:none}
+    #cluster{right:10px; bottom:10px} #bookpill span.lbl{display:none}
+    #satchel{left:10px; bottom:10px}
     #skip{display:none}
     #mprog{display:block}
-    #editbar{bottom:62px; font-size:12px; padding:7px 10px}
+    #editbar{bottom:58px; font-size:12px; padding:7px 10px}
   }
   #mprog{display:none; position:fixed; left:0; right:0; bottom:0; height:4px; background:rgba(255,255,255,.2); z-index:7}
   #mprog i{display:block; height:100%; width:0; background:var(--lantern)}
@@ -346,7 +348,7 @@
       <h2>The Goat Knoll &amp; Barnyard</h2>
       <p>Nigerian dwarf goats, milking does, a couple of mules, and the pigs — the whole curious, friendly cast.</p>
       <p class="small">✨ Tap the barnyard to meet who's who.</p>
-      <div class="btnrow"><button class="btn gold" data-add="virtual-tour">Can't make the drive? Add the Virtual Tour — $25</button></div>
+      <div class="btnrow"><button class="btn gold" data-add="virtual-tour">Add Virtual Farm Tour — $25</button></div>
     </div>
   </section>
 
@@ -402,7 +404,7 @@
   <div id="brand" class="hud-el"><img src="assets/logo-crest.png" alt=""><b>TAPESTRY ACRES</b></div>
   <div id="chapterflag" class="hud-el"><b>I ·</b> Come Meet the Herd</div>
   <div id="tracker" class="hud-el">
-    <div class="meterbox" title="Day turns to night as you travel"><span id="lantern">🏮</span></div>
+    <div class="meterbox" id="lanternbox" title="Day turns to night as you travel"><span id="lantern">🏮</span></div>
     <div class="meterbox" id="herdbox"><span class="lbl">Herd met <span id="herdcount">0/7</span></span><div id="herddots"></div></div>
   </div>
   <div id="trail" class="hud-el" aria-hidden="true"></div>
@@ -475,15 +477,12 @@
     'peggy-sue':{emoji:'🦙',name:'Peggy Sue',breed:'Alpaca · fiber herd',rarity:'rare',
       stats:[['Softness','★★★★★'],['Fiber','★★★★★'],['Curiosity','★★★★☆']],
       lore:'A fiber-herd girl with a fleece worth the whole trip.',add:'alpaca-walk'},
-    'william-wallace':{emoji:'🐮',name:'William Wallace',breed:'Scottish Highland · herd sire',rarity:'legendary',
-      stats:[['Horns','★★★★★'],['Shagginess','★★★★★'],['Majesty','★★★★★']],
-      lore:'Bull and herd sire of the Tapestry Highland fold — long horns, longer patience.',add:'farm-tour'},
+    daisy:{emoji:'🐮',name:'Daisy',breed:'Scottish Highland · cow',rarity:'rare',
+      stats:[['Horns','★★★★★'],['Fluffiness','★★★★★'],['Sweetness','★★★★★']],
+      lore:'A cream Highland cow in the Tapestry fold — gentle, fuzzy, and always up for a scratch.',add:'farm-tour'},
     bubbles:{emoji:'🐐',name:'Bubbles',breed:'Nigerian Dwarf goat',rarity:'common',
       stats:[['Friendliness','★★★★★'],['Size','★☆☆☆☆'],['Mischief','★★★★☆']],
-      lore:'Two years old, too small to breed, and the friendliest goat on the knoll.',add:'virtual-tour'},
-    fiona:{emoji:'🐐',name:'Fiona',breed:'Goat · milking doe',rarity:'common',
-      stats:[['Milk','★★★★★'],['Manners','★★★★☆'],['Opinions','★★★★★']],
-      lore:'A milking doe with strong opinions and excellent manners.',add:null}
+      lore:'Two years old, too small to breed, and the friendliest goat on the knoll.',add:'virtual-tour'}
   };
   var HERD_TOTAL = Object.keys(HERD).length;
   var met = {};
@@ -600,9 +599,8 @@
   var PIPS=[
     {scene:1,key:'joey',emoji:'🦙',fx:0.42,fy:0.66},
     {scene:1,key:'peggy-sue',emoji:'🦙',fx:0.60,fy:0.50},
-    {scene:2,key:'william-wallace',emoji:'🐮',fx:0.40,fy:0.52},
-    {scene:3,key:'bubbles',emoji:'🐐',fx:0.47,fy:0.42},
-    {scene:3,key:'fiona',emoji:'🐐',fx:0.63,fy:0.48}
+    {scene:2,key:'daisy',emoji:'🐮',fx:0.40,fy:0.54},
+    {scene:3,key:'bubbles',emoji:'🐐',fx:0.47,fy:0.44}
   ];
   PIPS.forEach(function(pp){ var o=O.pips[pp.key]; if(o){ pp.fx=o.fx; pp.fy=o.fy; } });   // apply saved positions
   var pipsWrap=document.getElementById('pips');
