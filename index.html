@@ -68,7 +68,7 @@
 
   /* ---- background stage: sharp photo over a blurred fill (orientation-proof) ---- */
   #stage{position:fixed; inset:0; z-index:0; overflow:hidden; background:#13110d}
-  .bg{position:absolute; inset:0; opacity:0; visibility:hidden; will-change:opacity}
+  .bg{position:absolute; inset:0; opacity:0; will-change:opacity}
   .bg .fill{display:none}
   .bg .sharp{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; will-change:transform}
   #fx{position:absolute; inset:0; pointer-events:none}
@@ -79,7 +79,7 @@
 
   /* ---- scroll content ---- */
   #scroll{position:relative; z-index:2}
-  .panel{min-height:100vh; min-height:100dvh; position:relative; display:flex; align-items:center; padding:7vh 6vw}
+  .panel{min-height:100vh; min-height:100svh; position:relative; display:flex; align-items:center; padding:7vh 6vw}
   .panel.right{justify-content:flex-end}
   .panel.center{justify-content:center; text-align:center}
 
@@ -626,11 +626,11 @@
     var i=0; for(var k=0;k<centers.length;k++){ if(centers[k]<=vc) i=k; else break; }
     var next=Math.min(i+1,panels.length-1), span=(centers[next]-centers[i])||vh;
     var frac=Math.max(0,Math.min(1,(vc-centers[i])/span));
-    for(var b=0;b<bgs.length;b++){ bgs[b].style.opacity='0'; bgs[b].style.visibility='hidden'; }
+    for(var b=0;b<bgs.length;b++){ bgs[b].style.opacity='0'; }   // opacity only — never toggle visibility (mobile drops the decoded image → blank flashes)
     var ca=order[i], cb=order[next];
     var t=Math.max(0,Math.min(1,(frac-0.42)/0.16)); t=t*t*(3-2*t);   // hold each scene, crossfade only in a quick band
-    if(ca===cb){ bgs[ca].style.opacity='1'; bgs[ca].style.visibility='visible'; }
-    else { bgs[ca].style.opacity=String(1-t); bgs[cb].style.opacity=String(t); bgs[ca].style.visibility='visible'; bgs[cb].style.visibility='visible'; }
+    if(ca===cb){ bgs[ca].style.opacity='1'; }
+    else { bgs[ca].style.opacity=String(1-t); bgs[cb].style.opacity=String(t); }
     positionPips(t<.5?ca:cb, t<.5?(1-t):t);
     prog=Math.max(0,Math.min(1,y/maxScroll));
     lightingEl.style.opacity='0';   // all-daytime real photos — no forced night tint
