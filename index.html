@@ -207,10 +207,10 @@
   /* ---- card modal ---- */
   #modalwrap{position:fixed; inset:0; z-index:60; display:none; place-items:center; padding:20px; background:rgba(12,10,6,.62); backdrop-filter:blur(3px)}
   #modalwrap.open{display:grid}
-  .tcard{width:330px; max-width:92vw; background:var(--card); border:1px solid var(--cardborder); border-radius:20px; overflow:hidden; box-shadow:0 30px 80px -20px rgba(0,0,0,.8); animation:pop .3s cubic-bezier(.2,.8,.2,1)}
-  .tcard.small{width:280px}  .tcard.small .top{height:150px}   /* unnamed "help name me" cards */
+  .tcard{width:330px; max-width:92vw; background:rgba(251,246,233,.5); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); border:1px solid var(--cardborder); border-radius:20px; overflow:hidden; box-shadow:0 30px 80px -20px rgba(0,0,0,.8); animation:pop .3s cubic-bezier(.2,.8,.2,1)}
+  .tcard.small{width:280px}  .tcard.small .top{height:104px}   /* unnamed "help name me" cards */
   @keyframes pop{from{transform:scale(.9) translateY(10px);opacity:0}to{transform:none;opacity:1}}
-  .tcard .top{position:relative; height:210px; background:#e7dcc2; overflow:hidden}
+  .tcard .top{position:relative; height:150px; background:#e7dcc2; overflow:hidden}
   .tcard .top img{width:100%; height:100%; object-fit:cover; display:block}
   .tcard .top .emoji{position:absolute; inset:0; display:grid; place-items:center; font-size:84px}
   .tcard .seal{position:absolute; top:12px; right:12px; font-size:11px; font-weight:800; letter-spacing:.05em; color:#fff; padding:5px 10px; border-radius:999px; text-transform:uppercase; box-shadow:0 3px 10px rgba(0,0,0,.3)}
@@ -323,7 +323,7 @@
     .ftruck{width:56px; height:56px}
     #trail,#wagon{display:none}
     /* portrait: show the whole landscape photo (no side-crop) over a blurred fill, so pips land on the real animals */
-    .bg .sharp{object-fit:contain; transform:scale(1.4)}   /* contain shows the whole photo; 1.4x fills more height & crops the sides only a bit (must match ZOOM in positionPips) */
+    .bg .sharp{object-fit:contain}   /* contain shows the whole photo; the 1.4x fill-zoom + Ken Burns drift is applied via JS (applyKB), kept in lockstep with the pips */
     .bg .fill{display:block; position:absolute; inset:0; background-size:cover; background-position:center; transform:scale(1.12); filter:blur(26px) brightness(.55)}
     #tracker{top:10px; right:10px; bottom:auto; flex-direction:row; align-items:center; gap:8px}
     #herddots i{width:9px;height:9px}
@@ -598,6 +598,8 @@
 (function(){
   "use strict";
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if('scrollRestoration' in history) history.scrollRestoration='manual';   // always begin the journey at the top on refresh (browser was restoring to chapter 2)
+  window.scrollTo(0,0);
   var PHOTOS = window.HERD_PHOTOS || {};
 
   /* ---- Edit Mode state + saved overrides (applied on every load) ---- */
@@ -739,6 +741,14 @@
 
   /* scroll engine */
   var centers=[], vh=innerHeight, maxScroll=1, ticking=false;
+  /* Ken Burns: a slow living drift on the scene photos (single source of truth so the pips track it) */
+  var KB={s:1,x:0,y:0}, curScene=0, curOp=1;
+  function applyKB(){ var portrait=innerWidth<=720, Kt=(portrait?1.4:1)*KB.s, tf='translate('+KB.x.toFixed(1)+'px,'+KB.y.toFixed(1)+'px) scale('+Kt.toFixed(4)+')';
+    for(var i=0;i<sharps.length;i++){ if(sharps[i]) sharps[i].style.transform=tf; } }
+  function tickKB(){ if(reduce) return; var tt=performance.now()/1000;
+    KB.s=1.04+0.04*Math.sin(tt*0.16); KB.x=16*Math.sin(tt*0.11); KB.y=11*Math.cos(tt*0.09);
+    if(!EDIT){ applyKB(); positionPips(curScene,curOp); }
+    requestAnimationFrame(tickKB); }
   function measure(){ vh=innerHeight; sizeFx(); centers=panels.map(function(p){return p.offsetTop+p.offsetHeight/2;});
     maxScroll=Math.max(1, document.documentElement.scrollHeight-vh); onScroll(); }
   function render(){ ticking=false;
@@ -751,7 +761,7 @@
     var t=Math.max(0,Math.min(1,(frac-0.42)/0.16)); t=t*t*(3-2*t);   // hold each scene, crossfade only in a quick band
     if(ca===cb){ bgs[ca].style.opacity='1'; }
     else { bgs[ca].style.opacity=String(1-t); bgs[cb].style.opacity=String(t); }
-    positionPips(t<.5?ca:cb, t<.5?(1-t):t);
+    curScene=t<.5?ca:cb; curOp=t<.5?(1-t):t; positionPips(curScene, curOp);
     prog=Math.max(0,Math.min(1,y/maxScroll));
     lightingEl.style.opacity='0';   // all-daytime real photos — no forced night tint
     lantern.style.filter='grayscale('+(.6-prog*.6)+') brightness('+(.8+prog*.6)+')';
@@ -853,8 +863,12 @@
       if(pp.scene!==scene || op<=0.05){ pipHide(el); continue; }
       var img=bgs[scene] && bgs[scene].querySelector('.sharp'), iw=img&&img.naturalWidth, ih=img&&img.naturalHeight;
       if(!iw){ pipHide(el); continue; }
-      var W=innerWidth, H=innerHeight, portrait=W<=720, ZOOM=1.4, s=portrait?Math.min(W/iw,H/ih)*ZOOM:Math.max(W/iw,H/ih), dw=iw*s, dh=ih*s, ox=(W-dw)/2, oy=(H-dh)/2;
-      var m=portrait?22:42, x=Math.max(m,Math.min(W-m, ox+pp.fx*dw)), y=Math.max(80,Math.min(H-110, oy+pp.fy*dh));
+      var W=innerWidth, H=innerHeight, portrait=W<=720;
+      var s0=portrait?Math.min(W/iw,H/ih):Math.max(W/iw,H/ih);          // object-fit baseline (contain on mobile, cover on desktop)
+      var Kt=(portrait?1.4:1)*KB.s;                                      // total transform scale applied to the photo (must match applyKB)
+      var bw=iw*s0, bh=ih*s0, bx=(W-bw)/2+pp.fx*bw, by=(H-bh)/2+pp.fy*bh;   // pip in baseline screen space
+      var rx=W/2+Kt*(bx-W/2)+KB.x, ry=H/2+Kt*(by-H/2)+KB.y;             // then through the scale-about-center + drift, exactly as the photo
+      var m=portrait?22:42, x=Math.max(m,Math.min(W-m, rx)), y=Math.max(80,Math.min(H-110, ry));
       el.style.left=x+'px'; el.style.top=y+'px'; el.style.opacity=String(op*(portrait?0.25:1));   // mobile: 25% so the dot doesn't cover the animal
       var live=op>0.5; el.style.pointerEvents=live?'auto':'none';          // only fully-visible pips are interactive…
       el.tabIndex=(live&&!EDIT)?0:-1;                                       // …and keyboard-reachable (not while drag-editing)
@@ -927,7 +941,7 @@
   function start(){ if(started)return; started=true;
     document.documentElement.classList.remove('locked'); document.body.classList.remove('locked');
     intro.classList.add('open'); setTimeout(function(){ intro.classList.add('gone'); },700); setTimeout(function(){ intro.style.display='none'; },1900);
-    hud.classList.add('on'); measure(); if(!reduce){ seed(); tickFx(); } }
+    hud.classList.add('on'); measure(); if(!reduce){ seed(); tickFx(); tickKB(); } }
   document.getElementById('enterbtn').addEventListener('click',start);
   ['wheel','touchstart','keydown'].forEach(function(ev){ window.addEventListener(ev,function(e){ if(!started){ if(ev==='keydown'&&['Tab','Escape'].indexOf(e.key)>=0)return; start(); } },{passive:true}); });
   function goBooking(){ if(!started) start(); setTimeout(function(){ scrollToPanel(panels.length-1); }, started?0:1000); }
@@ -1045,7 +1059,8 @@
   window.addEventListener('scroll',onScroll,{passive:true});
   window.addEventListener('resize',measure);
   applyOverrides();
-  buildConstellation(); renderCart(); measure();
+  buildConstellation(); renderCart(); applyKB(); measure();   // applyKB sets the static photo zoom baseline (also the resting state for reduced-motion)
+  window.addEventListener('load',function(){ window.scrollTo(0,0); });
   if(EDIT) initEditor();
 
   /* farm store shelf — featured products from the Wix store */
