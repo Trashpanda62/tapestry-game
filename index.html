@@ -78,9 +78,9 @@
   #vignette{position:absolute; inset:0; pointer-events:none; box-shadow:inset 0 0 240px 70px rgba(15,12,7,.6)}
 
   /* ---- scroll content ---- */
-  #scroll{position:relative; z-index:2}
+  #scroll{position:relative; z-index:2; pointer-events:none}   /* none so clicks fall THROUGH empty space to the animal zones (#pips, z1) below — the panels alone weren't enough; #scroll itself was catching them. Interactive content re-enables via .panel>* */
   .panel{min-height:100vh; min-height:100svh; position:relative; display:flex; align-items:center; padding:7vh 6vw; pointer-events:none}
-  .panel>*{pointer-events:auto}   /* panel empty space passes clicks down to the animal zones; cards/buttons stay clickable */
+  .panel>*{pointer-events:auto}   /* panel empty space passes clicks down to the animal zones; cards/buttons/scene-controls stay clickable */
   .panel.right{justify-content:flex-end}
   .panel.center{justify-content:center; text-align:center}
 
@@ -363,7 +363,9 @@
   body.editing .pip{cursor:grab; touch-action:pan-y}            /* pan-y -> vertical swipes over the photo scroll the page */
   body.editing .lantern2{cursor:grab; touch-action:none}
   body.editing .pip:active, body.editing .lantern2:active{cursor:grabbing}
-  body.editing .pip:hover{transform:translate(-50%,-50%)}       /* kill the hover-scale while editing so the corner grip stays put */
+  body.editing .pip:hover{transform:translate(-50%,-50%); z-index:30}   /* no scale jitter + bring the hovered zone (and its grip) above neighbouring boxes so the grip is grabbable in crowded scenes */
+  body.editing #scroll .plaque{pointer-events:none}                      /* editing: let zone grips behind a card be grabbed… */
+  body.editing #scroll .plaque .ta-edit-text{pointer-events:auto}        /* …but keep the rewritable text clickable */
   body.editing .pip{outline:2px dashed rgba(192,73,47,.92); outline-offset:0; background:rgba(192,73,47,.12)}   /* show the click-zone box while editing */
   .pip-resize{display:none}
   body.editing .pip-resize{display:block; position:absolute; right:-11px; bottom:-11px; width:24px; height:24px; background:#fff; border:2px solid #c0392b; border-radius:5px; cursor:nwse-resize; touch-action:none; box-shadow:0 2px 8px rgba(0,0,0,.55); z-index:5}   /* bigger, easier-to-grab corner grip */
@@ -594,7 +596,7 @@
 <div id="editbar">
   <b>✎ EDIT</b>
   <button id="eb-help" title="How to edit" aria-expanded="false">?</button>
-  <span class="hint">drag a zone to move · drag its ◢ corner to resize over the animal · click any text to rewrite · 📷 swap photo / align per scene</span>
+  <span class="hint">hover a zone to bring it forward · drag it to move · drag its ◢ corner to resize over the animal · click any text to rewrite · 📷 swap photo / align per scene</span>
   <button id="eb-export" class="go">💾 Export</button>
   <button id="eb-reset">⤺ Reset</button>
   <button id="eb-exit">👁 Preview</button>
