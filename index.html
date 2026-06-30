@@ -360,6 +360,9 @@
   body.editing #skip{display:none}
   body.editing .pip, body.editing .lantern2{cursor:grab; touch-action:none}
   body.editing .pip:active, body.editing .lantern2:active{cursor:grabbing}
+  body.editing .pip{outline:2px dashed rgba(192,73,47,.92); outline-offset:0; background:rgba(192,73,47,.12)}   /* show the click-zone box while editing */
+  .pip-resize{display:none}
+  body.editing .pip-resize{display:block; position:absolute; right:-8px; bottom:-8px; width:18px; height:18px; background:#fff; border:2px solid #c0392b; border-radius:4px; cursor:nwse-resize; touch-action:none}
   body.editing .ta-edit-text{outline:1px dashed rgba(192,73,47,.55); outline-offset:3px; cursor:text; border-radius:3px}
   body.editing .ta-edit-text:hover{background:rgba(244,200,115,.16)}
   .ta-scenectl{position:absolute; top:14px; left:50%; transform:translateX(-50%); z-index:8; display:none;
@@ -586,7 +589,7 @@
 
 <div id="editbar">
   <b>✎ EDIT</b>
-  <span class="hint">drag the pips &amp; lanterns · click any text to rewrite · 📷 swap photo / align per scene</span>
+  <span class="hint">drag a zone to move · drag its ◢ corner to resize over the animal · click any text to rewrite · 📷 swap photo / align per scene</span>
   <button id="eb-export" class="go">💾 Export</button>
   <button id="eb-reset">⤺ Reset</button>
   <button id="eb-exit">👁 Preview</button>
@@ -841,7 +844,7 @@
     {scene:5, key:"olaf", emoji:"🦙", fx:0.75, fy:0.45},
     {scene:7, key:"casper", emoji:"🦙", fx:0.47, fy:0.40}
   ];
-  PIPS.forEach(function(pp){ var o=O.pips[pp.key]; if(o){ pp.fx=o.fx; pp.fy=o.fy; } });   // apply saved positions
+  PIPS.forEach(function(pp){ var o=O.pips[pp.key]; if(o){ pp.fx=o.fx; pp.fy=o.fy; if(o.w) pp.w=o.w; if(o.h) pp.h=o.h; } });   // apply saved position + box size
   var pipsWrap=document.getElementById('pips');
   PIPS.forEach(function(pp){
     var ak=pp.animal||pp.key, ha=HERD[ak];
@@ -849,6 +852,7 @@
     el.setAttribute('aria-label', pp.unnamed ? 'Help name this unnamed animal' : ('Meet '+(ha?ha.name:ak)));
     el.tabIndex=-1; el.setAttribute('aria-hidden','true');   // hidden from keyboard/AT until its scene is active (set in positionPips)
     el.innerHTML='';   /* invisible hotspot — no visible marker */
+    var rh=document.createElement('div'); rh.className='pip-resize'; el.appendChild(rh); pp.handle=rh;   // corner resize grip (edit mode only)
     el.addEventListener('click',function(){ if(EDIT) return; el.classList.add('met'); openCard(ak); });   // unnamed pips open a small card with a "Help name them!" link
     pp.el=el; pipsWrap.appendChild(el);
   });
@@ -859,7 +863,7 @@
       var img=bgs[scene] && bgs[scene].querySelector('.sharp'), iw=img&&img.naturalWidth, ih=img&&img.naturalHeight;
       if(!iw){ pipHide(el); continue; }
       var W=innerWidth, H=innerHeight, s=Math.min(W/iw,H/ih), dw=iw*s, dh=ih*s, ox=(W-dw)/2, oy=(H-dh)/2;   // contain fit (matches .sharp object-fit:contain)
-      var hw=Math.max(60,Math.min(380, dw*0.16)), hh=Math.max(60,Math.min(500, dh*0.30));   // big invisible zone covering the animal's body
+      var hw=pp.w?Math.max(28,pp.w*dw):Math.max(60,Math.min(380, dw*0.16)), hh=pp.h?Math.max(28,pp.h*dh):Math.max(60,Math.min(500, dh*0.30));   // per-pip box (sized in editor) else default big zone
       var x=Math.max(hw/2+2,Math.min(W-hw/2-2, ox+pp.fx*dw)), y=Math.max(80,Math.min(H-80, oy+pp.fy*dh));
       el.style.left=x+'px'; el.style.top=y+'px'; el.style.width=hw+'px'; el.style.height=hh+'px'; el.style.opacity=String(op);
       var live=op>0.5; el.style.pointerEvents=live?'auto':'none';          // only fully-visible pips are interactive…
@@ -972,6 +976,21 @@
       document.addEventListener('pointermove',mv); document.addEventListener('pointerup',up);
     });
   }
+  function makeResizable(pp){   // drag the corner grip to size the (centered) click box over the animal; persists as image-fraction w/h
+    if(!pp.handle) return;
+    pp.handle.addEventListener('pointerdown', function(e){
+      if(!EDIT) return; e.preventDefault(); e.stopPropagation();
+      try{ pp.handle.setPointerCapture(e.pointerId); }catch(_){}
+      var el=pp.el, cl=parseFloat(el.style.left)||0, ct=parseFloat(el.style.top)||0;
+      function mv(ev){ el.style.width=Math.max(28, 2*(ev.clientX-cl))+'px'; el.style.height=Math.max(28, 2*(ev.clientY-ct))+'px'; el.style.opacity='1'; }
+      function up(ev){ document.removeEventListener('pointermove',mv); document.removeEventListener('pointerup',up);
+        var img=bgs[pp.scene]&&bgs[pp.scene].querySelector('.sharp'), iw=img&&img.naturalWidth, ih=img&&img.naturalHeight;
+        if(iw){ var W=innerWidth,H=innerHeight,s=Math.min(W/iw,H/ih),dw=iw*s,dh=ih*s;
+          pp.w=(parseFloat(el.style.width)||60)/dw; pp.h=(parseFloat(el.style.height)||60)/dh;
+          var o=O.pips[pp.key]=O.pips[pp.key]||{fx:pp.fx,fy:pp.fy}; o.w=pp.w; o.h=pp.h; saveDraft(); } }
+      document.addEventListener('pointermove',mv); document.addEventListener('pointerup',up);
+    });
+  }
   function isData(s){ return /^data:/.test(s||''); }
   function handleUpload(idx, file, sel){
     var img=new Image();
@@ -1033,7 +1052,7 @@
       r.el.addEventListener('blur',function(){ O.text[r.id]=r.el.innerHTML; saveDraft(); });
       r.el.addEventListener('keydown',function(ev){ if(ev.key==='Enter'){ ev.preventDefault(); r.el.blur(); } });
     });
-    PIPS.forEach(function(pp){ makeDraggable(pp.el, function(){ return pp.scene; }, function(fx,fy){ pp.fx=fx; pp.fy=fy; O.pips[pp.key]={fx:fx,fy:fy}; saveDraft(); }); });
+    PIPS.forEach(function(pp){ makeDraggable(pp.el, function(){ return pp.scene; }, function(fx,fy){ pp.fx=fx; pp.fy=fy; var o=O.pips[pp.key]=O.pips[pp.key]||{}; o.fx=fx; o.fy=fy; saveDraft(); }); makeResizable(pp); });
     var stayIdx=panels.length>5?5:panels.length-1, stayPanel=panels[stayIdx];
     lanternEls.forEach(function(l,i){
       l.addEventListener('pointerdown',function(e){ if(!EDIT)return; e.preventDefault(); e.stopPropagation(); try{l.setPointerCapture(e.pointerId);}catch(_){}
