@@ -71,7 +71,7 @@
   .bg{position:absolute; inset:0; opacity:0; will-change:opacity}
   .bg .fill{display:block; position:absolute; inset:0; background-size:cover; background-position:center; filter:blur(26px) brightness(.82) saturate(1.05); transform:scale(1.12)}
   .bg .sharp{position:absolute; inset:0; width:100%; height:100%; object-fit:contain; object-position:center}   /* full photo, never cropped; blurred .fill covers the letterbox on wide/tall screens */
-  #fx{position:absolute; inset:0; pointer-events:none}
+  #fx{position:absolute; inset:0; pointer-events:none; mix-blend-mode:screen}   /* sun-lit haze only adds light where the scene is dark */
   #lighting{position:absolute; inset:0; pointer-events:none;
     background:linear-gradient(180deg, rgba(20,16,10,.30) 0%, rgba(20,16,10,0) 26%, rgba(20,16,10,.12) 62%, rgba(20,16,10,.5) 100%)}
   #nighttint{position:absolute; inset:0; pointer-events:none; opacity:0; background:rgba(15,20,38,.6)}
@@ -114,18 +114,18 @@
 
   /* ---- animal hotspot pips ---- */
   #pips{position:fixed; inset:0; z-index:5; pointer-events:none}
-  .pip{position:fixed; width:46px; height:46px; border-radius:50%; border:0; transform:translate(-50%,-50%);
-    background:radial-gradient(circle at 50% 40%, rgba(255,247,224,.42), rgba(244,200,115,.24));
-    box-shadow:0 0 0 2px rgba(255,255,255,.42), 0 0 16px 5px rgba(244,200,115,.38);
-    display:grid; place-items:center; font-size:22px; opacity:0; pointer-events:none;
-    animation:pulse 2.4s ease-in-out infinite; transition:opacity .4s, transform .15s}
+  .pip{position:fixed; width:38px; height:38px; border-radius:50%; border:0; transform:translate(-50%,-50%);
+    background:radial-gradient(circle at 50% 38%, rgba(255,250,240,.26), rgba(232,212,170,.14));
+    box-shadow:0 0 0 1px rgba(255,255,255,.38), 0 2px 7px rgba(0,0,0,.22);
+    display:grid; place-items:center; font-size:19px; opacity:0; pointer-events:none;
+    animation:pulse 3.2s ease-in-out infinite; transition:opacity .35s, transform .15s}
   .pip:hover{transform:translate(-50%,-50%) scale(1.12)}
   .pip:focus-visible{outline:none; box-shadow:0 0 0 3px #1c160d, 0 0 0 6px rgba(255,255,255,.95), 0 0 22px 6px rgba(244,200,115,.7)}
   @media (forced-colors: active){ .pip:focus-visible{outline:3px solid Highlight; outline-offset:2px} }   /* box-shadow is dropped in High Contrast */
   .pip.met{background:rgba(255,255,255,.45); box-shadow:0 0 0 2px rgba(255,255,255,.5); animation:none; filter:saturate(.5)}
   .pip .ring{position:absolute; inset:-8px; border-radius:50%; border:2px solid rgba(255,255,255,.55); animation:halo 2.4s ease-out infinite}
-  @keyframes pulse{0%,100%{box-shadow:0 0 0 2px rgba(255,255,255,.4),0 0 14px 4px rgba(244,200,115,.32)}
-    50%{box-shadow:0 0 0 2px rgba(255,255,255,.58),0 0 22px 8px rgba(244,200,115,.5)}}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 1px rgba(255,255,255,.32), 0 2px 7px rgba(0,0,0,.22)}
+    50%{box-shadow:0 0 0 2px rgba(255,255,255,.5), 0 2px 9px rgba(0,0,0,.22)}}
   @keyframes halo{0%{transform:scale(.7);opacity:.8}100%{transform:scale(1.7);opacity:0}}
 
   /* ---- HUD ---- */
@@ -716,15 +716,17 @@
   /* particles */
   var fx=document.getElementById('fx'), ctx=fx.getContext('2d'), parts=[], prog=0;
   function sizeFx(){ fx.width=innerWidth; fx.height=innerHeight; }
-  // drifting dust motes / pollen in the air — soft, warm-white, gentle multi-directional drift (realistic, not glowing fireflies)
-  function seed(){ parts=[]; var n=reduce?0:70; for(var i=0;i<n;i++){ parts.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,vx:(Math.random()-.5)*.22,vy:(Math.random()-.5)*.14,r:.6+Math.random()*1.5,ph:Math.random()*6.28,sp:.004+Math.random()*.009,a:.10+Math.random()*.20}); } }
-  function tickFx(){ if(reduce)return; ctx.clearRect(0,0,fx.width,fx.height); ctx.shadowBlur=0;
+  // faint sun-lit haze / pollen: soft warm motes drifting gently; via #fx mix-blend-mode:screen they only glow where the scene is dark enough (invisible on bright sky)
+  function seed(){ parts=[]; var n=reduce?0:50; for(var i=0;i<n;i++){ parts.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,vx:(Math.random()-.5)*.20,vy:(Math.random()-.5)*.14,r:1.6+Math.random()*3.2,ph:Math.random()*6.28,sp:.005+Math.random()*.011,a:.22+Math.random()*.40}); } }
+  function tickFx(){ if(reduce)return; ctx.clearRect(0,0,fx.width,fx.height);
     for(var i=0;i<parts.length;i++){ var p=parts[i]; p.ph+=p.sp;
-      p.x+=p.vx+Math.sin(p.ph)*.10; p.y+=p.vy+Math.cos(p.ph*.8)*.06;
-      if(p.x<-8)p.x=innerWidth+8; if(p.x>innerWidth+8)p.x=-8;
-      if(p.y<-8)p.y=innerHeight+8; if(p.y>innerHeight+8)p.y=-8;
-      var tw=.55+.45*Math.sin(p.ph);
-      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,6.28); ctx.fillStyle='rgba(255,251,242,'+(p.a*tw).toFixed(3)+')'; ctx.fill(); }
+      p.x+=p.vx+Math.sin(p.ph)*.11; p.y+=p.vy+Math.cos(p.ph*.8)*.07;
+      if(p.x<-14)p.x=innerWidth+14; if(p.x>innerWidth+14)p.x=-14;
+      if(p.y<-14)p.y=innerHeight+14; if(p.y>innerHeight+14)p.y=-14;
+      var tw=p.a*(.55+.45*Math.sin(p.ph)), R=p.r*2.6;
+      var g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,R);
+      g.addColorStop(0,'rgba(255,244,214,'+tw.toFixed(3)+')'); g.addColorStop(1,'rgba(255,244,214,0)');
+      ctx.fillStyle=g; ctx.beginPath(); ctx.arc(p.x,p.y,R,0,6.28); ctx.fill(); }
     requestAnimationFrame(tickFx); }
 
   /* game FX */
@@ -848,18 +850,21 @@
     var el=document.createElement('button'); el.type='button'; el.className='pip';
     el.setAttribute('aria-label', pp.unnamed ? 'Help name this unnamed animal' : ('Meet '+(ha?ha.name:ak)));
     el.tabIndex=-1; el.setAttribute('aria-hidden','true');   // hidden from keyboard/AT until its scene is active (set in positionPips)
-    el.innerHTML=pp.emoji+'<span class="ring"></span>';
+    el.innerHTML=pp.emoji;   /* no radiating halo ring */
     el.addEventListener('click',function(){ if(EDIT) return; el.classList.add('met'); openCard(ak); });   // unnamed pips open a small card with a "Help name them!" link
     pp.el=el; pipsWrap.appendChild(el);
   });
   function pipHide(el){ el.style.opacity='0'; el.style.pointerEvents='none'; el.tabIndex=-1; el.setAttribute('aria-hidden','true'); }
   function positionPips(scene, op){
+    var cards=[].map.call(document.querySelectorAll('.plaque'), function(pl){return pl.getBoundingClientRect();});   // chapter cards on screen
     for(var i=0;i<PIPS.length;i++){ var pp=PIPS[i], el=pp.el;
       if(pp.scene!==scene || op<=0.05){ pipHide(el); continue; }
       var img=bgs[scene] && bgs[scene].querySelector('.sharp'), iw=img&&img.naturalWidth, ih=img&&img.naturalHeight;
       if(!iw){ pipHide(el); continue; }
       var W=innerWidth, H=innerHeight, s=Math.min(W/iw,H/ih), dw=iw*s, dh=ih*s, ox=(W-dw)/2, oy=(H-dh)/2;   // contain fit (matches .sharp object-fit:contain)
       var x=Math.max(42,Math.min(W-42, ox+pp.fx*dw)), y=Math.max(100,Math.min(H-110, oy+pp.fy*dh));
+      var overCard=false; if(!EDIT){ for(var c=0;c<cards.length;c++){ var r=cards[c]; if(r.width>0 && x>r.left-8 && x<r.right+8 && y>r.top-8 && y<r.bottom+8){ overCard=true; break; } } }
+      if(overCard){ pipHide(el); continue; }   // never draw a pip on top of a chapter card
       el.style.left=x+'px'; el.style.top=y+'px'; el.style.opacity=String(op);
       var live=op>0.5; el.style.pointerEvents=live?'auto':'none';          // only fully-visible pips are interactive…
       el.tabIndex=(live&&!EDIT)?0:-1;                                       // …and keyboard-reachable (not while drag-editing)
