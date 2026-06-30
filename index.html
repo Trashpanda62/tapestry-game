@@ -114,11 +114,8 @@
 
   /* ---- animal hotspot pips ---- */
   #pips{position:fixed; inset:0; z-index:5; pointer-events:none}
-  .pip{position:fixed; width:26px; height:26px; border-radius:50%; border:0; transform:translate(-50%,-50%);
-    background:radial-gradient(circle at 50% 38%, rgba(255,250,240,.26), rgba(232,212,170,.14));
-    box-shadow:0 0 0 1px rgba(255,255,255,.38), 0 2px 7px rgba(0,0,0,.22);
-    display:grid; place-items:center; font-size:13px; opacity:0; pointer-events:none;
-    animation:pulse 3.2s ease-in-out infinite; transition:opacity .35s, transform .15s}
+  .pip{position:fixed; transform:translate(-50%,-50%); border:0; padding:0; background:transparent;
+    border-radius:45%; cursor:pointer; opacity:0; pointer-events:none}   /* invisible click zone over the animal; size set in positionPips */
   .pip:hover{transform:translate(-50%,-50%) scale(1.12)}
   .pip:focus-visible{outline:none; box-shadow:0 0 0 3px #1c160d, 0 0 0 6px rgba(255,255,255,.95), 0 0 22px 6px rgba(244,200,115,.7)}
   @media (forced-colors: active){ .pip:focus-visible{outline:3px solid Highlight; outline-offset:2px} }   /* box-shadow is dropped in High Contrast */
@@ -331,7 +328,7 @@
     #trail,#wagon{display:none}
     #tracker{top:10px; right:10px; bottom:auto; flex-direction:row; align-items:center; gap:8px}
     #herddots i{width:9px;height:9px}
-    .pip{width:42px; height:42px; font-size:20px}
+    /* pips are invisible click zones — size handled dynamically in positionPips */
     #herdpill span.lbl{display:none}
     #brand{top:10px; left:10px; padding:4px 12px 4px 4px} #brand img{width:28px;height:28px} #brand b{font-size:11px; letter-spacing:.08em}
     #chapterflag{display:none}
@@ -850,7 +847,7 @@
     var el=document.createElement('button'); el.type='button'; el.className='pip';
     el.setAttribute('aria-label', pp.unnamed ? 'Help name this unnamed animal' : ('Meet '+(ha?ha.name:ak)));
     el.tabIndex=-1; el.setAttribute('aria-hidden','true');   // hidden from keyboard/AT until its scene is active (set in positionPips)
-    el.innerHTML=pp.emoji;   /* no radiating halo ring */
+    el.innerHTML='';   /* invisible hotspot — no visible marker */
     el.addEventListener('click',function(){ if(EDIT) return; el.classList.add('met'); openCard(ak); });   // unnamed pips open a small card with a "Help name them!" link
     pp.el=el; pipsWrap.appendChild(el);
   });
@@ -862,10 +859,12 @@
       var img=bgs[scene] && bgs[scene].querySelector('.sharp'), iw=img&&img.naturalWidth, ih=img&&img.naturalHeight;
       if(!iw){ pipHide(el); continue; }
       var W=innerWidth, H=innerHeight, s=Math.min(W/iw,H/ih), dw=iw*s, dh=ih*s, ox=(W-dw)/2, oy=(H-dh)/2;   // contain fit (matches .sharp object-fit:contain)
-      var x=Math.max(42,Math.min(W-42, ox+pp.fx*dw)), y=Math.max(100,Math.min(H-110, oy+pp.fy*dh));
-      var overCard=false; if(!EDIT){ for(var c=0;c<cards.length;c++){ var r=cards[c]; if(r.width>0 && x>r.left-8 && x<r.right+8 && y>r.top-8 && y<r.bottom+8){ overCard=true; break; } } }
-      if(overCard){ pipHide(el); continue; }   // never draw a pip on top of a chapter card
-      el.style.left=x+'px'; el.style.top=y+'px'; el.style.opacity=String(op);
+      var hw=Math.max(54,Math.min(160, dw*0.09)), hh=Math.max(54,Math.min(210, dh*0.15));   // invisible zone sized to roughly cover an animal
+      var x=Math.max(hw/2+2,Math.min(W-hw/2-2, ox+pp.fx*dw)), y=Math.max(80,Math.min(H-80, oy+pp.fy*dh));
+      var overCard=false; if(!EDIT){ for(var c=0;c<cards.length;c++){ var r=cards[c];   // hide a zone overlapping a chapter card so it can't intercept the card's buttons
+        if(r.width>0 && x+hw/2>r.left && x-hw/2<r.right && y+hh/2>r.top && y-hh/2<r.bottom){ overCard=true; break; } } }
+      if(overCard){ pipHide(el); continue; }
+      el.style.left=x+'px'; el.style.top=y+'px'; el.style.width=hw+'px'; el.style.height=hh+'px'; el.style.opacity=String(op);
       var live=op>0.5; el.style.pointerEvents=live?'auto':'none';          // only fully-visible pips are interactive…
       el.tabIndex=(live&&!EDIT)?0:-1;                                       // …and keyboard-reachable (not while drag-editing)
       if(live) el.removeAttribute('aria-hidden'); else el.setAttribute('aria-hidden','true');
