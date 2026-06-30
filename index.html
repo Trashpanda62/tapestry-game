@@ -69,10 +69,8 @@
   /* ---- background stage: sharp photo over a blurred fill (orientation-proof) ---- */
   #stage{position:fixed; inset:0; z-index:0; overflow:hidden; background:#13110d}
   .bg{position:absolute; inset:0; opacity:0; will-change:opacity}
-  .bg .fill{display:none}
-  .bg .sharp{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center}
-  .bg .bgvid{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; opacity:0; transition:opacity .8s ease; pointer-events:none}
-  .bg .bgvid.playing{opacity:1}   /* Veo motion-loop fades in over the still once it starts playing */
+  .bg .fill{display:block; position:absolute; inset:0; background-size:cover; background-position:center; filter:blur(26px) brightness(.82) saturate(1.05); transform:scale(1.12)}
+  .bg .sharp{position:absolute; inset:0; width:100%; height:100%; object-fit:contain; object-position:center}   /* full photo, never cropped; blurred .fill covers the letterbox on wide/tall screens */
   #fx{position:absolute; inset:0; pointer-events:none}
   #lighting{position:absolute; inset:0; pointer-events:none;
     background:linear-gradient(180deg, rgba(20,16,10,.30) 0%, rgba(20,16,10,0) 26%, rgba(20,16,10,.12) 62%, rgba(20,16,10,.5) 100%)}
@@ -117,8 +115,8 @@
   /* ---- animal hotspot pips ---- */
   #pips{position:fixed; inset:0; z-index:5; pointer-events:none}
   .pip{position:fixed; width:46px; height:46px; border-radius:50%; border:0; transform:translate(-50%,-50%);
-    background:radial-gradient(circle at 50% 40%, #fff7e0, var(--lantern));
-    box-shadow:0 0 0 3px rgba(255,255,255,.6), 0 0 22px 6px rgba(244,200,115,.7);
+    background:radial-gradient(circle at 50% 40%, rgba(255,247,224,.42), rgba(244,200,115,.24));
+    box-shadow:0 0 0 2px rgba(255,255,255,.42), 0 0 16px 5px rgba(244,200,115,.38);
     display:grid; place-items:center; font-size:22px; opacity:0; pointer-events:none;
     animation:pulse 2.4s ease-in-out infinite; transition:opacity .4s, transform .15s}
   .pip:hover{transform:translate(-50%,-50%) scale(1.12)}
@@ -126,8 +124,8 @@
   @media (forced-colors: active){ .pip:focus-visible{outline:3px solid Highlight; outline-offset:2px} }   /* box-shadow is dropped in High Contrast */
   .pip.met{background:rgba(255,255,255,.45); box-shadow:0 0 0 2px rgba(255,255,255,.5); animation:none; filter:saturate(.5)}
   .pip .ring{position:absolute; inset:-8px; border-radius:50%; border:2px solid rgba(255,255,255,.55); animation:halo 2.4s ease-out infinite}
-  @keyframes pulse{0%,100%{box-shadow:0 0 0 3px rgba(255,255,255,.6),0 0 18px 4px rgba(244,200,115,.55)}
-    50%{box-shadow:0 0 0 3px rgba(255,255,255,.85),0 0 30px 12px rgba(244,200,115,.9)}}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 2px rgba(255,255,255,.4),0 0 14px 4px rgba(244,200,115,.32)}
+    50%{box-shadow:0 0 0 2px rgba(255,255,255,.58),0 0 22px 8px rgba(244,200,115,.5)}}
   @keyframes halo{0%{transform:scale(.7);opacity:.8}100%{transform:scale(1.7);opacity:0}}
 
   /* ---- HUD ---- */
@@ -374,13 +372,13 @@
 
 <div id="stage" aria-hidden="true">
   <div class="bg"><div class="fill" style="background-image:url(assets/bg/hero.webp)"></div><img class="sharp" src="assets/bg/hero.webp" alt="A misty gravel lane between split-rail fences at Tapestry Acres" decoding="async" fetchpriority="high"></div>
-  <div class="bg"><div class="fill" style="background-image:url(assets/bg/meadow.webp)"></div><img class="sharp" src="assets/bg/meadow.webp" alt="A herd of alpacas grazing in the meadow" decoding="async"><video class="bgvid" data-src="assets/bg-vid/meadow.mp4" muted loop playsinline preload="none"></video></div>
+  <div class="bg"><div class="fill" style="background-image:url(assets/bg/meadow.webp)"></div><img class="sharp" src="assets/bg/meadow.webp" alt="A herd of alpacas grazing in the meadow" decoding="async"></div>
   <div class="bg"><div class="fill" style="background-image:url(assets/bg/highland.webp)"></div><img class="sharp" src="assets/bg/highland.webp" alt="Scottish Highland cattle in a green pasture at dusk" decoding="async"></div>
   <div class="bg"><div class="fill" style="background-image:url(assets/bg/goats.webp)"></div><img class="sharp" src="assets/bg/goats.webp" alt="Holding a Nigerian dwarf goat kid among the goats" decoding="async"></div>
   <div class="bg"><div class="fill" style="background-image:url(assets/bg/rv.webp)"></div><img class="sharp" src="assets/bg/rv.webp" alt="An RV parked by the fence with alpacas at golden hour" decoding="async"></div>
   <div class="bg"><div class="fill" style="background-image:url(assets/bg/stay.webp)"></div><img class="sharp" src="assets/bg/stay.webp" alt="Greeting a Highland cow at sunset on the farm" decoding="async"></div>
-  <div class="bg"><div class="fill" style="background-image:url(assets/bg/finale.webp)"></div><img class="sharp" src="assets/bg/finale.webp" alt="Cattle grazing under a rainbow over the pasture" decoding="async"><video class="bgvid" data-src="assets/bg-vid/finale.mp4" muted loop playsinline preload="none"></video></div>
-  <div class="bg"><div class="fill" style="background-image:url(assets/bg/store.webp)"></div><img class="sharp" src="assets/bg/store.webp" alt="An alpaca resting in the pasture by the farm's event pavilion" decoding="async"><video class="bgvid" data-src="assets/bg-vid/store.mp4" muted loop playsinline preload="none"></video></div>
+  <div class="bg"><div class="fill" style="background-image:url(assets/bg/finale.webp)"></div><img class="sharp" src="assets/bg/finale.webp" alt="Cattle grazing under a rainbow over the pasture" decoding="async"></div>
+  <div class="bg"><div class="fill" style="background-image:url(assets/bg/store.webp)"></div><img class="sharp" src="assets/bg/store.webp" alt="An alpaca resting in the pasture by the farm's event pavilion" decoding="async"></div>
   <canvas id="fx"></canvas>
   <div id="lighting"></div><div id="nighttint"></div><div id="vignette"></div>
 </div>
@@ -681,12 +679,6 @@
 
   var bgs=[].slice.call(document.querySelectorAll('.bg'));
   var sharps=bgs.map(function(b){return b.querySelector('.sharp');});
-  var bgvids=bgs.map(function(b){return b.querySelector('.bgvid');});
-  // Veo scene videos: play only the visible scene's clip (lazy-loaded), pause the rest; skip under reduced-motion
-  function setVid(idx, on){ var v=bgvids[idx]; if(!v||reduce) return;
-    if(on){ if(!v.getAttribute('src')){ v.src=v.dataset.src; v.addEventListener('playing',function(){ v.classList.add('playing'); },{once:true}); }
-      if(v.paused){ var pr=v.play(); if(pr&&pr.catch) pr.catch(function(){}); } }
-    else if(!v.paused){ v.pause(); } }
   var panels=[].slice.call(document.querySelectorAll('.panel'));
   var order=panels.map(function(p){return +p.getAttribute('data-bg');});
   var hud=document.getElementById('hud'), lightingEl=document.getElementById('nighttint');
@@ -755,7 +747,6 @@
     var t=Math.max(0,Math.min(1,(frac-0.42)/0.16)); t=t*t*(3-2*t);   // hold each scene, crossfade only in a quick band
     if(ca===cb){ bgs[ca].style.opacity='1'; }
     else { bgs[ca].style.opacity=String(1-t); bgs[cb].style.opacity=String(t); }
-    for(var vi=0;vi<bgvids.length;vi++){ if(bgvids[vi]) setVid(vi, vi===ca||vi===cb); }   // drive the scene videos
     positionPips(t<.5?ca:cb, t<.5?(1-t):t);
     prog=Math.max(0,Math.min(1,y/maxScroll));
     lightingEl.style.opacity='0';   // all-daytime real photos — no forced night tint
@@ -858,7 +849,7 @@
       if(pp.scene!==scene || op<=0.05){ pipHide(el); continue; }
       var img=bgs[scene] && bgs[scene].querySelector('.sharp'), iw=img&&img.naturalWidth, ih=img&&img.naturalHeight;
       if(!iw){ pipHide(el); continue; }
-      var W=innerWidth, H=innerHeight, s=Math.max(W/iw,H/ih), dw=iw*s, dh=ih*s, ox=(W-dw)/2, oy=(H-dh)/2;
+      var W=innerWidth, H=innerHeight, s=Math.min(W/iw,H/ih), dw=iw*s, dh=ih*s, ox=(W-dw)/2, oy=(H-dh)/2;   // contain fit (matches .sharp object-fit:contain)
       var x=Math.max(42,Math.min(W-42, ox+pp.fx*dw)), y=Math.max(100,Math.min(H-110, oy+pp.fy*dh));
       el.style.left=x+'px'; el.style.top=y+'px'; el.style.opacity=String(op);
       var live=op>0.5; el.style.pointerEvents=live?'auto':'none';          // only fully-visible pips are interactive…
@@ -965,7 +956,7 @@
       function mv(ev){ el.style.left=ev.clientX+'px'; el.style.top=ev.clientY+'px'; el.style.opacity='1'; el.style.pointerEvents='auto'; }
       function up(ev){ document.removeEventListener('pointermove',mv); document.removeEventListener('pointerup',up);
         var idx=sceneIdxFn(), img=bgs[idx]&&bgs[idx].querySelector('.sharp'), iw=img&&img.naturalWidth, ih=img&&img.naturalHeight;
-        if(iw){ var W=innerWidth,H=innerHeight,s=Math.max(W/iw,H/ih),dw=iw*s,dh=ih*s,ox=(W-dw)/2,oy=(H-dh)/2;
+        if(iw){ var W=innerWidth,H=innerHeight,s=Math.min(W/iw,H/ih),dw=iw*s,dh=ih*s,ox=(W-dw)/2,oy=(H-dh)/2;   // contain fit
           onDrop(Math.max(0,Math.min(1,(ev.clientX-ox)/dw)), Math.max(0,Math.min(1,(ev.clientY-oy)/dh))); }
       }
       document.addEventListener('pointermove',mv); document.addEventListener('pointerup',up);
