@@ -70,7 +70,9 @@
   #stage{position:fixed; inset:0; z-index:0; overflow:hidden; background:#13110d}
   .bg{position:absolute; inset:0; opacity:0; will-change:opacity}
   .bg .fill{display:none}
-  .bg .sharp{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; will-change:transform}
+  .bg .sharp{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center}
+  .bg .bgvid{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; opacity:0; transition:opacity .8s ease; pointer-events:none}
+  .bg .bgvid.playing{opacity:1}   /* Veo motion-loop fades in over the still once it starts playing */
   #fx{position:absolute; inset:0; pointer-events:none}
   #lighting{position:absolute; inset:0; pointer-events:none;
     background:linear-gradient(180deg, rgba(20,16,10,.30) 0%, rgba(20,16,10,0) 26%, rgba(20,16,10,.12) 62%, rgba(20,16,10,.5) 100%)}
@@ -78,12 +80,12 @@
   #vignette{position:absolute; inset:0; pointer-events:none; box-shadow:inset 0 0 240px 70px rgba(15,12,7,.6)}
 
   /* ---- scroll content ---- */
-  #scroll{position:relative; z-index:2; pointer-events:none}   /* let taps fall through empty panel areas to the pips behind; cards re-enable below */
+  #scroll{position:relative; z-index:2}
   .panel{min-height:100vh; min-height:100svh; position:relative; display:flex; align-items:center; padding:7vh 6vw}
   .panel.right{justify-content:flex-end}
   .panel.center{justify-content:center; text-align:center}
 
-  .plaque{pointer-events:auto; max-width:340px; background:rgba(251,246,233,.40); border:1px solid rgba(255,255,255,.4); border-radius:16px;
+  .plaque{max-width:340px; background:rgba(251,246,233,.40); border:1px solid rgba(255,255,255,.4); border-radius:16px;
     padding:16px 20px; backdrop-filter:blur(16px) saturate(1.2); -webkit-backdrop-filter:blur(16px) saturate(1.2);
     box-shadow:0 18px 50px -18px rgba(15,12,7,.7); transform:translateY(20px);
     transition:transform .7s cubic-bezier(.2,.7,.2,1)}
@@ -113,7 +115,7 @@
   .logo .motif{display:block; text-align:center; color:var(--accent); letter-spacing:.5em; font-size:12px; margin-top:7px; padding-left:.5em}
 
   /* ---- animal hotspot pips ---- */
-  #pips{position:fixed; inset:0; z-index:1; pointer-events:none}   /* below #scroll (z2) so pips sit BEHIND the chapter cards; still tappable through the cards' empty areas (see #scroll/.plaque pointer-events) */
+  #pips{position:fixed; inset:0; z-index:5; pointer-events:none}
   .pip{position:fixed; width:46px; height:46px; border-radius:50%; border:0; transform:translate(-50%,-50%);
     background:radial-gradient(circle at 50% 40%, #fff7e0, var(--lantern));
     box-shadow:0 0 0 3px rgba(255,255,255,.6), 0 0 22px 6px rgba(244,200,115,.7);
@@ -207,10 +209,10 @@
   /* ---- card modal ---- */
   #modalwrap{position:fixed; inset:0; z-index:60; display:none; place-items:center; padding:20px; background:rgba(12,10,6,.62); backdrop-filter:blur(3px)}
   #modalwrap.open{display:grid}
-  .tcard{width:330px; max-width:92vw; background:rgba(251,246,233,.5); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); border:1px solid var(--cardborder); border-radius:20px; overflow:hidden; box-shadow:0 30px 80px -20px rgba(0,0,0,.8); animation:pop .3s cubic-bezier(.2,.8,.2,1)}
-  .tcard.small{width:280px}  .tcard.small .top{height:104px}   /* unnamed "help name me" cards */
+  .tcard{width:330px; max-width:92vw; background:var(--card); border:1px solid var(--cardborder); border-radius:20px; overflow:hidden; box-shadow:0 30px 80px -20px rgba(0,0,0,.8); animation:pop .3s cubic-bezier(.2,.8,.2,1)}
+  .tcard.small{width:280px}  .tcard.small .top{height:150px}   /* unnamed "help name me" cards */
   @keyframes pop{from{transform:scale(.9) translateY(10px);opacity:0}to{transform:none;opacity:1}}
-  .tcard .top{position:relative; height:150px; background:#e7dcc2; overflow:hidden}
+  .tcard .top{position:relative; height:210px; background:#e7dcc2; overflow:hidden}
   .tcard .top img{width:100%; height:100%; object-fit:cover; display:block}
   .tcard .top .emoji{position:absolute; inset:0; display:grid; place-items:center; font-size:84px}
   .tcard .seal{position:absolute; top:12px; right:12px; font-size:11px; font-weight:800; letter-spacing:.05em; color:#fff; padding:5px 10px; border-radius:999px; text-transform:uppercase; box-shadow:0 3px 10px rgba(0,0,0,.3)}
@@ -281,12 +283,10 @@
   body.herd-open{overflow:hidden}
   .herd-guard{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); border:0}   /* focus-wrap sentinels (visually hidden, still tabbable) */
   @media (max-width:720px){ #herdwrap{padding:8px} .herd-frame{width:100%; height:100%; border-radius:12px} .herd-title{font-size:15px} .herd-open{font-size:12px} }
-  /* grid shelf: ~3 products tall, scroll for the rest (was a thin single-row strip) */
-  .ta-shelf{display:grid; grid-template-columns:repeat(auto-fill,minmax(132px,1fr)); gap:12px; padding:6px 2px; margin:12px 0;
-    max-height:min(64vh,560px); overflow-y:auto; overflow-x:hidden; scroll-snap-type:y proximity; -webkit-overflow-scrolling:touch}
-  .ta-shelf::-webkit-scrollbar{width:6px}
+  .ta-shelf{display:flex; gap:10px; overflow-x:auto; padding:6px 2px 12px; margin:4px 0 8px; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch}
+  .ta-shelf::-webkit-scrollbar{height:6px}
   .ta-shelf::-webkit-scrollbar-thumb{background:rgba(120,100,70,.4); border-radius:3px}
-  .ta-prod{scroll-snap-align:start; text-decoration:none; color:var(--ink);
+  .ta-prod{flex:0 0 auto; width:128px; scroll-snap-align:start; text-decoration:none; color:var(--ink);
     background:rgba(251,246,233,.92); border:1px solid var(--cardborder); border-radius:12px; overflow:hidden; transition:transform .12s}
   .ta-prod:hover{transform:translateY(-3px)}
   .ta-prod img{width:100%; height:128px; object-fit:cover; display:block; background:#e7dcc2}
@@ -313,7 +313,7 @@
 
   @media (max-width:720px){
     .panel{padding:5vh 4vw 82px; align-items:flex-end; justify-content:center}
-    .panel.center{align-items:flex-end; text-align:center}   /* bottom-align like every other chapter card so the section-to-section spacing matches (store/map just grow taller) */
+    .panel.center{align-items:flex-start; text-align:center}
     .plaque{max-width:300px; width:auto; padding:11px 14px; border-radius:14px}
     .plaque .kicker{font-size:10px; letter-spacing:.14em; margin-bottom:3px}
     .plaque h2{font-size:clamp(18px,4.7vw,22px); margin-bottom:4px; line-height:1.04}
@@ -324,13 +324,9 @@
     .biglogo{width:50px!important; height:50px!important; padding:6px}
     .ftruck{width:56px; height:56px}
     #trail,#wagon{display:none}
-    /* portrait: show the whole landscape photo (no side-crop) over a blurred fill, so pips land on the real animals */
-    .bg .sharp{object-fit:contain}   /* contain shows the whole photo; the 1.4x fill-zoom + Ken Burns drift is applied via JS (applyKB), kept in lockstep with the pips */
-    .bg .fill{display:block; position:absolute; inset:0; background-size:cover; background-position:center; transform:scale(1.12); filter:blur(26px) brightness(.55)}
     #tracker{top:10px; right:10px; bottom:auto; flex-direction:row; align-items:center; gap:8px}
     #herddots i{width:9px;height:9px}
-    .pip{width:34px; height:34px; font-size:16px}
-    .pip .ring{inset:-5px}
+    .pip{width:52px; height:52px; font-size:24px}
     #herdpill span.lbl{display:none}
     #brand{top:10px; left:10px; padding:4px 12px 4px 4px} #brand img{width:28px;height:28px} #brand b{font-size:11px; letter-spacing:.08em}
     #chapterflag{display:none}
@@ -378,13 +374,13 @@
 
 <div id="stage" aria-hidden="true">
   <div class="bg"><div class="fill" style="background-image:url(assets/bg/hero.webp)"></div><img class="sharp" src="assets/bg/hero.webp" alt="A misty gravel lane between split-rail fences at Tapestry Acres" decoding="async" fetchpriority="high"></div>
-  <div class="bg"><div class="fill" style="background-image:url(assets/bg/meadow.webp)"></div><img class="sharp" src="assets/bg/meadow.webp" alt="A herd of alpacas grazing in the meadow" decoding="async"></div>
+  <div class="bg"><div class="fill" style="background-image:url(assets/bg/meadow.webp)"></div><img class="sharp" src="assets/bg/meadow.webp" alt="A herd of alpacas grazing in the meadow" decoding="async"><video class="bgvid" data-src="assets/bg-vid/meadow.mp4" muted loop playsinline preload="none"></video></div>
   <div class="bg"><div class="fill" style="background-image:url(assets/bg/highland.webp)"></div><img class="sharp" src="assets/bg/highland.webp" alt="Scottish Highland cattle in a green pasture at dusk" decoding="async"></div>
   <div class="bg"><div class="fill" style="background-image:url(assets/bg/goats.webp)"></div><img class="sharp" src="assets/bg/goats.webp" alt="Holding a Nigerian dwarf goat kid among the goats" decoding="async"></div>
   <div class="bg"><div class="fill" style="background-image:url(assets/bg/rv.webp)"></div><img class="sharp" src="assets/bg/rv.webp" alt="An RV parked by the fence with alpacas at golden hour" decoding="async"></div>
   <div class="bg"><div class="fill" style="background-image:url(assets/bg/stay.webp)"></div><img class="sharp" src="assets/bg/stay.webp" alt="Greeting a Highland cow at sunset on the farm" decoding="async"></div>
-  <div class="bg"><div class="fill" style="background-image:url(assets/bg/finale.webp)"></div><img class="sharp" src="assets/bg/finale.webp" alt="Cattle grazing under a rainbow over the pasture" decoding="async"></div>
-  <div class="bg"><div class="fill" style="background-image:url(assets/bg/store.webp)"></div><img class="sharp" src="assets/bg/store.webp" alt="An alpaca resting in the pasture by the farm's event pavilion" decoding="async"></div>
+  <div class="bg"><div class="fill" style="background-image:url(assets/bg/finale.webp)"></div><img class="sharp" src="assets/bg/finale.webp" alt="Cattle grazing under a rainbow over the pasture" decoding="async"><video class="bgvid" data-src="assets/bg-vid/finale.mp4" muted loop playsinline preload="none"></video></div>
+  <div class="bg"><div class="fill" style="background-image:url(assets/bg/store.webp)"></div><img class="sharp" src="assets/bg/store.webp" alt="An alpaca resting in the pasture by the farm's event pavilion" decoding="async"><video class="bgvid" data-src="assets/bg-vid/store.mp4" muted loop playsinline preload="none"></video></div>
   <canvas id="fx"></canvas>
   <div id="lighting"></div><div id="nighttint"></div><div id="vignette"></div>
 </div>
@@ -600,8 +596,6 @@
 (function(){
   "use strict";
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if('scrollRestoration' in history) history.scrollRestoration='manual';   // always begin the journey at the top on refresh (browser was restoring to chapter 2)
-  window.scrollTo(0,0);
   var PHOTOS = window.HERD_PHOTOS || {};
 
   /* ---- Edit Mode state + saved overrides (applied on every load) ---- */
@@ -687,6 +681,12 @@
 
   var bgs=[].slice.call(document.querySelectorAll('.bg'));
   var sharps=bgs.map(function(b){return b.querySelector('.sharp');});
+  var bgvids=bgs.map(function(b){return b.querySelector('.bgvid');});
+  // Veo scene videos: play only the visible scene's clip (lazy-loaded), pause the rest; skip under reduced-motion
+  function setVid(idx, on){ var v=bgvids[idx]; if(!v||reduce) return;
+    if(on){ if(!v.getAttribute('src')){ v.src=v.dataset.src; v.addEventListener('playing',function(){ v.classList.add('playing'); },{once:true}); }
+      if(v.paused){ var pr=v.play(); if(pr&&pr.catch) pr.catch(function(){}); } }
+    else if(!v.paused){ v.pause(); } }
   var panels=[].slice.call(document.querySelectorAll('.panel'));
   var order=panels.map(function(p){return +p.getAttribute('data-bg');});
   var hud=document.getElementById('hud'), lightingEl=document.getElementById('nighttint');
@@ -743,14 +743,6 @@
 
   /* scroll engine */
   var centers=[], vh=innerHeight, maxScroll=1, ticking=false;
-  /* Ken Burns: a slow living drift on the scene photos (single source of truth so the pips track it) */
-  var KB={s:1,x:0,y:0}, curScene=0, curOp=1;
-  function applyKB(){ var portrait=innerWidth<=720, Kt=(portrait?1.4:1)*KB.s, tf='translate('+KB.x.toFixed(1)+'px,'+KB.y.toFixed(1)+'px) scale('+Kt.toFixed(4)+')';
-    for(var i=0;i<sharps.length;i++){ if(sharps[i]) sharps[i].style.transform=tf; } }
-  function tickKB(){ if(reduce) return; var tt=performance.now()/1000;
-    KB.s=1.04+0.04*Math.sin(tt*0.16); KB.x=16*Math.sin(tt*0.11); KB.y=11*Math.cos(tt*0.09);
-    if(!EDIT){ applyKB(); positionPips(curScene,curOp); }
-    requestAnimationFrame(tickKB); }
   function measure(){ vh=innerHeight; sizeFx(); centers=panels.map(function(p){return p.offsetTop+p.offsetHeight/2;});
     maxScroll=Math.max(1, document.documentElement.scrollHeight-vh); onScroll(); }
   function render(){ ticking=false;
@@ -763,7 +755,8 @@
     var t=Math.max(0,Math.min(1,(frac-0.42)/0.16)); t=t*t*(3-2*t);   // hold each scene, crossfade only in a quick band
     if(ca===cb){ bgs[ca].style.opacity='1'; }
     else { bgs[ca].style.opacity=String(1-t); bgs[cb].style.opacity=String(t); }
-    curScene=t<.5?ca:cb; curOp=t<.5?(1-t):t; positionPips(curScene, curOp);
+    for(var vi=0;vi<bgvids.length;vi++){ if(bgvids[vi]) setVid(vi, vi===ca||vi===cb); }   // drive the scene videos
+    positionPips(t<.5?ca:cb, t<.5?(1-t):t);
     prog=Math.max(0,Math.min(1,y/maxScroll));
     lightingEl.style.opacity='0';   // all-daytime real photos — no forced night tint
     lantern.style.filter='grayscale('+(.6-prog*.6)+') brightness('+(.8+prog*.6)+')';
@@ -865,13 +858,9 @@
       if(pp.scene!==scene || op<=0.05){ pipHide(el); continue; }
       var img=bgs[scene] && bgs[scene].querySelector('.sharp'), iw=img&&img.naturalWidth, ih=img&&img.naturalHeight;
       if(!iw){ pipHide(el); continue; }
-      var W=innerWidth, H=innerHeight, portrait=W<=720;
-      var s0=portrait?Math.min(W/iw,H/ih):Math.max(W/iw,H/ih);          // object-fit baseline (contain on mobile, cover on desktop)
-      var Kt=(portrait?1.4:1)*KB.s;                                      // total transform scale applied to the photo (must match applyKB)
-      var bw=iw*s0, bh=ih*s0, bx=(W-bw)/2+pp.fx*bw, by=(H-bh)/2+pp.fy*bh;   // pip in baseline screen space
-      var rx=W/2+Kt*(bx-W/2)+KB.x, ry=H/2+Kt*(by-H/2)+KB.y;             // then through the scale-about-center + drift, exactly as the photo
-      var m=portrait?22:42, x=Math.max(m,Math.min(W-m, rx)), y=Math.max(80,Math.min(H-110, ry));
-      el.style.left=x+'px'; el.style.top=y+'px'; el.style.opacity=String(op*(portrait?0.25:1));   // mobile: 25% so the dot doesn't cover the animal
+      var W=innerWidth, H=innerHeight, s=Math.max(W/iw,H/ih), dw=iw*s, dh=ih*s, ox=(W-dw)/2, oy=(H-dh)/2;
+      var x=Math.max(42,Math.min(W-42, ox+pp.fx*dw)), y=Math.max(100,Math.min(H-110, oy+pp.fy*dh));
+      el.style.left=x+'px'; el.style.top=y+'px'; el.style.opacity=String(op);
       var live=op>0.5; el.style.pointerEvents=live?'auto':'none';          // only fully-visible pips are interactive…
       el.tabIndex=(live&&!EDIT)?0:-1;                                       // …and keyboard-reachable (not while drag-editing)
       if(live) el.removeAttribute('aria-hidden'); else el.setAttribute('aria-hidden','true');
@@ -943,7 +932,7 @@
   function start(){ if(started)return; started=true;
     document.documentElement.classList.remove('locked'); document.body.classList.remove('locked');
     intro.classList.add('open'); setTimeout(function(){ intro.classList.add('gone'); },700); setTimeout(function(){ intro.style.display='none'; },1900);
-    hud.classList.add('on'); measure(); if(!reduce){ seed(); tickFx(); tickKB(); } }
+    hud.classList.add('on'); measure(); if(!reduce){ seed(); tickFx(); } }
   document.getElementById('enterbtn').addEventListener('click',start);
   ['wheel','touchstart','keydown'].forEach(function(ev){ window.addEventListener(ev,function(e){ if(!started){ if(ev==='keydown'&&['Tab','Escape'].indexOf(e.key)>=0)return; start(); } },{passive:true}); });
   function goBooking(){ if(!started) start(); setTimeout(function(){ scrollToPanel(panels.length-1); }, started?0:1000); }
@@ -1061,8 +1050,7 @@
   window.addEventListener('scroll',onScroll,{passive:true});
   window.addEventListener('resize',measure);
   applyOverrides();
-  buildConstellation(); renderCart(); applyKB(); measure();   // applyKB sets the static photo zoom baseline (also the resting state for reduced-motion)
-  window.addEventListener('load',function(){ window.scrollTo(0,0); });
+  buildConstellation(); renderCart(); measure();
   if(EDIT) initEditor();
 
   /* farm store shelf — featured products from the Wix store */
