@@ -186,10 +186,17 @@
   #intro .introbg{position:absolute; inset:-2%; background:url(assets/bg/hero.webp) center/cover; transform:scale(1.06)}
   #intro .scrim{position:absolute; inset:0; background:radial-gradient(72% 64% at 50% 56%, rgba(20,16,10,.2), rgba(20,16,10,.72))}
   .gatehalf{position:absolute; top:0; bottom:0; width:52%; z-index:2;
-    background:repeating-linear-gradient(90deg,#6b4e30 0 14px,#5d4329 14px 28px); box-shadow:inset 0 0 60px rgba(0,0,0,.5);
+    background:
+      repeating-linear-gradient(0deg, rgba(120,108,86,.05) 0 1px, transparent 1px 7px),                 /* faint wood grain */
+      repeating-linear-gradient(90deg, #f7f4ec 0 46px, #e7e1d3 46px 48px, #f8f5ee 48px 50px),           /* vertical painted boards + seams */
+      linear-gradient(180deg, #fdfbf6, #ece6da);                                                        /* painted white base, top-lit */
+    box-shadow:inset 0 0 70px rgba(110,100,80,.14), inset 0 0 0 7px #f8f5ee, inset 0 0 0 8px #d9d2c2;    /* painted frame / stiles */
     transition:transform 1.4s cubic-bezier(.6,0,.2,1)}
-  .gatehalf::before,.gatehalf::after{content:""; position:absolute; left:6%; right:6%; height:12px; background:#4a3621; border-radius:3px}
-  .gatehalf::before{top:26%} .gatehalf::after{bottom:26%}
+  .gatehalf::before,.gatehalf::after{content:""; position:absolute; left:-1%; right:-1%; height:46px;   /* white painted cross-rails */
+    background:linear-gradient(180deg,#ffffff 0%,#f3efe4 58%,#e3ddcd 100%);
+    box-shadow:0 3px 7px rgba(0,0,0,.16), inset 0 2px 0 rgba(255,255,255,.9), inset 0 -2px 0 rgba(0,0,0,.05);
+    border-top:1px solid #ded7c7; border-bottom:1px solid #cbc3b2}
+  .gatehalf::before{top:22%} .gatehalf::after{bottom:22%}
   .gatehalf.l{left:0; transform-origin:left center} .gatehalf.r{right:0; transform-origin:right center}
   #intro.open .gatehalf.l{transform:perspective(1400px) rotateY(-105deg)}
   #intro.open .gatehalf.r{transform:perspective(1400px) rotateY(105deg)}
@@ -709,13 +716,15 @@
   /* particles */
   var fx=document.getElementById('fx'), ctx=fx.getContext('2d'), parts=[], prog=0;
   function sizeFx(){ fx.width=innerWidth; fx.height=innerHeight; }
-  function seed(){ parts=[]; var n=reduce?0:60; for(var i=0;i<n;i++){ parts.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,vx:(Math.random()-.5)*.3,vy:-.18-Math.random()*.45,r:1.2+Math.random()*2.6,ph:Math.random()*6.28}); } }
-  function tickFx(){ if(reduce)return; ctx.clearRect(0,0,fx.width,fx.height);
-    for(var i=0;i<parts.length;i++){ var p=parts[i]; p.x+=p.vx; p.y+=p.vy; p.ph+=.03;
-      if(p.y<-10){p.y=innerHeight+10;p.x=Math.random()*innerWidth;} if(p.x<-10)p.x=innerWidth+10; if(p.x>innerWidth+10)p.x=-10;
-      var tw=prog>.6?(.4+.6*Math.abs(Math.sin(p.ph))):.5; var R=255,G=Math.round(225-prog*40),B=Math.round(150+prog*40);
-      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,6.28); ctx.fillStyle='rgba('+R+','+G+','+B+','+(.5*tw)+')';
-      ctx.shadowColor='rgba('+R+','+G+','+B+',.9)'; ctx.shadowBlur=prog>.6?10:4; ctx.fill(); }
+  // drifting dust motes / pollen in the air — soft, warm-white, gentle multi-directional drift (realistic, not glowing fireflies)
+  function seed(){ parts=[]; var n=reduce?0:70; for(var i=0;i<n;i++){ parts.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,vx:(Math.random()-.5)*.22,vy:(Math.random()-.5)*.14,r:.6+Math.random()*1.5,ph:Math.random()*6.28,sp:.004+Math.random()*.009,a:.10+Math.random()*.20}); } }
+  function tickFx(){ if(reduce)return; ctx.clearRect(0,0,fx.width,fx.height); ctx.shadowBlur=0;
+    for(var i=0;i<parts.length;i++){ var p=parts[i]; p.ph+=p.sp;
+      p.x+=p.vx+Math.sin(p.ph)*.10; p.y+=p.vy+Math.cos(p.ph*.8)*.06;
+      if(p.x<-8)p.x=innerWidth+8; if(p.x>innerWidth+8)p.x=-8;
+      if(p.y<-8)p.y=innerHeight+8; if(p.y>innerHeight+8)p.y=-8;
+      var tw=.55+.45*Math.sin(p.ph);
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,6.28); ctx.fillStyle='rgba(255,251,242,'+(p.a*tw).toFixed(3)+')'; ctx.fill(); }
     requestAnimationFrame(tickFx); }
 
   /* game FX */
