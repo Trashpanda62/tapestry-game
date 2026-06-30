@@ -349,20 +349,24 @@
   }
 
   /* ---- Edit Mode (only active with ?edit) ---- */
-  #editbar{display:none; position:fixed; left:50%; bottom:14px; transform:translateX(-50%); z-index:95;
-    gap:10px; align-items:center; background:rgba(20,16,10,.94); color:#fff; border:1px solid rgba(255,255,255,.2);
-    border-radius:14px; padding:9px 14px; box-shadow:0 14px 44px -10px rgba(0,0,0,.85); font-size:13px; max-width:94vw; flex-wrap:wrap}
+  #editbar{display:none; position:fixed; left:0; right:0; bottom:14px; margin:0 auto; width:max-content; max-width:94vw; z-index:95;
+    gap:10px; align-items:center; justify-content:center; background:rgba(20,16,10,.94); color:#fff; border:1px solid rgba(255,255,255,.2);
+    border-radius:14px; padding:9px 14px; box-shadow:0 14px 44px -10px rgba(0,0,0,.85); font-size:13px; flex-wrap:wrap}   /* left/right:0 + margin auto + width:max-content centers WITHOUT the left:50% half-viewport width trap that stacked the buttons */
   body.editing #editbar{display:flex}
   #editbar b{color:var(--lantern); letter-spacing:.08em}
-  #editbar .hint{opacity:.82}
+  #editbar .hint{opacity:.82; display:none; flex-basis:100%; order:9; margin-top:2px; line-height:1.4}
+  #editbar.show-hint .hint{display:block}
+  #editbar #eb-help{width:30px; padding:8px 0}
   #editbar button{border:none; border-radius:8px; padding:8px 12px; font-weight:700; font-size:13px; cursor:pointer; background:#3a342a; color:#fff}
   #editbar button.go{background:var(--accent)}
   body.editing #skip{display:none}
-  body.editing .pip, body.editing .lantern2{cursor:grab; touch-action:none}
+  body.editing .pip{cursor:grab; touch-action:pan-y}            /* pan-y -> vertical swipes over the photo scroll the page */
+  body.editing .lantern2{cursor:grab; touch-action:none}
   body.editing .pip:active, body.editing .lantern2:active{cursor:grabbing}
+  body.editing .pip:hover{transform:translate(-50%,-50%)}       /* kill the hover-scale while editing so the corner grip stays put */
   body.editing .pip{outline:2px dashed rgba(192,73,47,.92); outline-offset:0; background:rgba(192,73,47,.12)}   /* show the click-zone box while editing */
   .pip-resize{display:none}
-  body.editing .pip-resize{display:block; position:absolute; right:-8px; bottom:-8px; width:18px; height:18px; background:#fff; border:2px solid #c0392b; border-radius:4px; cursor:nwse-resize; touch-action:none}
+  body.editing .pip-resize{display:block; position:absolute; right:-11px; bottom:-11px; width:24px; height:24px; background:#fff; border:2px solid #c0392b; border-radius:5px; cursor:nwse-resize; touch-action:none; box-shadow:0 2px 8px rgba(0,0,0,.55); z-index:5}   /* bigger, easier-to-grab corner grip */
   body.editing .ta-edit-text{outline:1px dashed rgba(192,73,47,.55); outline-offset:3px; cursor:text; border-radius:3px}
   body.editing .ta-edit-text:hover{background:rgba(244,200,115,.16)}
   .ta-scenectl{position:absolute; top:14px; left:50%; transform:translateX(-50%); z-index:8; display:none;
@@ -589,6 +593,7 @@
 
 <div id="editbar">
   <b>✎ EDIT</b>
+  <button id="eb-help" title="How to edit" aria-expanded="false">?</button>
   <span class="hint">drag a zone to move · drag its ◢ corner to resize over the animal · click any text to rewrite · 📷 swap photo / align per scene</span>
   <button id="eb-export" class="go">💾 Export</button>
   <button id="eb-reset">⤺ Reset</button>
@@ -858,6 +863,7 @@
   });
   function pipHide(el){ el.style.opacity='0'; el.style.pointerEvents='none'; el.tabIndex=-1; el.setAttribute('aria-hidden','true'); }
   function positionPips(scene, op){
+    var eb=document.getElementById('editbar'), ebSafe=(EDIT && eb)?(eb.offsetHeight+18):0;   // keep grips clear of the bottom edit toolbar
     for(var i=0;i<PIPS.length;i++){ var pp=PIPS[i], el=pp.el;
       if(pp.scene!==scene || op<=0.05){ pipHide(el); continue; }
       var img=bgs[scene] && bgs[scene].querySelector('.sharp'), iw=img&&img.naturalWidth, ih=img&&img.naturalHeight;
@@ -869,6 +875,11 @@
       var live=op>0.5; el.style.pointerEvents=live?'auto':'none';          // only fully-visible pips are interactive…
       el.tabIndex=(live&&!EDIT)?0:-1;                                       // …and keyboard-reachable (not while drag-editing)
       if(live) el.removeAttribute('aria-hidden'); else el.setAttribute('aria-hidden','true');
+      if(EDIT && pp.handle){   // pin the resize grip inside the viewport, above the edit toolbar, so it's always grabbable
+        if(live){ var bot=y+hh/2, lift=(bot>(H-ebSafe))?(bot-(H-ebSafe)):0;   pp.handle.style.bottom=(lift>0?lift:-11)+'px';
+          var rt=x+hw/2, ovr=(rt>(W-14))?(rt-(W-14)):0;                       pp.handle.style.right=(ovr>0?(ovr-11):-11)+'px'; }
+        else { pp.handle.style.bottom='-11px'; pp.handle.style.right='-11px'; }
+      }
     }
   }
 
@@ -965,15 +976,19 @@
   /* ---- editor (only when the URL has ?edit) ---- */
   function makeDraggable(el, sceneIdxFn, onDrop){
     el.addEventListener('pointerdown', function(e){
-      if(!EDIT) return; e.preventDefault(); e.stopPropagation();
-      try{ el.setPointerCapture(e.pointerId); }catch(_){}
+      if(!EDIT) return; e.stopPropagation();
+      // Touch: don't capture / preventDefault up front — let a vertical swipe scroll the page (touch-action:pan-y).
+      // A mostly-horizontal touch-drag still moves the zone; a mouse/pen drag works in any direction.
+      if(e.pointerType!=='touch'){ e.preventDefault(); try{ el.setPointerCapture(e.pointerId); }catch(_){} }
       function mv(ev){ el.style.left=ev.clientX+'px'; el.style.top=ev.clientY+'px'; el.style.opacity='1'; el.style.pointerEvents='auto'; }
-      function up(ev){ document.removeEventListener('pointermove',mv); document.removeEventListener('pointerup',up);
+      function done(){ document.removeEventListener('pointermove',mv); document.removeEventListener('pointerup',up); document.removeEventListener('pointercancel',cancel); }
+      function up(ev){ done();
         var idx=sceneIdxFn(), img=bgs[idx]&&bgs[idx].querySelector('.sharp'), iw=img&&img.naturalWidth, ih=img&&img.naturalHeight;
         if(iw){ var W=innerWidth,H=innerHeight,s=Math.min(W/iw,H/ih),dw=iw*s,dh=ih*s,ox=(W-dw)/2,oy=(H-dh)/2;   // contain fit
           onDrop(Math.max(0,Math.min(1,(ev.clientX-ox)/dw)), Math.max(0,Math.min(1,(ev.clientY-oy)/dh))); }
       }
-      document.addEventListener('pointermove',mv); document.addEventListener('pointerup',up);
+      function cancel(){ done(); }   // browser took the gesture for scrolling — abandon the drag (no jump)
+      document.addEventListener('pointermove',mv); document.addEventListener('pointerup',up); document.addEventListener('pointercancel',cancel);
     });
   }
   function makeResizable(pp){   // drag the corner grip to size the (centered) click box over the animal; persists as image-fraction w/h
@@ -1065,6 +1080,9 @@
     document.getElementById('eb-export').addEventListener('click',exportEdits);
     document.getElementById('eb-reset').addEventListener('click',function(){ if(confirm('Discard your unsaved edits and reload?')){ try{localStorage.removeItem('ta-edit-draft');}catch(e){} location.reload(); } });
     document.getElementById('eb-exit').addEventListener('click',function(){ location.href=location.pathname; });
+    var help=document.getElementById('eb-help');
+    if(help) help.addEventListener('click',function(){ var on=document.getElementById('editbar').classList.toggle('show-hint'); help.setAttribute('aria-expanded', on?'true':'false'); measure(); });   // bar height changed -> re-pin grips
+    measure();   // pin grips now that the edit toolbar is laid out
   }
 
   window.addEventListener('scroll',onScroll,{passive:true});
