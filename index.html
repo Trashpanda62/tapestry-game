@@ -630,8 +630,9 @@
   function saveDraft(){ try { localStorage.setItem('ta-edit-draft', JSON.stringify(O)); return true; } catch(e){ return false; } }
   var O = (EDIT && loadDraft()) || window.TA_EDITS || {};
   O.text=O.text||{}; O.pips=O.pips||{}; O.lanterns=O.lanterns||{}; O.bg=O.bg||{}; O.align=O.align||{};
-  var PHOTO_LIST=['assets/bg/hero.webp','assets/bg/meadow.webp','assets/bg/highland.webp','assets/bg/goats.webp',
-    'assets/bg/rv.webp','assets/bg/stay.webp','assets/bg/finale.webp','assets/bg/store.webp'];
+  var PHOTO_LIST=['assets/bg/welcome.webp','assets/bg/meadow2.webp','assets/bg/fold.webp','assets/bg/goats.webp',
+    'assets/bg/rv.webp','assets/bg/stay2.webp','assets/bg/finale.webp','assets/bg/store.webp',
+    'assets/bg/hero.webp','assets/bg/meadow.webp','assets/bg/highland.webp','assets/bg/highland2.webp','assets/bg/stay.webp'];   // current scenes first, spares below
 
   var HERD = {
     emerson:{emoji:'🦙',name:'Emerson',breed:'Alpaca · in loving memory',rarity:'legendary',
