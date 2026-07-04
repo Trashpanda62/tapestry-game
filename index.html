@@ -353,6 +353,13 @@
     .pip{animation:none} .pip .ring{display:none} .chev{animation:none} .bob{animation:none}
   }
 
+  /* ---- mobile plaque auto-tuck: text box slides away after a beat so the photo (and animals) are tappable ---- */
+  .panel.tucked .plaque{opacity:0; pointer-events:none; transform:translateY(26px); transition:opacity .45s ease, transform .45s cubic-bezier(.2,.7,.2,1)}
+  .peek{display:none; position:absolute; left:50%; bottom:60px; transform:translateX(-50%); z-index:4;
+    background:rgba(251,246,233,.92); border:1px solid var(--cardborder); border-radius:999px; padding:8px 14px;
+    font-size:13px; font-weight:700; color:var(--ink); box-shadow:0 8px 22px -12px rgba(0,0,0,.6)}
+  .panel.tucked .peek{display:inline-flex; align-items:center; gap:6px}
+
   /* ---- Edit Mode (only active with ?edit) ---- */
   #editbar{display:none; position:fixed; left:0; right:0; bottom:14px; margin:0 auto; width:max-content; max-width:94vw; z-index:95;
     gap:10px; align-items:center; justify-content:center; background:rgba(20,16,10,.94); color:#fff; border:1px solid rgba(255,255,255,.2);
@@ -412,7 +419,6 @@
       <img class="biglogo" src="assets/logo-crest.png" alt="Tapestry Acres" style="width:118px;height:118px;margin:0 auto 4px">
       <h2 style="margin-top:8px">Come Meet the Herd.</h2>
       <p>110 acres on the Cumberland Plateau, near Dale Hollow Lake — Monroe, Tennessee. Slow down. Stay a while. The farm will do the rest.</p>
-      <p class="small">Keep scrolling to walk the lane <span class="bob">↓</span></p>
     </div>
   </section>
 
@@ -783,8 +789,20 @@
     if(trail.offsetParent!==null){ var th=trail.getBoundingClientRect(); wagon.style.top=(th.top+(act/(panels.length-1))*th.height-10)+'px'; }
   }
   function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(render); } }
-  var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting) e.target.classList.add('inview'); }); },{threshold:.25});
-  panels.forEach(function(p){ io.observe(p); });
+  // mobile: tuck the text box away shortly after a scene arrives so the photo stays tappable; ⓘ brings it back
+  var MOBILE=window.matchMedia && matchMedia('(max-width:720px)').matches;
+  var io=new IntersectionObserver(function(es){ es.forEach(function(e){ var p=e.target;
+    if(e.isIntersecting){ p.classList.add('inview');
+      if(MOBILE && !EDIT && p._tuckable && !p._hold){ clearTimeout(p._tt); p._tt=setTimeout(function(){ p.classList.add('tucked'); },2600); } }
+    else { clearTimeout(p._tt); p.classList.remove('tucked'); p._hold=false; }   // scene left the screen → reset so the text shows again next visit
+  }); },{threshold:.25});
+  panels.forEach(function(p,idx){
+    p._tuckable=(idx===0 || !p.classList.contains('center'));   // animal scenes + hero; map/store/finale keep their content up
+    if(p._tuckable){ var pk=document.createElement('button'); pk.type='button'; pk.className='peek'; pk.innerHTML='ⓘ show text';
+      pk.addEventListener('click',function(ev){ ev.stopPropagation(); clearTimeout(p._tt); p._hold=true; p.classList.remove('tucked'); });
+      p.appendChild(pk); }
+    io.observe(p);
+  });
   function scrollToPanel(idx){ window.scrollTo({top:panels[idx].offsetTop+2, behavior:reduce?'auto':'smooth'}); }
 
   /* cards */
