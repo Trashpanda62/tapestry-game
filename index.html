@@ -385,6 +385,12 @@
   body.editing .pip-resize{display:block; position:absolute; right:-11px; bottom:-11px; width:24px; height:24px; background:#fff; border:2px solid #c0392b; border-radius:5px; cursor:nwse-resize; touch-action:none; box-shadow:0 2px 8px rgba(0,0,0,.55); z-index:5}   /* bigger, easier-to-grab corner grip */
   body.editing .ta-edit-text{outline:1px dashed rgba(192,73,47,.55); outline-offset:3px; cursor:text; border-radius:3px}
   body.editing .ta-edit-text:hover{background:rgba(244,200,115,.16)}
+  #shapeol{position:fixed; inset:0; z-index:94; display:none; cursor:crosshair}   /* freeform-shape drawing overlay (edit mode) */
+  body.editing.shaping #shapeol{display:block}
+  #shapeol svg{width:100%; height:100%; display:block}
+  #shapesvg-view{position:fixed; inset:0; z-index:5; pointer-events:none; display:none}   /* shows saved outlines while editing */
+  body.editing #shapesvg-view{display:block}
+  #editbar #eb-shape.on{background:var(--accent)}
   .ta-scenectl{position:absolute; top:14px; left:50%; transform:translateX(-50%); z-index:8; display:none;
     gap:6px; align-items:center; background:rgba(20,16,10,.9); border:1px solid rgba(255,255,255,.22);
     border-radius:10px; padding:6px 9px; font-size:12px; color:#fff}
@@ -609,11 +615,14 @@
 <div id="editbar">
   <b>✎ EDIT</b>
   <button id="eb-help" title="How to edit" aria-expanded="false">?</button>
-  <span class="hint">hover a zone to bring it forward · drag it to move · drag its ◢ corner to resize over the animal · click any text to rewrite · 📷 swap photo / align per scene</span>
+  <span class="hint">hover a zone to bring it forward · drag it to move · drag its ◢ corner to resize over the animal · ✏️ Shape: tap a zone, then tap points around the animal, then ✔ done (3+ points; fewer resets it to a rectangle) · click any text to rewrite · 📷 swap photo / align per scene</span>
+  <button id="eb-shape">✏️ Shape</button>
   <button id="eb-export" class="go">💾 Export</button>
   <button id="eb-reset">⤺ Reset</button>
   <button id="eb-exit">👁 Preview</button>
 </div>
+<div id="shapesvg-view"><svg></svg></div>
+<div id="shapeol"><svg></svg></div>
 
 <script src="assets/herd.js"></script>
 <script src="edits.js"></script>
@@ -880,7 +889,10 @@
     {scene:5, key:"olaf", emoji:"🦙", fx:0.75, fy:0.45},
     {scene:7, key:"casper", emoji:"🦙", fx:0.47, fy:0.40}
   ];
-  PIPS.forEach(function(pp){ var o=O.pips[pp.key]; if(o){ pp.fx=o.fx; pp.fy=o.fy; if(o.w) pp.w=o.w; if(o.h) pp.h=o.h; } });   // apply saved position + box size
+  PIPS.forEach(function(pp){ var o=O.pips[pp.key]; if(o){ pp.fx=o.fx; pp.fy=o.fy; if(o.w) pp.w=o.w; if(o.h) pp.h=o.h; if(o.poly&&o.poly.length>2) pp.poly=o.poly; } });   // apply saved position + box size + freeform shape
+  function geom(scene){ var img=bgs[scene]&&bgs[scene].querySelector('.sharp'), iw=img&&img.naturalWidth, ih=img&&img.naturalHeight;
+    if(!iw) return null; var W=innerWidth,H=innerHeight,s=Math.min(W/iw,H/ih),dw=iw*s,dh=ih*s;
+    return {dw:dw,dh:dh,ox:(W-dw)/2,oy:(H-dh)/2}; }   // contain-fit mapping: image fraction ↔ screen px
   var pipsWrap=document.getElementById('pips');
   PIPS.forEach(function(pp){
     var ak=pp.animal||pp.key, ha=HERD[ak];
@@ -895,13 +907,24 @@
   function pipHide(el){ el.style.opacity='0'; el.style.pointerEvents='none'; el.tabIndex=-1; el.setAttribute('aria-hidden','true'); }
   function positionPips(scene, op){
     var eb=document.getElementById('editbar'), ebSafe=(EDIT && eb)?(eb.offsetHeight+18):0;   // keep grips clear of the bottom edit toolbar
+    var editShapes='';
     for(var i=0;i<PIPS.length;i++){ var pp=PIPS[i], el=pp.el;
       if(pp.scene!==scene || op<=0.05){ pipHide(el); continue; }
-      var img=bgs[scene] && bgs[scene].querySelector('.sharp'), iw=img&&img.naturalWidth, ih=img&&img.naturalHeight;
-      if(!iw){ pipHide(el); continue; }
-      var W=innerWidth, H=innerHeight, s=Math.min(W/iw,H/ih), dw=iw*s, dh=ih*s, ox=(W-dw)/2, oy=(H-dh)/2;   // contain fit (matches .sharp object-fit:contain)
-      var hw=pp.w?Math.max(28,pp.w*dw):Math.max(60,Math.min(380, dw*0.16)), hh=pp.h?Math.max(28,pp.h*dh):Math.max(60,Math.min(500, dh*0.30));   // per-pip box (sized in editor) else default big zone
-      var x=Math.max(hw/2+2,Math.min(W-hw/2-2, ox+pp.fx*dw)), y=Math.max(80,Math.min(H-80, oy+pp.fy*dh));
+      var g=geom(scene); if(!g){ pipHide(el); continue; }
+      var W=innerWidth, H=innerHeight, dw=g.dw, dh=g.dh, ox=g.ox, oy=g.oy;   // contain fit (matches .sharp object-fit:contain)
+      var hw, hh, x, y;
+      if(pp.poly){   // freeform shape: bbox positions the button, clip-path carves the tappable outline
+        var xs=pp.poly.map(function(q){return ox+q[0]*dw;}), ys=pp.poly.map(function(q){return oy+q[1]*dh;});
+        var x0=Math.min.apply(null,xs), x1=Math.max.apply(null,xs), y0=Math.min.apply(null,ys), y1=Math.max.apply(null,ys);
+        hw=Math.max(28,x1-x0); hh=Math.max(28,y1-y0); x=(x0+x1)/2; y=(y0+y1)/2;
+        if(EDIT){ el.style.clipPath='';   // keep the whole box grabbable while editing; outline drawn on the view overlay instead
+          editShapes+='<polygon points="'+xs.map(function(px,k){return px.toFixed(1)+','+ys[k].toFixed(1);}).join(' ')+'" fill="rgba(192,73,47,.18)" stroke="#c0492f" stroke-width="2" stroke-dasharray="6 4"/>'; }
+        else el.style.clipPath='polygon('+xs.map(function(px,k){return ((px-x0)/(x1-x0)*100).toFixed(2)+'% '+((ys[k]-y0)/(y1-y0)*100).toFixed(2)+'%';}).join(',')+')';
+      } else {
+        el.style.clipPath='';
+        hw=pp.w?Math.max(28,pp.w*dw):Math.max(60,Math.min(380, dw*0.16)); hh=pp.h?Math.max(28,pp.h*dh):Math.max(60,Math.min(500, dh*0.30));   // per-pip box (sized in editor) else default big zone
+        x=Math.max(hw/2+2,Math.min(W-hw/2-2, ox+pp.fx*dw)); y=Math.max(80,Math.min(H-80, oy+pp.fy*dh));
+      }
       el.style.left=x+'px'; el.style.top=y+'px'; el.style.width=hw+'px'; el.style.height=hh+'px'; el.style.opacity=String(op);
       var live=op>0.5; el.style.pointerEvents=live?'auto':'none';          // only fully-visible pips are interactive…
       el.tabIndex=(live&&!EDIT)?0:-1;                                       // …and keyboard-reachable (not while drag-editing)
@@ -912,6 +935,7 @@
         else { pp.handle.style.bottom='-11px'; pp.handle.style.right='-11px'; }
       }
     }
+    if(EDIT){ var vs=document.querySelector('#shapesvg-view svg'); if(vs) vs.innerHTML=editShapes; }   // show saved freeform outlines while editing
   }
 
   /* cart */
@@ -1004,9 +1028,11 @@
   }
 
   /* ---- editor (only when the URL has ?edit) ---- */
+  var shapePickFn=null;   // set while the ✏️ Shape tool waits for a zone tap
   function makeDraggable(el, sceneIdxFn, onDrop){
     el.addEventListener('pointerdown', function(e){
       if(!EDIT) return; e.stopPropagation();
+      if(shapePickFn && shapePickFn(el)){ e.preventDefault(); return; }
       // Touch: don't capture / preventDefault up front — let a vertical swipe scroll the page (touch-action:pan-y).
       // A mostly-horizontal touch-drag still moves the zone; a mouse/pen drag works in any direction.
       if(e.pointerType!=='touch'){ e.preventDefault(); try{ el.setPointerCapture(e.pointerId); }catch(_){} }
@@ -1026,13 +1052,16 @@
     pp.handle.addEventListener('pointerdown', function(e){
       if(!EDIT) return; e.preventDefault(); e.stopPropagation();
       try{ pp.handle.setPointerCapture(e.pointerId); }catch(_){}
-      var el=pp.el, cl=parseFloat(el.style.left)||0, ct=parseFloat(el.style.top)||0;
+      var el=pp.el, cl=parseFloat(el.style.left)||0, ct=parseFloat(el.style.top)||0,
+          ow=parseFloat(el.style.width)||60, oh=parseFloat(el.style.height)||60;
       function mv(ev){ el.style.width=Math.max(28, 2*(ev.clientX-cl))+'px'; el.style.height=Math.max(28, 2*(ev.clientY-ct))+'px'; el.style.opacity='1'; }
       function up(ev){ document.removeEventListener('pointermove',mv); document.removeEventListener('pointerup',up);
-        var img=bgs[pp.scene]&&bgs[pp.scene].querySelector('.sharp'), iw=img&&img.naturalWidth, ih=img&&img.naturalHeight;
-        if(iw){ var W=innerWidth,H=innerHeight,s=Math.min(W/iw,H/ih),dw=iw*s,dh=ih*s;
-          pp.w=(parseFloat(el.style.width)||60)/dw; pp.h=(parseFloat(el.style.height)||60)/dh;
-          var o=O.pips[pp.key]=O.pips[pp.key]||{fx:pp.fx,fy:pp.fy}; o.w=pp.w; o.h=pp.h; saveDraft(); } }
+        var g=geom(pp.scene);
+        if(g){ var nw=parseFloat(el.style.width)||60, nh=parseFloat(el.style.height)||60;
+          var o=O.pips[pp.key]=O.pips[pp.key]||{fx:pp.fx,fy:pp.fy};
+          if(pp.poly){ var sx=nw/ow, sy=nh/oh;   // scale the shape about its centre
+            pp.poly=pp.poly.map(function(q){return [pp.fx+(q[0]-pp.fx)*sx, pp.fy+(q[1]-pp.fy)*sy];}); o.poly=pp.poly; saveDraft(); }
+          else { pp.w=nw/g.dw; pp.h=nh/g.dh; o.w=pp.w; o.h=pp.h; saveDraft(); } } }
       document.addEventListener('pointermove',mv); document.addEventListener('pointerup',up);
     });
   }
@@ -1097,7 +1126,35 @@
       r.el.addEventListener('blur',function(){ O.text[r.id]=r.el.innerHTML; saveDraft(); });
       r.el.addEventListener('keydown',function(ev){ if(ev.key==='Enter'){ ev.preventDefault(); r.el.blur(); } });
     });
-    PIPS.forEach(function(pp){ makeDraggable(pp.el, function(){ return pp.scene; }, function(fx,fy){ pp.fx=fx; pp.fy=fy; var o=O.pips[pp.key]=O.pips[pp.key]||{}; o.fx=fx; o.fy=fy; saveDraft(); }); makeResizable(pp); });
+    PIPS.forEach(function(pp){ makeDraggable(pp.el, function(){ return pp.scene; }, function(fx,fy){
+      var o=O.pips[pp.key]=O.pips[pp.key]||{};
+      if(pp.poly){ var dx=fx-pp.fx, dy=fy-pp.fy; pp.poly=pp.poly.map(function(q){return [q[0]+dx,q[1]+dy];}); o.poly=pp.poly; }   // move the whole shape
+      pp.fx=fx; pp.fy=fy; o.fx=fx; o.fy=fy; saveDraft();
+    }); makeResizable(pp); });
+    /* ✏️ freeform shape tool: pick a zone, tap points around the animal, ✔ to save (3+ points; fewer resets to rectangle) */
+    var shapeBtn=document.getElementById('eb-shape'), shapeOl=document.getElementById('shapeol'), shapeSvg=shapeOl.querySelector('svg');
+    var shaping=null;
+    function shapeOff(){ shaping=null; shapePickFn=null; document.body.classList.remove('shaping'); shapeSvg.innerHTML=''; shapeBtn.textContent='✏️ Shape'; shapeBtn.classList.remove('on'); }
+    function renderDraw(){ if(!shaping) return; var pts=shaping.pts, h='';
+      if(pts.length>1) h+='<polyline points="'+pts.map(function(p){return p.join(',');}).join(' ')+'" fill="rgba(192,73,47,.15)" stroke="#c0492f" stroke-width="2"/>';
+      pts.forEach(function(p){ h+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="5" fill="#fff" stroke="#c0492f" stroke-width="2"/>'; });
+      shapeSvg.innerHTML=h; }
+    shapeBtn.addEventListener('click',function(){
+      if(shaping){ var pts=shaping.pts, pp=shaping.pp, g=geom(pp.scene);
+        if(pts.length>=3 && g){ pp.poly=pts.map(function(p){return [(p[0]-g.ox)/g.dw,(p[1]-g.oy)/g.dh];});
+          var xs=pp.poly.map(function(q){return q[0];}), ys=pp.poly.map(function(q){return q[1];});
+          pp.fx=(Math.min.apply(null,xs)+Math.max.apply(null,xs))/2; pp.fy=(Math.min.apply(null,ys)+Math.max.apply(null,ys))/2;
+          delete pp.w; delete pp.h; O.pips[pp.key]={fx:pp.fx,fy:pp.fy,poly:pp.poly}; saveDraft(); }
+        else { delete pp.poly; var o=O.pips[pp.key]; if(o) delete o.poly; saveDraft(); }
+        shapeOff(); measure(); return; }
+      if(shapePickFn){ shapeOff(); return; }
+      shapeBtn.textContent='… tap a zone'; shapeBtn.classList.add('on');
+      shapePickFn=function(el){ var pp=null; for(var i=0;i<PIPS.length;i++){ if(PIPS[i].el===el){ pp=PIPS[i]; break; } } if(!pp) return false;
+        shapePickFn=null; shaping={pp:pp, pts:[]}; document.body.classList.add('shaping'); shapeBtn.textContent='✔ done (0 pts)'; return true; };
+    });
+    shapeOl.addEventListener('pointerdown',function(e){ if(!shaping) return; e.preventDefault();
+      shaping.pts.push([e.clientX,e.clientY]); shapeBtn.textContent='✔ done ('+shaping.pts.length+' pts)'; renderDraw(); });
+    document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&(shaping||shapePickFn)) shapeOff(); });
     var stayIdx=panels.length>5?5:panels.length-1, stayPanel=panels[stayIdx];
     lanternEls.forEach(function(l,i){
       l.addEventListener('pointerdown',function(e){ if(!EDIT)return; e.preventDefault(); e.stopPropagation(); try{l.setPointerCapture(e.pointerId);}catch(_){}
