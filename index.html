@@ -974,8 +974,7 @@
     document.documentElement.classList.remove('locked'); document.body.classList.remove('locked');
     intro.classList.add('open'); setTimeout(function(){ intro.classList.add('gone'); },700); setTimeout(function(){ intro.style.display='none'; },1900);
     hud.classList.add('on'); measure(); if(!reduce){ seed(); tickFx(); } }
-  document.getElementById('enterbtn').addEventListener('click',start);
-  ['wheel','touchstart','keydown'].forEach(function(ev){ window.addEventListener(ev,function(e){ if(!started){ if(ev==='keydown'&&['Tab','Escape'].indexOf(e.key)>=0)return; start(); } },{passive:true}); });
+  document.getElementById('enterbtn').addEventListener('click',start);   // the gate opens ONLY via this button (or the skip-to-booking link)
   function goBooking(){ if(!started) start(); setTimeout(function(){ scrollToPanel(panels.length-1); }, started?0:1000); }
   document.getElementById('introskip').addEventListener('click',function(e){ e.stopPropagation(); goBooking(); });
   document.getElementById('skip').addEventListener('click',goBooking);
