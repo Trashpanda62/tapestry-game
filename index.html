@@ -211,7 +211,9 @@
   .enter{display:inline-flex; align-items:center; gap:10px; background:var(--accent); color:#fff; border:none; border-radius:999px; padding:15px 26px; font-size:16px; font-weight:700; box-shadow:0 16px 40px -12px rgba(0,0,0,.7)}
   .enter:hover{filter:brightness(1.08)}
   .chev{display:block; margin-top:22px; font-size:13px; letter-spacing:.18em; text-transform:uppercase; opacity:.85; animation:bob 1.8s ease-in-out infinite}
-  .introskip{display:inline-block; margin-top:16px; color:#fff; opacity:.8; font-size:13px; text-decoration:underline; cursor:pointer}
+  .introskip{position:absolute; left:0; right:0; bottom:7%; z-index:3; text-align:center; color:#fff; opacity:.95;
+    font-size:clamp(15px,2.2vw,18px); font-weight:700; text-decoration:underline; text-underline-offset:3px; cursor:pointer;
+    text-shadow:0 2px 12px rgba(0,0,0,.8)}   /* pinned as the lowest text on the start screen, below the gate rail */
   @keyframes bob{0%,100%{transform:translateY(0);opacity:.7}50%{transform:translateY(7px);opacity:1}}
 
   /* ---- card modal ---- */
@@ -575,9 +577,9 @@
     <img class="biglogo" src="assets/logo-crest.png" alt="Tapestry Acres" style="width:152px;height:152px;margin:0 auto 10px">
     <h1>Come Meet<br/>the Herd.</h1>
     <p class="sub">A 110-acre heritage-breed farm near Dale Hollow Lake, Monroe TN. This isn't a webpage — it's a walk down the lane. Open the gate and wander.</p>
-    <button class="enter" id="enterbtn">Walk through the gate →</button><br/>
-    <span class="introskip" id="introskip">or skip straight to booking</span>
+    <button class="enter" id="enterbtn">Walk through the gate →</button>
   </div>
+  <span class="introskip" id="introskip">or skip straight to booking</span>
 </div>
 
 <div id="modalwrap">
