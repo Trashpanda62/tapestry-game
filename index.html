@@ -199,6 +199,11 @@
   #intro.open .gatehalf.l{transform:perspective(1400px) rotateY(-105deg)}
   #intro.open .gatehalf.r{transform:perspective(1400px) rotateY(105deg)}
   #intro.gone{opacity:0; pointer-events:none}
+  #gaterail{position:absolute; left:0; right:0; bottom:22%; height:46px; z-index:2; display:flex; align-items:center; justify-content:center;
+    pointer-events:none; font-family:var(--serif); font-weight:700; color:#7a6a4a; letter-spacing:.08em; text-transform:uppercase;
+    font-size:clamp(9px,1.5vw,15px); white-space:nowrap; text-shadow:0 1px 0 rgba(255,255,255,.85); padding:0 10px; text-align:center;
+    transition:opacity .5s}   /* painted lettering on the gate's bottom cross-rail */
+  #intro.open #gaterail{opacity:0}
   .introcard{position:relative; z-index:3; max-width:640px; padding:0 22px; color:#fff}
   .introcard .logo{color:#fff; margin-bottom:18px}
   .introcard h1{font-family:var(--serif); font-size:clamp(40px,8vw,84px); line-height:.98; margin:.12em 0 .14em; text-shadow:0 4px 30px rgba(0,0,0,.65)}
@@ -559,6 +564,7 @@
 <div id="intro">
   <div class="introbg"></div><div class="scrim"></div>
   <div class="gatehalf l"></div><div class="gatehalf r"></div>
+  <div id="gaterail">🔍 Hide &amp; seek game! Click on the animals to find them all</div>
   <div class="introcard">
     <img class="biglogo" src="assets/logo-crest.png" alt="Tapestry Acres" style="width:152px;height:152px;margin:0 auto 10px">
     <h1>Come Meet<br/>the Herd.</h1>
