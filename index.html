@@ -381,6 +381,7 @@
   body.editing #scroll .plaque{pointer-events:none}                      /* editing: let zone grips behind a card be grabbed… */
   body.editing #scroll .plaque .ta-edit-text{pointer-events:auto}        /* …but keep the rewritable text clickable */
   body.editing .pip{outline:2px dashed rgba(192,73,47,.92); outline-offset:0; background:rgba(192,73,47,.12)}   /* show the click-zone box while editing */
+  body.editing .pip.shaped{outline:none; background:transparent}   /* a freeform-shaped zone shows only its polygon (drawn on the view overlay), not the bounding rectangle */
   .pip-resize{display:none}
   body.editing .pip-resize{display:block; position:absolute; right:-11px; bottom:-11px; width:24px; height:24px; background:#fff; border:2px solid #c0392b; border-radius:5px; cursor:nwse-resize; touch-action:none; box-shadow:0 2px 8px rgba(0,0,0,.55); z-index:5}   /* bigger, easier-to-grab corner grip */
   body.editing .ta-edit-text{outline:1px dashed rgba(192,73,47,.55); outline-offset:3px; cursor:text; border-radius:3px}
@@ -917,11 +918,11 @@
         var xs=pp.poly.map(function(q){return ox+q[0]*dw;}), ys=pp.poly.map(function(q){return oy+q[1]*dh;});
         var x0=Math.min.apply(null,xs), x1=Math.max.apply(null,xs), y0=Math.min.apply(null,ys), y1=Math.max.apply(null,ys);
         hw=Math.max(28,x1-x0); hh=Math.max(28,y1-y0); x=(x0+x1)/2; y=(y0+y1)/2;
-        if(EDIT){ el.style.clipPath='';   // keep the whole box grabbable while editing; outline drawn on the view overlay instead
+        if(EDIT){ el.style.clipPath=''; el.classList.add('shaped');   // keep the whole box grabbable while editing; show only the polygon (drawn on the view overlay), not the bounding rectangle
           editShapes+='<polygon points="'+xs.map(function(px,k){return px.toFixed(1)+','+ys[k].toFixed(1);}).join(' ')+'" fill="rgba(192,73,47,.18)" stroke="#c0492f" stroke-width="2" stroke-dasharray="6 4"/>'; }
         else el.style.clipPath='polygon('+xs.map(function(px,k){return ((px-x0)/(x1-x0)*100).toFixed(2)+'% '+((ys[k]-y0)/(y1-y0)*100).toFixed(2)+'%';}).join(',')+')';
       } else {
-        el.style.clipPath='';
+        el.style.clipPath=''; el.classList.remove('shaped');
         hw=pp.w?Math.max(28,pp.w*dw):Math.max(60,Math.min(380, dw*0.16)); hh=pp.h?Math.max(28,pp.h*dh):Math.max(60,Math.min(500, dh*0.30));   // per-pip box (sized in editor) else default big zone
         x=Math.max(hw/2+2,Math.min(W-hw/2-2, ox+pp.fx*dw)); y=Math.max(80,Math.min(H-80, oy+pp.fy*dh));
       }
