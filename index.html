@@ -105,6 +105,14 @@
   .btn.added{background:#7d8a6a; pointer-events:none}
   .btnrow{display:flex; flex-wrap:wrap; gap:10px}
 
+  /* ---- Chapter IX inline portfolio strip ---- */
+  .pgal{display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin:2px 0 10px}
+  .pgal button{padding:0; border:1px solid rgba(255,255,255,.55); border-radius:10px; overflow:hidden; cursor:pointer;
+    aspect-ratio:1; background:#e9e2cf; box-shadow:0 8px 20px -12px rgba(0,0,0,.6); transition:transform .14s ease, filter .14s ease}
+  .pgal button:hover{transform:translateY(-2px); filter:brightness(1.05)}
+  .pgal img{width:100%; height:100%; object-fit:cover; display:block}
+  .pgal-cap{font-size:12.5px; color:var(--muted); margin:0 0 12px; display:flex; align-items:center; gap:6px}
+
   /* ---- logo wordmark (recreated from the Tapestry Acres flyer) ---- */
   .logo{display:inline-block; color:var(--ink)}
   .logo .rule{display:flex; align-items:center; justify-content:center; gap:14px}
@@ -561,9 +569,16 @@
   <!-- CAPTURE THE DAY — Harris Photography -->
   <section class="panel right" data-bg="8" data-flag="IX · Capture the Day" id="photopanel">
     <div class="plaque">
-      <p class="kicker">Chapter IX · The farm's photographer</p>
+      <p class="kicker">Chapter IX · The Farm's Photographer</p>
       <h2>Capture the Day</h2>
-      <p>Candid, story-telling sessions with <b>Harris Photography</b> — the herd and the Cumberland pastures as your backdrop.</p>
+      <p>Candid, story-telling sessions with <b>Harris Photography</b> — you, your people, and the herd, with the wide Cumberland pastures as your backdrop. Real moments, beautifully edited.</p>
+      <div class="pgal" role="group" aria-label="Portfolio preview — tap to open the full gallery">
+        <button data-portfolio-open type="button" aria-label="Open the portfolio"><img src="assets/portfolio/alpaca-pair.webp" alt="Two brown alpacas at Tapestry Acres" loading="lazy" decoding="async"></button>
+        <button data-portfolio-open type="button" aria-label="Open the portfolio"><img src="assets/portfolio/highland-pair.webp" alt="A pair of Highland cattle nuzzling" loading="lazy" decoding="async"></button>
+        <button data-portfolio-open type="button" aria-label="Open the portfolio"><img src="assets/portfolio/piglets.webp" alt="A spotted piglet in the sun" loading="lazy" decoding="async"></button>
+        <button data-portfolio-open type="button" aria-label="Open the portfolio"><img src="assets/portfolio/alpacas-barn.webp" alt="Two white alpacas by the barn" loading="lazy" decoding="async"></button>
+      </div>
+      <p class="pgal-cap">📷 A few frames from the farm — tap any to see the full portfolio.</p>
       <div class="btnrow">
         <button class="btn accent" data-portfolio-open type="button">📸 See the portfolio</button>
         <button class="btn ghost" data-photo-open type="button">Book a session →</button>
