@@ -293,6 +293,39 @@
   #portpill{background:rgba(251,246,233,.94); color:var(--ink)}
   #portpill:hover{filter:brightness(1.04)}
   body.herd-open{overflow:hidden}
+
+  /* ---- Harris Photography — on-brand services + pricing modal (farm theme) ---- */
+  #portwrap{z-index:84}   /* gallery grid layers ABOVE the services modal when opened from it */
+  #photowrap{position:fixed; inset:0; z-index:82; display:none; background:rgba(12,10,6,.72); backdrop-filter:blur(4px); padding:16px}
+  #photowrap.open{display:grid; place-items:center}
+  .photo-frame{position:relative; width:min(940px,100%); max-height:92vh; max-height:92svh; overflow:hidden;
+    background:var(--cream); border:1px solid var(--cardborder); border-radius:18px; box-shadow:0 34px 90px -22px rgba(0,0,0,.85)}
+  .photo-scroll{overflow-y:auto; max-height:92vh; max-height:92svh; -webkit-overflow-scrolling:touch}
+  .photo-x{position:absolute; top:12px; right:12px; z-index:3; width:38px; height:38px; border-radius:50%; cursor:pointer;
+    background:rgba(255,255,255,.82); border:1px solid var(--cardborder); font-size:17px; line-height:1}
+  .photo-hero{padding:34px 34px 22px; text-align:center;
+    background:linear-gradient(180deg, rgba(107,142,78,.16), rgba(247,244,236,0) 90%)}
+  .photo-hero h2{font-family:var(--serif); font-size:clamp(26px,4.6vw,40px); margin:2px 0 10px; color:var(--ink); letter-spacing:-.01em}
+  .photo-hero .photo-sub{max-width:560px; margin:0 auto 16px; color:#4a4632; font-size:15px; line-height:1.6}
+  .photo-cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:12px; padding:6px 26px 6px}
+  .pcard{position:relative; background:var(--card); border:1px solid var(--cardborder); border-radius:14px; padding:18px 16px;
+    display:flex; flex-direction:column; text-align:left}
+  .pcard.vip{border-color:var(--legendary); box-shadow:0 0 0 1px var(--legendary) inset}
+  .pcard .pc-flag{position:absolute; top:-10px; left:16px; background:var(--legendary); color:#2c2410; font-size:10px;
+    font-weight:800; letter-spacing:.08em; text-transform:uppercase; padding:3px 9px; border-radius:6px}
+  .pcard .pc-name{font-family:var(--serif); font-size:19px; font-weight:600; color:var(--ink)}
+  .pcard .pc-price{font-size:26px; font-weight:800; color:var(--forest); margin:4px 0 2px}
+  .pcard.vip .pc-price{color:var(--earth)}
+  .pcard .pc-price small{font-size:13px; font-weight:600; color:var(--muted)}
+  .pcard .pc-desc{font-size:13px; line-height:1.5; color:#54503b; margin-top:8px}
+  .pcard .pc-add-btn{margin-top:12px; align-self:flex-start}
+  .photo-events{margin:16px 26px 4px; padding:15px 18px; background:rgba(107,142,78,.1);
+    border:1px solid var(--cardborder); border-radius:12px; font-size:13.5px; line-height:1.55; color:#43402c; text-align:center}
+  .photo-cta{padding:18px 26px 30px; text-align:center}
+  .photo-cta .pc-add{font-size:12px; color:var(--muted); margin:12px 0 0; line-height:1.5}
+  .photo-cta .pc-contact{display:block; margin-top:9px; font-size:13px; color:var(--muted)}
+  @media (max-width:720px){ #photowrap{padding:8px} .photo-frame{width:100%; max-height:100%; border-radius:12px}
+    .photo-scroll{max-height:100vh; max-height:100svh} .photo-hero{padding:26px 18px 16px} .photo-cards{padding:6px 16px} .photo-events{margin:14px 16px 4px} }
   .herd-guard{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); border:0}   /* focus-wrap sentinels (visually hidden, still tabbable) */
   @media (max-width:720px){ #herdwrap,#portwrap{padding:8px} .herd-frame{width:100%; height:100%; border-radius:12px} .herd-title{font-size:15px} .herd-open{font-size:12px} }
   .ta-shelf{display:flex; gap:10px; overflow-x:auto; padding:6px 2px 12px; margin:4px 0 8px; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch}
@@ -365,6 +398,13 @@
     background:rgba(251,246,233,.92); border:1px solid var(--cardborder); border-radius:999px; padding:8px 14px;
     font-size:13px; font-weight:700; color:var(--ink); box-shadow:0 8px 22px -12px rgba(0,0,0,.6)}
   .panel.tucked .peek{display:inline-flex; align-items:center; gap:6px}
+  .plaque-hide{display:none}   /* mobile-only ✕ to hide the text box (added by JS on tuckable panels) */
+  @media (max-width:720px){
+    .plaque{position:relative}
+    .plaque-hide{display:grid; place-items:center; position:absolute; top:5px; right:5px; width:22px; height:22px; padding:0;
+      border:1px solid var(--cardborder); border-radius:50%; background:rgba(251,246,233,.92); color:var(--muted);
+      font-size:12px; line-height:1; cursor:pointer; z-index:3; box-shadow:0 4px 12px -6px rgba(0,0,0,.5)}
+  }
 
   /* ---- Edit Mode (only active with ?edit) ---- */
   #editbar{display:none; position:fixed; left:0; right:0; bottom:14px; margin:0 auto; width:max-content; max-width:94vw; z-index:95;
@@ -418,6 +458,7 @@
   <div class="bg"><div class="fill" style="background-image:url(assets/bg/stay.webp)"></div><img class="sharp" src="assets/bg/stay.webp" alt="Greeting a Highland cow at sunset on the farm" decoding="async"></div>
   <div class="bg"><div class="fill" style="background-image:url(assets/bg/finale.webp)"></div><img class="sharp" src="assets/bg/finale.webp" alt="Cattle grazing under a rainbow over the pasture" decoding="async"></div>
   <div class="bg"><div class="fill" style="background-image:url(assets/bg/store.webp)"></div><img class="sharp" src="assets/bg/store.webp" alt="An alpaca resting in the pasture by the farm's event pavilion" decoding="async"></div>
+  <div class="bg"><div class="fill" style="background-image:url(assets/bg/welcome.webp)"></div><img class="sharp" src="assets/bg/welcome.webp" alt="Guests posing with the alpacas at a Tapestry Acres event — a Harris Photography moment" decoding="async"></div>
   <canvas id="fx"></canvas>
   <div id="lighting"></div><div id="nighttint"></div><div id="vignette"></div>
 </div>
@@ -517,8 +558,23 @@
     </div>
   </section>
 
+  <!-- CAPTURE THE DAY — Harris Photography -->
+  <section class="panel right" data-bg="8" data-flag="IX · Capture the Day" id="photopanel">
+    <div class="plaque">
+      <p class="kicker">Chapter IX · The farm's photographer</p>
+      <h2>Capture the Day</h2>
+      <p>Take home more than a memory. <b>Harris Photography</b> shoots candid, story-telling sessions right here on the farm — with the alpacas, the Highland fold, and wide Cumberland pastures as your backdrop.</p>
+      <p class="small">📸 Mini $150 · Family $285 · VIP $500 (100+ photos) · Events from $300</p>
+      <div class="btnrow">
+        <button class="btn accent" data-add="photo-session">Add a Photo Session — from $150</button>
+        <button class="btn ghost" data-photo-open type="button">See sessions &amp; pricing →</button>
+      </div>
+      <p class="small">Every session includes a private online gallery you can view &amp; download from your phone.</p>
+    </div>
+  </section>
+
   <!-- FINALE -->
-  <section class="panel center" data-bg="6" data-flag="IX · Stay a While" id="finale">
+  <section class="panel center" data-bg="6" data-flag="X · Stay a While" id="finale">
     <div class="plaque">
       <img class="biglogo" src="assets/logo-crest.png" alt="Tapestry Acres" style="width:92px;height:92px;margin:0 auto 4px">
       <h2 style="margin-top:8px">Stay a while.</h2>
@@ -633,6 +689,54 @@
   </div>
 </div>
 
+<!-- Harris Photography — on-brand services + pricing (opens from the Capture the Day chapter) -->
+<div id="photowrap" role="dialog" aria-modal="true" aria-labelledby="phototitle">
+  <div class="photo-frame">
+    <button class="photo-x" id="photoclose" type="button" aria-label="Close">&times;</button>
+    <div class="photo-scroll">
+      <div class="photo-hero">
+        <p class="kicker">The farm's photographer</p>
+        <h2 id="phototitle">Harris Photography</h2>
+        <p class="photo-sub">Candid, story-telling sessions all around Tapestry Acres — with the alpacas, the Highland cattle, and wide Cumberland pastures as your backdrop. Real moments, beautifully edited. Sessions on the farm or anywhere in the area.</p>
+        <button class="btn accent" id="viewPortfolioBtn" type="button">📸 See the portfolio &rarr;</button>
+      </div>
+      <div class="photo-cards">
+        <div class="pcard">
+          <div class="pc-name">Mini &ldquo;Insta&rdquo; Session</div>
+          <div class="pc-price">$150</div>
+          <div class="pc-desc">20&ndash;30 min &middot; 15 professionally edited photos &middot; private online gallery + print release. Perfect for quick family updates &amp; social posts.</div>
+          <button class="btn ghost pc-add-btn" data-add="photo-mini" type="button">Add to your visit</button>
+        </div>
+        <div class="pcard">
+          <div class="pc-name">Family Session</div>
+          <div class="pc-price">$285</div>
+          <div class="pc-desc">45 min &middot; up to 2 looks &middot; 30 edited photos &middot; gallery + print release. Room to relax and let the kids (and the alpacas) be themselves.</div>
+          <button class="btn ghost pc-add-btn" data-add="photo-family" type="button">Add to your visit</button>
+        </div>
+        <div class="pcard vip">
+          <span class="pc-flag">Most popular</span>
+          <div class="pc-name">VIP Session</div>
+          <div class="pc-price">$500</div>
+          <div class="pc-desc"><b>100+ candid edited photos</b> from a full hour all around the farm &middot; up to 3 looks &middot; full high-res gallery + print release. The whole experience, start to finish.</div>
+          <button class="btn accent pc-add-btn" data-add="photo-vip" type="button">Add to your visit</button>
+        </div>
+        <div class="pcard">
+          <div class="pc-name">Birthday Parties &amp; Events</div>
+          <div class="pc-price">from $300</div>
+          <div class="pc-desc">Up to 2 hours &middot; full edited gallery of every best moment &middot; +$150/hr after. Farm celebrations or anywhere in the area.</div>
+          <button class="btn ghost pc-add-btn" data-add="photo-events" type="button">Add to your visit</button>
+        </div>
+      </div>
+      <div class="photo-events">Also available for birthdays, farm events, and gatherings around the Upper Cumberland. Every session includes a private online gallery you can view &amp; download from your phone.</div>
+      <div class="photo-cta">
+        <a class="btn gold" href="mailto:tapestryacres@gmail.com?subject=Harris%20Photography%20Session%20Inquiry&body=Hi%2C%20I%27d%20like%20to%20book%20a%20photography%20session.%20My%20preferred%20session%2C%20date%2C%20and%20details%3A">Book / inquire &rarr;</a>
+        <span class="pc-contact">tapestryacres@gmail.com &middot; (931) 823-3266</span>
+        <p class="pc-add">Add-ons: extra edited images $10 each &middot; travel beyond ~25 mi +$50 &middot; 48-hr rush delivery +$50.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="editbar">
   <b>✎ EDIT</b>
   <button id="eb-help" title="How to edit" aria-expanded="false">?</button>
@@ -739,12 +843,18 @@
 
   var STAY_URL='https://www.tapestryacres.com/stay#/search';   // HotelRunner lodging search
   var SITE_URL='https://www.tapestryacres.com/plan';           // plan-your-visit / experiences
+  var PHOTO_URL='mailto:tapestryacres@gmail.com?subject=Harris%20Photography%20Session%20Inquiry&body=Hi%2C%20I%27d%20like%20to%20book%20a%20photography%20session.%20My%20preferred%20session%2C%20date%2C%20and%20details%3A';   // Harris Photography booking inquiry
   var EXP = {
     'alpaca-walk':{label:'Alpaca Walk',price:'from $50',href:SITE_URL},
     'farm-tour':{label:'Private Guided Farm Tour',price:'from $100',href:SITE_URL},
     'rv-site':{label:'RV Site',price:'reserve',href:STAY_URL},
     'virtual-tour':{label:'Virtual Farm Tour',price:'$25',href:SITE_URL},
-    'farm-stay':{label:'Farm Stay / Glamping night',price:'book',href:STAY_URL}
+    'farm-stay':{label:'Farm Stay / Glamping night',price:'book',href:STAY_URL},
+    'photo-session':{label:'Harris Photography Session',price:'from $150',href:PHOTO_URL},
+    'photo-mini':{label:'Mini “Insta” Session',price:'$150',href:PHOTO_URL},
+    'photo-family':{label:'Family Photo Session',price:'$285',href:PHOTO_URL},
+    'photo-vip':{label:'VIP Photo Session',price:'$500',href:PHOTO_URL},
+    'photo-events':{label:'Event / Party Photography',price:'from $300',href:PHOTO_URL}
   };
   var BOOK_URL=STAY_URL, cart={};
 
@@ -834,18 +944,23 @@
     if(trail.offsetParent!==null){ var th=trail.getBoundingClientRect(); wagon.style.top=(th.top+(act/(panels.length-1))*th.height-10)+'px'; }
   }
   function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(render); } }
-  // mobile: tuck the text box away shortly after a scene arrives so the photo stays tappable; ⓘ brings it back
+  // mobile: text boxes show by DEFAULT (no timer); a ✕ on the plaque hides it so the photo/animals are fully tappable, ⓘ brings it back
   var MOBILE=window.matchMedia && matchMedia('(max-width:720px)').matches;
   var io=new IntersectionObserver(function(es){ es.forEach(function(e){ var p=e.target;
-    if(e.isIntersecting){ p.classList.add('inview');
-      if(MOBILE && !EDIT && p._tuckable && !p._hold){ clearTimeout(p._tt); p._tt=setTimeout(function(){ p.classList.add('tucked'); },2600); } }
-    else { clearTimeout(p._tt); p.classList.remove('tucked'); p._hold=false; }   // scene left the screen → reset so the text shows again next visit
+    if(e.isIntersecting){ p.classList.add('inview'); }
+    else { p.classList.remove('tucked'); }   // scene left the screen → reset so the text shows again next visit
   }); },{threshold:.25});
   panels.forEach(function(p,idx){
-    p._tuckable=(idx===0 || !p.classList.contains('center'));   // animal scenes + hero; map/store/finale keep their content up
-    if(p._tuckable){ var pk=document.createElement('button'); pk.type='button'; pk.className='peek'; pk.innerHTML='ⓘ show text';
-      pk.addEventListener('click',function(ev){ ev.stopPropagation(); clearTimeout(p._tt); p._hold=true; p.classList.remove('tucked'); });
-      p.appendChild(pk); }
+    p._tuckable=(idx===0 || !p.classList.contains('center'));   // animal scenes + hero get the hide/show toggle; map/store/finale always show
+    if(MOBILE && p._tuckable){
+      var pk=document.createElement('button'); pk.type='button'; pk.className='peek'; pk.innerHTML='ⓘ show text';
+      pk.addEventListener('click',function(ev){ ev.stopPropagation(); p.classList.remove('tucked'); });
+      p.appendChild(pk);
+      var pl=p.querySelector('.plaque');
+      if(pl){ var hb=document.createElement('button'); hb.type='button'; hb.className='plaque-hide'; hb.setAttribute('aria-label','Hide text'); hb.innerHTML='✕';
+        hb.addEventListener('click',function(ev){ ev.stopPropagation(); p.classList.add('tucked'); });
+        pl.appendChild(hb); }
+    }
     io.observe(p);
   });
   function scrollToPanel(idx){ window.scrollTo({top:panels[idx].offsetTop+2, behavior:reduce?'auto':'smooth'}); }
@@ -1257,12 +1372,28 @@
     function closePort(){ wrap.classList.remove('open'); document.body.classList.remove('herd-open'); setBgInert(false);
       if(last && last.focus){ try{ last.focus(); }catch(e){} } last=null; }
     if(openBtn) openBtn.addEventListener('click',openPort);
+    var vpb=document.getElementById('viewPortfolioBtn'); if(vpb) vpb.addEventListener('click',openPort);   // "See the portfolio" inside the services modal
     if(closeBtn) closeBtn.addEventListener('click',closePort);
     wrap.addEventListener('click',function(e){ if(e.target===wrap) closePort(); });
     wrap.addEventListener('keydown',function(e){ if(e.key==='Escape') closePort(); });
     var gTop=document.getElementById('portguardtop'), gBot=document.getElementById('portguardbot');
     if(gTop) gTop.addEventListener('focus',function(){ setTimeout(function(){ if(frame) frame.focus(); },0); });
     if(gBot) gBot.addEventListener('focus',function(){ setTimeout(function(){ var o=document.getElementById('portopen')||closeBtn; if(o) o.focus(); },0); });
+  })();
+
+  /* Harris Photography services + pricing modal — opened from the "Capture the Day" chapter CTA.
+     On-brand farm theme (not a foreign dark window). "See the portfolio" (wired above) layers the gallery on top. */
+  (function(){ var wrap=document.getElementById('photowrap'); if(!wrap) return;
+    var closeBtn=document.getElementById('photoclose'), last=null;
+    function open(){ if(EDIT) return; last=document.activeElement;
+      wrap.classList.add('open'); document.body.classList.add('herd-open'); setBgInert(true); if(closeBtn) closeBtn.focus(); }
+    function close(){ wrap.classList.remove('open'); document.body.classList.remove('herd-open'); setBgInert(false);
+      if(last && last.focus){ try{ last.focus(); }catch(e){} } last=null; }
+    window.openPhotoServices=open;   // chapter CTA calls this
+    document.querySelectorAll('[data-photo-open]').forEach(function(b){ b.addEventListener('click',function(e){ if(EDIT) return; e.preventDefault(); open(); }); });
+    if(closeBtn) closeBtn.addEventListener('click',close);
+    wrap.addEventListener('click',function(e){ if(e.target===wrap) close(); });
+    wrap.addEventListener('keydown',function(e){ if(e.key==='Escape') close(); });
   })();
 
   function hideLoader(){ var l=document.getElementById('loader'); if(l && !l.classList.contains('gone')){ l.classList.add('gone'); setTimeout(function(){ l.style.display='none'; },700); } }
