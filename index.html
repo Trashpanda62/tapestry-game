@@ -458,7 +458,7 @@
   <div class="bg"><div class="fill" style="background-image:url(assets/bg/stay.webp)"></div><img class="sharp" src="assets/bg/stay.webp" alt="Greeting a Highland cow at sunset on the farm" decoding="async"></div>
   <div class="bg"><div class="fill" style="background-image:url(assets/bg/finale.webp)"></div><img class="sharp" src="assets/bg/finale.webp" alt="Cattle grazing under a rainbow over the pasture" decoding="async"></div>
   <div class="bg"><div class="fill" style="background-image:url(assets/bg/store.webp)"></div><img class="sharp" src="assets/bg/store.webp" alt="An alpaca resting in the pasture by the farm's event pavilion" decoding="async"></div>
-  <div class="bg"><div class="fill" style="background-image:url(assets/bg/welcome.webp)"></div><img class="sharp" src="assets/bg/welcome.webp" alt="Guests posing with the alpacas at a Tapestry Acres event — a Harris Photography moment" decoding="async"></div>
+  <div class="bg"><div class="fill" style="background-image:url(assets/bg/capture.webp)"></div><img class="sharp" src="assets/bg/capture.webp" alt="A Harris Photography portfolio shot — a guest and a white alpaca in a golden pasture" decoding="async"></div>
   <canvas id="fx"></canvas>
   <div id="lighting"></div><div id="nighttint"></div><div id="vignette"></div>
 </div>
@@ -563,13 +563,11 @@
     <div class="plaque">
       <p class="kicker">Chapter IX · The farm's photographer</p>
       <h2>Capture the Day</h2>
-      <p>Take home more than a memory. <b>Harris Photography</b> shoots candid, story-telling sessions right here on the farm — with the alpacas, the Highland fold, and wide Cumberland pastures as your backdrop.</p>
-      <p class="small">📸 Mini $150 · Family $285 · VIP $500 (100+ photos) · Events from $300</p>
+      <p>Candid, story-telling sessions with <b>Harris Photography</b> — the herd and the Cumberland pastures as your backdrop.</p>
       <div class="btnrow">
-        <button class="btn accent" data-add="photo-session">Add a Photo Session — from $150</button>
-        <button class="btn ghost" data-photo-open type="button">See sessions &amp; pricing →</button>
+        <button class="btn accent" data-portfolio-open type="button">📸 See the portfolio</button>
+        <button class="btn ghost" data-photo-open type="button">Book a session →</button>
       </div>
-      <p class="small">Every session includes a private online gallery you can view &amp; download from your phone.</p>
     </div>
   </section>
 
@@ -1373,6 +1371,7 @@
       if(last && last.focus){ try{ last.focus(); }catch(e){} } last=null; }
     if(openBtn) openBtn.addEventListener('click',openPort);
     var vpb=document.getElementById('viewPortfolioBtn'); if(vpb) vpb.addEventListener('click',openPort);   // "See the portfolio" inside the services modal
+    document.querySelectorAll('[data-portfolio-open]').forEach(function(b){ b.addEventListener('click',function(e){ if(EDIT) return; e.preventDefault(); openPort(); }); });   // prominent portfolio CTA on the Capture-the-Day chapter
     if(closeBtn) closeBtn.addEventListener('click',closePort);
     wrap.addEventListener('click',function(e){ if(e.target===wrap) closePort(); });
     wrap.addEventListener('keydown',function(e){ if(e.key==='Escape') closePort(); });
