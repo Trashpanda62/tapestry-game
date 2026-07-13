@@ -597,7 +597,7 @@
       <p>The farm will do the rest. Here's everything you gathered on your walk — book it for real, or come meet the herd in person.</p>
       <div class="deck" id="finaledeck"></div>
       <div class="btnrow" style="justify-content:center">
-        <a class="btn accent" href="https://www.tapestryacres.com/stay#/search" target="_blank" rel="noopener">Begin Your Visit — Book Online</a>
+        <a class="btn accent" href="https://www.tapestryacres.com/stay" target="_blank" rel="noopener">Begin Your Visit — Book Online</a>
         <button class="btn ghost" id="replaybtn">↺ Replay the journey</button>
         <button class="btn ghost" id="sharebtn">Share my farm card</button>
       </div>
@@ -641,13 +641,13 @@
     <button id="satchelbtn">🧺 Your visit <span class="badge" id="satchelbadge">0</span></button>
     <div id="drawer"><h4>Your visit</h4><ul id="drawerlist"></ul>
       <div class="empty" id="draweremptymsg">Nothing added yet — tap “Add to your visit” as you explore.</div>
-      <a class="btn accent" href="https://www.tapestryacres.com/stay#/search" target="_blank" rel="noopener" style="width:100%; justify-content:center">Begin Your Visit →</a></div>
+      <a class="btn accent" href="https://www.tapestryacres.com/stay" target="_blank" rel="noopener" style="width:100%; justify-content:center">Begin Your Visit →</a></div>
   </div>
   <div id="cluster">
     <button class="iconbtn pill" id="soundbtn" title="Sound on/off" aria-label="Toggle sound" style="padding:0">🔇</button>
     <button class="pill" id="herdpill" type="button" aria-haspopup="dialog" title="Meet the whole herd, take the quiz &amp; help name the animals">🐾 <span class="lbl">Meet the herd</span></button>
     <button class="pill" id="portpill" type="button" aria-haspopup="dialog" title="Client Portfolio — farm & event photography by Harris Photography">📸 <span class="lbl">Photo gallery</span></button>
-    <a class="pill" id="bookpill" href="https://www.tapestryacres.com/stay#/search" target="_blank" rel="noopener">📅 <span class="lbl">Book a Stay</span></a>
+    <a class="pill" id="bookpill" href="https://www.tapestryacres.com/stay" target="_blank" rel="noopener">📅 <span class="lbl">Book a Stay</span></a>
   </div>
   <button id="skip" class="hud-el">Skip to booking ↓</button>
   <div id="mprog"><i></i></div>
@@ -857,7 +857,7 @@
   var HERD_TOTAL = Object.keys(HERD).filter(function(k){ return !HERD[k].unnamed; }).length;   // unnamed "help name me" cards don't count toward the herd-met goal
   var met = {};
 
-  var STAY_URL='https://www.tapestryacres.com/stay#/search';   // HotelRunner lodging search
+  var STAY_URL='https://www.tapestryacres.com/stay';   // HotelRunner lodging search
   var SITE_URL='https://www.tapestryacres.com/plan';           // plan-your-visit / experiences
   var PHOTO_URL='mailto:tapestryacres@gmail.com?subject=Harris%20Photography%20Session%20Inquiry&body=Hi%2C%20I%27d%20like%20to%20book%20a%20photography%20session.%20My%20preferred%20session%2C%20date%2C%20and%20details%3A';   // Harris Photography booking inquiry
   var EXP = {
