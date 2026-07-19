@@ -2,7 +2,20 @@
   "_note": "Owned To The Max RV availability calendar. Each entry = a booked/unavailable date range for one unit; 'end' is the checkout day (exclusive). No customer names or PII here — this is a public file. Add/remove entries to manage availability. Seeded 2026-07-19 from the then-current platform bookings; external RVshare/Outdoorsy/Wix sync is retired.",
   "updated": "2026-07-19",
   "bookings": [
-    { "unit": "max-2", "start": "2026-07-15", "end": "2026-07-29" },
-    { "unit": "max-2", "start": "2026-09-06", "end": "2026-11-04" }
+    {
+      "unit": "max-2",
+      "start": "2026-07-15",
+      "end": "2026-07-29"
+    },
+    {
+      "unit": "max-2",
+      "start": "2026-09-06",
+      "end": "2026-11-04"
+    },
+    {
+      "unit": "max-1",
+      "start": "2099-01-01",
+      "end": "2099-01-05"
+    }
   ]
 }
