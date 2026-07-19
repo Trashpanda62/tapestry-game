@@ -186,6 +186,8 @@
   #drawer li{display:flex; justify-content:space-between; gap:10px; align-items:center; padding:8px 0; border-bottom:1px dashed var(--line); font-size:14px}
   #drawer li .x{cursor:pointer; color:var(--muted); font-weight:700; padding:0 4px}
   #drawer .empty{color:var(--muted); font-size:13.5px; padding:8px 0 14px}
+  #drawer .rv-link{display:block; margin:0 0 12px; color:var(--forest); font-size:13.5px; font-weight:700; text-decoration:none}
+  #drawer .rv-link:hover{text-decoration:underline}
 
   #skip{position:absolute; top:18px; left:50%; transform:translateX(-50%); background:rgba(20,16,10,.5); color:#fff;
     border:1px solid rgba(255,255,255,.25); border-radius:999px; padding:7px 14px; font-size:12.5px; pointer-events:auto; backdrop-filter:blur(4px)}
@@ -554,7 +556,7 @@
       <img class="ftruck" src="assets/cards/foodtruck.jpg" alt="To The Max food truck">
       <h2>Stay on the Farm</h2>
       <p>Wake to the hum of the pasture — farm stays and glamping under wide Cumberland skies. <em>Slow down. Stay a while. The farm will do the rest.</em></p>
-      <div class="btnrow"><button class="btn accent" data-add="farm-stay">Add a Farm Stay / Glamping night</button></div>
+      <div class="btnrow"><button class="btn accent" data-add="farm-stay">Add a Farm Stay / Glamping night</button><a class="btn" href="rv-rentals.html">🚐 Rent one of our RVs →</a></div>
       <p class="small">On event days: the <b>To The Max</b> food truck &amp; the <b>Farm Store</b> — alpaca socks, blankets &amp; handmade soaps from $4 · <a href="https://tapestry-acres.square.site" target="_blank" rel="noopener" style="color:var(--accent);font-weight:700;text-decoration:none">Shop the Farm Store →</a></p>
     </div>
   </section>
@@ -642,6 +644,7 @@
     <button id="satchelbtn">🧺 Your visit <span class="badge" id="satchelbadge">0</span></button>
     <div id="drawer"><h4>Your visit</h4><ul id="drawerlist"></ul>
       <div class="empty" id="draweremptymsg">Nothing added yet — tap “Add to your visit” as you explore.</div>
+      <a class="rv-link" href="rv-rentals.html">🚐 Rent one of our RVs →</a>
       <a class="btn accent" href="https://www.tapestryacres.com/stay" target="_blank" rel="noopener" style="width:100%; justify-content:center">Begin Your Visit →</a></div>
   </div>
   <div id="cluster">
@@ -1121,6 +1124,11 @@
   function flashSatchel(){ var b=document.getElementById('satchelbtn'); b.style.transform='scale(1.08)'; setTimeout(function(){b.style.transform='none';},160); }
   document.getElementById('satchelbtn').addEventListener('click',function(){ drawer.classList.toggle('open'); });
   document.querySelectorAll('[data-add]').forEach(function(btn){ btn.addEventListener('click',function(){ if(EDIT) return; addToCart(btn.getAttribute('data-add')); }); });
+  if(!EDIT){ var addParam=new URLSearchParams(location.search).get('add'); if(addParam!==null){
+    addParam.split(',').forEach(function(id){ id=id.trim(); if(EXP[id]&&!cart[id]) addToCart(id); });
+    if(Object.keys(cart).length) drawer.classList.add('open');
+    var qs=new URLSearchParams(location.search); qs.delete('add'); var q=qs.toString(); history.replaceState(null,'',location.pathname+(q?('?'+q):'')+location.hash);
+  }}
 
   /* finale */
   function renderFinaleDeck(){ var deck=document.getElementById('finaledeck'); if(!deck)return; deck.innerHTML='';

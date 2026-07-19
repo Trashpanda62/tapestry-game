@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RV Rentals | Tapestry Acres</title>
+  <style>
+    :root{
+      --cream:#f7f4ec; --ink:#33301f; --muted:#6f6a55;
+      --forest:#4b6b3c; --meadow:#6b8e4e; --earth:#8a6a44;
+      --lake:#3f7fa6; --plum:#7b5d77; --accent:#c0492f;
+      --gold:#e0a23c; --lantern:#f4c873; --night:#1d2436;
+      --card:#fbf6e9; --cardborder:#e6d9b3; --line:#e3ddcd;
+      --rare:#3f7fa6; --legendary:#b8923a; --common:#6b8e4e;
+      --serif:Georgia,'Iowan Old Style','Palatino Linotype',serif;
+      --sans:Arial,'Helvetica Neue',system-ui,sans-serif;
+      --z-scrim:40; --z-sheet:50; --z-lightbox:60; --z-sticky:30;
+      --shadow:0 18px 50px -18px rgba(15,12,7,.55);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0; color:var(--ink); font-family:var(--sans); line-height:1.6; background:radial-gradient(ellipse at 50% -10%,rgba(244,200,115,.3),transparent 36rem),radial-gradient(ellipse at 0 45%,rgba(138,106,68,.12),transparent 45%),radial-gradient(ellipse at 100% 70%,rgba(75,107,60,.08),transparent 38%),var(--cream); position:relative}
+    body::before{content:""; position:fixed; inset:0; pointer-events:none; opacity:.035; z-index:-1; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E")}
+    a{color:var(--forest)} button,input,textarea,summary,a{transition:transform .12s ease-out,filter .12s ease-out,box-shadow .12s ease-out}
+    :where(a,button,input,textarea,summary):focus-visible{outline:0; box-shadow:0 0 0 3px #1c160d,0 0 0 6px rgba(255,255,255,.95),0 0 22px 6px rgba(244,200,115,.7)}
+    h1,h2,h3{font-family:var(--serif); line-height:1.08; text-wrap:balance} p{max-width:72ch; text-wrap:pretty}
+    .site-header{position:sticky; top:0; z-index:var(--z-sticky); padding:12px 16px; pointer-events:none}
+    .header-inner{width:min(100%,1040px); min-height:52px; margin:auto; padding:7px 10px 7px 20px; display:flex; align-items:center; justify-content:space-between; gap:18px; border:1px solid var(--cardborder); border-radius:999px; background:rgba(251,246,233,.95); box-shadow:0 10px 30px -18px rgba(15,12,7,.65); backdrop-filter:blur(10px); pointer-events:auto}
+    .brand{font:700 14px/1 var(--serif); letter-spacing:.16em}.back{padding:8px 12px; border-radius:999px; font-size:13px; font-weight:700; text-decoration:none}
+    main{overflow:hidden}.hero{position:relative; width:min(calc(100% - 32px),1120px); min-height:clamp(530px,70vw,690px); margin:-76px auto 90px; border-radius:0 0 26px 26px; overflow:visible; color:#fff; box-shadow:var(--shadow)}
+    .hero-media{position:absolute; inset:0; overflow:hidden; border-radius:0 0 26px 26px; background:#665f43}
+    .hero-media img{width:100%; height:100%; object-fit:cover; animation:kenburns 18s ease-out infinite alternate}
+    .hero-media::after{content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(20,16,10,.3),rgba(20,16,10,0) 30%,rgba(20,16,10,.62)),radial-gradient(ellipse at center,transparent 42%,rgba(20,16,10,.34)); box-shadow:inset 0 0 70px rgba(20,16,10,.28)}
+    @keyframes kenburns{to{transform:scale(1.055)}}
+    .hero-copy{position:absolute; inset:auto 24px 86px; z-index:1; text-align:center; display:grid; justify-items:center}
+    h1{max-width:850px; margin:0 0 16px; font-size:clamp(3rem,8vw,5rem); letter-spacing:-.02em; text-shadow:0 3px 20px rgba(20,16,10,.85)}
+    .hero-copy p{margin:0; font-size:clamp(1rem,2.1vw,1.18rem); text-shadow:0 2px 10px rgba(20,16,10,.95)}
+    .flourish{margin-top:17px; color:var(--lantern); font:700 15px/1 var(--serif); letter-spacing:.6em; text-shadow:0 0 18px rgba(244,200,115,.8)}
+    .hero-plaque{position:absolute; z-index:2; left:50%; bottom:-58px; width:min(calc(100% - 40px),850px); transform:translateX(-50%); padding:17px 20px; display:flex; align-items:center; justify-content:center; gap:20px; flex-wrap:wrap; border:1px solid rgba(255,255,255,.65); border-radius:16px; background:rgba(251,246,233,.72); color:var(--ink); box-shadow:var(--shadow); backdrop-filter:blur(16px) saturate(1.2); text-align:center; font-weight:700}
+    .hero-plaque p{margin:0}.btn{display:inline-flex; align-items:center; justify-content:center; border:0; border-radius:999px; padding:13px 21px; background:var(--accent); color:#fff; font:700 14.5px var(--sans); text-decoration:none; cursor:pointer}
+    .btn:hover,.back:hover{transform:translateY(-2px); filter:brightness(1.07)}
+    .page{width:min(calc(100% - 32px),1000px); margin:auto}.content-section{margin:88px 0}.section-title{font-size:clamp(2rem,5vw,2.65rem); margin:0 0 28px; text-align:center}
+    .steps{position:relative; display:grid; grid-template-columns:repeat(3,1fr); gap:34px}.steps::before{content:""; position:absolute; left:16%; right:16%; top:24px; height:3px; background:linear-gradient(90deg,transparent,var(--gold) 8%,var(--gold) 92%,transparent); opacity:.65}
+    .step{position:relative; padding:62px 23px 24px; border:1px solid var(--cardborder); border-radius:16px; background:var(--card); box-shadow:var(--shadow)}
+    .node{position:absolute; z-index:1; top:0; left:50%; width:48px; height:48px; transform:translate(-50%,-50%); display:grid; place-items:center; border:2px solid #fff8df; border-radius:50%; background:var(--gold); color:var(--ink); box-shadow:0 0 0 5px var(--cream),0 0 22px rgba(244,200,115,.85); font:700 20px var(--serif)}
+    .step h3{margin:0 0 9px; color:var(--forest); font-size:21px}.step p{margin:0}
+    .stay-cards{display:grid; grid-template-columns:1fr 1fr; gap:24px}.stay-card{overflow:hidden; border:1px solid var(--cardborder); border-radius:16px; background:var(--card); box-shadow:var(--shadow)}
+    .stay-head{padding:22px 24px 18px; color:#fff}.farm .stay-head{background:linear-gradient(135deg,var(--forest),var(--meadow))}.delivery .stay-head{background:linear-gradient(135deg,#9e3927,var(--accent))}.stay-head h3{margin:0; font-size:25px}.motif{float:right; font-size:26px}
+    .stay-body{padding:23px 25px 26px}.price{margin:0 0 18px; color:var(--ink); font:700 clamp(2rem,5vw,2.75rem)/1.05 var(--serif)}.price small{font:700 15px var(--sans)}
+    .stay-card ul{margin:0 0 24px; padding:0; list-style:none}.stay-card li{position:relative; padding-left:25px}.stay-card li+li{margin-top:8px}.stay-card li::before{content:"✓"; position:absolute; left:0; color:var(--gold); font-weight:700}
+    .included-plaque{padding:28px; border:1px solid var(--cardborder); border-radius:28px 16px 30px 18px; background:var(--card); box-shadow:var(--shadow)}.included{display:grid; grid-template-columns:repeat(3,1fr); gap:8px 20px; margin:0; padding:0; list-style:none}.included li{display:flex; align-items:center; gap:12px; padding:13px 8px; border-bottom:1px dashed var(--cardborder); font-weight:700}.included .icon{font-size:23px}.note,.booking-info{color:#5f5a48}.note{margin:20px 8px 0; font-size:14px}
+    .gallery{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:20px}.photo{padding:7px; border:1px solid var(--cardborder); border-radius:14px; background:var(--card); box-shadow:0 12px 28px -15px rgba(30,23,12,.55); cursor:zoom-in; overflow:hidden}.photo img{display:block; width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:9px; transition:transform .45s cubic-bezier(.2,.7,.2,1)}.photo:hover{transform:translateY(-4px); box-shadow:0 15px 33px -13px rgba(30,23,12,.6)}.photo:hover img{transform:scale(1.035)}
+    details{margin:12px 0; padding:0 22px; border:1px solid var(--cardborder); border-radius:16px; background:var(--card); box-shadow:0 10px 25px -22px rgba(15,12,7,.6)}summary{position:relative; padding:19px 38px 19px 0; cursor:pointer; font-weight:700; list-style:none}summary::-webkit-details-marker{display:none}summary::after{content:"❖"; position:absolute; right:2px; color:var(--accent); transition:transform .25s ease-out}details[open] summary::after{transform:rotate(45deg)}details p{margin:0; padding:0 0 20px; color:#5f5a48}
+    .cross-sell-intro{margin:-16px auto 26px; text-align:center; color:#5f5a48}.cross-sell-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:18px}.cross-sell-card{display:flex; flex-direction:column; padding:24px; border:1px solid var(--cardborder); border-radius:22px 14px 24px 16px; background:var(--card); box-shadow:var(--shadow)}.cross-sell-card h3{margin:0 0 7px; color:var(--forest); font-size:21px}.cross-sell-price{margin:0 0 12px; color:var(--accent); font-weight:700}.cross-sell-card .teaser{margin:0 0 20px}.cross-sell-card .btn{align-self:flex-start; margin-top:auto}.cross-sell-card .btn:focus-visible{outline:3px solid var(--gold); outline-offset:3px}
+    .booking{scroll-margin-top:90px; margin:90px 0; padding:32px; border:1px solid var(--cardborder); border-radius:16px; background:var(--card); box-shadow:var(--shadow)}.booking h2{font-size:clamp(2rem,5vw,2.65rem); margin:0 0 14px}.booking-info{margin:0 0 26px}
+    .grid{display:grid; grid-template-columns:1fr 1fr; gap:18px}.field{display:flex; flex-direction:column; gap:6px}.wide{grid-column:1/-1}label,legend{font-weight:700; font-size:14px}input,textarea{width:100%; padding:11px 12px; border:1px solid #a89d7e; border-radius:9px; background:#fffdf8; color:var(--ink); font:inherit}input::placeholder,textarea::placeholder{color:#625e4c}textarea{min-height:100px; resize:vertical}fieldset{margin:0; padding:0; border:0}.modes{display:flex; flex-wrap:wrap; gap:16px; margin-top:7px}.modes label{display:flex; align-items:center; gap:7px; font-weight:400}.modes input{width:auto}.hint{color:#625e4c; font-size:12px}.actions{display:flex; align-items:center; flex-wrap:wrap; gap:16px; margin-top:24px}.fallback{font-size:14px}#confirmation{padding:26px; border:1px solid var(--cardborder); border-radius:16px; background:#fffaf0}#confirmation h2{color:var(--forest)}
+    footer{width:min(calc(100% - 32px),1000px); margin:auto; padding:42px 0 100px; text-align:center; border-top:1px solid var(--line)}.footer-logo{display:flex; align-items:center; justify-content:center; gap:15px; margin-bottom:8px; font:700 15px var(--serif); letter-spacing:.16em}.footer-logo::before,.footer-logo::after{content:""; width:48px; height:1px; background:var(--earth)}.footer-flourish{color:var(--accent); letter-spacing:.45em; margin:8px}.footer-link{font-size:14px}
+    dialog{border:0}#lightbox{z-index:var(--z-lightbox); max-width:min(92vw,1000px); padding:8px; border:1px solid var(--cardborder); border-radius:16px; background:var(--card); box-shadow:var(--shadow)}#lightbox::backdrop{background:rgba(28,22,13,.78)}#lightbox img{display:block; max-width:calc(92vw - 16px); max-height:85vh; border-radius:10px}.lightbox-close,.sheet-close{position:absolute; border:1px solid var(--cardborder); border-radius:50%; background:rgba(251,246,233,.95); color:var(--ink); cursor:pointer; font-size:20px}.lightbox-close{top:16px; right:16px; width:42px; height:42px}
+    .mobile-cta{display:none; position:fixed; z-index:var(--z-sticky); left:0; right:0; bottom:0; padding:12px 16px calc(12px + env(safe-area-inset-bottom)); border-top:1px solid var(--cardborder); background:rgba(251,246,233,.94); backdrop-filter:blur(12px)}.mobile-cta .btn{width:100%}
+    .reveal-ready .reveal{transform:translateY(20px); transition:transform .7s cubic-bezier(.2,.7,.2,1)}.reveal-ready .reveal.inview{transform:none}.reveal-ready .stagger>*{transform:translateY(20px); transition:transform .7s cubic-bezier(.2,.7,.2,1)}.reveal-ready .stagger.inview>*{transform:none}.stagger>*:nth-child(2){transition-delay:.1s}.stagger>*:nth-child(3){transition-delay:.2s}.stagger>*:nth-child(4){transition-delay:.3s}.stagger>*:nth-child(5){transition-delay:.4s}.stagger>*:nth-child(6){transition-delay:.5s}
+    @media(max-width:700px){
+      .site-header{padding:8px}.header-inner{min-height:47px; padding-left:15px}.brand{font-size:12px; letter-spacing:.11em}.back{font-size:12px;padding:7px 5px}.hero{width:100%; margin:-63px 0 92px; min-height:650px; border-radius:0}.hero-media{border-radius:0}.hero-copy{inset:auto 20px 130px}.hero-plaque{bottom:-68px; padding:16px; gap:11px}.hero-plaque .btn{display:none}.page{width:min(calc(100% - 28px),1000px)}.content-section{margin:74px 0}.steps{grid-template-columns:1fr; gap:28px; padding-left:31px}.steps::before{left:23px; right:auto; top:0; bottom:0; width:3px; height:auto; background:linear-gradient(transparent,var(--gold) 8%,var(--gold) 92%,transparent)}.step{padding:23px 20px 22px 37px}.node{left:0; top:50%; width:44px; height:44px}.stay-cards,.grid{grid-template-columns:1fr}.included{grid-template-columns:1fr 1fr}.wide{grid-column:auto}.booking{display:none}.mobile-cta{display:block}#booking-sheet[open]{position:fixed; inset:auto 0 0; z-index:var(--z-sheet); width:100%; max-width:none; max-height:92dvh; margin:0; padding:18px 18px calc(22px + env(safe-area-inset-bottom)); overflow:auto; border:1px solid var(--cardborder); border-radius:22px 22px 0 0; background:var(--card); color:var(--ink); box-shadow:0 -18px 50px -18px rgba(15,12,7,.7); transform:none; transition:transform .35s cubic-bezier(.2,.7,.2,1)}@starting-style{#booking-sheet[open]{transform:translateY(100%)}}#booking-sheet::backdrop{background:rgba(32,25,15,.62)}.grab{width:46px;height:5px;margin:0 auto 18px;border-radius:99px;background:#b9ad8d}.sheet-close{top:14px;right:14px;width:38px;height:38px}.sheet-title{padding-right:45px;margin:0 0 10px;font-size:30px}.sheet-info{font-size:14px;margin:0 0 22px;color:#5f5a48}footer{padding-bottom:110px}
+    }
+    @media(max-width:430px){.included{grid-template-columns:1fr}.included-plaque{padding:20px}.hero-copy p{font-size:15px}.hero-plaque p{font-size:14px}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important; transition:none!important}.reveal-ready .reveal,.reveal-ready .stagger>*{transform:none!important}}
+  </style>
+</head>
+<body>
+  <header class="site-header"><div class="header-inner"><div class="brand">TAPESTRY ACRES</div><a class="back" href="index.html">← Back to the farm</a></div></header>
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-media"><img src="assets/rv-1.jpg" alt="Fully set-up motorhome interior overlooking the pasture at Tapestry Acres"></div>
+      <div class="hero-copy"><h1 id="hero-title">Rent one of our RVs</h1><p>We bring the campsite to you. No rig? No problem — we deliver a fully set-up motorhome to your campsite within 50 miles of the farm, or park one for you right here at Tapestry Acres. You never tow or drive a thing; we handle delivery, setup, and pickup.</p><div class="flourish" aria-hidden="true">❖ ✳ ❖</div></div>
+      <div class="hero-plaque"><p>$270/night · 10% off weekly (7+ nights) · 50% deposit to reserve</p><a class="btn booking-trigger" href="#booking">Request your dates</a></div>
+    </section>
+    <div class="page">
+      <section class="content-section reveal" aria-labelledby="how-title"><h2 class="section-title" id="how-title">How it works</h2><div class="steps stagger">
+        <article class="step"><span class="node">1</span><h3>You reserve your campsite</h3><p>Book your own spot at any campground within ~50 miles of Monroe, TN — or choose an on-farm site with us.</p></article>
+        <article class="step"><span class="node">2</span><h3>We deliver &amp; set up</h3><p>We tow, level, and hook up one of our To The Max motorhomes before you arrive. You never drive it.</p></article>
+        <article class="step"><span class="node">3</span><h3>You just stay</h3><p>Enjoy a fully-outfitted RV. We come back and haul it away when you check out.</p></article>
+      </div></section>
+      <section class="content-section reveal" aria-labelledby="stays-title"><h2 class="section-title" id="stays-title">Choose your stay</h2><div class="stay-cards stagger">
+        <article class="stay-card farm"><div class="stay-head"><span class="motif" aria-hidden="true">🌿</span><h3>On the Farm</h3></div><div class="stay-body"><p class="price">$270 <small>/ night</small></p><ul><li>Stay in one of our RVs parked here at Tapestry Acres — alpacas out your window, no delivery fee.</li><li>10% off weekly stays</li><li>RV provided &amp; set up</li><li>Fresh linens included</li><li>Full farm access</li><li>Food-truck Saturdays</li></ul><a class="btn booking-trigger" href="#booking">Request this stay</a></div></article>
+        <article class="stay-card delivery"><div class="stay-head"><span class="motif" aria-hidden="true">🚐</span><h3>Delivered to Your Campsite</h3></div><div class="stay-body"><p class="price">$270 <small>/ night + delivery</small></p><ul><li>We deliver and set up at your campground within 50 miles. Delivery $400 (first 50 mi), $4/mile beyond.</li><li>10% off weekly stays</li><li>RV delivered, leveled &amp; hooked up</li><li>Fresh linens included</li><li>We handle setup &amp; pickup</li><li>You book the campsite</li></ul><a class="btn booking-trigger" href="#booking">Request delivery</a></div></article>
+      </div></section>
+      <section class="content-section reveal" aria-labelledby="included-title"><h2 class="section-title" id="included-title">What's included</h2><div class="included-plaque"><ul class="included stagger"><li><span class="icon">🛏️</span>Fresh linens &amp; made beds</li><li><span class="icon">🍽️</span>Kitchen &amp; dishware</li><li><span class="icon">🪑</span>Camp chairs</li><li><span class="icon">🟫</span>Outdoor mat</li><li><span class="icon">💧</span>Fresh-water fill</li><li><span class="icon">🔧</span>Waste hookup &amp; setup</li></ul><p class="note">Good to know: towels available on request; propane is not included.</p></div></section>
+      <section class="content-section reveal" aria-labelledby="gallery-title"><h2 class="section-title" id="gallery-title">Take a look inside</h2><div class="gallery stagger">
+        <button class="photo" type="button"><img src="assets/rv-1.jpg" loading="lazy" alt="Fully set-up motorhome interior with a Tennessee pasture view"></button><button class="photo" type="button"><img src="assets/rv-2.jpg" loading="lazy" alt="Comfortable motorhome living area ready for guests"></button><button class="photo" type="button"><img src="assets/rv-3.jpg" loading="lazy" alt="Motorhome kitchen and dining space stocked for a farm stay"></button><button class="photo" type="button"><img src="assets/rv-4.jpg" loading="lazy" alt="Clean, welcoming motorhome interior at Tapestry Acres"></button><button class="photo" type="button"><img src="assets/rv-5.jpg" loading="lazy" alt="Ready-to-enjoy RV living space delivered and set up"></button><button class="photo" type="button"><img src="assets/rv-6.jpg" loading="lazy" alt="Cozy motorhome accommodations for a Tennessee getaway"></button>
+      </div></section>
+      <section class="content-section reveal" aria-labelledby="faq-title"><h2 class="section-title" id="faq-title">Frequently asked questions</h2>
+        <details><summary>Do I have to drive the RV?</summary><p>No. We deliver, set up, and pick it up — you never tow or drive it. The keys stay with us.</p></details><details><summary>Where do you deliver?</summary><p>Any campground within about 50 miles of Monroe, TN. Farther out? Contact us for a custom quote ($4/mile beyond 50).</p></details><details><summary>Do I need RV insurance?</summary><p>No. Our vehicles are fully insured, and since you're not driving, there's nothing for you to cover.</p></details><details><summary>How do I book the campsite?</summary><p>You reserve your own campsite at the campground of your choice and we deliver to it. On-farm stays are booked right here with us.</p></details><details><summary>What deposits are there?</summary><p>A 50% deposit reserves your dates. The remaining balance is due 24 hours before check-in. At check-in we collect a refundable $500 incidental (damage) deposit, returned after inspection.</p></details><details><summary>Are pets allowed?</summary><p>Yes — pets are welcome.</p></details><details><summary>How many does it sleep?</summary><p>It varies by unit — just ask when you book and we'll match you to the right RV.</p></details>
+      </section>
+      <section class="content-section reveal" aria-labelledby="cross-sell-title"><h2 class="section-title" id="cross-sell-title">Make it a whole stay</h2><p class="cross-sell-intro">Add an experience to your visit — we'll have it all ready when you arrive.</p><div class="cross-sell-grid stagger">
+        <article class="cross-sell-card"><h3>Alpaca Walk</h3><p class="cross-sell-price">from $50</p><p class="teaser">Hand-feed and stroll the pasture with our alpacas.</p><a class="btn" href="index.html?add=alpaca-walk">Add to your visit →</a></article>
+        <article class="cross-sell-card"><h3>Private Guided Farm Tour</h3><p class="cross-sell-price">from $100</p><p class="teaser">A private walk through the whole heritage-breed farm.</p><a class="btn" href="index.html?add=farm-tour">Add to your visit →</a></article>
+        <article class="cross-sell-card"><h3>Farm Stay / Glamping night</h3><p class="teaser">Wake to the pasture under wide Cumberland skies.</p><a class="btn" href="index.html?add=farm-stay">Add to your visit →</a></article>
+        <article class="cross-sell-card"><h3>Harris Photography Session</h3><p class="cross-sell-price">from $150</p><p class="teaser">Capture your stay with a session on the farm.</p><a class="btn" href="index.html?add=photo-session">Add to your visit →</a></article>
+      </div></section>
+      <section class="booking reveal" id="booking" aria-labelledby="booking-title"><h2 id="booking-title">Request your dates</h2><p class="booking-info">$270 / night (10% off weekly). A 50% deposit reserves your dates; the balance is due 24 hours before check-in; a refundable $500 incidental deposit is collected at check-in. We'll confirm availability and send you a secure link to pay your 50% deposit.</p><div id="booking-inline">
+        <div id="booking-fields">
+          <form id="rvform" method="post" action="https://sites.obscurastudio.design/s/tapestry-acres/__lead" target="lead_iframe">
+            <input type="hidden" name="page" value="rv-rentals"><input type="hidden" name="source" value="meet-the-herd-game"><input type="text" name="company" value="" style="position:absolute;left:-9999px" tabindex="-1" autocomplete="off" aria-hidden="true"><input type="hidden" name="message" id="message" value="">
+            <div class="grid"><div class="field"><label for="name">Name</label><input id="name" name="name" required autocomplete="name"></div><div class="field"><label for="email">Email</label><input id="email" name="email" type="email" required autocomplete="email"></div><div class="field wide"><label for="phone">Phone <span class="hint">(optional)</span></label><input id="phone" name="phone" type="tel" autocomplete="tel"></div><div class="field"><label for="checkin">Check-in date</label><input id="checkin" name="checkin" type="date" required></div><div class="field"><label for="checkout">Check-out date</label><input id="checkout" name="checkout" type="date" required></div><fieldset class="wide"><legend>Where should the RV stay?</legend><div class="modes"><label><input type="radio" name="mode" value="On the farm" required checked> On the farm (no delivery)</label><label><input type="radio" name="mode" value="Delivered"> Delivered to my site</label></div></fieldset><div class="field wide"><label for="campground">Campground / delivery address</label><input id="campground" name="campground"><span class="hint">Needed if you choose Delivered.</span></div><div class="field"><label for="guests">Guests</label><input id="guests" name="guests" type="number" min="1" value="1"></div><div class="field wide"><label for="notes">Notes / questions <span class="hint">(optional)</span></label><textarea id="notes" name="notes"></textarea></div></div>
+            <div class="actions"><button class="btn" type="submit">Request my dates</button><a class="fallback" href="mailto:tapestryacres@gmail.com?subject=RV%20Rental%20Inquiry&amp;body=Please%20include%20your%20check-in%20date%2C%20check-out%20date%2C%20number%20of%20guests%2C%20and%20delivery%20details.">Prefer email? Send us your dates directly.</a></div>
+          </form>
+          <div id="confirmation" hidden tabindex="-1"><h2>Request received</h2><p>Request received — we'll email you to confirm your dates and send your 50% deposit link to lock it in.</p></div><iframe name="lead_iframe" title="Booking request submission" style="width:0;height:0;border:0;position:absolute" aria-hidden="true"></iframe>
+        </div>
+      </div></section>
+    </div>
+  </main>
+  <footer><div class="footer-logo">TAPESTRY ACRES</div><div class="footer-flourish" aria-hidden="true">❖ ✳ ❖</div><a class="footer-link" href="mailto:tapestryacres@gmail.com">tapestryacres@gmail.com</a></footer>
+  <div class="mobile-cta"><button class="btn" id="mobile-booking-cta" type="button">Request your dates</button></div>
+  <dialog id="booking-sheet" aria-labelledby="sheet-title"><div class="grab" aria-hidden="true"></div><button class="sheet-close" type="button" aria-label="Close booking form">×</button><h2 class="sheet-title" id="sheet-title">Request your dates</h2><p class="sheet-info">$270 / night (10% off weekly). A 50% deposit reserves your dates; the balance is due 24 hours before check-in; a refundable $500 incidental deposit is collected at check-in. We'll confirm availability and send you a secure link to pay your 50% deposit.</p><div id="booking-sheet-mount"></div></dialog>
+  <dialog id="lightbox" aria-label="Expanded RV photo"><button class="lightbox-close" type="button" aria-label="Close photo">×</button><img alt=""></dialog>
+  <script>
+    (function(){
+      var form=document.getElementById('rvform');
+      var confirmation=document.getElementById('confirmation');
+      var campground=document.getElementById('campground');
+      var modes=form.querySelectorAll('input[name="mode"]');
+      function updateCampgroundRequired(){var selected=form.querySelector('input[name="mode"]:checked');campground.required=selected&&selected.value==='Delivered';}
+      modes.forEach(function(mode){mode.addEventListener('change',updateCampgroundRequired);});
+      updateCampgroundRequired();
+      form.addEventListener('submit',function(){
+        var selected=form.querySelector('input[name="mode"]:checked');
+        document.getElementById('message').value=[
+          'RV rental request',
+          'Mode: '+(selected ? selected.value : ''),
+          'Check-in: '+document.getElementById('checkin').value,
+          'Check-out: '+document.getElementById('checkout').value,
+          'Campground/address: '+document.getElementById('campground').value,
+          'Guests: '+document.getElementById('guests').value,
+          'Notes: '+document.getElementById('notes').value
+        ].join('\n');
+        setTimeout(function(){form.hidden=true;confirmation.hidden=false;confirmation.focus();},50);
+      });
+
+      var media=window.matchMedia('(max-width:700px)');
+      var fields=document.getElementById('booking-fields');
+      var inline=document.getElementById('booking-inline');
+      var sheet=document.getElementById('booking-sheet');
+      var sheetMount=document.getElementById('booking-sheet-mount');
+      var mobileCta=document.getElementById('mobile-booking-cta');
+      var sheetClose=sheet.querySelector('.sheet-close');
+      var sheetReturn=null;
+      function mount(){(media.matches ? sheetMount : inline).appendChild(fields);if(!media.matches&&sheet.open)sheet.close();}
+      mount(); media.addEventListener('change',mount);
+      function openSheet(trigger){sheetReturn=trigger;sheet.showModal();setTimeout(function(){document.getElementById('name').focus();},0);}
+      mobileCta.addEventListener('click',function(){openSheet(mobileCta);});
+      document.querySelectorAll('.booking-trigger').forEach(function(trigger){trigger.addEventListener('click',function(event){if(media.matches){event.preventDefault();openSheet(trigger);}});});
+      sheetClose.addEventListener('click',function(){sheet.close();});
+      sheet.addEventListener('click',function(event){if(event.target===sheet)sheet.close();});
+      sheet.addEventListener('close',function(){if(sheetReturn)sheetReturn.focus();});
+
+      var lightbox=document.getElementById('lightbox');
+      var lightboxImage=lightbox.querySelector('img');
+      var lightboxReturn=null;
+      document.querySelectorAll('.photo').forEach(function(button){button.addEventListener('click',function(){var image=button.querySelector('img');lightboxReturn=button;lightboxImage.src=image.src;lightboxImage.alt=image.alt;lightbox.showModal();});});
+      lightbox.querySelector('.lightbox-close').addEventListener('click',function(){lightbox.close();});
+      lightbox.addEventListener('click',function(event){if(event.target===lightbox)lightbox.close();});
+      lightbox.addEventListener('close',function(){if(lightboxReturn)lightboxReturn.focus();});
+
+      if('IntersectionObserver' in window&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.classList.add('reveal-ready');var observer=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(entry.isIntersecting){entry.target.classList.add('inview');observer.unobserve(entry.target);}});},{threshold:.12});document.querySelectorAll('.reveal,.stagger').forEach(function(item){observer.observe(item);});}
+    }());
+  </script>
+</body>
+</html>
