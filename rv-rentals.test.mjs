@@ -30,6 +30,10 @@ for (let photo = 1; photo <= 6; photo += 1) {
   assert(html.includes(`assets/rv-${photo}.jpg`), `missing photo reference: assets/rv-${photo}.jpg`);
 }
 
+for (const photo of ['windsport.png', 'odyssey.png', 'sequence.png']) {
+  assert(html.includes(`assets/fleet/${photo}`), `missing fleet photo reference: assets/fleet/${photo}`);
+}
+
 assert(html.includes("fetch('bookings.json')"), 'missing bookings.json fetch');
 assert(html.includes('checkAvailability'), 'missing availability overlap logic');
 assert(html.includes('Check availability'), 'missing Check availability control');
