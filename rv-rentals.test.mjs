@@ -1,4 +1,5 @@
 import { readFile } from 'node:fs/promises';
+import { readFileSync } from 'node:fs';
 
 const html = await readFile(new URL('./rv-rentals.html', import.meta.url), 'utf8');
 
@@ -28,6 +29,15 @@ for (const content of ['$270', '10% off weekly', '50%', '$500', '24 hours']) {
 for (let photo = 1; photo <= 6; photo += 1) {
   assert(html.includes(`assets/rv-${photo}.jpg`), `missing photo reference: assets/rv-${photo}.jpg`);
 }
+
+assert(html.includes("fetch('bookings.json')"), 'missing bookings.json fetch');
+assert(html.includes('checkAvailability'), 'missing availability overlap logic');
+assert(html.includes('Check availability'), 'missing Check availability control');
+assert(html.includes('towels included for on-farm stays'), 'missing corrected towels note');
+assert(!html.includes('towels available on request'), 'contains stale towels note');
+
+const bookings = JSON.parse(readFileSync(new URL('./bookings.json', import.meta.url), 'utf8'));
+assert(Array.isArray(bookings.bookings), 'bookings.json is missing a bookings array');
 
 for (const stale of ['$220', '$80', '$300', '30 days']) {
   assert(!html.includes(stale), `contains stale/wrong pricing: ${stale}`);
