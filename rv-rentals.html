@@ -150,12 +150,12 @@
       mount(); media.addEventListener('change',mount);
       function openSheet(trigger){sheetReturn=trigger;sheet.showModal();setTimeout(function(){document.getElementById('name').focus();},0);}
       var fleet=[
-        {id:'max-1',name:'Max 1 · Esteem',cls:'Class C',spec:'2021 Entegra Esteem · Ford E-450',sleeps:null},
-        {id:'max-2',name:'Max 2 · Windsport',cls:'Class A',spec:'2024 Thor Windsport 29M · Ford F-53',sleeps:null},
+        {id:'max-1',name:'Max 1 · Esteem',cls:'Class C',spec:'2021 Entegra Esteem · Ford E-450',sleeps:10},
+        {id:'max-2',name:'Max 2 · Windsport',cls:'Class A',spec:'2024 Thor Windsport 29M · Ford F-53',sleeps:7},
         {id:'max-3',name:'Max 3 · Odyssey',cls:'Class C',spec:'2022 Entegra Odyssey 31F · bunkhouse · Ford E-450',sleeps:10},
         {id:'max-4',name:'Max 4 · Odyssey',cls:'Class C',spec:'2022 Entegra Odyssey 31F · bunkhouse · Ford E-450',sleeps:10},
         {id:'max-5',name:'Max 5 · Odyssey',cls:'Class C',spec:'2022 Entegra Odyssey 31F · bunkhouse · Ford E-450',sleeps:10},
-        {id:'max-6',name:'Max 6 · Sequence',cls:'Class B',spec:'Thor Sequence 20A · RAM ProMaster',sleeps:null}
+        {id:'max-6',name:'Max 6 · Sequence',cls:'Class B',spec:'Thor Sequence 20A · RAM ProMaster',sleeps:4}
       ];
       var fleetGrid=document.getElementById('fleet-grid');
       var availabilityCheckin=document.getElementById('availability-checkin');
