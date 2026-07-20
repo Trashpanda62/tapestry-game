@@ -103,7 +103,7 @@
         card.appendChild(imageWrap);card.appendChild(body);grid.appendChild(card);
       }
 
-      fetch('experiences.json').then(function(response){if(!response.ok)throw new Error('Request failed');return response.json();}).then(function(experiences){grid.replaceChildren();grid.setAttribute('aria-busy','false');if(!experiences.length){grid.appendChild(addText(document.createElement('p'),'No experiences listed right now — check back soon.'));return;}addStructuredData(experiences);experiences.forEach(renderCard);}).catch(function(){grid.hidden=true;grid.setAttribute('aria-busy','false');error.hidden=false;});
+      fetch('experiences.json',{cache:'no-cache'}).then(function(response){if(!response.ok)throw new Error('Request failed');return response.json();}).then(function(experiences){grid.replaceChildren();grid.setAttribute('aria-busy','false');if(!experiences.length){grid.appendChild(addText(document.createElement('p'),'No experiences listed right now — check back soon.'));return;}addStructuredData(experiences);experiences.forEach(renderCard);}).catch(function(){grid.hidden=true;grid.setAttribute('aria-busy','false');error.hidden=false;});
       sheet.querySelector('.sheet-close').addEventListener('click',function(){sheet.close();});
       sheet.addEventListener('click',function(event){if(event.target===sheet)sheet.close();});
       sheet.addEventListener('close',function(){if(returnFocus)returnFocus.focus();});

@@ -9,8 +9,8 @@ function assert(condition, message) {
   }
 }
 
-assert(html.includes("fetch('store-products.json')"), 'missing store-products.json fetch');
-assert(/<div\b[^>]*\bid=["']product-grid["'][^>]*>[\s\S]*?<article class=["']skeleton-card["'] aria-hidden=["']true["']><\/article>[\s\S]*?<\/div>[\s\S]*?fetch\(['"]store-products\.json['"]\)/i.test(html), 'loading skeleton markup is missing before shop data loads');
+assert(html.includes("fetch('store-products.json',{cache:'no-cache'})"), 'missing store-products.json fetch');
+assert(/<div\b[^>]*\bid=["']product-grid["'][^>]*>[\s\S]*?<article class=["']skeleton-card["'] aria-hidden=["']true["']><\/article>[\s\S]*?<\/div>[\s\S]*?fetch\(['"]store-products\.json['"],\{cache:['"]no-cache['"]\}\)/i.test(html), 'loading skeleton markup is missing before shop data loads');
 assert(/product\.category[\s\S]*product\.subcategory/.test(html), 'missing category/subcategory filter mechanism');
 
 assert(/<input\b(?=[^>]*\bid=["']product-search["'])(?=[^>]*\btype=["']search["'])(?=[^>]*\baria-label=["'][^"']+["'])[^>]*>/i.test(html), 'product search input is missing an aria-label');

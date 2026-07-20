@@ -113,7 +113,7 @@
         values.forEach(function(value){var tab=document.createElement('button');tab.type='button';tab.className='filter-tab';tab.dataset.filter=value;tab.setAttribute('role','tab');tab.setAttribute('aria-selected',String(value==='All'));tab.textContent=value;tab.addEventListener('click',function(){selectFilter(value);});tabs.appendChild(tab);});
       }
       search.addEventListener('input',render);
-      fetch('store-products.json').then(function(response){if(!response.ok)throw new Error('Product feed unavailable');return response.json();}).then(function(data){
+      fetch('store-products.json',{cache:'no-cache'}).then(function(response){if(!response.ok)throw new Error('Product feed unavailable');return response.json();}).then(function(data){
         if(!Array.isArray(data))throw new Error('Invalid product feed');
         products=data;status.classList.remove('sr-only');buildTabs();render();
       }).catch(function(){grid.replaceChildren();grid.setAttribute('aria-busy','false');status.classList.remove('sr-only');status.hidden=false;status.textContent='We could not load the shop right now. Please try again later.';});

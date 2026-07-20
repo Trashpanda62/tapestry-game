@@ -10,10 +10,10 @@ function assert(condition, message) {
   }
 }
 
-assert(html.includes("fetch('experiences.json')"), 'missing experiences.json fetch');
+assert(html.includes("fetch('experiences.json',{cache:'no-cache'})"), 'missing experiences.json fetch');
 
 assert(/<div\b[^>]*\bclass=["'][^"']*\bexperience-grid\b[^"']*["'][^>]*\bid=["']experience-grid["'][^>]*>/i.test(html), 'missing experience card container');
-assert(/<div\b[^>]*\bid=["']experience-grid["'][^>]*>[\s\S]*?<article class=["']skeleton-card["'] aria-hidden=["']true["']><\/article>[\s\S]*?<\/div>[\s\S]*?fetch\(['"]experiences\.json['"]\)/i.test(html), 'loading skeleton markup is missing before experiences data loads');
+assert(/<div\b[^>]*\bid=["']experience-grid["'][^>]*>[\s\S]*?<article class=["']skeleton-card["'] aria-hidden=["']true["']><\/article>[\s\S]*?<\/div>[\s\S]*?fetch\(['"]experiences\.json['"],\{cache:['"]no-cache['"]\}\)/i.test(html), 'loading skeleton markup is missing before experiences data loads');
 assert(html.includes("document.getElementById('experience-grid')"), 'experience card container is not referenced in JavaScript');
 assert(html.includes("document.createElement('article')"), 'experience card article markup is missing');
 assert(html.includes("card.className='experience-card'"), 'rendered article is missing the experience-card class');

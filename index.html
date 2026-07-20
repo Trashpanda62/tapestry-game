@@ -115,13 +115,13 @@
       function image(src,alt){var img=document.createElement('img');img.src=src;img.alt=alt;img.loading='lazy';return img;}
       function loadExperiences(){
         var mount=document.getElementById('featured-experiences');
-        fetch('experiences.json').then(function(response){if(!response.ok)throw new Error('Unable to load experiences');return response.json();}).then(function(items){
+        fetch('experiences.json',{cache:'no-cache'}).then(function(response){if(!response.ok)throw new Error('Unable to load experiences');return response.json();}).then(function(items){
           mount.textContent='';items.slice(0,3).forEach(function(item){var card=text('article','feature-card','');var copy=text('div','card-copy','');card.appendChild(image(item.image,item.name));copy.appendChild(text('h3','',item.name));copy.appendChild(text('p','',item.blurb));copy.appendChild(text('p','card-price',item.price));card.appendChild(copy);mount.appendChild(card);});
         }).catch(function(){mount.textContent='';mount.appendChild(text('p','section-note','Experiences are taking a pasture break. Please visit the experiences page to see what is available.'));});
       }
       function loadProducts(){
         var mount=document.getElementById('featured-products');
-        fetch('store-products.json').then(function(response){if(!response.ok)throw new Error('Unable to load products');return response.json();}).then(function(items){
+        fetch('store-products.json',{cache:'no-cache'}).then(function(response){if(!response.ok)throw new Error('Unable to load products');return response.json();}).then(function(items){
           mount.textContent='';items.slice(0,4).forEach(function(item){var card=text('article','product-card','');var copy=text('div','card-copy','');if(item.images&&item.images[0])card.appendChild(image(item.images[0],item.title));copy.appendChild(text('h3','',item.title));copy.appendChild(text('p','card-price','$'+Number(item.price).toFixed(2)));card.appendChild(copy);mount.appendChild(card);});
         }).catch(function(){mount.textContent='';mount.appendChild(text('p','section-note','The shop preview is unavailable right now. Please visit the shop to browse our products.'));});
       }
