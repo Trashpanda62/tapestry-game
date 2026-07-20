@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Meet the Animals | Tapestry Acres</title>
+  <meta name="description" content="Alpacas, Highland cattle, Nigerian Dwarf goats, Kune Kune pigs, mules, and more at Tapestry Acres in Monroe, Tennessee — plus animals currently for sale.">
+  <link rel="canonical" href="https://trashpanda62.github.io/tapestry-game/animals.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Meet the Animals | Tapestry Acres">
+  <meta property="og:description" content="Alpacas, Highland cattle, Nigerian Dwarf goats, Kune Kune pigs, mules, and more at Tapestry Acres in Monroe, Tennessee.">
+  <meta property="og:url" content="https://trashpanda62.github.io/tapestry-game/animals.html">
+  <meta property="og:image" content="https://trashpanda62.github.io/tapestry-game/assets/portfolio/alpaca-face.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Meet the Animals | Tapestry Acres">
+  <meta name="twitter:description" content="Alpacas, Highland cattle, Nigerian Dwarf goats, Kune Kune pigs, mules, and more at Tapestry Acres in Monroe, Tennessee.">
+  <meta name="twitter:image" content="https://trashpanda62.github.io/tapestry-game/assets/portfolio/alpaca-face.webp">
+  <link rel="stylesheet" href="assets/site.css">
+  <style>
+    .animals-intro{padding:72px 20px 28px;text-align:center}.animals-intro h1{margin:0 auto 16px;color:var(--ink);text-shadow:none}.animals-intro p{margin:0 auto;color:var(--muted);font-size:1.08rem}
+    .animal-groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px;margin:28px 0 60px}
+    .animal-card{display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--cardborder);border-radius:18px;background:var(--card);box-shadow:var(--shadow)}
+    .animal-card img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;background:#eee7d7}
+    .animal-body{display:flex;flex:1;flex-direction:column;padding:24px}
+    .animal-body h2{margin:0 0 8px;color:var(--forest);font-size:23px}
+    .animal-blurb{margin:0 0 14px}
+    .animal-names{margin:0 0 10px;color:var(--muted);font-size:14px;line-height:1.6}
+    .animal-unnamed{margin:0;color:var(--muted);font-size:13px;font-style:italic}
+    .for-sale-section{margin:60px 0 90px}
+    .for-sale-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+    .for-sale-card{padding:24px;border:1px solid var(--cardborder);border-radius:16px;background:var(--card);box-shadow:var(--shadow)}
+    .for-sale-card h3{margin:0 0 8px;color:var(--forest);font-size:20px}
+    .for-sale-card p{margin:0 0 16px;color:var(--muted)}
+    .load-error{margin:30px 0 90px;padding:22px;border:1px solid var(--accent);border-radius:16px;background:var(--card);color:#8b2f20;text-align:center;font-weight:700}
+    @media(max-width:700px){.animals-intro{padding-top:45px}.animal-groups,.for-sale-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">TAPESTRY ACRES</div>
+      <button class="site-nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="site-nav"><span class="sr-only">Toggle navigation</span><span aria-hidden="true"></span></button>
+      <nav class="site-nav" id="site-nav" aria-label="Primary navigation">
+        <a href="index.html">Home</a>
+        <a href="experiences.html">Experiences</a>
+        <a href="shop.html">Shop</a>
+        <a href="animals.html" aria-current="page">Animals</a>
+        <a href="meet-the-herd.html">Meet the Herd</a>
+        <a href="rv-rentals.html">RV Rentals</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <div class="page">
+      <section class="animals-intro" aria-labelledby="animals-title">
+        <h1 id="animals-title">Meet the animals</h1>
+        <p>110 acres, a whole barnyard of personalities — here's who you'll meet.</p>
+      </section>
+      <div class="animal-groups" id="animal-groups" aria-live="polite" aria-busy="true"><article class="skeleton-card" aria-hidden="true"></article><article class="skeleton-card" aria-hidden="true"></article><article class="skeleton-card" aria-hidden="true"></article><span class="sr-only">Loading animals…</span></div>
+      <section class="for-sale-section" aria-labelledby="for-sale-title">
+        <h2 class="section-title" id="for-sale-title">Currently for sale</h2>
+        <div class="for-sale-grid" id="for-sale-grid" aria-live="polite"></div>
+      </section>
+      <p class="load-error" id="load-error" role="alert" hidden>We couldn't load the animal roster right now. Please refresh the page or email <a href="mailto:tapestryacres@gmail.com">tapestryacres@gmail.com</a>.</p>
+    </div>
+  </main>
+  <footer><div class="footer-logo">TAPESTRY ACRES</div><div class="footer-flourish" aria-hidden="true">❖ ✳ ❖</div><a class="footer-link" href="mailto:tapestryacres@gmail.com">tapestryacres@gmail.com</a></footer>
+  <script defer>
+    (function(){
+      var toggle=document.querySelector('.site-nav-toggle');
+      toggle.addEventListener('click',function(){toggle.setAttribute('aria-expanded',toggle.getAttribute('aria-expanded')!=='true');});
+
+      var groupsMount=document.getElementById('animal-groups');
+      var forSaleMount=document.getElementById('for-sale-grid');
+      var error=document.getElementById('load-error');
+
+      function addText(tag,className,value){var el=document.createElement(tag);if(className)el.className=className;el.textContent=value;return el;}
+      function renderGroup(group){
+        var card=document.createElement('article');card.className='animal-card';
+        if(group.image){var img=document.createElement('img');img.src=group.image;img.alt=group.species;img.loading='lazy';card.appendChild(img);}
+        var body=document.createElement('div');body.className='animal-body';card.appendChild(body);
+        body.appendChild(addText('h2','',group.species));
+        body.appendChild(addText('p','animal-blurb',group.blurb));
+        if(group.individuals&&group.individuals.length)body.appendChild(addText('p','animal-names',group.individuals.join(' · ')));
+        if(group.unnamedNote)body.appendChild(addText('p','animal-unnamed',group.unnamedNote));
+        groupsMount.appendChild(card);
+      }
+      function renderForSale(item){
+        var card=document.createElement('article');card.className='for-sale-card';
+        card.appendChild(addText('h3','',item.name));
+        card.appendChild(addText('p','',item.detail));
+        var cta=addText('a',null,item.cta);cta.className='btn';cta.href='mailto:tapestryacres@gmail.com?subject='+encodeURIComponent(item.name+' inquiry');card.appendChild(cta);
+        forSaleMount.appendChild(card);
+      }
+
+      fetch('animals.json',{cache:'no-cache'}).then(function(response){if(!response.ok)throw new Error('Request failed');return response.json();}).then(function(data){
+        groupsMount.replaceChildren();groupsMount.setAttribute('aria-busy','false');
+        if(!data.groups||!data.groups.length){groupsMount.appendChild(addText('p',null,'No animals listed right now — check back soon.'));return;}
+        data.groups.forEach(renderGroup);
+        (data.forSale||[]).forEach(renderForSale);
+      }).catch(function(){groupsMount.hidden=true;groupsMount.setAttribute('aria-busy','false');error.hidden=false;});
+    }());
+  </script>
+</body>
+</html>

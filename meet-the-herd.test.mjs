@@ -15,7 +15,7 @@ assert(/document\.createElement\(['"]img['"]\)[\s\S]*?im\.alt\s*=\s*p\.n/.test(h
 assert(/<button\b(?=[^>]*\bclass=["'][^"']*\bsite-nav-toggle\b)(?=[^>]*\baria-label=["'][^"']+["'])[^>]*>/i.test(html), 'mobile navigation toggle is missing an aria-label');
 
 const nav = html.match(/<nav\b[^>]*>[\s\S]*?<\/nav>/i)?.[0] || '';
-for (const href of ['index.html', 'experiences.html', 'shop.html', 'rv-rentals.html']) {
+for (const href of ['index.html', 'experiences.html', 'shop.html', 'animals.html', 'rv-rentals.html']) {
   assert(nav.includes(`href="${href}"`), `missing navigation href: ${href}`);
 }
 

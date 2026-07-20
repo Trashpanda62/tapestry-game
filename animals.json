@@ -1,0 +1,76 @@
+{
+  "groups": [
+    {
+      "species": "Alpacas",
+      "blurb": "Camelids closely related to llamas, raised here for their fiber — the source of the socks, gloves, and yarn in our shop.",
+      "image": "assets/portfolio/alpaca-face.webp",
+      "individuals": ["Agnis", "Andy", "Avalanche", "Bailey", "Bianca", "Captain", "Casper", "Chiri Bim", "Chord", "Donna", "ET", "Eve", "Goose", "Joey", "Kalua", "Olaf", "Peggy Sue", "Seth", "Sheridan", "Snowflake", "Soloman", "Spaz", "Sven", "Yeti", "mauve"],
+      "unnamedCount": 6,
+      "unnamedNote": "plus ~6 unnamed fiber-herd girls"
+    },
+    {
+      "species": "Highland Cattle",
+      "blurb": "Scottish cattle with long horns and shaggy coats, bred to handle harsh weather — the herd you'll meet at Coffee with the Cows.",
+      "image": "assets/bg/highland.webp",
+      "individuals": ["Alpine", "Baby", "Blonde", "Cedar", "Daisy", "Espresso Bean", "Marsala", "Marshmallow", "May", "Merida", "Mini", "Sasha", "William Wallace"]
+    },
+    {
+      "species": "Belted Galloway × Jersey",
+      "blurb": "A cross between the Scottish Belted Galloway and the small, docile Jersey dairy breed.",
+      "image": "assets/bg/highland2.webp",
+      "individuals": ["Cal", "Carolina", "Georgia"]
+    },
+    {
+      "species": "Nigerian Dwarf Goats",
+      "blurb": "A modern American miniature breed descended from West African dwarf goats.",
+      "image": "assets/bg/goats.webp",
+      "individuals": ["Bubbles", "Buddy", "Donkey", "Dude", "Ella", "Fancy", "Felicity", "Fiona", "Freidrick", "Freya", "Gabbie", "Jimini", "Margot", "Oreo", "Pippa", "Robbie"],
+      "unnamedCount": 14,
+      "unnamedNote": "plus ~7 male kids and ~7 yearlings not yet individually named"
+    },
+    {
+      "species": "Kune Kune Pigs",
+      "blurb": "A hairy, rotund New Zealand breed — docile enough to live entirely on pasture grass.",
+      "image": "assets/cards/piglet.jpg",
+      "individuals": ["Poppy", "Viola"],
+      "unnamedCount": 10,
+      "unnamedNote": "plus a herd of ~10 unnamed pigs"
+    },
+    {
+      "species": "Mules",
+      "blurb": "Laverne and Shirley, our resident mules.",
+      "image": "assets/bg/meadow.webp",
+      "individuals": ["Laverne", "Shirley"]
+    },
+    {
+      "species": "Mini Horse & Donkey",
+      "blurb": "Penelope (mini horse, notorious attitude) and Murphy (mini donkey, textbook donkey temperament) round out the barnyard.",
+      "image": "assets/bg/welcome.webp",
+      "individuals": ["Penelope", "Murphy"]
+    },
+    {
+      "species": "Poultry",
+      "blurb": "A laying flock of chickens, Indian Runner ducks on garden pest-control duty, Bourbon Red turkeys, and a new 2026 silkie breeding line.",
+      "image": "assets/bg/welcome.webp",
+      "individuals": [],
+      "unnamedNote": "laying flock (count varies) · Indian Runner ducks · Bourbon Red turkeys (mostly reserved) · silkie breeding stock (not yet for sale)"
+    }
+  ],
+  "forSale": [
+    {
+      "name": "Baby Nigerian Dwarf Goats",
+      "detail": "6 available, ~3 months old, purebred",
+      "cta": "Contact us for pricing"
+    },
+    {
+      "name": "Nigerian Dwarf Goats",
+      "detail": "1 year old, purebred",
+      "cta": "Contact us for pricing"
+    },
+    {
+      "name": "Kune Kune Pigs",
+      "detail": "Newborn to 1 year old",
+      "cta": "Contact us for pricing"
+    }
+  ]
+}

@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 
-const pages = ['index.html', 'experiences.html', 'shop.html', 'meet-the-herd.html', 'rv-rentals.html'];
+const pages = ['index.html', 'experiences.html', 'shop.html', 'animals.html', 'meet-the-herd.html', 'rv-rentals.html'];
 const siteRoot = 'https://trashpanda62.github.io/tapestry-game/';
 const htmlByPage = new Map(await Promise.all(pages.map(async (page) => [
   page,
@@ -42,18 +42,23 @@ test('robots.txt references the sitemap', async () => {
 });
 
 test('structured data is valid JSON or syntactically sound JavaScript', () => {
-  for (const page of ['index.html', 'shop.html']) {
-    const blocks = [...htmlByPage.get(page).matchAll(/<script\b[^>]*\btype=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)];
-    assert.ok(blocks.length > 0, `${page} is missing JSON-LD`);
-    for (const block of blocks) JSON.parse(block[1]);
-  }
+  const indexHtml = htmlByPage.get('index.html');
+  const indexBlocks = [...indexHtml.matchAll(/<script\b[^>]*\btype=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)];
+  assert.ok(indexBlocks.length > 0, 'index.html is missing JSON-LD');
+  for (const block of indexBlocks) JSON.parse(block[1]);
 
-  const experiencesHtml = htmlByPage.get('experiences.html');
-  const scripts = [...experiencesHtml.matchAll(/<script\b(?![^>]*\btype=["']application\/ld\+json["'])[^>]*>([\s\S]*?)<\/script>/gi)];
-  assert.ok(scripts.length > 0, 'experiences.html is missing inline JavaScript');
-  for (const script of scripts) new Function(script[1]);
-  assert.match(experiencesHtml, /function addStructuredData\(experiences\)/);
-  assert.match(experiencesHtml, /script\.type=['"]application\/ld\+json['"]/);
-  assert.match(experiencesHtml, /script\.textContent=JSON\.stringify\(data\)/);
-  assert.match(experiencesHtml, /document\.head\.appendChild\(script\)/);
+  // shop.html and experiences.html build their JSON-LD dynamically from the
+  // live feed (real skus/prices/checkout_urls, not a static snapshot) --
+  // verify the injection pattern instead of a static <script> block.
+  for (const page of ['experiences.html', 'shop.html']) {
+    const html = htmlByPage.get(page);
+    const scripts = [...html.matchAll(/<script\b(?![^>]*\btype=["']application\/ld\+json["'])[^>]*>([\s\S]*?)<\/script>/gi)];
+    assert.ok(scripts.length > 0, `${page} is missing inline JavaScript`);
+    for (const script of scripts) new Function(script[1]);
+    assert.match(html, /function addStructuredData\(/, `${page} is missing an addStructuredData function`);
+    assert.match(html, /script\.type=['"]application\/ld\+json['"]/, `${page} does not set script.type to application/ld+json`);
+    assert.match(html, /script\.textContent=JSON\.stringify\(data\)/, `${page} does not serialize data via JSON.stringify`);
+    assert.match(html, /document\.head\.appendChild\(script\)/, `${page} does not append the JSON-LD script to <head>`);
+  }
+  assert.match(htmlByPage.get('shop.html'), /featured\.length>=8/, 'shop.html JSON-LD is not capped to <=8 featured products');
 });

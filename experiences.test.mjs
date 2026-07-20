@@ -23,7 +23,16 @@ assert(/document\.createElement\(['"]img['"]\)[\s\S]*?image\.alt\s*=\s*experienc
 assert(/<button\b(?=[^>]*\bclass=["'][^"']*\bsite-nav-toggle\b)(?=[^>]*\baria-label=["'][^"']+["'])[^>]*>/i.test(html), 'mobile navigation toggle is missing an aria-label');
 
 assert(experiences.length > 0, 'experiences.json has no entries');
-assert(experiences.every((experience) => experience.checkout_url === ''), 'not every experience currently has an empty checkout_url');
+const PAID_IDS = ['coffee-with-the-cows', 'alpaca-experience-walk', 'private-guided-farm-tour', 'virtual-farm-tour', 'birthday-party'];
+const FREE_IDS = ['farm-shopping-experience', 'seasonal-events'];
+for (const experience of experiences) {
+  if (PAID_IDS.includes(experience.id)) {
+    assert(typeof experience.checkout_url === 'string' && experience.checkout_url.startsWith('https://'), `${experience.id} is missing a real checkout_url`);
+  } else if (FREE_IDS.includes(experience.id)) {
+    assert(experience.checkout_url === '', `${experience.id} should have an empty checkout_url (free/RSVP entry)`);
+  }
+}
+assert(!/groom/i.test(JSON.stringify(experiences)), 'experiences.json still contains a "groom" claim');
 assert(html.includes("if(experience.checkout_url)"), 'missing checkout URL branch');
 assert(html.includes("document.createElement('button'),'Reserve'"), 'missing Reserve fallback control');
 assert(/<dialog\b[^>]*\bid=["']experience-sheet["']/i.test(html), 'missing reservation dialog');

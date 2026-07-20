@@ -4,19 +4,20 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Tapestry Acres | Farm Experiences, Shop &amp; Stays in Monroe, TN</title>
-  <meta name="description" content="Slow down at Tapestry Acres in Monroe, Tennessee. Plan a farm experience, meet the herd, shop alpaca goods, or stay in one of our RVs.">
+  <meta name="description" content="An alpaca farm &amp; farm-stay in Monroe, Tennessee. 110 acres of alpacas, Highland cattle, and farm stays — meet the herd, shop the fiber, stay the night.">
   <link rel="canonical" href="https://trashpanda62.github.io/tapestry-game/">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Tapestry Acres | Slow down. Stay a while.">
-  <meta property="og:description" content="Plan a farm experience, meet the herd, shop alpaca goods, or stay in one of our RVs in Monroe, Tennessee.">
+  <meta property="og:title" content="Tapestry Acres | An alpaca farm &amp; farm-stay in Monroe, TN">
+  <meta property="og:description" content="110 acres of alpacas, Highland cattle, and farm stays in Monroe, Tennessee — meet the herd, shop the fiber, stay the night.">
   <meta property="og:url" content="https://trashpanda62.github.io/tapestry-game/">
   <meta property="og:image" content="https://trashpanda62.github.io/tapestry-game/assets/bg/hero.webp">
   <meta property="og:image:alt" content="The pasture and herd at Tapestry Acres">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Tapestry Acres | Slow down. Stay a while.">
-  <meta name="twitter:description" content="Plan a farm experience, meet the herd, shop alpaca goods, or stay in one of our RVs in Monroe, Tennessee.">
+  <meta name="twitter:title" content="Tapestry Acres | An alpaca farm &amp; farm-stay in Monroe, TN">
+  <meta name="twitter:description" content="110 acres of alpacas, Highland cattle, and farm stays in Monroe, Tennessee — meet the herd, shop the fiber, stay the night.">
   <meta name="twitter:image" content="https://trashpanda62.github.io/tapestry-game/assets/bg/hero.webp">
   <link rel="stylesheet" href="assets/site.css">
+  <link rel="stylesheet" href="assets/preset-switcher.css">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -43,11 +44,15 @@
     .feature-card,.product-card{display:flex; flex-direction:column}.feature-card img,.product-card img{width:100%; aspect-ratio:4/3; object-fit:cover; background:#e8e0cc}
     .card-copy{display:flex; flex:1; flex-direction:column; padding:22px}.card-copy p{margin:0 0 14px}.card-price{margin-top:auto!important; color:var(--accent); font-weight:700}
     .section-action{text-align:center; margin-top:28px}.section-note{text-align:center; color:var(--muted)}
-    .herd-teaser,.find-us{display:grid; grid-template-columns:1.15fr 1fr; align-items:center; gap:36px; padding:34px; border:1px solid var(--cardborder); border-radius:24px; background:var(--card); box-shadow:var(--shadow)}
-    .herd-teaser img{width:100%; border-radius:16px; aspect-ratio:4/3; object-fit:cover}.herd-teaser h2,.find-us h2{margin:0 0 14px; font-size:clamp(2rem,5vw,2.65rem)}
+    .herd-teaser,.find-us,.about-section{display:grid; grid-template-columns:1.15fr 1fr; align-items:center; gap:36px; padding:34px; border:1px solid var(--cardborder); border-radius:24px; background:var(--card); box-shadow:var(--shadow)}
+    .herd-teaser img{width:100%; border-radius:16px; aspect-ratio:4/3; object-fit:cover}.herd-teaser h2,.find-us h2,.about-section h2{margin:0 0 14px; font-size:clamp(2rem,5vw,2.65rem)}
     .find-us{grid-template-columns:1fr 1fr}.find-us address{font-style:normal}.contact-list{display:grid; gap:10px}.contact-list a{font-weight:700}
-    @media(max-width:800px){.hub-grid{grid-template-columns:repeat(2,1fr)}.feature-grid,.product-grid{grid-template-columns:1fr 1fr}}
-    @media(max-width:560px){.hub-grid,.feature-grid,.product-grid,.herd-teaser,.find-us{grid-template-columns:1fr}.herd-teaser,.find-us{padding:24px}.home-hero .hero-copy{bottom:90px}}
+    .about-section img{width:100%; border-radius:16px; aspect-ratio:4/3; object-fit:cover}
+    .giftcert-strip{display:grid; grid-template-columns:repeat(3,1fr); gap:20px}
+    .giftcert-card{display:flex; flex-direction:column; align-items:center; padding:26px; text-align:center; border:1px solid var(--cardborder); border-radius:18px; background:var(--card); box-shadow:var(--shadow)}
+    .giftcert-card h3{margin:0 0 8px; color:var(--forest); font-size:20px}.giftcert-price{margin:0 0 16px; color:var(--accent); font:700 26px var(--serif)}
+    @media(max-width:800px){.hub-grid{grid-template-columns:repeat(2,1fr)}.feature-grid,.product-grid{grid-template-columns:1fr 1fr}.giftcert-strip{grid-template-columns:1fr}}
+    @media(max-width:560px){.hub-grid,.feature-grid,.product-grid,.herd-teaser,.find-us,.about-section{grid-template-columns:1fr}.herd-teaser,.find-us,.about-section{padding:24px}.home-hero .hero-copy{bottom:90px}}
   </style>
 </head>
 <body>
@@ -59,6 +64,7 @@
         <a href="index.html" aria-current="page">Home</a>
         <a href="experiences.html">Experiences</a>
         <a href="shop.html">Shop</a>
+        <a href="animals.html">Animals</a>
         <a href="meet-the-herd.html">Meet the Herd</a>
         <a href="rv-rentals.html">RV Rentals</a>
       </nav>
@@ -69,8 +75,8 @@
   </script>
   <main>
     <section class="hero home-hero" aria-labelledby="hero-title">
-      <div class="hero-media"><img src="assets/bg/hero.webp" alt="Pasture and animals at Tapestry Acres"></div>
-      <div class="hero-copy"><h1 id="hero-title">Tapestry Acres</h1><p>Slow down. Stay a while.</p><div class="flourish" aria-hidden="true">❖ ✳ ❖</div></div>
+      <div class="hero-media"><img id="hero-image" src="assets/bg/hero.webp" alt="Pasture and animals at Tapestry Acres"></div>
+      <div class="hero-copy"><h1 id="hero-title">An alpaca farm &amp; farm-stay in Monroe, Tennessee</h1><p id="hero-subline">110 acres in the Upper Cumberland Valley — meet the herd, shop the fiber, stay the night.</p><div class="flourish" aria-hidden="true">❖ ✳ ❖</div></div>
     </section>
     <div class="page">
       <section class="content-section" aria-labelledby="plan-title">
@@ -92,7 +98,7 @@
 
       <section class="content-section" aria-labelledby="shop-title">
         <h2 class="section-title" id="shop-title">From the farm shop</h2>
-        <p class="section-note">Browse <a href="shop.html">hand-dyed baby alpaca yarn and natural alpaca dryer balls</a> made for everyday use.</p>
+        <p class="section-note">Browse <a href="shop.html">socks, hand-dyed yarn, roving, gloves, and more from the full farm store</a>.</p>
         <div class="product-grid" id="featured-products" aria-live="polite"><p class="section-note">Loading shop favorites…</p></div>
         <p class="section-action"><a class="btn" href="shop.html">Visit the shop →</a></p>
       </section>
@@ -100,6 +106,21 @@
       <section class="content-section herd-teaser" aria-labelledby="herd-title">
         <img src="assets/portfolio/alpaca-face.webp" loading="lazy" width="4" height="3" alt="A friendly alpaca at Tapestry Acres">
         <div><h2 id="herd-title">Meet the herd</h2><p>Every animal has a name, a story, and a personality all their own. Come meet the alpacas and the rest of the Tapestry Acres family.</p><a class="btn" href="meet-the-herd.html">Meet the herd →</a></div>
+      </section>
+
+      <section class="content-section about-section" aria-labelledby="history-title">
+        <div><h2 id="history-title">Our story</h2><p>Tapestry Acres is a family farm run by Dale and Tari Maxfield. It started as W Oaks Alpacas — alpaca pop-up shops around Prior Lake, Minnesota, beginning in 2006. In 2023 the family relocated to 110 acres in Tennessee's Upper Cumberland Valley and opened Tapestry Acres: alpacas, Highland cattle, goats, pigs, and more, alongside a working farm store and overnight farm-stays.</p></div>
+        <img src="assets/bg/highland2.webp" loading="lazy" width="4" height="3" alt="Highland cattle in the pasture at Tapestry Acres">
+      </section>
+
+      <section class="content-section" aria-labelledby="giftcert-title">
+        <h2 class="section-title" id="giftcert-title">Gift certificates</h2>
+        <p class="section-note">Give the farm — an alpaca experience, an adoption, or an adoption with fiber.</p>
+        <div class="giftcert-strip">
+          <div class="giftcert-card"><h3>Alpaca Experience</h3><p class="giftcert-price">$40</p><a class="btn" href="https://square.link/u/km5q9OmB" target="_blank" rel="noopener">Buy</a></div>
+          <div class="giftcert-card"><h3>Alpaca Adoption</h3><p class="giftcert-price">$100</p><a class="btn" href="https://square.link/u/EfRGGq2O" target="_blank" rel="noopener">Buy</a></div>
+          <div class="giftcert-card"><h3>Adoption with Fiber</h3><p class="giftcert-price">$200</p><a class="btn" href="https://square.link/u/bpd9wbMj" target="_blank" rel="noopener">Buy</a></div>
+        </div>
       </section>
 
       <section class="content-section find-us" aria-labelledby="about-title">
@@ -122,10 +143,34 @@
       function loadProducts(){
         var mount=document.getElementById('featured-products');
         fetch('store-products.json',{cache:'no-cache'}).then(function(response){if(!response.ok)throw new Error('Unable to load products');return response.json();}).then(function(items){
-          mount.textContent='';items.slice(0,4).forEach(function(item){var card=text('article','product-card','');var copy=text('div','card-copy','');if(item.images&&item.images[0])card.appendChild(image(item.images[0],item.title));copy.appendChild(text('h3','',item.title));copy.appendChild(text('p','card-price','$'+Number(item.price).toFixed(2)));card.appendChild(copy);mount.appendChild(card);});
+          mount.textContent='';items.slice(0,4).forEach(function(item){var card=text('article','product-card','');var copy=text('div','card-copy','');var src=(item.images_local&&item.images_local[0])||(item.images&&item.images[0]);if(src)card.appendChild(image(src,item.title));copy.appendChild(text('h3','',item.title));copy.appendChild(text('p','card-price','$'+Number(item.price).toFixed(2)));card.appendChild(copy);mount.appendChild(card);});
         }).catch(function(){mount.textContent='';mount.appendChild(text('p','section-note','The shop preview is unavailable right now. Please visit the shop to browse our products.'));});
       }
       loadExperiences();loadProducts();
+    }());
+  </script>
+  <script src="assets/preset-switcher.js"></script>
+  <script defer>
+    (function(){
+      var HERO_DATA={
+        identity:{image:'assets/bg/hero.webp',tagline:'An alpaca farm & farm-stay in Monroe, Tennessee',subline:'110 acres in the Upper Cumberland Valley — meet the herd, shop the fiber, stay the night.'},
+        menagerie:{image:'assets/bg/highland.webp',tagline:'110 acres of alpacas, Highland cattle & farm stays',subline:'A working family farm open for visits, experiences, and overnight stays.'},
+        invite:{image:'assets/bg/welcome.webp',tagline:'Meet the herd. Stay the night.',subline:'Tapestry Acres — an alpaca farm and farm-stay in Monroe, TN.'}
+      };
+      var heroImage=document.getElementById('hero-image');
+      var heroTitle=document.getElementById('hero-title');
+      var heroSubline=document.getElementById('hero-subline');
+      function applyHero(id){
+        var data=HERO_DATA[id]||HERO_DATA.identity;
+        heroImage.src=data.image;heroImage.alt='Pasture and animals at Tapestry Acres';
+        heroTitle.textContent=data.tagline;heroSubline.textContent=data.subline;
+      }
+      var initialHero=(window.PresetSwitcher.init({
+        axes:{hero:{label:'Hero',options:[{id:'identity',label:'Identity'},{id:'menagerie',label:'Menagerie'},{id:'invite',label:'Invite'}]}},
+        storageKey:'tapestry-hero',persist:true,position:'bottom-right'
+      })||{}).combo||{};
+      applyHero(initialHero.hero||'identity');
+      new MutationObserver(function(){applyHero(document.documentElement.dataset.hero||'identity');}).observe(document.documentElement,{attributes:true,attributeFilter:['data-hero']});
     }());
   </script>
 </body>
