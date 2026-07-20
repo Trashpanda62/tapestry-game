@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Farm Shop | Tapestry Acres</title>
+  <meta name="description" content="Shop hand-dyed baby alpaca yarn and natural alpaca goods from Tapestry Acres.">
+  <link rel="canonical" href="https://trashpanda62.github.io/tapestry-game/shop.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Farm Shop | Tapestry Acres">
+  <meta property="og:description" content="Shop hand-dyed baby alpaca yarn and natural alpaca goods from Tapestry Acres.">
+  <meta property="og:url" content="https://trashpanda62.github.io/tapestry-game/shop.html">
+  <meta property="og:image" content="https://items-images-production.s3.us-west-2.amazonaws.com/files/a642fa779bf9ce22c4775aa32dff49046b88d88f/original.jpeg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Farm Shop | Tapestry Acres">
+  <meta name="twitter:description" content="Shop hand-dyed baby alpaca yarn and natural alpaca goods from Tapestry Acres.">
+  <meta name="twitter:image" content="https://items-images-production.s3.us-west-2.amazonaws.com/files/a642fa779bf9ce22c4775aa32dff49046b88d88f/original.jpeg">
+  <link rel="stylesheet" href="assets/site.css">
+  <style>
+    .shop-page{padding:58px 0 90px}.shop-intro{text-align:center}.shop-intro h1{margin:0 auto 14px; color:var(--ink); text-shadow:none}.shop-intro p{margin:0 auto; color:var(--muted)}
+    .shop-controls{margin:36px 0 30px}.shop-search{max-width:520px; margin:0 auto 20px}.shop-search label{display:block; margin-bottom:6px}.filter-tabs{display:flex; justify-content:center; flex-wrap:wrap; gap:9px}.filter-tab{padding:9px 15px; border:1px solid var(--cardborder); border-radius:999px; background:var(--card); color:var(--forest); font:700 14px var(--sans); cursor:pointer}.filter-tab[aria-selected="true"]{border-color:var(--forest); background:var(--forest); color:#fff}
+    .product-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:22px}.product-card{display:flex; flex-direction:column; overflow:hidden; border:1px solid var(--cardborder); border-radius:18px; background:var(--card); box-shadow:var(--shadow)}.product-card img{display:block; width:100%; aspect-ratio:4/3; object-fit:cover; background:#eee7d7}.product-body{display:flex; flex:1; flex-direction:column; align-items:flex-start; padding:22px}.product-card h2{margin:0 0 9px; color:var(--forest); font-size:22px}.product-price{margin:0 0 10px; color:var(--accent); font:700 22px var(--serif)}.product-description{margin:0 0 17px; color:var(--muted)}.stock-badge{margin:0 0 15px; padding:5px 10px; border-radius:999px; background:#f3dfad; color:#61480b; font-size:13px; font-weight:700}.stock-badge.sold-out{background:#e4dfd3; color:#4e493e}.product-card .btn{margin-top:auto}.product-card .btn[disabled]{background:#8b877d; cursor:not-allowed; filter:none; transform:none}.shop-message{padding:28px; border:1px solid var(--cardborder); border-radius:16px; background:var(--card); text-align:center}.shop-message[hidden]{display:none}
+    @media(max-width:700px){.shop-page{padding-top:35px}.shop-intro h1{font-size:clamp(2.6rem,14vw,4rem)}.product-grid{grid-template-columns:1fr}}
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "itemListElement": [
+      {"@type":"ListItem","position":1,"item":{"@type":"Product","sku":"TAP-BABYALPACAYARN-FUSHIATWILIGHT","name":"Fushia Twilight Hand Dyed Baby Alpaca Yarn","description":"Hand dyed 100% baby alpaca bulky weight yarn in fushias, purples, grays and white.","image":"https://items-images-production.s3.us-west-2.amazonaws.com/files/a642fa779bf9ce22c4775aa32dff49046b88d88f/original.jpeg","offers":{"@type":"Offer","price":"24.00","priceCurrency":"USD","availability":"https://schema.org/LimitedAvailability","url":"https://square.link/u/xEKGMmPx"}}},
+      {"@type":"ListItem","position":2,"item":{"@type":"Product","sku":"TAP-BABYALPACAYARN-SPEARMINTBLUSH","name":"Spearmint Blush Hand Dyed Baby Alpaca Yarn","description":"Hand dyed 100% baby alpaca bulky weight yarn in spearmint green and peach blush.","image":"https://items-images-production.s3.us-west-2.amazonaws.com/files/ce6e4b60c8e97f8f4be73425ca5c3e07d98a9275/original.jpeg","offers":{"@type":"Offer","price":"24.00","priceCurrency":"USD","availability":"https://schema.org/LimitedAvailability","url":"https://square.link/u/FXOr4tgs"}}},
+      {"@type":"ListItem","position":3,"item":{"@type":"Product","sku":"TAP-ALPACADRYERBALL","name":"Alpaca Dryer Ball","description":"An all-natural, hypoallergenic alpaca dryer ball that helps soften fabric and reduce static, wrinkles and drying time.","image":"https://items-images-production.s3.us-west-2.amazonaws.com/files/bdf5533cf06cf35d210c3fc8220ce08d1eacaad9/original.jpeg","offers":{"@type":"Offer","price":"5.00","priceCurrency":"USD","availability":"https://schema.org/InStock","url":"https://square.link/u/nvaihwxo"}}}
+    ]
+  }
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">TAPESTRY ACRES</div>
+      <button class="site-nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="site-nav"><span class="sr-only">Toggle navigation</span><span aria-hidden="true"></span></button>
+      <nav class="site-nav" id="site-nav" aria-label="Primary navigation">
+        <a href="index.html">Home</a>
+        <a href="experiences.html">Experiences</a>
+        <a href="shop.html" aria-current="page">Shop</a>
+        <a href="meet-the-herd.html">Meet the Herd</a>
+        <a href="rv-rentals.html">RV Rentals</a>
+      </nav>
+    </div>
+  </header>
+  <main class="page shop-page">
+    <section class="shop-intro" aria-labelledby="shop-title">
+      <h1 id="shop-title">The Farm Shop</h1>
+      <p>Soft alpaca fiber and useful goods, made and selected with care at Tapestry Acres.</p>
+    </section>
+    <section aria-label="Products">
+      <div class="shop-controls">
+        <div class="shop-search"><label for="product-search">Search the shop</label><input id="product-search" type="search" aria-label="Search products" placeholder="Search products" autocomplete="off"></div>
+        <div class="filter-tabs" id="filter-tabs" role="tablist" aria-label="Filter products by category"></div>
+      </div>
+      <p class="shop-message sr-only" id="shop-status" role="status">Loading products…</p>
+      <div class="product-grid" id="product-grid" aria-busy="true"><article class="skeleton-card" aria-hidden="true"></article><article class="skeleton-card" aria-hidden="true"></article><article class="skeleton-card" aria-hidden="true"></article></div>
+    </section>
+  </main>
+  <footer><div class="footer-logo">TAPESTRY ACRES</div><div class="footer-flourish" aria-hidden="true">❖ ✳ ❖</div><a class="footer-link" href="mailto:tapestryacres@gmail.com">tapestryacres@gmail.com</a></footer>
+  <script defer>
+    (function(){
+      var toggle=document.querySelector('.site-nav-toggle');
+      var tabs=document.getElementById('filter-tabs');
+      var search=document.getElementById('product-search');
+      var grid=document.getElementById('product-grid');
+      var status=document.getElementById('shop-status');
+      var products=[];
+      var activeFilter='All';
+
+      toggle.addEventListener('click',function(){toggle.setAttribute('aria-expanded',toggle.getAttribute('aria-expanded')!=='true');});
+
+      function categories(product){return [product.category,product.subcategory].filter(Boolean);}
+      function shortDescription(description){
+        if(description.length<=180)return description;
+        var shortened=description.slice(0,177);
+        var lastSpace=shortened.lastIndexOf(' ');
+        return shortened.slice(0,lastSpace>120?lastSpace:177)+'…';
+      }
+      function addText(parent,tag,className,value){var element=document.createElement(tag);if(className)element.className=className;element.textContent=value;parent.appendChild(element);return element;}
+      function render(){
+        grid.setAttribute('aria-busy','false');
+        var query=search.value.trim().toLowerCase();
+        var matches=products.filter(function(product){
+          var matchesCategory=activeFilter==='All'||categories(product).indexOf(activeFilter)!==-1;
+          var searchable=(product.title+' '+product.description).toLowerCase();
+          return matchesCategory&&searchable.indexOf(query)!==-1;
+        });
+        grid.replaceChildren();
+        matches.forEach(function(product){
+          var card=document.createElement('article');card.className='product-card';
+          if(product.images&&product.images[0]){var image=document.createElement('img');image.src=product.images[0];image.alt=product.title;image.loading='lazy';image.width=4;image.height=3;card.appendChild(image);}
+          var body=document.createElement('div');body.className='product-body';card.appendChild(body);
+          addText(body,'h2','',product.title);
+          addText(body,'p','product-price','$'+Number(product.price).toFixed(2));
+          addText(body,'p','product-description',shortDescription(product.description||''));
+          if(Number(product.qty)<=0){addText(body,'span','stock-badge sold-out','Sold out');var disabled=document.createElement('button');disabled.type='button';disabled.className='btn';disabled.disabled=true;disabled.textContent='Sold out';body.appendChild(disabled);}
+          else{if(Number(product.qty)<=3)addText(body,'span','stock-badge','Only '+product.qty+' left');var buy=document.createElement('a');buy.className='btn';buy.href=product.checkout_url;buy.target='_blank';buy.rel='noopener';buy.textContent='Buy';body.appendChild(buy);}
+          grid.appendChild(card);
+        });
+        status.hidden=matches.length>0;
+        if(!matches.length)status.textContent=products.length?'No products match your filters.':'No products are available right now.';
+      }
+      function selectFilter(value){activeFilter=value;tabs.querySelectorAll('button').forEach(function(tab){tab.setAttribute('aria-selected',String(tab.dataset.filter===value));});render();}
+      function buildTabs(){
+        var values=['All'];
+        products.forEach(function(product){categories(product).forEach(function(value){if(values.indexOf(value)===-1)values.push(value);});});
+        values.forEach(function(value){var tab=document.createElement('button');tab.type='button';tab.className='filter-tab';tab.dataset.filter=value;tab.setAttribute('role','tab');tab.setAttribute('aria-selected',String(value==='All'));tab.textContent=value;tab.addEventListener('click',function(){selectFilter(value);});tabs.appendChild(tab);});
+      }
+      search.addEventListener('input',render);
+      fetch('store-products.json').then(function(response){if(!response.ok)throw new Error('Product feed unavailable');return response.json();}).then(function(data){
+        if(!Array.isArray(data))throw new Error('Invalid product feed');
+        products=data;status.classList.remove('sr-only');buildTabs();render();
+      }).catch(function(){grid.replaceChildren();grid.setAttribute('aria-busy','false');status.classList.remove('sr-only');status.hidden=false;status.textContent='We could not load the shop right now. Please try again later.';});
+    }());
+  </script>
+</body>
+</html>

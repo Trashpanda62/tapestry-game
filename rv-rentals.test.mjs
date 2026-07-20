@@ -2,6 +2,7 @@ import { readFile } from 'node:fs/promises';
 import { readFileSync } from 'node:fs';
 
 const html = await readFile(new URL('./rv-rentals.html', import.meta.url), 'utf8');
+const css = await readFile(new URL('./assets/site.css', import.meta.url), 'utf8');
 
 function assert(condition, message) {
   if (!condition) {
@@ -10,17 +11,30 @@ function assert(condition, message) {
   }
 }
 
+const images = html.match(/<img\b[^>]*>/gi) || [];
+assert(images.every((image) => /\balt=["'][^"']+["']/i.test(image)), 'not every image has non-empty alt text');
+assert(/document\.createElement\(['"]img['"]\)[\s\S]*?img\.alt\s*=\s*unit\.alt\s*\|\|\s*["'][^"']+["']/.test(html), 'rendered fleet images are missing non-empty alt text');
+assert(/<button\b(?=[^>]*\bclass=["'][^"']*\bsite-nav-toggle\b)(?=[^>]*\baria-label=["'][^"']+["'])[^>]*>/i.test(html), 'mobile navigation toggle is missing an aria-label');
+
+assert(/<head>[\s\S]*<link rel="stylesheet" href="assets\/site\.css">[\s\S]*<\/head>/i.test(html), 'missing site stylesheet link in head');
+
+const nav = html.match(/<nav\b[^>]*>[\s\S]*?<\/nav>/i)?.[0] || '';
+for (const href of ['index.html', 'experiences.html', 'shop.html', 'meet-the-herd.html', 'rv-rentals.html']) {
+  assert(nav.includes(`href="${href}"`), `missing navigation href: ${href}`);
+}
+
 assert(html.includes('action="https://sites.obscurastudio.design/s/tapestry-acres/__lead"'), 'missing lead endpoint form action');
 assert(/<iframe\b[^>]*\bname=["']lead_iframe["']/i.test(html), 'missing hidden iframe named lead_iframe');
 assert(html.includes('target="lead_iframe"'), 'form does not target lead_iframe');
+assert(html.includes('setTimeout(function(){form.hidden=true;confirmation.hidden=false;confirmation.focus();},50);'), 'booking form submit confirmation behavior changed');
 assert(!/tapestryacres\.com/i.test(html), 'contains a tapestryacres.com reference');
 assert(!/wix/i.test(html), 'contains a wix reference');
 assert(!html.includes('window.open'), 'contains window.open');
 assert(html.includes('name="company"'), 'missing company honeypot input');
-assert(html.includes('#booking-sheet[open]'), 'booking sheet geometry is not gated to open');
-assert(!html.includes('#booking-sheet{transform:none'), 'reduced motion forces the closed booking sheet on-screen');
-assert(!html.includes('#booking-sheet{display:block'), 'mobile CSS forces the closed booking sheet visible');
-assert(!html.includes(',#booking-sheet{display:block'), 'mobile CSS forces the closed booking sheet visible');
+assert(css.includes('#booking-sheet[open]'), 'booking sheet geometry is not gated to open');
+assert(!css.includes('#booking-sheet{transform:none'), 'reduced motion forces the closed booking sheet on-screen');
+assert(!css.includes('#booking-sheet{display:block'), 'mobile CSS forces the closed booking sheet visible');
+assert(!css.includes(',#booking-sheet{display:block'), 'mobile CSS forces the closed booking sheet visible');
 
 for (const content of ['$270', '10% off weekly', '50%', '$500', '24 hours']) {
   assert(html.includes(content), `missing required content: ${content}`);
@@ -70,6 +84,6 @@ for (const id of ['alpaca-walk', 'farm-tour', 'farm-stay', 'photo-session']) {
   assert(html.includes(`href="index.html?add=${id}"`), `missing cross-sell link: ${id}`);
 }
 
-assert((html.match(/href=["']http/gi) || []).length === 0, 'contains an external HTTP href');
+assert((html.match(/<a\b[^>]*href=["']http/gi) || []).length === 0, 'contains an external HTTP link');
 
 console.log('PASS: rv-rentals content + link/booking checks');

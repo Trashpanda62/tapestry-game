@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://trashpanda62.github.io/tapestry-game/sitemap.xml

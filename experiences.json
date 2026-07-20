@@ -1,0 +1,79 @@
+[
+  {
+    "id": "coffee-with-the-cows",
+    "name": "Coffee with the Cows",
+    "blurb": "Saturday mornings among the herd, coffee in hand.",
+    "longDesc": "Start your Saturday slow. Bring a mug (or borrow one of ours) and wander into the pasture while the herd grazes around you. No agenda, no rush — just the animals, the fields, and a quiet farm morning. Kids welcome; closed-toe shoes recommended.",
+    "price": "$20/pp",
+    "cadence": "Saturday mornings, recurring",
+    "image": "assets/bg/meadow.webp",
+    "checkout_url": "",
+    "category": "recurring"
+  },
+  {
+    "id": "alpaca-experience-walk",
+    "name": "Alpaca Experience + Walk",
+    "blurb": "Meet, groom, and walk our alpacas across the farm.",
+    "longDesc": "A hands-on hour with the alpacas: learn their names and personalities, help with light grooming, then lead one on a walk around the property. Great for families and first-timers — no experience needed.",
+    "price": "$50",
+    "cadence": "By appointment",
+    "image": "assets/portfolio/alpaca-face.webp",
+    "checkout_url": "",
+    "category": "one-time"
+  },
+  {
+    "id": "private-guided-farm-tour",
+    "name": "Private Guided Farm Tour",
+    "blurb": "A full walkthrough of Tapestry Acres, just for your group.",
+    "longDesc": "An hour-plus guided tour of the whole farm — pastures, barns, the herd, and the land itself — paced for your group and your questions. Ideal for special occasions or anyone wanting the deep version of the visit.",
+    "price": "$100",
+    "cadence": "By appointment",
+    "image": "assets/portfolio/walk-family.webp",
+    "checkout_url": "",
+    "category": "one-time"
+  },
+  {
+    "id": "virtual-farm-tour",
+    "name": "Virtual Farm Tour",
+    "blurb": "Can't make it out? We'll bring the farm to you, live on video.",
+    "longDesc": "A live video call tour of the farm from wherever you are — great for classrooms, remote family, or anyone curious about alpaca life before booking an in-person visit.",
+    "price": "$25",
+    "cadence": "By appointment",
+    "image": "assets/bg/highland.webp",
+    "checkout_url": "",
+    "category": "one-time"
+  },
+  {
+    "id": "farm-truck-saturdays",
+    "name": "Farm Truck Saturdays",
+    "blurb": "Drop by the farm truck for fresh goods, no reservation needed.",
+    "longDesc": "Our farm truck sets up Saturdays at 11am with seasonal goods and farm finds. Free to attend, RSVP appreciated so we know how much to bring.",
+    "price": "Free / RSVP",
+    "cadence": "Saturdays, 11am, recurring",
+    "image": "assets/bg/store.webp",
+    "checkout_url": "",
+    "category": "recurring"
+  },
+  {
+    "id": "birthday-party",
+    "name": "Birthday Party at the Farm",
+    "blurb": "Celebrate surrounded by alpacas, goats, and open pasture.",
+    "longDesc": "A farm birthday party package: private pasture time with the herd, photo ops, and space to celebrate outdoors. Contact us to build the day around your group size and age range.",
+    "price": "$200",
+    "cadence": "By appointment",
+    "image": "assets/portfolio/walk-blossoms.webp",
+    "checkout_url": "",
+    "category": "one-time"
+  },
+  {
+    "id": "seasonal-events",
+    "name": "Seasonal & One-Time Events",
+    "blurb": "Shearing day, holiday market, and other farm happenings.",
+    "longDesc": "Throughout the year we host one-off events — spring shearing day, a holiday market, seasonal open houses. Dates post here and on our socials as they're scheduled; check back or reach out to be notified.",
+    "price": "Varies",
+    "cadence": "Seasonal, dates vary",
+    "image": "assets/bg/welcome.webp",
+    "checkout_url": "",
+    "category": "seasonal"
+  }
+]
