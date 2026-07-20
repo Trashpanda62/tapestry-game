@@ -39,6 +39,25 @@ assert(html.includes('checkAvailability'), 'missing availability overlap logic')
 assert(html.includes('Check availability'), 'missing Check availability control');
 assert(html.includes('towels included for on-farm stays'), 'missing corrected towels note');
 assert(!html.includes('towels available on request'), 'contains stale towels note');
+assert(/<dialog\b[^>]*\bid=["']rv-detail["']/i.test(html), 'missing RV detail dialog');
+assert(html.includes('function openDetail'), 'missing openDetail function');
+assert(html.includes("'#rv/'"), 'missing RV detail hash route');
+assert(html.includes("card.setAttribute('role','button')"), 'fleet cards are missing button roles');
+assert(html.includes("card.addEventListener('keydown'"), 'fleet cards are missing keyboard activation');
+
+for (const overview of [
+  'Our roomiest Class C.',
+  'Step-up Class A comfort.',
+  'The family favorite.',
+  'Our nimble camper van — the easy one.'
+]) {
+  assert(html.includes(overview), `missing fleet overview: ${overview}`);
+}
+
+assert(html.includes("var farmFieldNow='Alpacas'"), 'missing editable farm field variable');
+for (const campground of ['Willow Grove', 'Old Mill Camp', 'Standing Stone', 'Salt Lick Creek', 'Defeated Creek', 'Dale Hollow Damsite']) {
+  assert(html.includes(campground), `missing campground: ${campground}`);
+}
 
 const bookings = JSON.parse(readFileSync(new URL('./bookings.json', import.meta.url), 'utf8'));
 assert(Array.isArray(bookings.bookings), 'bookings.json is missing a bookings array');
