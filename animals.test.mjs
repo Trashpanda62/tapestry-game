@@ -12,7 +12,7 @@ function assert(condition, message) {
 assert(html.includes("fetch('animals.json',{cache:'no-cache'})"), 'missing animals.json fetch');
 assert(html.includes("document.getElementById('animal-groups')"), 'animal group container is not referenced in JavaScript');
 assert(html.includes("data.groups.forEach(renderGroup)"), 'animal groups are not rendered from the feed');
-assert(/document\.createElement\(['"]img['"]\)[\s\S]*?img\.alt\s*=\s*group\.species/.test(html), 'rendered animal images are missing non-empty alt text');
+assert(/document\.createElement\(['"]img['"]\)[\s\S]*?img\.alt\s*=\s*group\.imageAlt\|\|group\.species/.test(html), 'rendered animal images are missing non-empty alt text (with an honest imageAlt override where the photo does not literally match the species)');
 assert(html.includes('No animals listed right now — check back soon.'), 'missing empty-state message');
 assert(html.includes("We couldn't load the animal roster right now."), 'missing fetch-failure message');
 
@@ -34,4 +34,13 @@ for (const group of animalsData.groups) {
   assert(typeof group.blurb === 'string' && group.blurb.length > 0, `${group.species} is missing a blurb`);
 }
 
-console.log('PASS: animals roster, For Sale section, navigation, and feed data checks');
+// The 2026-07-20 bug report: assets/bg/welcome.webp was reused as generic filler across
+// 4 unrelated entries (Mini Horse & Donkey, Poultry, Farm Shopping Experience, Seasonal
+// Events), which read as broken/duplicate content. Guard: that specific placeholder must
+// not appear more than once total across animals.json + experiences.json going forward.
+const experiencesData = JSON.parse(await readFile(new URL('./experiences.json', import.meta.url), 'utf8'));
+const allImages = [...animalsData.groups.map((g) => g.image), ...experiencesData.map((e) => e.image)].filter(Boolean);
+const welcomeCount = allImages.filter((image) => image === 'assets/bg/welcome.webp').length;
+assert(welcomeCount <= 1, `assets/bg/welcome.webp is reused as filler ${welcomeCount} times across animals.json/experiences.json`);
+
+console.log('PASS: animals roster, For Sale section, navigation, feed data, and no-duplicate-image checks');

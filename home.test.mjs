@@ -27,20 +27,13 @@ assert(/<header\b[^>]*\bclass=["'][^"']*\bsite-header\b[^"']*["'][^>]*>/i.test(h
 assert(/<footer\b[^>]*>/i.test(html), 'missing footer');
 assert(/<link\b[^>]*\brel=["']canonical["'][^>]*\bhref=["']https:\/\/trashpanda62\.github\.io\/tapestry-game\/["'][^>]*>/i.test(html), 'canonical link does not point to the site root');
 
-// Live hero selector: preset-switcher include + 3 hero presets + data-driven text swap.
-assert(html.includes('<link rel="stylesheet" href="assets/preset-switcher.css">'), 'missing preset-switcher.css include');
-assert(html.includes('<script src="assets/preset-switcher.js"></script>'), 'missing preset-switcher.js include');
-assert(/HERO_DATA=\{/.test(html), 'missing HERO_DATA hero-preset map');
-for (const heroId of ['identity', 'menagerie', 'invite']) {
-  assert(new RegExp(`${heroId}:\\{image:`).test(html), `missing hero preset block for "${heroId}"`);
-}
-assert(html.includes("PresetSwitcher.init({"), 'missing PresetSwitcher.init call');
-assert(/axes:\{hero:\{label:['"]Hero['"]/.test(html), 'PresetSwitcher is not configured with a "hero" axis');
-assert(html.includes('function applyHero(id)'), 'missing applyHero(id) data-driven text swap function');
-assert(/new MutationObserver\(function\(\)\{applyHero/.test(html), 'missing MutationObserver reacting to data-hero changes');
-assert(/id=["']hero-image["']/.test(html), 'hero image is missing an id for the switcher to target');
-assert(/id=["']hero-title["']/.test(html), 'hero title is missing an id for the switcher to target');
-assert(/id=["']hero-subline["']/.test(html), 'hero subline is missing an id for the switcher to target');
+// Hero is locked (baked) on the "identity" combo: no live switcher, copy names both species.
+assert(!html.includes('preset-switcher'), 'baked hero must not reference the retired preset-switcher');
+assert(!/HERO_DATA/.test(html), 'baked hero must not retain the HERO_DATA preset map');
+assert(!html.includes('PresetSwitcher.init'), 'baked hero must not retain PresetSwitcher.init');
+const heroSection = html.match(/<section\b[^>]*\bclass=["'][^"']*\bhero\b[^"']*["'][^>]*>[\s\S]*?<\/section>/i)?.[0] || '';
+assert(/alpaca/i.test(heroSection), 'hero copy must mention alpacas');
+assert(/highland/i.test(heroSection), 'hero copy must mention Highland cattle');
 
 // About/history section.
 assert(/<section\b[^>]*\baria-labelledby=["']history-title["'][^>]*>/i.test(html), 'missing About/history section');

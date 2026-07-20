@@ -18,7 +18,11 @@
   <link rel="stylesheet" href="assets/site.css">
   <style>
     .shop-page{padding:58px 0 90px}.shop-intro{text-align:center}.shop-intro h1{margin:0 auto 14px; color:var(--ink); text-shadow:none}.shop-intro p{margin:0 auto; color:var(--muted)}
-    .shop-controls{margin:36px 0 30px}.shop-search{max-width:520px; margin:0 auto 20px}.shop-search label{display:block; margin-bottom:6px}.filter-tabs{display:flex; justify-content:center; flex-wrap:wrap; gap:9px}.filter-tab{padding:9px 15px; border:1px solid var(--cardborder); border-radius:999px; background:var(--card); color:var(--forest); font:700 14px var(--sans); cursor:pointer}.filter-tab[aria-selected="true"]{border-color:var(--forest); background:var(--forest); color:#fff}
+    .shop-controls{margin:36px 0 30px}.shop-search{max-width:520px; margin:0 auto 20px}.shop-search label{display:block; margin-bottom:6px}
+    .shop-toolbar{display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:16px 24px}
+    .filter-tabs{display:flex; justify-content:center; flex-wrap:wrap; gap:9px}.filter-tab{padding:9px 15px; border:1px solid var(--cardborder); border-radius:999px; background:var(--card); color:var(--forest); font:700 14px var(--sans); cursor:pointer}.filter-tab[aria-selected="true"]{border-color:var(--forest); background:var(--forest); color:#fff}
+    .shop-sort{display:flex; align-items:center; gap:9px}.shop-sort label{color:var(--muted); font:700 13px var(--sans); white-space:nowrap}.shop-sort select{padding:9px 32px 9px 15px; border:1px solid var(--cardborder); border-radius:999px; background:var(--card); color:var(--forest); font:700 14px var(--sans); cursor:pointer}
+    @media(max-width:700px){.shop-toolbar{flex-direction:column}}
     .product-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:22px}.product-card{display:flex; flex-direction:column; overflow:hidden; border:1px solid var(--cardborder); border-radius:18px; background:var(--card); box-shadow:var(--shadow)}.product-card img{display:block; width:100%; aspect-ratio:4/3; object-fit:cover; background:#eee7d7}.product-body{display:flex; flex:1; flex-direction:column; align-items:flex-start; padding:22px}.product-card h2{margin:0 0 9px; color:var(--forest); font-size:22px}.product-price{margin:0 0 10px; color:var(--accent); font:700 22px var(--serif)}.product-description{margin:0 0 17px; color:var(--muted)}.stock-badge{margin:0 0 15px; padding:5px 10px; border-radius:999px; background:#f3dfad; color:#61480b; font-size:13px; font-weight:700}.stock-badge.sold-out{background:#e4dfd3; color:#4e493e}.product-card .btn{margin-top:auto}.product-card .btn[disabled]{background:#8b877d; cursor:not-allowed; filter:none; transform:none}.shop-message{padding:28px; border:1px solid var(--cardborder); border-radius:16px; background:var(--card); text-align:center}.shop-message[hidden]{display:none}
     .shop-load-more{display:flex; justify-content:center; margin-top:34px}.shop-load-more .btn[hidden]{display:none}
     @media(max-width:700px){.shop-page{padding-top:35px}.shop-intro h1{font-size:clamp(2.6rem,14vw,4rem)}.product-grid{grid-template-columns:1fr}}
@@ -47,7 +51,15 @@
     <section aria-label="Products">
       <div class="shop-controls">
         <div class="shop-search"><label for="product-search">Search the shop</label><input id="product-search" type="search" aria-label="Search products" placeholder="Search products" autocomplete="off"></div>
-        <div class="filter-tabs" id="filter-tabs" role="tablist" aria-label="Filter products by category"></div>
+        <div class="shop-toolbar">
+          <div class="filter-tabs" id="filter-tabs" role="tablist" aria-label="Filter products by category"></div>
+          <div class="shop-sort"><label for="product-sort">Sort</label><select id="product-sort" aria-label="Sort products">
+            <option value="featured">Featured</option>
+            <option value="price-asc">Price: low to high</option>
+            <option value="price-desc">Price: high to low</option>
+            <option value="name-asc">Name: A–Z</option>
+          </select></div>
+        </div>
       </div>
       <p class="shop-message sr-only" id="shop-status" role="status">Loading products…</p>
       <div class="product-grid" id="product-grid" aria-busy="true"><article class="skeleton-card" aria-hidden="true"></article><article class="skeleton-card" aria-hidden="true"></article><article class="skeleton-card" aria-hidden="true"></article></div>
@@ -60,12 +72,20 @@
       var toggle=document.querySelector('.site-nav-toggle');
       var tabs=document.getElementById('filter-tabs');
       var search=document.getElementById('product-search');
+      var sortSelect=document.getElementById('product-sort');
       var grid=document.getElementById('product-grid');
       var status=document.getElementById('shop-status');
       var loadMoreBtn=document.getElementById('load-more');
       var products=[];
       var titleCounts={};
       var activeFilter='All';
+      var activeSort='featured';
+      var SORTERS={
+        'featured':null,
+        'price-asc':function(a,b){return Number(a.price)-Number(b.price);},
+        'price-desc':function(a,b){return Number(b.price)-Number(a.price);},
+        'name-asc':function(a,b){return a.title.localeCompare(b.title);}
+      };
       var CHUNK_SIZE=24;
       var renderedCount=CHUNK_SIZE;
 
@@ -130,6 +150,8 @@
           var searchable=(product.title+' '+product.description).toLowerCase();
           return matchesCategory&&searchable.indexOf(query)!==-1;
         });
+        var sorter=SORTERS[activeSort];
+        if(sorter)matches=matches.slice().sort(sorter);
         var visible=matches.slice(0,renderedCount);
         grid.replaceChildren();
         visible.forEach(function(product){
@@ -153,6 +175,7 @@
         GROUPS.forEach(function(value){var tab=document.createElement('button');tab.type='button';tab.className='filter-tab';tab.dataset.filter=value;tab.setAttribute('role','tab');tab.setAttribute('aria-selected',String(value==='All'));tab.textContent=value;tab.addEventListener('click',function(){selectFilter(value);});tabs.appendChild(tab);});
       }
       search.addEventListener('input',function(){renderedCount=CHUNK_SIZE;render();});
+      sortSelect.addEventListener('change',function(){activeSort=sortSelect.value;renderedCount=CHUNK_SIZE;render();});
       loadMoreBtn.addEventListener('click',function(){renderedCount+=CHUNK_SIZE;render();});
       fetch('store-products.json',{cache:'no-cache'}).then(function(response){if(!response.ok)throw new Error('Product feed unavailable');return response.json();}).then(function(data){
         if(!Array.isArray(data))throw new Error('Invalid product feed');

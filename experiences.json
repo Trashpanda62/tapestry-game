@@ -61,7 +61,7 @@
     "longDesc": "Enjoy a private shopping experience at our farm store — we have all the alpaca products, yarns, and more!",
     "price": "Contact us",
     "cadence": "By appointment, 30 min",
-    "image": "assets/bg/welcome.webp",
+    "image": "assets/farm/nigerian-dwarf-goats-barn.webp",
     "checkout_url": "",
     "category": "one-time"
   },
@@ -72,7 +72,7 @@
     "longDesc": "Throughout the year we host one-off events — spring shearing day, a holiday market, seasonal open houses. Dates post here and on our socials as they're scheduled; check back or reach out to be notified.",
     "price": "Varies",
     "cadence": "Seasonal, dates vary",
-    "image": "assets/bg/welcome.webp",
+    "image": "assets/farm/highland-calf-closeup.webp",
     "checkout_url": "",
     "category": "seasonal"
   }

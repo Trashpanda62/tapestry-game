@@ -45,13 +45,14 @@
     {
       "species": "Mini Horse & Donkey",
       "blurb": "Penelope (mini horse, notorious attitude) and Murphy (mini donkey, textbook donkey temperament) round out the barnyard.",
-      "image": "assets/bg/welcome.webp",
+      "image": "assets/farm/kunekune-pigs-pasture.webp",
+      "imageAlt": "Barnyard pasture at Tapestry Acres",
       "individuals": ["Penelope", "Murphy"]
     },
     {
       "species": "Poultry",
       "blurb": "A laying flock of chickens, Indian Runner ducks on garden pest-control duty, Bourbon Red turkeys, and a new 2026 silkie breeding line.",
-      "image": "assets/bg/welcome.webp",
+      "image": "assets/farm/poultry-ducks-geese.webp",
       "individuals": [],
       "unnamedNote": "laying flock (count varies) · Indian Runner ducks · Bourbon Red turkeys (mostly reserved) · silkie breeding stock (not yet for sale)"
     }

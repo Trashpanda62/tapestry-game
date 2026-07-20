@@ -65,6 +65,16 @@ assert(/Number\(product\.qty\)\s*<=\s*0&&!isUntrackedInventory\(product\)[\s\S]*
 assert(html.includes('function isUntrackedInventory(product)'), 'missing isUntrackedInventory(product) helper (the feed has no track_inventory field -- untracked multi-variant items must be inferred from a shared title appearing more than once)');
 assert(/titleCounts\[product\.title\]=\(titleCounts\[product\.title\]\|\|0\)\+1/.test(html), 'titleCounts is not populated from the loaded feed');
 
+// Sort control: a select offering Featured / price asc / price desc / name asc,
+// wired into render() so it re-sorts before chunking (same reset-on-change pattern as search/chips).
+assert(/<select\b[^>]*\bid=["']product-sort["'][^>]*>/i.test(html), 'missing product-sort select control');
+for (const value of ['featured', 'price-asc', 'price-desc', 'name-asc']) {
+  assert(html.includes(`value="${value}"`), `missing sort option value="${value}"`);
+}
+assert(html.includes("SORTERS={"), 'missing SORTERS sort-function map');
+assert(/sortSelect\.addEventListener\(['"]change['"],function\(\)\{activeSort=sortSelect\.value;renderedCount=CHUNK_SIZE;render\(\);\}\)/.test(html), 'sort change handler does not reset renderedCount before re-rendering');
+assert(/var sorter=SORTERS\[activeSort\];[\s\S]{0,20}if\(sorter\)matches=matches\.slice\(\)\.sort\(sorter\)/.test(html), 'render() does not apply the active sorter to the filtered matches before chunking');
+
 assert(html.includes('No products match your filters.'), 'missing filtered empty-state message');
 assert(html.includes('No products are available right now.'), 'missing unavailable-products empty-state message');
 assert(html.includes('We could not load the shop right now. Please try again later.'), 'missing fetch-failure message');

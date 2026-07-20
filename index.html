@@ -4,26 +4,25 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Tapestry Acres | Farm Experiences, Shop &amp; Stays in Monroe, TN</title>
-  <meta name="description" content="An alpaca farm &amp; farm-stay in Monroe, Tennessee. 110 acres of alpacas, Highland cattle, and farm stays — meet the herd, shop the fiber, stay the night.">
+  <meta name="description" content="An alpaca &amp; Highland-cattle farm-stay in Monroe, Tennessee. 110 acres of alpacas, Highland cattle, and farm stays — meet the herd, shop the fiber, stay the night.">
   <link rel="canonical" href="https://trashpanda62.github.io/tapestry-game/">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Tapestry Acres | An alpaca farm &amp; farm-stay in Monroe, TN">
+  <meta property="og:title" content="Tapestry Acres | An alpaca &amp; Highland-cattle farm-stay in Monroe, TN">
   <meta property="og:description" content="110 acres of alpacas, Highland cattle, and farm stays in Monroe, Tennessee — meet the herd, shop the fiber, stay the night.">
   <meta property="og:url" content="https://trashpanda62.github.io/tapestry-game/">
   <meta property="og:image" content="https://trashpanda62.github.io/tapestry-game/assets/bg/hero.webp">
   <meta property="og:image:alt" content="The pasture and herd at Tapestry Acres">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Tapestry Acres | An alpaca farm &amp; farm-stay in Monroe, TN">
+  <meta name="twitter:title" content="Tapestry Acres | An alpaca &amp; Highland-cattle farm-stay in Monroe, TN">
   <meta name="twitter:description" content="110 acres of alpacas, Highland cattle, and farm stays in Monroe, Tennessee — meet the herd, shop the fiber, stay the night.">
   <meta name="twitter:image" content="https://trashpanda62.github.io/tapestry-game/assets/bg/hero.webp">
   <link rel="stylesheet" href="assets/site.css">
-  <link rel="stylesheet" href="assets/preset-switcher.css">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     "name": "Tapestry Acres",
-    "description": "A 110-acre heritage-breed farm near Dale Hollow Lake in Monroe, Tennessee — alpaca walks, farm tours, RV sites and farm stays.",
+    "description": "A 110-acre alpaca and Highland-cattle heritage-breed farm near Dale Hollow Lake in Monroe, Tennessee — alpaca walks, farm tours, RV sites and farm stays.",
     "image": "https://trashpanda62.github.io/tapestry-game/assets/og.jpg",
     "url": "https://trashpanda62.github.io/tapestry-game/",
     "telephone": "(931) 823-3266",
@@ -76,7 +75,7 @@
   <main>
     <section class="hero home-hero" aria-labelledby="hero-title">
       <div class="hero-media"><img id="hero-image" src="assets/bg/hero.webp" alt="Pasture and animals at Tapestry Acres"></div>
-      <div class="hero-copy"><h1 id="hero-title">An alpaca farm &amp; farm-stay in Monroe, Tennessee</h1><p id="hero-subline">110 acres in the Upper Cumberland Valley — meet the herd, shop the fiber, stay the night.</p><div class="flourish" aria-hidden="true">❖ ✳ ❖</div></div>
+      <div class="hero-copy"><h1 id="hero-title">An alpaca &amp; Highland-cattle farm-stay in Monroe, Tennessee</h1><p id="hero-subline">110 acres in the Upper Cumberland Valley — meet the alpacas and Highland cattle, shop the fiber, stay the night.</p><div class="flourish" aria-hidden="true">❖ ✳ ❖</div></div>
     </section>
     <div class="page">
       <section class="content-section" aria-labelledby="plan-title">
@@ -147,30 +146,6 @@
         }).catch(function(){mount.textContent='';mount.appendChild(text('p','section-note','The shop preview is unavailable right now. Please visit the shop to browse our products.'));});
       }
       loadExperiences();loadProducts();
-    }());
-  </script>
-  <script src="assets/preset-switcher.js"></script>
-  <script defer>
-    (function(){
-      var HERO_DATA={
-        identity:{image:'assets/bg/hero.webp',tagline:'An alpaca farm & farm-stay in Monroe, Tennessee',subline:'110 acres in the Upper Cumberland Valley — meet the herd, shop the fiber, stay the night.'},
-        menagerie:{image:'assets/bg/highland.webp',tagline:'110 acres of alpacas, Highland cattle & farm stays',subline:'A working family farm open for visits, experiences, and overnight stays.'},
-        invite:{image:'assets/bg/welcome.webp',tagline:'Meet the herd. Stay the night.',subline:'Tapestry Acres — an alpaca farm and farm-stay in Monroe, TN.'}
-      };
-      var heroImage=document.getElementById('hero-image');
-      var heroTitle=document.getElementById('hero-title');
-      var heroSubline=document.getElementById('hero-subline');
-      function applyHero(id){
-        var data=HERO_DATA[id]||HERO_DATA.identity;
-        heroImage.src=data.image;heroImage.alt='Pasture and animals at Tapestry Acres';
-        heroTitle.textContent=data.tagline;heroSubline.textContent=data.subline;
-      }
-      var initialHero=(window.PresetSwitcher.init({
-        axes:{hero:{label:'Hero',options:[{id:'identity',label:'Identity'},{id:'menagerie',label:'Menagerie'},{id:'invite',label:'Invite'}]}},
-        storageKey:'tapestry-hero',persist:true,position:'bottom-right'
-      })||{}).combo||{};
-      applyHero(initialHero.hero||'identity');
-      new MutationObserver(function(){applyHero(document.documentElement.dataset.hero||'identity');}).observe(document.documentElement,{attributes:true,attributeFilter:['data-hero']});
     }());
   </script>
 </body>

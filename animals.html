@@ -77,7 +77,7 @@
       function addText(tag,className,value){var el=document.createElement(tag);if(className)el.className=className;el.textContent=value;return el;}
       function renderGroup(group){
         var card=document.createElement('article');card.className='animal-card';
-        if(group.image){var img=document.createElement('img');img.src=group.image;img.alt=group.species;img.loading='lazy';card.appendChild(img);}
+        if(group.image){var img=document.createElement('img');img.src=group.image;img.alt=group.imageAlt||group.species;img.loading='lazy';card.appendChild(img);}
         var body=document.createElement('div');body.className='animal-body';card.appendChild(body);
         body.appendChild(addText('h2','',group.species));
         body.appendChild(addText('p','animal-blurb',group.blurb));
