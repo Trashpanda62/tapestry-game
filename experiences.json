@@ -44,17 +44,6 @@
     "category": "one-time"
   },
   {
-    "id": "farm-truck-saturdays",
-    "name": "Farm Truck Saturdays",
-    "blurb": "Drop by the farm truck for fresh goods, no reservation needed.",
-    "longDesc": "Our farm truck sets up Saturdays at 11am with seasonal goods and farm finds. Free to attend, RSVP appreciated so we know how much to bring.",
-    "price": "Free / RSVP",
-    "cadence": "Saturdays, 11am, recurring",
-    "image": "assets/bg/store.webp",
-    "checkout_url": "",
-    "category": "recurring"
-  },
-  {
     "id": "birthday-party",
     "name": "Birthday Party at the Farm",
     "blurb": "Celebrate surrounded by alpacas, goats, and open pasture.",

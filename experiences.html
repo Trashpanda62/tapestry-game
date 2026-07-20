@@ -92,7 +92,7 @@
       function renderCard(experience){
         var card=document.createElement('article');card.className='experience-card';
         var imageWrap=document.createElement('div');imageWrap.className='experience-image';
-        var image=document.createElement('img');image.src=experience.image;image.alt=experience.name;image.loading='lazy';image.width=4;image.height=3;imageWrap.appendChild(image);
+        var image=document.createElement('img');image.src=experience.image;image.alt=experience.name;image.loading='lazy';imageWrap.appendChild(image);
         if(experience.category==='recurring'||/saturday/i.test(experience.cadence)){var badge=addText(document.createElement('span'),/saturday/i.test(experience.cadence)?'Saturdays':'Recurring');badge.className='experience-badge';imageWrap.appendChild(badge);}
         var body=document.createElement('div');body.className='experience-body';
         body.appendChild(addText(document.createElement('h2'),experience.name));

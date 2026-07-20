@@ -112,7 +112,7 @@
   <script defer>
     (function(){
       function text(tag,className,value){var el=document.createElement(tag);if(className)el.className=className;el.textContent=value;return el;}
-      function image(src,alt){var img=document.createElement('img');img.src=src;img.alt=alt;img.loading='lazy';img.width=4;img.height=3;return img;}
+      function image(src,alt){var img=document.createElement('img');img.src=src;img.alt=alt;img.loading='lazy';return img;}
       function loadExperiences(){
         var mount=document.getElementById('featured-experiences');
         fetch('experiences.json').then(function(response){if(!response.ok)throw new Error('Unable to load experiences');return response.json();}).then(function(items){
