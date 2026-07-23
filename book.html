@@ -35,7 +35,7 @@
   <script>
     (function(){
       var base='/s/tapestry-acres', serviceSelect=document.getElementById('service'), slotsEl=document.getElementById('slots'), form=document.getElementById('booking-form'), paymentStep=document.getElementById('payment-step'), paymentCopy=document.getElementById('payment-copy'), bookingSubtotal=document.getElementById('booking-subtotal'), bookingTax=document.getElementById('booking-tax'), bookingTotal=document.getElementById('booking-total'), payButton=document.getElementById('pay-button'), error=document.getElementById('error'), success=document.getElementById('success'), serviceSummary=document.getElementById('service-summary'), guests=document.getElementById('guests'), email=document.getElementById('email'), reservationId='', card=null, services=[];
-      var key=decodeURIComponent(location.pathname.replace(/\/+$/,'').split('/').pop()||'');
+      var key=new URLSearchParams(location.search).get('experience')||'';
       function showError(message){error.textContent=message;error.hidden=false;}
       function clearError(){error.hidden=true;error.textContent='';}
       function selected(){return services.find(function(item){return item.key===serviceSelect.value;})||null;}
