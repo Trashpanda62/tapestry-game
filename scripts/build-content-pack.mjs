@@ -88,7 +88,7 @@ async function normalizeExperiences(root, data) {
       category: text(file, `[${index}].category`, record.category, { max: 64 }),
       // Published experience cards stay inside the tenant-owned booking flow.
       // Farm Shopping Experience remains inquiry-only by policy.
-      bookPath: id === "farm-shopping-experience" ? null : `book.html?experience=${encodeURIComponent(id)}`
+      bookPath: id === "farm-shopping-experience" ? null : `book/${encodeURIComponent(id)}`
     };
   }));
 }

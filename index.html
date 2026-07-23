@@ -33,7 +33,7 @@
   }
   </script>
   <style>
-    .home-hero .hero-copy{bottom:70px}.home-hero .hero-copy p{font-size:clamp(1.25rem,3vw,1.65rem)}
+    .home-hero .hero-copy{bottom:70px}.home-hero .hero-copy p{font-size:clamp(1.25rem,3vw,1.65rem)}.hero-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:20px}.hero-actions .btn.secondary{background:rgba(251,246,233,.95);color:var(--ink)}.hero-trust{margin:14px 0 0!important;font-size:13px!important;font-weight:700;letter-spacing:.03em}
     .hub-grid,.feature-grid,.product-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:20px}
     .hub-card,.feature-card,.product-card{overflow:hidden; border:1px solid var(--cardborder); border-radius:18px; background:var(--card); box-shadow:var(--shadow)}
     .hub-card{display:flex; min-height:210px; flex-direction:column; align-items:flex-start; padding:26px; color:var(--ink); text-decoration:none}
@@ -42,16 +42,17 @@
     .feature-grid,.product-grid{grid-template-columns:repeat(3,1fr)}
     .feature-card,.product-card{display:flex; flex-direction:column}.feature-card img,.product-card img{width:100%; aspect-ratio:4/3; object-fit:cover; background:#e8e0cc}
     .card-copy{display:flex; flex:1; flex-direction:column; padding:22px}.card-copy p{margin:0 0 14px}.card-price{margin-top:auto!important; color:var(--accent); font-weight:700}
-    .section-action{text-align:center; margin-top:28px}.section-note{text-align:center; color:var(--muted)}
+    .section-action{display:flex;justify-content:center;max-width:none;margin:28px auto 0}.section-note{text-align:center; color:var(--muted)}
     .herd-teaser,.find-us,.about-section{display:grid; grid-template-columns:1.15fr 1fr; align-items:center; gap:36px; padding:34px; border:1px solid var(--cardborder); border-radius:24px; background:var(--card); box-shadow:var(--shadow)}
-    .herd-teaser img{width:100%; border-radius:16px; aspect-ratio:4/3; object-fit:cover}.herd-teaser h2,.find-us h2,.about-section h2{margin:0 0 14px; font-size:clamp(2rem,5vw,2.65rem)}
+    .herd-teaser img{display:block;width:100%;height:clamp(260px,31vw,390px); border-radius:16px; aspect-ratio:4/3; object-fit:cover}.herd-teaser h2,.find-us h2,.about-section h2{margin:0 0 14px; font-size:clamp(2rem,5vw,2.65rem)}
     .find-us{grid-template-columns:1fr 1fr}.find-us address{font-style:normal}.contact-list{display:grid; gap:10px}.contact-list a{font-weight:700}
-    .about-section img{width:100%; border-radius:16px; aspect-ratio:4/3; object-fit:cover}
+    .about-section img{display:block;width:100%;height:clamp(260px,31vw,390px); border-radius:16px; aspect-ratio:4/3; object-fit:cover}
     .giftcert-strip{display:grid; grid-template-columns:repeat(3,1fr); gap:20px}
     .giftcert-card{display:flex; flex-direction:column; align-items:center; padding:26px; text-align:center; border:1px solid var(--cardborder); border-radius:18px; background:var(--card); box-shadow:var(--shadow)}
     .giftcert-card h3{margin:0 0 8px; color:var(--forest); font-size:20px}.giftcert-price{margin:0 0 16px; color:var(--accent); font:700 26px var(--serif)}
+    .editorial-sequence{display:grid;grid-template-columns:1.2fr .8fr;gap:24px;align-items:stretch}.editorial-sequence figure{margin:0;overflow:hidden;border-radius:24px;background:var(--card);border:1px solid var(--cardborder)}.editorial-sequence img{display:block;width:100%;height:100%;min-height:260px;object-fit:cover}.editorial-note{display:flex;flex-direction:column;justify-content:center;padding:30px 30px 34px;background:var(--card);border-radius:0}.editorial-note h2{margin:0 0 12px}.editorial-note p{margin:0 0 14px}.editorial-note .field-label{margin:0 0 8px;color:var(--accent);font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
     @media(max-width:800px){.hub-grid{grid-template-columns:repeat(2,1fr)}.feature-grid,.product-grid{grid-template-columns:1fr 1fr}.giftcert-strip{grid-template-columns:1fr}}
-    @media(max-width:560px){.hub-grid,.feature-grid,.product-grid,.herd-teaser,.find-us,.about-section{grid-template-columns:1fr}.herd-teaser,.find-us,.about-section{padding:24px}.home-hero .hero-copy{bottom:90px}}
+    @media(max-width:560px){.hub-grid,.feature-grid,.product-grid,.herd-teaser,.find-us,.about-section{grid-template-columns:1fr}.herd-teaser,.find-us,.about-section{padding:24px}.home-hero h1{font-size:clamp(2.4rem,11vw,3.2rem)}.home-hero .hero-copy p{font-size:1.05rem!important}.home-hero .hero-copy{bottom:24px}}
   </style>
 </head>
 <body>
@@ -74,8 +75,8 @@
   </script>
   <main>
     <section class="hero home-hero" aria-labelledby="hero-title">
-      <div class="hero-media"><img id="hero-image" src="assets/bg/hero.webp" alt="Pasture and animals at Tapestry Acres"></div>
-      <div class="hero-copy"><h1 id="hero-title">An alpaca &amp; Highland-cattle farm-stay in Monroe, Tennessee</h1><p id="hero-subline">110 acres in the Upper Cumberland Valley — meet the alpacas and Highland cattle, shop the fiber, stay the night.</p><div class="flourish" aria-hidden="true">❖ ✳ ❖</div></div>
+      <div class="hero-media"><img id="hero-image" src="assets/portfolio/walk-summer.webp" alt="A Tapestry Acres host and guest walking with an alpaca and child"></div>
+      <div class="hero-copy"><h1 id="hero-title">Meet the family, walk the working farm</h1><p id="hero-subline">Come to Tapestry Acres in Monroe, Tennessee for an unhurried alpaca experience, Highland cattle, a practical farm stay, and a shop full of useful fiber.</p><div class="hero-actions"><a class="btn" href="/s/tapestry-acres/experiences">Book a farm experience</a><a class="btn secondary" href="/s/tapestry-acres/stay">Plan a stay</a></div><p class="hero-trust">110 acres · Upper Cumberland Valley · real farm, real animals</p><div class="flourish" aria-hidden="true">❖ ✳ ❖</div></div>
     </section>
     <div class="page">
       <section class="content-section" aria-labelledby="plan-title">
@@ -86,6 +87,11 @@
           <a class="hub-card" href="meet-the-herd.html"><h3>Meet the Herd</h3><p>Get to know the animals and personalities that make this place home.</p><span>Meet the herd →</span></a>
           <a class="hub-card" href="rv-rentals.html"><h3>RV Rentals</h3><p>Stay on the farm or have a fully set-up motorhome delivered nearby.</p><span>Plan a stay →</span></a>
         </div>
+      </section>
+
+      <section class="content-section editorial-sequence" aria-labelledby="chapter-title">
+        <figure><img src="assets/portfolio/walk-family.webp" loading="lazy" width="1200" height="900" alt="A family walking with alpacas at Tapestry Acres"></figure>
+        <div class="editorial-note"><p class="field-label">A working morning</p><h2 id="chapter-title">Come for the animals. Leave with a clearer day.</h2><p>Walk at the pace of the herd, ask the practical questions, and let the farm set the rhythm. Named animals, useful fiber, and a place to stay all meet on the same 110-acre farm.</p><a class="btn" href="/s/tapestry-acres/herd">Meet the herd</a></div>
       </section>
 
       <section class="content-section" aria-labelledby="experiences-title">
@@ -103,22 +109,22 @@
       </section>
 
       <section class="content-section herd-teaser" aria-labelledby="herd-title">
-        <img src="assets/portfolio/alpaca-face.webp" loading="lazy" width="4" height="3" alt="A friendly alpaca at Tapestry Acres">
-        <div><h2 id="herd-title">Meet the herd</h2><p>Every animal has a name, a story, and a personality all their own. Come meet the alpacas and the rest of the Tapestry Acres family.</p><a class="btn" href="meet-the-herd.html">Meet the herd →</a></div>
+        <img src="assets/portfolio/alpaca-face.webp" loading="lazy" width="700" height="700" alt="A friendly alpaca at Tapestry Acres">
+        <div><p class="field-label">Named-animal proof</p><h2 id="herd-title">Meet the herd</h2><p>Agnis, Andy, Avalanche, Bailey, and Bianca are among the alpacas in the source herd record. Come meet them and the rest of the Tapestry Acres family.</p><a class="btn" href="/s/tapestry-acres/herd">Meet the herd →</a></div>
       </section>
 
       <section class="content-section about-section" aria-labelledby="history-title">
         <div><h2 id="history-title">Our story</h2><p>Tapestry Acres is a family farm run by Dale and Tari Maxfield. It started as W Oaks Alpacas — alpaca pop-up shops around Prior Lake, Minnesota, beginning in 2006. In 2023 the family relocated to 110 acres in Tennessee's Upper Cumberland Valley and opened Tapestry Acres: alpacas, Highland cattle, goats, pigs, and more, alongside a working farm store and overnight farm-stays.</p></div>
-        <img src="assets/bg/highland2.webp" loading="lazy" width="4" height="3" alt="Highland cattle in the pasture at Tapestry Acres">
+        <img src="assets/bg/highland2.webp" loading="lazy" width="700" height="525" alt="Highland cattle in the pasture at Tapestry Acres">
       </section>
 
       <section class="content-section" aria-labelledby="giftcert-title">
         <h2 class="section-title" id="giftcert-title">Gift certificates</h2>
         <p class="section-note">Give the farm — an alpaca experience, an adoption, or an adoption with fiber.</p>
         <div class="giftcert-strip">
-          <div class="giftcert-card"><h3>Alpaca Experience</h3><p class="giftcert-price">$40</p><a class="btn" href="https://square.link/u/km5q9OmB" target="_blank" rel="noopener">Buy</a></div>
-          <div class="giftcert-card"><h3>Alpaca Adoption</h3><p class="giftcert-price">$100</p><a class="btn" href="https://square.link/u/EfRGGq2O" target="_blank" rel="noopener">Buy</a></div>
-          <div class="giftcert-card"><h3>Adoption with Fiber</h3><p class="giftcert-price">$200</p><a class="btn" href="https://square.link/u/bpd9wbMj" target="_blank" rel="noopener">Buy</a></div>
+          <div class="giftcert-card"><h3>Alpaca Experience</h3><p class="giftcert-price">$40</p><a class="btn" href="shop.html?q=gift%20certificate">Shop gifts</a></div>
+          <div class="giftcert-card"><h3>Alpaca Adoption</h3><p class="giftcert-price">$100</p><a class="btn" href="shop.html?q=gift%20certificate">Shop gifts</a></div>
+          <div class="giftcert-card"><h3>Adoption with Fiber</h3><p class="giftcert-price">$200</p><a class="btn" href="shop.html?q=gift%20certificate">Shop gifts</a></div>
         </div>
       </section>
 
@@ -135,13 +141,13 @@
       function image(src,alt){var img=document.createElement('img');img.src=src;img.alt=alt;img.loading='lazy';return img;}
       function loadExperiences(){
         var mount=document.getElementById('featured-experiences');
-        fetch('experiences.json',{cache:'no-cache'}).then(function(response){if(!response.ok)throw new Error('Unable to load experiences');return response.json();}).then(function(items){
+        fetch('data/experiences.v1.json',{cache:'no-cache'}).then(function(response){if(!response.ok)throw new Error('Unable to load experiences');return response.json();}).then(function(payload){var items=payload.data||[];
           mount.textContent='';items.slice(0,3).forEach(function(item){var card=text('article','feature-card','');var copy=text('div','card-copy','');card.appendChild(image(item.image,item.name));copy.appendChild(text('h3','',item.name));copy.appendChild(text('p','',item.blurb));copy.appendChild(text('p','card-price',item.price));card.appendChild(copy);mount.appendChild(card);});
         }).catch(function(){mount.textContent='';mount.appendChild(text('p','section-note','Experiences are taking a pasture break. Please visit the experiences page to see what is available.'));});
       }
       function loadProducts(){
         var mount=document.getElementById('featured-products');
-        fetch('store-products.json',{cache:'no-cache'}).then(function(response){if(!response.ok)throw new Error('Unable to load products');return response.json();}).then(function(items){
+        fetch('data/featured-products.json',{cache:'no-cache'}).then(function(response){if(!response.ok)throw new Error('Unable to load products');return response.json();}).then(function(payload){var items=payload.products||[];
           mount.textContent='';items.slice(0,4).forEach(function(item){var card=text('article','product-card','');var copy=text('div','card-copy','');var src=(item.images_local&&item.images_local[0])||(item.images&&item.images[0]);if(src)card.appendChild(image(src,item.title));copy.appendChild(text('h3','',item.title));copy.appendChild(text('p','card-price','$'+Number(item.price).toFixed(2)));card.appendChild(copy);mount.appendChild(card);});
         }).catch(function(){mount.textContent='';mount.appendChild(text('p','section-note','The shop preview is unavailable right now. Please visit the shop to browse our products.'));});
       }
