@@ -12,8 +12,8 @@ function assert(condition, message) {
 assert(/<section\b[^>]*\bclass=["'][^"']*\bhero\b[^"']*["'][^>]*>/i.test(html), 'missing hero section');
 assert(/document\.createElement\(['"]img['"]\)[\s\S]*?img\.alt\s*=\s*alt/.test(html), 'rendered images are missing non-empty alt text');
 assert(/<button\b(?=[^>]*\bclass=["'][^"']*\bsite-nav-toggle\b)(?=[^>]*\baria-label=["'][^"']+["'])[^>]*>/i.test(html), 'mobile navigation toggle is missing an aria-label');
-assert(html.includes("fetch('experiences.json',{cache:'no-cache'})"), 'missing experiences.json fetch');
-assert(html.includes("fetch('store-products.json',{cache:'no-cache'})"), 'missing store-products.json fetch');
+assert(html.includes("fetch('data/experiences.v1.json',{cache:'no-cache'})"), 'missing generated experiences feed fetch');
+assert(html.includes("fetch('data/featured-products.json',{cache:'no-cache'})"), 'missing generated featured-products fetch');
 
 const planSection = html.match(/<section\b[^>]*\baria-labelledby=["']plan-title["'][^>]*>[\s\S]*?<\/section>/i)?.[0] || '';
 const planCards = planSection.match(/<a\b[^>]*\bclass=["'][^"']*\bhub-card\b[^"']*["'][^>]*>/gi) || [];
@@ -42,10 +42,10 @@ assert(html.includes('2006'), 'About/history section is missing the 2006 origin 
 assert(html.includes('2023'), 'About/history section is missing the 2023 relocation year');
 assert(html.includes('Upper Cumberland'), 'About/history section is missing the Upper Cumberland Valley location');
 
-// Gift-certificate strip: 3 real Square checkout links.
+// Gift-certificate strip routes into the first-party catalog.
 assert(/<section\b[^>]*\baria-labelledby=["']giftcert-title["'][^>]*>/i.test(html), 'missing gift-certificates section');
 const giftSection = html.match(/<section\b[^>]*\baria-labelledby=["']giftcert-title["'][^>]*>[\s\S]*?<\/section>/i)?.[0] || '';
-const giftLinks = giftSection.match(/href="(https:\/\/square\.link\/u\/[^"]+)"/g) || [];
-assert(giftLinks.length === 3, `expected 3 Square gift-certificate links, found ${giftLinks.length}`);
+const giftLinks = giftSection.match(/href="shop\.html\?q=gift%20certificate"/g) || [];
+assert(giftLinks.length === 3, `expected 3 first-party gift-certificate links, found ${giftLinks.length}`);
 
 console.log('PASS: home hero, live hero selector, About/history, gift certificates, visit cards, shared layout, and canonical checks');
