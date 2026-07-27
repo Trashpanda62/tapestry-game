@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "2.0.0",
+  "source": {
+    "herdExport": "C:/dev/tapestry-herd/herd.json",
+    "animalPool": "animals-pool.json",
+    "updated": "2026-07-27",
+    "mode": "game-only; not a care guide"
+  },
+  "pastures": [
+    { "id": "alpaca-meadow", "label": "The Alpaca Meadow", "species": ["Alpaca"], "fallbackArt": "assets/bg/meadow.webp" },
+    { "id": "highland-fold", "label": "The Highland Fold", "species": ["Highland cattle", "Belted Galloway × Jersey"], "fallbackArt": "assets/farm/highland-cow-goldenhour.webp" },
+    { "id": "goat-knoll", "label": "The Goat Knoll", "species": ["Goat"], "fallbackArt": "assets/farm/nigerian-dwarf-goats-barn.webp" },
+    { "id": "pig-pasture", "label": "The Pig Pasture", "species": ["Pig"], "fallbackArt": "assets/farm/kunekune-pigs-pasture.webp" },
+    { "id": "farmyard", "label": "The Farmyard", "species": ["Mule", "Chicken", "Runner duck", "Turkey"], "fallbackArt": "assets/farm/poultry-ducks-geese.webp" }
+  ],
+  "taskTypes": [
+    { "id": "feed", "label": "Feed run", "icon": "🌾", "wording": "is waiting on the feed cart", "species": "any", "points": 10 },
+    { "id": "water", "label": "Water check", "icon": "💧", "wording": "needs the trough topped up", "species": "any", "points": 10 },
+    { "id": "vet", "label": "Vet check", "icon": "🩺", "wording": "is due for a wellness look-over", "species": "any", "points": 15 },
+    { "id": "shear", "label": "Shearing day", "icon": "✂️", "wording": "is booked for a fleece trim", "species": ["Alpaca"], "points": 20 },
+    { "id": "herd-move", "label": "Herd move", "icon": "🚜", "wording": "needs walking to fresh grass", "species": ["Highland cattle", "Belted Galloway × Jersey", "Goat", "Pig", "Alpaca", "Mule"], "points": 15 }
+  ],
+  "difficulty": {
+    "rounds": [
+      { "round": 1, "lineupSize": 4, "sameSpeciesDistractors": 0, "timerSeconds": 20, "clueTasks": 0 },
+      { "round": 2, "lineupSize": 5, "sameSpeciesDistractors": 1, "timerSeconds": 16, "clueTasks": 0 },
+      { "round": 3, "lineupSize": 6, "sameSpeciesDistractors": 2, "timerSeconds": 13, "clueTasks": 1 },
+      { "round": 4, "lineupSize": 6, "sameSpeciesDistractors": 3, "timerSeconds": 10, "clueTasks": 2 },
+      { "round": 5, "lineupSize": 8, "sameSpeciesDistractors": 5, "timerSeconds": 8, "clueTasks": 2 }
+    ]
+  },
+  "session": {
+    "schemaVersion": 2,
+    "storageKey": "tapestry-farm-steward-v2",
+    "roundTasks": 5,
+    "scorePerCorrect": 10,
+    "speedBonusMax": 5,
+    "dailyStreak": true,
+    "reducedMotionSafe": true,
+    "keyboardSafe": true,
+    "touchSafe": true
+  }
+}

@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { lstat, mkdir, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { generateCatalog } from "./generate-catalog.mjs";
+import { deriveFact } from "./herd-fact.mjs";
 
 export const contentSchemaVersion = "1.0.0";
 
@@ -86,9 +87,9 @@ async function normalizeExperiences(root, data) {
       cadence: text(file, `[${index}].cadence`, record.cadence, { max: 160 }),
       image: await imagePath(root, file, `[${index}].image`, record.image),
       category: text(file, `[${index}].category`, record.category, { max: 64 }),
-      // Published experience cards stay inside the tenant-owned booking flow.
-      // Farm Shopping Experience remains inquiry-only by policy.
-      bookPath: id === "farm-shopping-experience" ? null : `book/${encodeURIComponent(id)}`
+      // The official calendars own real availability and reservations. Farm
+      // Shopping Experience remains inquiry-only by policy.
+      bookingUrl: id === "farm-shopping-experience" ? null : url(file, `[${index}].booking_url`, record.booking_url, { hosts: ["www.tapestryacres.com"] })
     };
   }));
 }
@@ -121,8 +122,9 @@ async function normalizeAnimals(root, data) {
   return { groups, forSale };
 }
 
-async function normalizeFarmSteward(root, data, herd) {
+async function normalizeFarmSteward(root, data, herd, pool) {
   const file = "src/farm-steward.v1.json";
+  const poolFile = "animals-pool.json";
   object(file, "$", data);
   object(file, ".source", data.source);
   const herdById = new Map(array(file, ".herdExport.individuals", herd?.individuals, { min: 1, max: 500 }).map((animal) => [animal.id, animal]));
@@ -132,21 +134,102 @@ async function normalizeFarmSteward(root, data, herd) {
     return { id: text(file, `.pastures[${index}].id`, pasture.id, { max: 96 }), label: text(file, `.pastures[${index}].label`, pasture.label, { max: 160 }), species, fallbackArt: await imagePath(root, file, `.pastures[${index}].fallbackArt`, pasture.fallbackArt) };
   }));
   const pastureIds = new Set(pastures.map((pasture) => pasture.id));
-  const animalCards = await Promise.all(array(file, ".animalCards", data.animalCards, { min: 1, max: 100 }).map(async (card, index) => {
-    object(file, `.animalCards[${index}]`, card);
+  const pastureSpecies = new Map(pastures.map((pasture) => [pasture.id, new Set(pasture.species)]));
+  const knownSpecies = new Set(pastures.flatMap((pasture) => pasture.species));
+
+  // Every named animal in the verified herd export must appear in the pool
+  // exactly once — the game plays the full herd, and nothing gets invented.
+  object(poolFile, "$", pool);
+  const animalCards = await Promise.all(array(poolFile, ".animals", pool.animals, { min: 1, max: 500 }).map(async (card, index) => {
+    object(poolFile, `.animals[${index}]`, card);
     const source = herdById.get(card.id);
-    if (!source) fail(file, `.animalCards[${index}].id`, `does not exist in the verified herd export: ${card.id}`);
-    if (!pastureIds.has(card.pastureId)) fail(file, `.animalCards[${index}].pastureId`, `unknown pasture: ${card.pastureId}`);
-    const sourceFact = String(source.notes || "").split("[[")[0].trim();
-    if (!sourceFact || card.verifiedFact !== sourceFact) fail(file, `.animalCards[${index}].verifiedFact`, `must exactly match the verified herd note for ${card.id}`);
-    return { id: source.id, pastureId: card.pastureId, photo: card.photo === null ? null : await imagePath(root, file, `.animalCards[${index}].photo`, card.photo), fallbackArt: await imagePath(root, file, `.animalCards[${index}].fallbackArt`, card.fallbackArt), verifiedFact: sourceFact };
+    if (!source) fail(poolFile, `.animals[${index}].id`, `does not exist in the verified herd export: ${card.id}`);
+    if (!pastureIds.has(card.pastureId)) fail(poolFile, `.animals[${index}].pastureId`, `unknown pasture: ${card.pastureId}`);
+    const species = text(poolFile, `.animals[${index}].species`, card.species, { max: 160 });
+    if (!pastureSpecies.get(card.pastureId).has(species)) fail(poolFile, `.animals[${index}].species`, `${species} does not belong in ${card.pastureId}`);
+    const sourceFact = deriveFact(source.notes);
+    if (!sourceFact || card.fact !== sourceFact) fail(poolFile, `.animals[${index}].fact`, `must exactly match the verified herd note for ${card.id}`);
+    return {
+      id: source.id,
+      name: text(poolFile, `.animals[${index}].name`, card.name, { max: 160 }),
+      species,
+      pastureId: card.pastureId,
+      photo: card.photo === null ? null : await imagePath(root, poolFile, `.animals[${index}].photo`, card.photo),
+      art: await imagePath(root, poolFile, `.animals[${index}].art`, card.art),
+      fact: sourceFact,
+      clueEligible: card.clueEligible === true
+    };
   }));
-  const careItems = array(file, ".careItems", data.careItems, { min: 1, max: 20 }).map((item, index) => {
-    object(file, `.careItems[${index}]`, item);
-    return { id: text(file, `.careItems[${index}].id`, item.id, { max: 96 }), label: text(file, `.careItems[${index}].label`, item.label, { max: 160 }), kind: text(file, `.careItems[${index}].kind`, item.kind, { max: 32 }), appliesTo: text(file, `.careItems[${index}].appliesTo`, item.appliesTo, { max: 32 }), points: integer(file, `.careItems[${index}].points`, item.points, { min: 0, max: 100 }) };
+  const pooledIds = new Set(animalCards.map((card) => card.id));
+  for (const id of herdById.keys()) if (!pooledIds.has(id)) fail(poolFile, ".animals", `verified herd animal missing from the pool: ${id}`);
+  if (pooledIds.size !== animalCards.length) fail(poolFile, ".animals", "duplicate animal ids in the pool.");
+
+  const taskTypes = array(file, ".taskTypes", data.taskTypes, { min: 1, max: 20 }).map((task, index) => {
+    object(file, `.taskTypes[${index}]`, task);
+    let species = task.species;
+    if (species !== "any") {
+      species = array(file, `.taskTypes[${index}].species`, species, { min: 1, max: 12 }).map((value, speciesIndex) => {
+        const label = text(file, `.taskTypes[${index}].species[${speciesIndex}]`, value, { max: 160 });
+        if (!knownSpecies.has(label)) fail(file, `.taskTypes[${index}].species[${speciesIndex}]`, `unknown species: ${label}`);
+        return label;
+      });
+    }
+    return {
+      id: text(file, `.taskTypes[${index}].id`, task.id, { max: 96 }),
+      label: text(file, `.taskTypes[${index}].label`, task.label, { max: 160 }),
+      icon: text(file, `.taskTypes[${index}].icon`, task.icon, { max: 8 }),
+      wording: text(file, `.taskTypes[${index}].wording`, task.wording, { max: 200 }),
+      species,
+      points: integer(file, `.taskTypes[${index}].points`, task.points, { min: 0, max: 100 })
+    };
   });
+  const shear = taskTypes.find((task) => task.id === "shear");
+  if (!shear || shear.species === "any" || shear.species.some((label) => !/Alpaca/.test(label))) {
+    fail(file, ".taskTypes", "shear must be restricted to fiber species (Alpaca) — no shearing chickens.");
+  }
+
+  object(file, ".difficulty", data.difficulty);
+  const rounds = array(file, ".difficulty.rounds", data.difficulty.rounds, { min: 1, max: 20 }).map((row, index) => {
+    object(file, `.difficulty.rounds[${index}]`, row);
+    const lineupSize = integer(file, `.difficulty.rounds[${index}].lineupSize`, row.lineupSize, { min: 2, max: 12 });
+    const sameSpeciesDistractors = integer(file, `.difficulty.rounds[${index}].sameSpeciesDistractors`, row.sameSpeciesDistractors, { min: 0, max: 11 });
+    if (sameSpeciesDistractors >= lineupSize) fail(file, `.difficulty.rounds[${index}]`, "distractors must leave room for the target.");
+    return {
+      round: integer(file, `.difficulty.rounds[${index}].round`, row.round, { min: 1, max: 20 }),
+      lineupSize,
+      sameSpeciesDistractors,
+      timerSeconds: integer(file, `.difficulty.rounds[${index}].timerSeconds`, row.timerSeconds, { min: 3, max: 120 }),
+      clueTasks: integer(file, `.difficulty.rounds[${index}].clueTasks`, row.clueTasks, { min: 0, max: 10 })
+    };
+  });
+  rounds.forEach((row, index) => {
+    if (index === 0) return;
+    const prev = rounds[index - 1];
+    if (row.round !== prev.round + 1) fail(file, ".difficulty.rounds", "rounds must be consecutive.");
+    if (row.timerSeconds > prev.timerSeconds || row.lineupSize < prev.lineupSize || row.sameSpeciesDistractors < prev.sameSpeciesDistractors || row.clueTasks < prev.clueTasks) {
+      fail(file, ".difficulty.rounds", "difficulty must ramp: timers tighten, lineups and look-alikes grow.");
+    }
+  });
+
   object(file, ".session", data.session);
-  return { source: { herdExport: text(file, ".source.herdExport", data.source.herdExport, { max: 512 }), updated: text(file, ".source.updated", data.source.updated, { max: 32 }), mode: text(file, ".source.mode", data.source.mode, { max: 160 }) }, pastures, animalCards, careItems, session: { schemaVersion: integer(file, ".session.schemaVersion", data.session.schemaVersion, { min: 1, max: 10 }), storageKey: text(file, ".session.storageKey", data.session.storageKey, { max: 160 }), roundTasks: integer(file, ".session.roundTasks", data.session.roundTasks, { min: 1, max: 10 }), maxStreak: integer(file, ".session.maxStreak", data.session.maxStreak, { min: 1, max: 20 }), scorePerCorrect: integer(file, ".session.scorePerCorrect", data.session.scorePerCorrect, { min: 0, max: 100 }), reducedMotionSafe: data.session.reducedMotionSafe === true, keyboardSafe: data.session.keyboardSafe === true, touchSafe: data.session.touchSafe === true } };
+  return {
+    source: { herdExport: text(file, ".source.herdExport", data.source.herdExport, { max: 512 }), animalPool: text(file, ".source.animalPool", data.source.animalPool, { max: 512 }), updated: text(file, ".source.updated", data.source.updated, { max: 32 }), mode: text(file, ".source.mode", data.source.mode, { max: 160 }) },
+    pastures,
+    taskTypes,
+    difficulty: { rounds },
+    animalCards,
+    session: {
+      schemaVersion: integer(file, ".session.schemaVersion", data.session.schemaVersion, { min: 2, max: 10 }),
+      storageKey: text(file, ".session.storageKey", data.session.storageKey, { max: 160 }),
+      roundTasks: integer(file, ".session.roundTasks", data.session.roundTasks, { min: 1, max: 10 }),
+      scorePerCorrect: integer(file, ".session.scorePerCorrect", data.session.scorePerCorrect, { min: 0, max: 100 }),
+      speedBonusMax: integer(file, ".session.speedBonusMax", data.session.speedBonusMax, { min: 0, max: 100 }),
+      dailyStreak: data.session.dailyStreak === true,
+      reducedMotionSafe: data.session.reducedMotionSafe === true,
+      keyboardSafe: data.session.keyboardSafe === true,
+      touchSafe: data.session.touchSafe === true
+    }
+  };
 }
 
 async function normalizeProducts(root, data) {
@@ -248,7 +331,7 @@ function parseJson(file, source) {
 }
 
 export async function buildContentPack(root, dist) {
-  const inputPaths = ["experiences.json", "animals.json", "store-products.json", "rv-rentals.html", "index.html", "src/featured-skus.json", "src/wix-products-2026-06-23.json", "src/farm-steward.v1.json"];
+  const inputPaths = ["experiences.json", "animals.json", "store-products.json", "rv-rentals.html", "index.html", "src/featured-skus.json", "src/wix-products-2026-06-23.json", "src/farm-steward.v1.json", "animals-pool.json"];
   const raw = Object.fromEntries(await Promise.all(inputPaths.map(async (file) => [file, await readFile(join(root, file), "utf8")] )));
   const herd = parseJson("C:/dev/tapestry-herd/herd.json", await readFile("C:/dev/tapestry-herd/herd.json", "utf8"));
   const [experiences, animals, storeProducts] = await Promise.all([
@@ -256,7 +339,7 @@ export async function buildContentPack(root, dist) {
     normalizeAnimals(root, parseJson("animals.json", raw["animals.json"])),
     normalizeProducts(root, parseJson("store-products.json", raw["store-products.json"]))
   ]);
-  const farmSteward = await normalizeFarmSteward(root, parseJson("src/farm-steward.v1.json", raw["src/farm-steward.v1.json"]), herd);
+  const farmSteward = await normalizeFarmSteward(root, parseJson("src/farm-steward.v1.json", raw["src/farm-steward.v1.json"]), herd, parseJson("animals-pool.json", raw["animals-pool.json"]));
   const rvFacts = normalizeRvFacts(raw["rv-rentals.html"]);
   const contact = normalizeContact(raw["index.html"]);
   const output = join(dist, "data");
