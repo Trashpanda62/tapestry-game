@@ -13,7 +13,9 @@
   var core = window.FarmStewardCore;
   if (!mount || !core) return;
 
-  var base = "/s/tapestry-acres/";
+  var baseTag = document.querySelector("base");
+  var base = baseTag ? new URL(baseTag.href).pathname : "/s/tapestry-acres/";
+  if (base.charAt(base.length - 1) !== "/") base += "/";
   var reducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var pack;
   var state;
@@ -72,6 +74,7 @@
     button.addEventListener("click", startRound);
     intro.appendChild(button);
     mount.appendChild(intro);
+    button.focus();
   }
 
   function startRound() {
@@ -102,8 +105,14 @@
     var header = text("div", "task-header", "");
     header.appendChild(taskChip(task.type));
     var timer = text("p", "game-timer", secondsLeft + "s left");
+    // The countdown mutates every second; without this the surrounding
+    // aria-live="polite" region on #herd-game would re-announce it once a
+    // second and drown out the task prompt and feedback text for screen
+    // reader users. The number is still visible on screen for sighted users.
+    timer.setAttribute("aria-live", "off");
     header.appendChild(timer);
     var prompt = text("p", "task-prompt", promptFor(task));
+    prompt.tabIndex = -1;
     var group = text("div", "steward-lineup", "");
     group.setAttribute("role", "group");
     group.setAttribute("aria-label", "Pick the right animal");
@@ -149,6 +158,11 @@
     shell.appendChild(group);
     shell.appendChild(feedback);
     mount.appendChild(shell);
+    // Every task replaces the whole subtree (mount.replaceChildren above),
+    // which drops focus to <body> for keyboard users unless we reclaim it —
+    // otherwise playing a 5-task round means tabbing in from the top of the
+    // page after every single answer.
+    prompt.focus();
 
     timerHandle = window.setInterval(function () {
       secondsLeft -= 1;
@@ -197,6 +211,7 @@
     actions.appendChild(roster);
     done.appendChild(actions);
     mount.appendChild(done);
+    replay.focus();
   }
 
   function init(payload) {
