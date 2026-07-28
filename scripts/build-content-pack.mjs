@@ -87,9 +87,9 @@ async function normalizeExperiences(root, data) {
       cadence: text(file, `[${index}].cadence`, record.cadence, { max: 160 }),
       image: await imagePath(root, file, `[${index}].image`, record.image),
       category: text(file, `[${index}].category`, record.category, { max: 64 }),
-      // The official calendars own real availability and reservations. Farm
-      // Shopping Experience remains inquiry-only by policy.
-      bookingUrl: id === "farm-shopping-experience" ? null : url(file, `[${index}].booking_url`, record.booking_url, { hosts: ["www.tapestryacres.com"] })
+      // Published experience cards stay inside the tenant-owned booking flow.
+      // Farm Shopping Experience remains inquiry-only by policy.
+      bookPath: id === "farm-shopping-experience" ? null : `book/${encodeURIComponent(id)}`
     };
   }));
 }

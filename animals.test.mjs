@@ -9,9 +9,9 @@ function assert(condition, message) {
   }
 }
 
-assert(html.includes("fetch('animals.json',{cache:'no-cache'})"), 'missing animals.json fetch');
+assert(html.includes("fetch('data/animals.v1.json',{cache:'no-cache'})"), 'missing generated animals feed fetch');
 assert(html.includes("document.getElementById('animal-groups')"), 'animal group container is not referenced in JavaScript');
-assert(html.includes("data.groups.forEach(renderGroup)"), 'animal groups are not rendered from the feed');
+assert(html.includes("data.groups.forEach(function(group){renderGroup(group)"), 'animal groups are not rendered from the feed');
 assert(/document\.createElement\(['"]img['"]\)[\s\S]*?img\.alt\s*=\s*group\.imageAlt\|\|group\.species/.test(html), 'rendered animal images are missing non-empty alt text (with an honest imageAlt override where the photo does not literally match the species)');
 assert(html.includes('No animals listed right now — check back soon.'), 'missing empty-state message');
 assert(html.includes("We couldn't load the animal roster right now."), 'missing fetch-failure message');
