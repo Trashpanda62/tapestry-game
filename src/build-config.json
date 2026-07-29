@@ -1,0 +1,20 @@
+{
+  "basePath": "/s/tapestry-acres",
+  "publicOrigin": "https://sites.obscurastudio.design",
+  "routes": [
+    { "source": "index.html", "path": "/" },
+    { "source": "animals.html", "path": "/animals" },
+    { "source": "experiences.html", "path": "/experiences" },
+    { "source": "book.html", "path": "/book" },
+    { "source": "meet-the-herd.html", "path": "/herd" },
+    { "source": "rv-rentals.html", "path": "/stay" },
+    { "source": "shop.html", "path": "/shop" },
+    { "source": "bag.html", "path": "/bag" },
+    { "source": "checkout.html", "path": "/checkout" },
+    { "source": "404.html", "path": "/404" },
+    { "source": "thanks.html", "path": "/thanks" }
+  ],
+  "dataFiles": ["animals.json", "bookings.json", "experiences.json", "store-products.json"],
+  "rootFiles": [".nojekyll", "bookings.json", "edits.js", "robots.txt", "sitemap.xml"],
+  "assetDirectories": ["assets", "public"]
+}

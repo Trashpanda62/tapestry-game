@@ -13,8 +13,20 @@ const rv = await read('rv-rentals.html');
 const herd = await read('meet-the-herd.html');
 const stewardJs = await read('assets/herd-game.js');
 
+const shell = await read('assets/site-shell.js');
 assert(/site-nav-toggle/.test(home) && /aria-expanded/.test(home), 'mobile menu lacks expanded state');
-assert(/site-nav-toggle/.test(home) && /addEventListener\('click'/.test(home), 'mobile menu lacks keyboard-activatable click handler');
+// The click handler lives in the shared shell, not inline per page. This assertion
+// used to require an inline listener, which is how index.html and rv-rentals.html
+// ended up binding a second one: both flipped aria-expanded on the same click, so
+// the menu never opened. Check the real wiring, and guard against the re-bind.
+// Asset URLs carry a ?v=<content-hash> cache buster in the built output.
+assert(/src="assets\/site-shell\.js(?:\?v=[a-f0-9]+)?"/.test(home), 'home page does not load the shared nav shell');
+assert(/addEventListener\(["']click["']/.test(shell) && /aria-expanded/.test(shell), 'nav shell lacks a keyboard-activatable click handler');
+const shellPages = ['index.html', 'experiences.html', 'shop.html', 'animals.html', 'rv-rentals.html', 'meet-the-herd.html', 'book.html', 'bag.html', 'checkout.html', 'thanks.html', '404.html'];
+for (const name of shellPages) {
+  const page = await read(name);
+  assert(!/site-nav-toggle["']\)[\s\S]{0,200}?addEventListener/.test(page), `${name} re-binds the nav toggle inline; the shared shell already owns it (double-bind leaves the menu permanently closed)`);
+}
 assert(/skip-to-content/.test(home), 'skip link missing from generated shell');
 assert(/experience-filter/.test(exp) && /addEventListener\('change'/.test(exp), 'experience filter lacks native select/change path');
 assert(/bookPath/.test(exp) && /Choose a date/.test(exp) && /experience-filter/.test(exp), 'experience booking cards lack a keyboard-addressable first-party path');

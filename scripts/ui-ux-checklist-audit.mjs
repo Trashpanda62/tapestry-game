@@ -1,0 +1,20 @@
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const root = fileURLToPath(new URL('../dist/', import.meta.url));
+const read = (file) => readFile(path.join(root, file), 'utf8');
+const assert = (ok, message) => { if (!ok) throw new Error(`[ux] ${message}`); };
+const home = await read('index.html');
+const css = await read('assets/site.css');
+assert(/aria-current="page"/.test(home), 'active navigation signifier missing');
+assert(/hero-actions/.test(home) && /Book a farm experience/.test(home) && /Plan a stay/.test(home), 'primary/secondary CTA hierarchy missing');
+assert(/--serif:/.test(css) && /--sans:/.test(css) && /h1[^}]*line-height:1\.08/.test(css), 'type hierarchy/token contract missing');
+assert(/--accent:/.test(css) && /--forest:/.test(css) && /--cream:/.test(css), 'locked palette ramp missing');
+assert(/padding:13px 21px/.test(css) && /border-radius:999px/.test(css), 'button affordance/padding contract missing');
+assert(/:hover/.test(css) && /:focus-visible/.test(css) && /:disabled/.test(css), 'interactive state coverage missing');
+assert(/aria-live/.test(home) && /aria-busy/.test(await read('experiences.html')), 'loading/live feedback contract missing');
+assert(/linear-gradient/.test(css) && /hero-media/.test(css), 'photo overlay uses a progressive gradient treatment');
+assert(/box-shadow:var\(--shadow\)/.test(css) && /--shadow:/.test(css), 'soft elevation token missing');
+assert(!/bottom-nav|tab-bar/.test(home), 'unrequested bottom navigation pattern introduced');
+console.log('[ux] PASS: signifiers, hierarchy, spacing/type/color tokens, CTA affordance, states, image overlays, elevation, and mobile-nav conventions reviewed.');

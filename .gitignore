@@ -1,0 +1,4 @@
+dist/
+# Release bundles are reproducible from the source tree via `npm run build`; the
+# published copies live in MinIO under published/tapestry-acres/releases/.
+tapestry-release-*.tar

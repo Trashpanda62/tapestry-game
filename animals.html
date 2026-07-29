@@ -31,7 +31,7 @@
     .for-sale-card{padding:24px;border:1px solid var(--cardborder);border-radius:16px;background:var(--card);box-shadow:var(--shadow)}
     .for-sale-card h3{margin:0 0 8px;color:var(--forest);font-size:20px}
     .for-sale-card p{margin:0 0 16px;color:var(--muted)}
-    .load-error{margin:30px 0 90px;padding:22px;border:1px solid var(--accent);border-radius:16px;background:var(--card);color:#8b2f20;text-align:center;font-weight:700}
+    .load-error{margin:30px 0 90px;padding:22px;border:1px solid var(--accent);border-radius:16px;background:var(--card);color:var(--alert);text-align:center;font-weight:700}
     @media(max-width:700px){.animals-intro{padding-top:45px}.animal-groups,.for-sale-grid{grid-template-columns:1fr}}
   </style>
 </head>
@@ -45,7 +45,7 @@
         <a href="experiences.html">Experiences</a>
         <a href="shop.html">Shop</a>
         <a href="animals.html" aria-current="page">Animals</a>
-        <a href="meet-the-herd.html">Meet the Herd</a>
+        <a href="meet-the-herd.html">Herd Game</a>
         <a href="rv-rentals.html">RV Rentals</a>
       </nav>
     </div>
@@ -54,7 +54,7 @@
     <div class="page">
       <section class="animals-intro" aria-labelledby="animals-title">
         <h1 id="animals-title">Meet the animals</h1>
-        <p>110 acres, a whole barnyard of personalities. Animals is the reference and for-sale guide; <a href="/s/tapestry-acres/herd">Meet the Herd</a> is the interactive personality journey.</p>
+        <p>110 acres, a whole barnyard of personalities. This page is the reference and for-sale guide; the <a href="/s/tapestry-acres/herd">Meet the Herd</a> game is where you test how well you know them.</p>
       </section>
       <nav class="animal-jump" aria-label="Jump to species"><label for="animal-filter">Jump to a group</label><select id="animal-filter"><option value="all">All species</option></select></nav>
       <div class="animal-groups" id="animal-groups" aria-live="polite" aria-busy="true"><article class="skeleton-card" aria-hidden="true"></article><article class="skeleton-card" aria-hidden="true"></article><article class="skeleton-card" aria-hidden="true"></article><span class="sr-only">Loading animals…</span></div>
@@ -68,8 +68,9 @@
   <footer><div class="footer-logo">TAPESTRY ACRES</div><div class="footer-flourish" aria-hidden="true">❖ ✳ ❖</div><a class="footer-link" href="mailto:tapestryacres@gmail.com">tapestryacres@gmail.com</a></footer>
   <script defer>
     (function(){
-      var toggle=document.querySelector('.site-nav-toggle');
-      toggle.addEventListener('click',function(){toggle.setAttribute('aria-expanded',toggle.getAttribute('aria-expanded')!=='true');});
+      /* The nav toggle is wired by assets/site-shell.js, which the build injects into
+         every page. A second handler here flipped aria-expanded on the same click as
+         the shell's, so the menu never opened. */
 
       var groupsMount=document.getElementById('animal-groups');
       var forSaleMount=document.getElementById('for-sale-grid');

@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "routeCriticalFonts": [],
+  "images": [
+    {
+      "id": "home-hero",
+      "source": "assets/portfolio/walk-summer.webp",
+      "kind": "hero",
+      "focal": { "x": 50, "y": 50 },
+      "variants": [
+        { "name": "mobile", "width": 480, "maxBytes": 250000 },
+        { "name": "desktop", "width": 700, "maxBytes": 450000 }
+      ],
+      "formats": ["avif", "webp"]
+    },
+    {
+      "id": "family-proof",
+      "source": "assets/portfolio/walk-family.webp",
+      "kind": "proof",
+      "focal": { "x": 50, "y": 50 },
+      "variants": [{ "name": "card", "width": 480 }, { "name": "wide", "width": 700 }],
+      "formats": ["avif", "webp"]
+    },
+    {
+      "id": "coffee-proof",
+      "source": "assets/cards/highlandpair.jpg",
+      "kind": "proof",
+      "focal": { "x": 50, "y": 45 },
+      "variants": [{ "name": "card", "width": 480 }, { "name": "wide", "width": 760 }],
+      "formats": ["avif", "webp"]
+    },
+    {
+      "id": "seasonal-proof",
+      "source": "assets/portfolio/walk-blossoms.webp",
+      "kind": "proof",
+      "focal": { "x": 50, "y": 50 },
+      "variants": [{ "name": "card", "width": 480 }, { "name": "wide", "width": 700 }],
+      "formats": ["avif", "webp"]
+    },
+    {
+      "id": "animal-proof",
+      "source": "assets/portfolio/alpaca-face.webp",
+      "kind": "proof",
+      "focal": { "x": 50, "y": 45 },
+      "variants": [{ "name": "card", "width": 360 }, { "name": "wide", "width": 700 }],
+      "formats": ["avif", "webp"]
+    },
+    {
+      "id": "field-kit",
+      "source": "assets/illustration/field-kit.png",
+      "kind": "accent",
+      "webpQuality": 45,
+      "focal": { "x": 50, "y": 50 },
+      "variants": [
+        { "name": "compact", "width": 320, "maxBytes": 60000 },
+        { "name": "standard", "width": 627, "maxBytes": 60000 }
+      ],
+      "formats": ["webp"]
+    }
+  ]
+}

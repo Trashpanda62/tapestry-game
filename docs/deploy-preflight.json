@@ -1,0 +1,169 @@
+{
+  "generatedAt": "2026-07-23T03:12:29.904Z",
+  "candidate": {
+    "acceptanceHash": "1216a676f827da554bb9dc0e5d1c53490b6c2d7762a41548a9ae797f3bb83624",
+    "fileCount": 717,
+    "totalBytes": 34522833
+  },
+  "repos": {
+    "tapestry": {
+      "ok": true,
+      "branch": "## codex/tapestry-obscura-redesign",
+      "lines": [
+        " M 404.html",
+        " M README.md",
+        " M animals.html",
+        " M animals.test.mjs",
+        " M assets/site.css",
+        " M experiences.json",
+        " M home.test.mjs",
+        " M meet-the-herd.html",
+        " M meet-the-herd.test.mjs",
+        " M rv-rentals.html",
+        " M shop.html",
+        " M shop.test.mjs",
+        "?? .gitignore",
+        "?? .impeccable/",
+        "?? assets/design-selector.js",
+        "?? assets/farm-steward.js",
+        "?? assets/herd-game.js",
+        "?? assets/illustration/",
+        "?? assets/journey-analytics.js",
+        "?? assets/preset-switcher.css",
+        "?? assets/preset-switcher.js",
+        "?? assets/shop.js",
+        "?? assets/site-shell.js",
+        "?? assets/state-skeletons.js",
+        "?? baseline-evidence-2026-07-21T043848Z/",
+        "?? design-preview.html",
+        "?? docs/",
+        "?? farm-steward.test.mjs",
+        "?? package.json",
+        "?? public/",
+        "?? scripts/acceptance-flow-audit.mjs",
+        "?? scripts/acceptance-gate.mjs",
+        "?? scripts/acceptance-state-audit.mjs",
+        "?? scripts/accessibility-audit.mjs",
+        "?? scripts/analytics-audit.mjs",
+        "?? scripts/animal-copy-audit.mjs",
+        "?? scripts/animals-audit.mjs",
+        "?? scripts/asset-audit.mjs",
+        "?? scripts/authenticity-audit.mjs",
+        "?? scripts/build.mjs",
+        "?? scripts/catalog-adversarial.mjs",
+        "?? scripts/catalog-reconciliation-audit.mjs",
+        "?? scripts/content-lint.mjs",
+        "?? scripts/copy-audit.mjs",
+        "?? scripts/copy-voice-audit.mjs",
+        "?? scripts/correctness-adversarial.mjs",
+        "?? scripts/deploy-preflight.mjs",
+        "?? scripts/design-lock-audit.mjs",
+        "?? scripts/design-selector-audit.mjs",
+        "?? scripts/faq-audit.mjs",
+        "?? scripts/farm-steward-audit.mjs",
+        "?? scripts/final-dist-audit.mjs",
+        "?? scripts/heading-audit.mjs",
+        "?? scripts/herd-mirror-audit.mjs",
+        "?? scripts/herd-offline-audit.mjs",
+        "?? scripts/herd-parity-audit.mjs",
+        "?? scripts/hero-audit.mjs",
+        "?? scripts/live-monitor.mjs",
+        "?? scripts/live-readiness-audit.mjs",
+        "?? scripts/locked-visual-audit.mjs",
+        "?? scripts/map-audit.mjs",
+        "?? scripts/mirror-herd.mjs",
+        "?? scripts/package-assets.mjs",
+        "?? scripts/performance-audit.mjs",
+        "?? scripts/route-matrix.mjs",
+        "?? scripts/rv-audit.mjs",
+        "?? scripts/screen-reader-audit.mjs",
+        "?? scripts/secret-license-audit.mjs",
+        "?? scripts/selector-lock-audit.mjs",
+        "?? scripts/selector-runtime-audit.mjs",
+        "?? scripts/selector-sanity-audit.mjs",
+        "?? scripts/seo-audit.mjs",
+        "?? scripts/shop-audit.mjs",
+        "?? scripts/state-audit.mjs",
+        "?? scripts/ui-state-audit.mjs",
+        "?? scripts/ui-ux-checklist-audit.mjs",
+        "?? scripts/validate-inputs.mjs",
+        "?? scripts/verify-build.mjs",
+        "?? scripts/visual-regression-audit.mjs",
+        "?? src/",
+        "?? tapestry-release-44298de7.tar",
+        "?? tapestry-release-5273571d.tar",
+        "?? tapestry-release-f47a1253.tar",
+        "?? thanks.html"
+      ]
+    },
+    "webstudio": {
+      "ok": true,
+      "branch": "## tapestry-first-party",
+      "lines": [
+        " M src/app/s/[slug]/[[...path]]/route.ts",
+        " M src/lib/tapestryTransaction.ts",
+        "?? .impeccable/hook.cache.json"
+      ]
+    }
+  },
+  "envFiles": [
+    {
+      "name": ".env.example",
+      "present": true,
+      "bytes": 1453
+    },
+    {
+      "name": ".env.tapestry-sandbox.example",
+      "present": true,
+      "bytes": 1018
+    }
+  ],
+  "migration": {
+    "path": "prisma\\migrations\\0018_conversion_event\\migration.sql",
+    "bytes": 1179,
+    "destructiveScanPass": true
+  },
+  "checks": [
+    {
+      "name": "accepted-release-artifact",
+      "pass": false,
+      "detail": "hash=1216a676f827da554bb9dc0e5d1c53490b6c2d7762a41548a9ae797f3bb83624; files=717; bytes=34522833"
+    },
+    {
+      "name": "tapestry-lockfile",
+      "pass": false,
+      "detail": "package-lock.json absent; build currently relies on the checked-in package manifest only"
+    },
+    {
+      "name": "webstudio-lockfile",
+      "pass": true,
+      "detail": "package-lock.json present"
+    },
+    {
+      "name": "runtime-env-presence",
+      "pass": false,
+      "detail": ".env absent; only .env.example is present"
+    },
+    {
+      "name": "migration-compatibility-scan",
+      "pass": true,
+      "detail": "conversion migration has no destructive DROP/TRUNCATE operations"
+    },
+    {
+      "name": "migration-backup",
+      "pass": false,
+      "detail": "database backup cannot be verified without the deployment host and explicit credentials"
+    },
+    {
+      "name": "active-release-snapshot",
+      "pass": false,
+      "detail": "active release pointer/rollback id requires read-only access to the live publisher/storage"
+    },
+    {
+      "name": "deployment-authorization",
+      "pass": false,
+      "detail": "deploy.sh, migration, publish, and activation are outward-facing; no explicit authorization supplied"
+    }
+  ],
+  "decision": "NO-GO"
+}

@@ -1,0 +1,74 @@
+{
+  "generatedAt": "2026-07-29T09:13:40.115Z",
+  "releaseHash": "8b62b571e68d2adb5f3cabf861aac6eaa8ae942ff29fd27b73ec485012cfd8ff",
+  "fileCount": 775,
+  "totalBytes": 35882005,
+  "rows": [
+    {
+      "id": "LOCK",
+      "requirement": "Exact Steve combo baked into production HTML",
+      "pass": true,
+      "evidence": "design-lock + locked-visual"
+    },
+    {
+      "id": "ROUTES",
+      "requirement": "Canonical route manifest and branded utility routes",
+      "pass": true,
+      "evidence": "route-matrix"
+    },
+    {
+      "id": "EXPERIENCES",
+      "requirement": "6 source-backed experiences with embedded calendars and Square checkout",
+      "pass": true,
+      "evidence": "experience-audit"
+    },
+    {
+      "id": "CATALOG",
+      "requirement": "242 families / 830 SKUs retain checkout identity",
+      "pass": true,
+      "evidence": "catalog-map"
+    },
+    {
+      "id": "ANIMALS",
+      "requirement": "8 species groups with named/unnamed and for-sale distinction",
+      "pass": true,
+      "evidence": "animals-audit"
+    },
+    {
+      "id": "HERD",
+      "requirement": "110 head / 65 named read-only mirror",
+      "pass": true,
+      "evidence": "herd-offline"
+    },
+    {
+      "id": "ANALYTICS",
+      "requirement": "Allowlisted no-PII conversion path",
+      "pass": true,
+      "evidence": "event-lead-security"
+    },
+    {
+      "id": "SECURITY",
+      "requirement": "No secrets/unexpected externals/adversarial P0/P1",
+      "pass": true,
+      "evidence": "security + adversarial gates"
+    },
+    {
+      "id": "PERFORMANCE",
+      "requirement": "Deterministic bytes/requests and bounded interaction budgets",
+      "pass": true,
+      "evidence": "performance-baseline"
+    },
+    {
+      "id": "A11Y",
+      "requirement": "Semantic, keyboard, screen-reader narrative and visual matrix",
+      "pass": true,
+      "evidence": "accessibility + keyboard + visual"
+    },
+    {
+      "id": "SEO",
+      "requirement": "Canonical/OG/schema/sitemap/robots/local intent",
+      "pass": true,
+      "evidence": "seo-audit"
+    }
+  ]
+}

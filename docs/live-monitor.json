@@ -1,0 +1,130 @@
+{
+  "generatedAt": "2026-07-27T07:18:39.945Z",
+  "origin": "https://sites.obscurastudio.design",
+  "durationMs": 120000,
+  "intervalMs": 30000,
+  "pass": true,
+  "alertCount": 0,
+  "rows": [
+    {
+      "at": "2026-07-27T07:17:03.641Z",
+      "checks": [
+        {
+          "route": "/",
+          "status": 308,
+          "ok": true
+        },
+        {
+          "route": "/experiences",
+          "status": 200,
+          "ok": true
+        },
+        {
+          "route": "/shop",
+          "status": 200,
+          "ok": true
+        },
+        {
+          "route": "/stay",
+          "status": 200,
+          "ok": true
+        },
+        {
+          "route": "/herd",
+          "status": 200,
+          "ok": true
+        }
+      ]
+    },
+    {
+      "at": "2026-07-27T07:17:35.389Z",
+      "checks": [
+        {
+          "route": "/",
+          "status": 308,
+          "ok": true
+        },
+        {
+          "route": "/experiences",
+          "status": 200,
+          "ok": true
+        },
+        {
+          "route": "/shop",
+          "status": 200,
+          "ok": true
+        },
+        {
+          "route": "/stay",
+          "status": 200,
+          "ok": true
+        },
+        {
+          "route": "/herd",
+          "status": 200,
+          "ok": true
+        }
+      ]
+    },
+    {
+      "at": "2026-07-27T07:18:06.672Z",
+      "checks": [
+        {
+          "route": "/",
+          "status": 308,
+          "ok": true
+        },
+        {
+          "route": "/experiences",
+          "status": 200,
+          "ok": true
+        },
+        {
+          "route": "/shop",
+          "status": 200,
+          "ok": true
+        },
+        {
+          "route": "/stay",
+          "status": 200,
+          "ok": true
+        },
+        {
+          "route": "/herd",
+          "status": 200,
+          "ok": true
+        }
+      ]
+    },
+    {
+      "at": "2026-07-27T07:18:37.949Z",
+      "checks": [
+        {
+          "route": "/",
+          "status": 308,
+          "ok": true
+        },
+        {
+          "route": "/experiences",
+          "status": 200,
+          "ok": true
+        },
+        {
+          "route": "/shop",
+          "status": 200,
+          "ok": true
+        },
+        {
+          "route": "/stay",
+          "status": 200,
+          "ok": true
+        },
+        {
+          "route": "/herd",
+          "status": 200,
+          "ok": true
+        }
+      ]
+    }
+  ]
+}

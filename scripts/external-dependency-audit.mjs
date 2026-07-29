@@ -27,7 +27,11 @@ const allowed = [
   ['first-party', (url) => ['sites.obscurastudio.design', 'tapestry-sandbox.obscurastudio.design'].includes(url.hostname)],
   ['Square Web Payments SDK', (url) => ['web.squarecdn.com', 'sandbox.web.squarecdn.com'].includes(url.hostname)],
   ['approved map', (url) => url.hostname === 'maps.google.com'],
-  ['approved map', (url) => url.hostname === 'www.google.com' && url.pathname.startsWith('/maps/')],
+  ['approved map', (url) => url.hostname === 'www.google.com' && (url.pathname === '/maps' || url.pathname.startsWith('/maps/'))],
+  // The farm's own social profiles, linked from the footer and the home-page proof
+  // band. These are outbound anchors, not loaded subresources: nothing is fetched
+  // and no visitor data leaves the page unless somebody clicks.
+  ['owned social profile', (url) => ['www.facebook.com', 'www.instagram.com', 'www.tiktok.com'].includes(url.hostname)],
   ['metadata vocabulary', (url) => url.hostname === 'schema.org' || url.hostname === 'www.w3.org'],
   // Photo/source links may appear in an authored credit block; they are
   // classified explicitly rather than silently treated as first-party.

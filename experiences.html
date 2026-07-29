@@ -17,7 +17,10 @@
   <meta name="twitter:image" content="https://trashpanda62.github.io/tapestry-game/assets/bg/meadow.webp">
   <link rel="stylesheet" href="assets/site.css">
   <style>
-    .experiences-intro{padding:72px 20px 28px;text-align:center}.experiences-intro h1{margin:0 auto 16px;color:var(--ink);text-shadow:none}.experiences-intro p{margin:0 auto;color:var(--muted);font-size:1.08rem}.experience-filter{display:flex;align-items:center;justify-content:center;gap:10px;margin:34px auto 18px;color:var(--muted);font-size:14px;font-weight:700}.experience-filter select{min-height:44px;padding:9px 34px 9px 12px;border:1px solid var(--cardborder);border-radius:999px;background:var(--card);color:var(--ink);font:inherit}.experience-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin:28px 0 90px}.experience-card{display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--cardborder);border-radius:18px;background:var(--card);box-shadow:var(--shadow)}.experience-image{position:relative}.experience-image img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}.experience-badge{position:absolute;top:14px;left:14px;padding:6px 11px;border-radius:999px;background:var(--gold);color:var(--ink);font-size:12px;font-weight:700}.experience-body{display:flex;flex:1;flex-direction:column;padding:24px}.experience-body h2{margin:0 0 8px;color:var(--forest);font-size:25px}.experience-meta{display:flex;justify-content:space-between;gap:16px;margin:0 0 15px;color:var(--muted);font-size:14px}.experience-meta strong{color:var(--accent);white-space:nowrap}.experience-blurb{margin:0 0 15px}.experience-card details{margin:0 0 22px;box-shadow:none}.experience-card .btn{align-self:flex-start;margin-top:auto}.load-error{margin:30px 0 90px;padding:22px;border:1px solid var(--accent);border-radius:16px;background:var(--card);color:#8b2f20;text-align:center;font-weight:700}@media(max-width:700px){.experiences-intro{padding-top:45px}.experience-grid{grid-template-columns:1fr}}
+    .experiences-intro{padding:72px 20px 28px;text-align:center}.experiences-intro h1{margin:0 auto 16px;color:var(--ink);text-shadow:none}.experiences-intro p{margin:0 auto;color:var(--muted);font-size:1.08rem}.experience-filter{display:flex;align-items:center;justify-content:center;gap:10px;margin:34px auto 18px;color:var(--muted);font-size:14px;font-weight:700}.experience-filter select{min-height:44px;padding:9px 34px 9px 12px;border:1px solid var(--cardborder);border-radius:999px;background:var(--card);color:var(--ink);font:inherit}.experience-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin:28px 0 90px}.experience-card{display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--cardborder);border-radius:18px;background:var(--card);box-shadow:var(--shadow)}.experience-image{position:relative}.experience-image picture{display:contents}
+    /* height:auto is load-bearing — the width/height attributes on these images would
+       otherwise beat aspect-ratio, since no author rule sets a height. */
+    .experience-image img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover}.experience-badge{position:absolute;top:14px;left:14px;padding:6px 11px;border-radius:999px;background:var(--gold);color:var(--ink);font-size:12px;font-weight:700}.experience-body{display:flex;flex:1;flex-direction:column;padding:24px}.experience-body h2{margin:0 0 8px;color:var(--forest);font-size:25px}.experience-meta{display:flex;justify-content:space-between;gap:16px;margin:0 0 15px;color:var(--muted);font-size:14px}.experience-meta strong{color:var(--accent);white-space:nowrap}.experience-blurb{margin:0 0 15px}.experience-card details{margin:0 0 22px;box-shadow:none}.experience-card .btn{align-self:flex-start;margin-top:auto}.load-error{margin:30px 0 90px;padding:22px;border:1px solid var(--accent);border-radius:16px;background:var(--card);color:var(--alert);text-align:center;font-weight:700}@media(max-width:700px){.experiences-intro{padding-top:45px}.experience-grid{grid-template-columns:1fr}}
   </style>
   <style>
     .visit-guide{display:grid;grid-template-columns:minmax(220px,.7fr) minmax(0,1.3fr);gap:clamp(28px,6vw,72px);margin:0 0 90px;padding:clamp(28px,5vw,54px);border-radius:22px;background:var(--forest);color:#fff;box-shadow:var(--shadow)}
@@ -44,7 +47,7 @@
         <a href="experiences.html" aria-current="page">Experiences</a>
         <a href="shop.html">Shop</a>
         <a href="animals.html">Animals</a>
-        <a href="meet-the-herd.html">Meet the Herd</a>
+        <a href="meet-the-herd.html">Herd Game</a>
         <a href="rv-rentals.html">RV Rentals</a>
       </nav>
     </div>
@@ -70,10 +73,11 @@
           </div>
         </div>
         <div class="visit-faq-list">
-          <details open><summary>How do I choose a date?</summary><p>Choose a date on any experience card to see that experience's available times and complete your reservation. Payment is processed securely through Square.</p></details>
-          <details><summary>How much time should I plan?</summary><p>Farm-store visits are 30 minutes. Alpaca and virtual experiences are one hour, birthday parties are 90 minutes, and private farm tours are two hours. Coffee with the Cows runs Saturday mornings.</p></details>
-          <details><summary>What should I wear?</summary><p>Closed-toe shoes are recommended for Coffee with the Cows. For another experience—or if the forecast looks questionable—ask the farm before you leave home.</p></details>
-          <details><summary>What should I confirm before booking?</summary><p>Contact the farm about weather, accessibility, cancellation terms, or child policies so the answer fits your group and the day of your visit.</p></details>
+          <details open><summary>What should I wear?</summary><p>Closed-toe shoes, anywhere on the farm. This is a working farm, not a walkway through a petting zoo, and every experience puts you outdoors on pasture and farm paths. Dress for the forecast while you are at it, and call if the weather looks doubtful.</p></details>
+          <details><summary>When is the farm open?</summary><p>Visits are bookable March 1 to June 30 and September 1 to December 31, between 10:00 a.m. and 5:00 p.m. Central. Outside those months the farm is closed to scheduled visits, but you can still email about a private one.</p></details>
+          <details><summary>How do I choose a date?</summary><p>Open an experience and pick a highlighted day on its availability calendar. Those are the days with times still free. Choose a time, hold it for ten minutes, and pay here on the site. Your card details go straight to Square and never touch this page.</p></details>
+          <details><summary>How much time should I plan?</summary><p>The farm shopping experience runs 30 minutes. The alpaca experience and the virtual farm tour are an hour, birthday parties are 90 minutes, and the private guided farm tour is two hours. Coffee with the Cows is a Saturday morning.</p></details>
+          <details><summary>What should I confirm before booking?</summary><p>Anything that depends on your group or the day: weather, accessibility, cancellation terms, whether an experience suits the kids you are bringing. Call <a href="tel:+19318233266">(931) 823-3266</a> or email <a href="mailto:tapestryacres@gmail.com">tapestryacres@gmail.com</a> and ask a person rather than guessing.</p></details>
         </div>
       </section>
     </div>
@@ -81,13 +85,40 @@
   <footer><div class="footer-logo">TAPESTRY ACRES</div><div class="footer-flourish" aria-hidden="true">❖ ✳ ❖</div><a class="footer-link" href="mailto:tapestryacres@gmail.com">tapestryacres@gmail.com</a></footer>
   <script defer>
     (function(){
-      var toggle=document.querySelector('.site-nav-toggle');
-      toggle.addEventListener('click',function(){toggle.setAttribute('aria-expanded',toggle.getAttribute('aria-expanded')!=='true');});
+      /* The nav toggle is wired by assets/site-shell.js, which the build injects into
+         every page. A second handler here flipped aria-expanded on the same click as
+         the shell's, so the menu never opened. */
 
       var grid=document.getElementById('experience-grid');
       var error=document.getElementById('load-error');
 
       function addText(element,text){element.textContent=text;return element;}
+      /* Card art arrives from the feed as original-resolution paths. Where the build
+         has generated responsive variants (dist/asset-manifest.json -> media.images),
+         serve those instead; anything unlisted falls through to the original. */
+      var VARIANTS={
+        'assets/cards/highlandpair.jpg':{id:'coffee-proof',widths:[480,760]},
+        'assets/portfolio/walk-family.webp':{id:'family-proof',widths:[480,700]},
+        'assets/portfolio/alpaca-face.webp':{id:'animal-proof',widths:[360,700]},
+        'assets/portfolio/walk-blossoms.webp':{id:'seasonal-proof',widths:[480,700]},
+        'assets/portfolio/walk-summer.webp':{id:'home-hero',widths:[480,700]}
+      };
+      var CARD_SIZES='(max-width:760px) 100vw, 360px';
+      function cardImage(src,alt){
+        var img=document.createElement('img');img.src=src;img.alt=alt;img.loading='lazy';img.decoding='async';img.width=800;img.height=600;
+        var variant=VARIANTS[src];
+        if(!variant)return img;
+        var picture=document.createElement('picture');
+        ['avif','webp'].forEach(function(format){
+          var source=document.createElement('source');
+          source.type='image/'+format;
+          source.sizes=CARD_SIZES;
+          source.srcset=variant.widths.map(function(width){return 'public/media/'+variant.id+'-'+width+'.'+format+' '+width+'w';}).join(', ');
+          picture.appendChild(source);
+        });
+        picture.appendChild(img);
+        return picture;
+      }
       function addStructuredData(experiences){
         var data={"@context":"https://schema.org","@graph":experiences.map(function(experience){
           var priceMatch=experience.price.match(/[\d.]+/);
@@ -100,7 +131,7 @@
       function renderCard(experience){
         var card=document.createElement('article');card.className='experience-card';card.dataset.category=experience.category;
         var imageWrap=document.createElement('div');imageWrap.className='experience-image';
-        var image=document.createElement('img');image.src=experience.image;image.alt=experience.name;image.loading='lazy';imageWrap.appendChild(image);
+        imageWrap.appendChild(cardImage(experience.image, experience.name));
         if(experience.category==='recurring'||/saturday/i.test(experience.cadence)){var badge=addText(document.createElement('span'),/saturday/i.test(experience.cadence)?'Saturdays':'Recurring');badge.className='experience-badge';imageWrap.appendChild(badge);}
         var body=document.createElement('div');body.className='experience-body';
         body.appendChild(addText(document.createElement('h2'),experience.name));

@@ -27,14 +27,14 @@
         <a href="experiences.html">Experiences</a>
         <a href="shop.html">Shop</a>
         <a href="animals.html">Animals</a>
-        <a href="meet-the-herd.html">Meet the Herd</a>
+        <a href="meet-the-herd.html">Herd Game</a>
         <a href="rv-rentals.html">RV Rentals</a>
       </nav>
     </div>
   </header>
-  <script defer>
-    (function(){var toggle=document.querySelector('.site-nav-toggle');toggle.addEventListener('click',function(){toggle.setAttribute('aria-expanded',toggle.getAttribute('aria-expanded')!=='true');});}());
-  </script>
+  <!-- The nav toggle is wired by assets/site-shell.js, which the build injects into
+       every page (scripts/build.mjs). A second inline handler used to live here; both
+       flipped aria-expanded on the same click, so the menu never opened. -->
   <main>
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-media"><img src="assets/rv-1.jpg" alt="Fully set-up motorhome interior overlooking the pasture at Tapestry Acres"></div>

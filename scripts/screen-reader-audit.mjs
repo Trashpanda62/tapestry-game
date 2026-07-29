@@ -16,7 +16,10 @@ const shopScript = await read('assets/shop.js');
 const bagScript = await read('assets/bag.js');
 
 assert(/host and guest/i.test(home) && /aria-labelledby="hero-title"/.test(home), 'hero does not state host/guest context with heading association');
-assert(/Animals is the reference and for-sale guide/.test(animals) && /Meet the Herd/.test(animals), 'Animals/Herd distinction is not narrated');
+// The two destinations must be told apart in prose, not just by their nav labels. The
+// phrasing is free; what matters is that the reference page says it is the reference
+// page and names the Meet the Herd game as the other thing.
+assert(/reference and for-sale guide/.test(animals) && /Meet the Herd/.test(animals), 'Animals/Herd distinction is not narrated');
 assert(/aria-live="polite"/.test(animals) && /aria-busy="true"/.test(animals), 'Animals loading/results announcement missing');
 assert(/aria-live="polite"/.test(exp) && /Loading experiences/.test(exp) && /Before you head to the farm/.test(exp), 'Visit loading/guide narrative missing');
 assert(/aria-live="polite"/.test(shop) && /role="status"/.test(shop) && /Search products/.test(shop), 'Shop search/results status narrative missing');

@@ -1,0 +1,24 @@
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const root = fileURLToPath(new URL('../dist/', import.meta.url));
+const routes = ['index.html', 'experiences.html', 'shop.html', 'animals.html', 'rv-rentals.html', 'meet-the-herd.html', '404.html', 'thanks.html'];
+const read = (file) => readFile(path.join(root, file), 'utf8');
+const assert = (ok, message) => { if (!ok) throw new Error(`[ui-state] ${message}`); };
+const pages = await Promise.all(routes.map(read));
+const css = await read('assets/site.css');
+assert(/main\{overflow:hidden\}/.test(css), 'main horizontal overflow guard missing');
+assert(/:where\([^}]*focus-visible/.test(css), 'focus styling missing');
+assert(/prefers-reduced-motion:reduce/.test(css), 'reduced-motion override missing');
+assert(/min-height:48px/.test(css), 'primary touch target floor missing');
+assert(/z-index:var\(--z-(?:sheet|lightbox|sticky)\)/.test(css), 'dialog/sticky layering contract missing');
+assert(pages.some((html) => /aria-busy="true"/.test(html)), 'loading state fixtures missing');
+assert(pages.some((html) => /No products match|No experiences|no animals|taking a pasture break/i.test(html)), 'empty state fixture missing');
+assert(pages.some((html) => /load-error|availability-hint|shop-message/.test(html)), 'error state fixture missing');
+assert(pages.some((html) => /confirmation|success/i.test(html)), 'success state fixture missing');
+const shop = await read('shop.html');
+const shopJs = await read('assets/shop.js');
+assert(/CHUNK_SIZE\s*=\s*24|slice\(0,\s*24\)|renderedCount\s*=\s*24/.test(shop + shopJs), 'catalog bounded rendering contract missing');
+for (const html of pages) assert(!/<img\b[^>]*\bsrc=["']\s*["'](?=[\s/>])/i.test(html), 'empty image source creates a broken-image request');
+console.log('[ui-state] PASS: overflow, layering, touch targets, loading/empty/error/success fixtures, bounded catalog, and image fallback checks passed.');

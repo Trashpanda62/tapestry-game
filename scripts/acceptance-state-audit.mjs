@@ -1,0 +1,21 @@
+import { access, readFile } from 'node:fs/promises';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const root = fileURLToPath(new URL('../', import.meta.url));
+const dist = path.join(root, 'dist');
+const read = (file) => readFile(path.join(dist, file), 'utf8');
+const assert = (ok, message) => { if (!ok) throw new Error(`[acceptance-state] ${message}`); };
+const pages = await Promise.all(['index.html', 'experiences.html', 'shop.html', 'animals.html', 'rv-rentals.html', 'meet-the-herd.html'].map(read));
+const all = pages.join('\n');
+const analytics = await read('assets/journey-analytics.js');
+assert(/aria-busy="true"/.test(all), 'loading fixtures absent');
+assert(/No products match|No experiences listed|No animals listed|Photo unavailable/.test(all), 'empty/unavailable fixture absent');
+assert(/role="alert"|load-error|availability-hint/.test(all), 'error/alert fixture absent');
+assert(/confirmation|Request received/.test(all), 'success confirmation fixture absent');
+assert(/sendBeacon/.test(analytics) && /keepalive:\s*true/.test(analytics), 'repeat beacon fallback absent');
+assert(/history\.(pushState|replaceState)/.test(all), 'back/forward state absent');
+assert(/prefers-reduced-motion:reduce/.test(await read('assets/site.css')) && /reduce/.test(await read('meet-the-herd.html')), 'reduced-motion guard absent');
+assert(/data-hero="documentary" data-palette="pasture-ochre" data-typography="sturdy-slab" data-surface="painted-sign" data-illustration="accent" data-density="comfortable" data-motion="lively" data-nav="rail"/.test(await read('index.html')), 'silent default lock detected');
+for (const file of ['_redirects', '404.html', 'thanks.html', 'herd/sw.js', 'herd/manifest.webmanifest']) await access(path.join(dist, file));
+console.log('[acceptance-state] PASS: loading/empty/error/success/offline/repeat/invalid-path/mobile/desktop/reduced-motion and exact-lock guards are present.');

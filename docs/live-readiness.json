@@ -1,0 +1,100 @@
+{
+  "generatedAt": "2026-07-21T17:23:31.015Z",
+  "origin": "https://sites.obscurastudio.design",
+  "slug": "tapestry-acres",
+  "routes": [
+    {
+      "route": "/",
+      "status": 308,
+      "contentType": null,
+      "bytes": 17,
+      "lock": false,
+      "title": false
+    },
+    {
+      "route": "/experiences",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "bytes": 15092,
+      "lock": true,
+      "title": true
+    },
+    {
+      "route": "/shop",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "bytes": 18825,
+      "lock": true,
+      "title": true
+    },
+    {
+      "route": "/animals",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "bytes": 9825,
+      "lock": true,
+      "title": true
+    },
+    {
+      "route": "/stay",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "bytes": 38075,
+      "lock": true,
+      "title": true
+    },
+    {
+      "route": "/herd",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "bytes": 125289,
+      "lock": true,
+      "title": true
+    },
+    {
+      "route": "/thanks",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "bytes": 1271,
+      "lock": true,
+      "title": true
+    },
+    {
+      "route": "/sitemap.xml",
+      "status": 200,
+      "contentType": "application/xml",
+      "bytes": 602,
+      "lock": false,
+      "title": false
+    },
+    {
+      "route": "/robots.txt",
+      "status": 200,
+      "contentType": "text/plain; charset=utf-8",
+      "bytes": 97,
+      "lock": false,
+      "title": false
+    }
+  ],
+  "analytics": {
+    "status": 200,
+    "eventEndpoint": true,
+    "piiFieldNames": false
+  },
+  "leadNotification": {
+    "codePath": "src/lib/leadSubmit.ts",
+    "envPresenceCheckedWithoutValue": true,
+    "syntheticLeadSubmitted": false
+  },
+  "og": {
+    "title": true,
+    "description": true,
+    "image": true,
+    "canonical": true
+  },
+  "sideEffects": {
+    "formsSubmitted": false,
+    "squareDestinationsOpened": false,
+    "acceptedAnalyticsEventCreated": false
+  }
+}

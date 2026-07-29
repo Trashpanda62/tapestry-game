@@ -1,0 +1,97 @@
+{
+  "date": "2026-07-21",
+  "profile": "deterministic artifact + local HTTP server; 4x CPU/slow-4G browser metric capture unavailable in this app runtime",
+  "rows": [
+    {
+      "route": "Home",
+      "htmlBytes": 28196,
+      "requests": 5,
+      "transferBytes": 505578,
+      "resources": [
+        "assets/bg/highland2.webp",
+        "assets/portfolio/alpaca-face.webp",
+        "assets/portfolio/walk-family.webp",
+        "assets/portfolio/walk-summer.webp",
+        "index.html"
+      ]
+    },
+    {
+      "route": "Experiences",
+      "htmlBytes": 15724,
+      "requests": 1,
+      "transferBytes": 15724,
+      "resources": [
+        "experiences.html"
+      ]
+    },
+    {
+      "route": "Book",
+      "htmlBytes": 27652,
+      "requests": 1,
+      "transferBytes": 27652,
+      "resources": [
+        "book.html"
+      ]
+    },
+    {
+      "route": "Shop",
+      "htmlBytes": 14700,
+      "requests": 1,
+      "transferBytes": 14700,
+      "resources": [
+        "shop.html"
+      ]
+    },
+    {
+      "route": "Bag",
+      "htmlBytes": 4661,
+      "requests": 1,
+      "transferBytes": 4661,
+      "resources": [
+        "bag.html"
+      ]
+    },
+    {
+      "route": "Checkout",
+      "htmlBytes": 5062,
+      "requests": 1,
+      "transferBytes": 5062,
+      "resources": [
+        "checkout.html"
+      ]
+    },
+    {
+      "route": "Herd",
+      "htmlBytes": 9310,
+      "requests": 2,
+      "transferBytes": 277056,
+      "resources": [
+        "assets/bg/meadow.webp",
+        "meet-the-herd.html"
+      ]
+    }
+  ],
+  "interactionBudgets": {
+    "shopFilter": {
+      "algorithm": "bounded chunk render (24)",
+      "fullCatalogHomeParse": false
+    },
+    "shopSearchRuntime": {
+      "runtimeBytes": 33212,
+      "gzipBytes": 7956,
+      "budgetGzipBytes": 153600,
+      "withinBudget": true
+    },
+    "herdServiceWorker": {
+      "bytes": 2091,
+      "versionedCache": true,
+      "sameOriginBase": true
+    }
+  },
+  "browserMetrics": {
+    "LCP": "N/A — in-app browser page context does not expose PerformanceObserver",
+    "CLS": "N/A — same limitation",
+    "INP": "N/A — same limitation",
+    "longTasks": "N/A — same limitation"
+  }
+}
