@@ -41,7 +41,12 @@
       var crumb = document.createElement("nav");
       crumb.className = "breadcrumbs";
       crumb.setAttribute("aria-label", "Breadcrumb");
-      crumb.innerHTML = '<a href="index.html">Home</a><span aria-hidden="true">›</span><span aria-current="page">' + current.replace(/[&<>\"]/g, "") + "</span>";
+      // Build the label as a text node instead of stripping characters out of it.
+      // `document.title` is already parser-decoded, so the old `replace(/[&<>"]/g,"")`
+      // DELETED real ampersands: "RV Rentals & Farm Stays" rendered as
+      // "RV Rentals Farm Stays" on the site's highest-value page.
+      crumb.innerHTML = '<a href="index.html">Home</a><span aria-hidden="true">›</span><span aria-current="page"></span>';
+      crumb.querySelector('[aria-current="page"]').textContent = current;
       page.insertBefore(crumb, page.firstChild);
     }
   }

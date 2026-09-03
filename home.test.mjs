@@ -19,7 +19,10 @@ const planSection = html.match(/<section\b[^>]*\baria-labelledby=["']plan-title[
 const planCards = planSection.match(/<a\b[^>]*\bclass=["'][^"']*\bhub-card\b[^"']*["'][^>]*>/gi) || [];
 assert(planCards.length >= 4, 'fewer than 4 Plan your visit cards');
 
-for (const href of ['experiences.html', 'shop.html', 'meet-the-herd.html', 'rv-rentals.html']) {
+// `meet-the-herd.html` is the quiz GAME. The hub card whose copy promises animal
+// profiles now points at `animals.html`, the actual reference guide; the game keeps a
+// separate secondary link. The old assertion pinned the mismatch it should have caught.
+for (const href of ['experiences.html', 'shop.html', 'animals.html', 'rv-rentals.html']) {
   assert(planCards.some((card) => card.includes(`href="${href}"`)), `missing Plan your visit card link: ${href}`);
 }
 

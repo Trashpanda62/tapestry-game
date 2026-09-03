@@ -6,7 +6,11 @@ const root = resolve(fileURLToPath(new URL("..", import.meta.url)));
 const dist = join(root, "dist");
 const manifest = JSON.parse(await readFile(join(dist, "route-manifest.json"), "utf8"));
 const redirects = await readFile(join(dist, "_redirects"), "utf8");
-const expected = ["/s/tapestry-acres/", "/s/tapestry-acres/animals", "/s/tapestry-acres/experiences", "/s/tapestry-acres/book", "/s/tapestry-acres/herd", "/s/tapestry-acres/stay", "/s/tapestry-acres/shop", "/s/tapestry-acres/bag", "/s/tapestry-acres/checkout", "/s/tapestry-acres/404", "/s/tapestry-acres/thanks"];
+// /rv-admin is the farm's own availability editor: passcode-gated, noindex, and
+// deliberately absent from the sitemap and from every nav. It is listed here
+// because the route genuinely exists and this matrix is meant to be exhaustive —
+// leaving it out would make the gate lie about what the bundle serves.
+const expected = ["/s/tapestry-acres/", "/s/tapestry-acres/animals", "/s/tapestry-acres/experiences", "/s/tapestry-acres/book", "/s/tapestry-acres/herd", "/s/tapestry-acres/stay", "/s/tapestry-acres/shop", "/s/tapestry-acres/bag", "/s/tapestry-acres/checkout", "/s/tapestry-acres/404", "/s/tapestry-acres/thanks", "/s/tapestry-acres/rv-admin"];
 if (JSON.stringify(manifest.routes.map(({ route }) => route)) !== JSON.stringify(expected)) throw new Error("[routes] canonical route matrix changed.");
 for (const file of ["404.html", "thanks.html", "_redirects"]) await access(join(dist, file));
 for (const file of manifest.routes.map(({ file }) => file)) {

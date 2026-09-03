@@ -20,8 +20,16 @@
   document.querySelectorAll("a[href]").forEach(function (link) {
     var href;
     try { href = new URL(link.href, window.location.href); } catch (_) { return; }
-    if (href.origin === current.origin && params.toString()) params.forEach(function (value, key) { href.searchParams.set(key, value); });
-    if (href.origin === current.origin) link.href = href.toString();
+    // Same-page anchors are never rewritten. `link.href` resolves against the
+    // document `<base>`, so touching a fragment link here used to rewrite
+    // `#booking` into the tenant ROOT + fragment and bake it into the attribute,
+    // turning every in-page jump into a navigation away from the page.
+    var raw = link.getAttribute("href") || "";
+    var sameDocument = raw.charAt(0) === "#";
+    if (!sameDocument && href.origin === current.origin && params.toString()) {
+      params.forEach(function (value, key) { href.searchParams.set(key, value); });
+      link.href = href.toString();
+    }
     link.addEventListener("click", function () {
       var kind = link.classList.contains("btn") ? "primary" : (link.closest("nav") ? "navigation" : "secondary");
       var payload = { event: "journey_click", clickTier: kind, route: window.location.pathname, href: href.pathname };

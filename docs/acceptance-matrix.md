@@ -1,13 +1,13 @@
 # Acceptance matrix
 
-Release hash: `8b62b571e68d2adb5f3cabf861aac6eaa8ae942ff29fd27b73ec485012cfd8ff`  
-Artifact files: 775  
-Artifact bytes: 35882005
+Release hash: `479241a17aa08aaf5204932f8551d3951751b4d1ede1b99c4c3715553278dbbf`  
+Artifact files: 784  
+Artifact bytes: 36724329
 
 | ID | Requirement | Result | Evidence |
 |---|---|---|---|
 | LOCK | Exact Steve combo baked into production HTML | PASS | design-lock + locked-visual |
-| ROUTES | Canonical route manifest and branded utility routes | PASS | route-matrix |
+| ROUTES | Canonical route manifest, branded utility routes, and the staff availability editor | PASS | route-matrix |
 | EXPERIENCES | 6 source-backed experiences with embedded calendars and Square checkout | PASS | experience-audit |
 | CATALOG | 242 families / 830 SKUs retain checkout identity | PASS | catalog-map |
 | ANIMALS | 8 species groups with named/unnamed and for-sale distinction | PASS | animals-audit |

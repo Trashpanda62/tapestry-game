@@ -49,7 +49,50 @@
   function normalize(value) { return String(value || '').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ').trim(); }
   function unique(values) { return Array.from(new Set(values.filter(Boolean))); }
   function groupFor(family) { return collectionToGroup[family.category] || 'Apparel & Accessories'; }
-  function firstImage(product) { return product && ((product.images_local && product.images_local[0]) || (product.images && product.images[0]) || ''); }
+  function imageList(product) { return (product && (product.images_local || product.images)) || []; }
+  function firstImage(product) { return imageList(product)[0] || ''; }
+  // The catalogue records each photo's real short edge at build time. Half the imported
+  // imagery is 100px or 180px supplier thumbnails, and stretching one of those across a
+  // 250px card is what reads as "poor image quality" — so anything that cannot fill the
+  // frame is shown inside it at a size it can carry rather than upscaled into mush.
+  var CRISP_MIN_PX = 240;
+  function heroPx(product) { return Number(product && (product.heroPx || (product.images_px || [])[0])) || 0; }
+  function heroFit(product) { var px = heroPx(product); return px && px < CRISP_MIN_PX ? 'contain' : 'cover'; }
+  // Supplier copy arrives with decorative lead-ins ("✅ EXTRA COMFORT :") and runs to
+  // several hundred characters. The card wants one clean sentence; the full text stays
+  // in Quick view.
+  // 36 of the 243 imported descriptions lost a line break during the Wix export and now
+  // run two words together — "100% baby alpaca ... lace weight yarnCascade color 1234",
+  // "50% Silk 50% AlpacaYardage 273 yards". Rejoining on the lowercase-to-uppercase seam
+  // is safe here: the catalogue contains no deliberate camelCase.
+  function cleanCopy(value) {
+    return String(value || '').replace(/\s+/g, ' ').trim().replace(/([a-z]{2,})([A-Z][a-z]{2,})/g, '$1 $2');
+  }
+  function teaser(value, limit) {
+    var max = limit || 110;
+    var text = cleanCopy(value);
+    text = text.replace(/^[^\p{L}\p{N}]+/u, '');
+    text = text.replace(/^[\p{Lu}\p{N} &'/-]{3,40}\s*[:—-]\s*/u, '');
+    if (!text) return '';
+    var out = '';
+    // Decimals are not sentence endings. Splitting naively on "." cut the tote bag's
+    // teaser at "Grocery Tote Bag (14\"w x 15." — guard digit.digit, split, restore.
+    var GUARD = '\u0000';
+    var sentences = (text.replace(/(\d)\.(\d)/g, '$1' + GUARD + '$2').match(/[^.!?]+[.!?]*/g) || [text])
+      .map(function (part) { return part.split(GUARD).join('.'); });
+    for (var index = 0; index < sentences.length; index++) {
+      var next = (out + sentences[index]).trim();
+      if (out && next.length > max) break;
+      out = next;
+      if (out.length >= max) break;
+    }
+    if (out.length > max) {
+      var clipped = out.slice(0, max);
+      var space = clipped.lastIndexOf(' ');
+      out = (space > max * 0.6 ? clipped.slice(0, space) : clipped).replace(/[,;:\s]+$/, '') + '…';
+    }
+    return out;
+  }
   function shortDescription(value) { var text = value || ''; if (text.length <= 180) return text; var clipped = text.slice(0, 177); var space = clipped.lastIndexOf(' '); return clipped.slice(0, space > 120 ? space : 177) + '…'; }
   function addText(parent, tag, className, value) { var element = document.createElement(tag); if (className) element.className = className; element.textContent = value; parent.appendChild(element); return element; }
   function productsFor(family) { return (family.skus || []).map(function (sku) { return skuById[sku]; }).filter(Boolean); }
@@ -206,18 +249,64 @@
     function syncVariantOptions() { Object.keys(selects).forEach(function (name) { Array.from(selects[name].options).forEach(function (option) { option.disabled = !optionIsAvailable(family, selected, name, option.value); }); }); }
     parent.appendChild(controls); syncVariantOptions(); return controls;
   }
+  // The card is a browsing tile, not a configurator. It used to carry both variant
+  // dropdowns, the raw SKU of the current selection, and 180 characters of supplier
+  // copy, which pushed it to ~790px tall and let a one-line title and a three-line
+  // title put their prices at three different heights. Everything that needs a decision
+  // now lives in Quick view; the card commits to fixed rows so the price, the badge and
+  // the buttons line up across a row whatever the title does.
   function renderCard(family) {
     var card = document.createElement('article'); card.className = 'product-card'; card.dataset.familyId = family.familyId;
-    var initial = defaultVariant(family); var initialProduct = skuById[initial.sku] || productsFor(family)[0]; var image;
-    if (firstImage(initialProduct)) { image = document.createElement('img'); image.src = firstImage(initialProduct); image.alt = family.title; image.loading = 'lazy'; image.width = 400; image.height = 300; card.appendChild(image); }
-    var body = document.createElement('div'); body.className = 'product-body'; card.appendChild(body); addText(body, 'h2', '', family.title);
-    var price = addText(body, 'p', 'product-price', priceLabel(family)); addText(body, 'p', 'product-description', shortDescription((initialProduct || {}).description));
-    var selected = Object.assign({}, initial.selections || {}); buildVariantControls(body, family, selected, update);
-    var note = addText(body, 'p', 'variant-note', ''); var stock = addText(body, 'span', 'stock-badge', '');
-    var action = document.createElement('button'); action.type = 'button'; action.className = 'btn'; action.textContent = 'Add to bag'; action.setAttribute('aria-label', 'Add ' + family.title + ' to bag'); body.appendChild(stock); body.appendChild(action);
-    var quick = document.createElement('button'); quick.type = 'button'; quick.className = 'btn quick-view-button'; quick.textContent = 'Quick view'; quick.addEventListener('click', function () { openQuickView(family, quick); }); body.appendChild(quick);
-    function update() { var variant = selectedVariant(family, selected); var product = variant && skuById[variant.sku]; var available = product && isAvailable(family, product); if (image && firstImage(product)) image.src = firstImage(product); price.textContent = product ? '$' + Number(product.price).toFixed(2) : priceLabel(family); note.textContent = family.options && family.options.length && product ? 'Selected: ' + product.sku : ''; stock.textContent = available ? 'Available' : 'Sold out'; stock.className = 'stock-badge' + (available ? '' : ' sold-out'); action.disabled = !available; action.textContent = available ? 'Add to bag' : 'Sold out'; action.onclick = function () { if (product && available) addToBag(product, Object.keys(selected).map(function (key) { return key + ': ' + selected[key]; }).join(', ')); }; }
-    update(); return card;
+    var initial = defaultVariant(family); var initialProduct = skuById[initial.sku] || productsFor(family)[0];
+    var products = productsFor(family);
+    var hasOptions = (family.options || []).length > 0;
+    var available = products.some(function (product) { return isAvailable(family, product); });
+    var photos = imageList(initialProduct);
+
+    var media = document.createElement('div'); media.className = 'product-media'; media.dataset.fit = heroFit(initialProduct); card.appendChild(media);
+    if (photos.length) {
+      var image = document.createElement('img'); image.src = photos[0]; image.alt = family.title; image.loading = 'lazy'; image.decoding = 'async'; image.width = 400; image.height = 500; media.appendChild(image);
+      if (photos.length > 1) addText(media, 'span', 'photo-count', photos.length + ' photos');
+    } else {
+      // One product ships with no photograph at all. The frame still has to occupy its
+      // row or this card's price falls out of line with the rest of the row, so it says
+      // what is missing rather than presenting an unexplained empty box.
+      media.dataset.empty = '1';
+      addText(media, 'span', 'photo-missing', 'No photo yet');
+    }
+
+    var body = document.createElement('div'); body.className = 'product-body'; card.appendChild(body);
+    addText(body, 'h2', 'product-title', family.title);
+    var priceLine = document.createElement('div'); priceLine.className = 'product-priceline'; body.appendChild(priceLine);
+    addText(priceLine, 'p', 'product-price', priceLabel(family));
+    var stock = addText(priceLine, 'span', 'stock-badge' + (available ? '' : ' sold-out'), available ? 'Available' : 'Sold out');
+    if (hasOptions && available) stock.textContent = optionSummary(family);
+    addText(body, 'p', 'product-description', teaser((initialProduct || {}).description));
+
+    var actions = document.createElement('div'); actions.className = 'product-actions'; body.appendChild(actions);
+    var action = document.createElement('button'); action.type = 'button'; action.className = 'btn';
+    // With the size and colour selects moved off the card, "Add to bag" would silently
+    // bag whichever variant happened to be first. Anything with options sends the
+    // shopper to Quick view to choose instead.
+    if (!available) { action.textContent = 'Sold out'; action.disabled = true; }
+    else if (hasOptions) { action.textContent = 'Choose options'; action.setAttribute('aria-label', 'Choose options for ' + family.title); action.addEventListener('click', function () { openQuickView(family, action); }); }
+    else { action.textContent = 'Add to bag'; action.setAttribute('aria-label', 'Add ' + family.title + ' to bag'); action.addEventListener('click', function () { if (initialProduct) addToBag(initialProduct, ''); }); }
+    actions.appendChild(action);
+    var quick = document.createElement('button'); quick.type = 'button'; quick.className = 'btn quick-view-button'; quick.textContent = 'Quick view'; quick.setAttribute('aria-label', 'Quick view of ' + family.title); quick.addEventListener('click', function () { openQuickView(family, quick); }); actions.appendChild(quick);
+    return card;
+  }
+  // "4 sizes · 7 colors" tells a shopper more at a glance than "Available" does, and it
+  // replaces the raw SKU string ("Selected: TAP-WIX-ALPACAPRINTCREWS-LARGEXLBEIGERED")
+  // the card used to print at them.
+  function optionSummary(family) {
+    return (family.options || []).map(function (option) {
+      var count = (option.choices || []).length;
+      // Option names arrive singular ("Size", "Color"), so the plural has to be added
+      // rather than stripped — otherwise the badge reads "4 size · 2 color".
+      var noun = option.name.toLowerCase();
+      if (count !== 1 && !/s$/.test(noun)) noun += 's';
+      return count + ' ' + noun;
+    }).join(' · ') || 'Available';
   }
   function render() {
     var matches = matchingFamilies(); if (activeState.sort === 'price-asc') matches.sort(function (a, b) { return familyPrice(a) - familyPrice(b); });
@@ -249,12 +338,40 @@
   }
   function openQuickView(family, opener) {
     productDetail.replaceChildren(); var initial = defaultVariant(family); var selected = Object.assign({}, initial.selections || {}); var wrap = document.createElement('div'); wrap.className = 'quick-view-content';
-    var gallery = document.createElement('div'); gallery.className = 'quick-view-gallery'; var image = document.createElement('img'); image.alt = family.title; image.width = 600; image.height = 600; gallery.appendChild(image); var galleryCount = addText(gallery, 'p', 'gallery-count', (productsFor(family)[0].images_local || []).length + ' product photos'); wrap.appendChild(gallery);
+    // The gallery used to be one image beside a count that promised "5 product photos"
+    // and then showed you exactly one of them. The catalogue has had the rest all along.
+    var gallery = document.createElement('div'); gallery.className = 'quick-view-gallery';
+    var stage = document.createElement('div'); stage.className = 'gallery-stage'; gallery.appendChild(stage);
+    var image = document.createElement('img'); image.alt = family.title; image.width = 600; image.height = 750; stage.appendChild(image);
+    var thumbs = document.createElement('div'); thumbs.className = 'gallery-thumbs'; gallery.appendChild(thumbs);
+    var galleryCount = addText(gallery, 'p', 'gallery-count', ''); wrap.appendChild(gallery);
+    function showPhotos(product) {
+      var photos = imageList(product);
+      var sizes = (product && product.images_px) || [];
+      stage.dataset.fit = heroFit(product);
+      image.src = photos[0] || '';
+      galleryCount.textContent = photos.length ? photos.length + (photos.length === 1 ? ' product photo' : ' product photos') : '';
+      thumbs.replaceChildren();
+      if (photos.length < 2) return;
+      photos.forEach(function (src, index) {
+        var thumb = document.createElement('button'); thumb.type = 'button'; thumb.className = 'gallery-thumb';
+        thumb.setAttribute('aria-label', 'Show photo ' + (index + 1) + ' of ' + photos.length);
+        thumb.setAttribute('aria-pressed', String(index === 0));
+        var pip = document.createElement('img'); pip.src = src; pip.alt = ''; pip.loading = 'lazy'; pip.width = 64; pip.height = 64; thumb.appendChild(pip);
+        thumb.addEventListener('click', function () {
+          image.src = src;
+          stage.dataset.fit = Number(sizes[index]) && Number(sizes[index]) < CRISP_MIN_PX ? 'contain' : 'cover';
+          Array.from(thumbs.children).forEach(function (node, position) { node.setAttribute('aria-pressed', String(position === index)); });
+        });
+        thumbs.appendChild(thumb);
+      });
+    }
     var copy = document.createElement('div'); copy.className = 'quick-view-copy'; addText(copy, 'h2', '', family.title).id = 'product-detail-title'; var price = addText(copy, 'p', 'product-price', priceLabel(family)); addText(copy, 'p', 'product-description', familyDescription(family)); buildVariantControls(copy, family, selected, update); var stock = addText(copy, 'span', 'stock-badge', ''); var action = document.createElement('button'); action.type = 'button'; action.className = 'btn'; action.textContent = 'Add to bag'; action.setAttribute('aria-label', 'Add ' + family.title + ' to bag'); copy.appendChild(stock); copy.appendChild(action); wrap.appendChild(copy); productDetail.appendChild(wrap);
-    function update() { var variant = selectedVariant(family, selected); var product = variant && skuById[variant.sku]; var available = product && isAvailable(family, product); image.src = firstImage(product); price.textContent = product ? '$' + Number(product.price).toFixed(2) : priceLabel(family); stock.textContent = available ? 'Available' : 'Sold out'; stock.className = 'stock-badge' + (available ? '' : ' sold-out'); action.disabled = !available; action.textContent = available ? 'Add to bag' : 'Sold out'; action.onclick = function () { if (product && available) addToBag(product, Object.keys(selected).map(function (key) { return key + ': ' + selected[key]; }).join(', ')); }; }
+    function update() { var variant = selectedVariant(family, selected); var product = variant && skuById[variant.sku]; var available = product && isAvailable(family, product); showPhotos(product || productsFor(family)[0]); price.textContent = product ? '$' + Number(product.price).toFixed(2) : priceLabel(family); stock.textContent = available ? 'Available' : 'Sold out'; stock.className = 'stock-badge' + (available ? '' : ' sold-out'); action.disabled = !available; action.textContent = available ? 'Add to bag' : 'Sold out'; action.onclick = function () { if (product && available) addToBag(product, Object.keys(selected).map(function (key) { return key + ': ' + selected[key]; }).join(', ')); }; }
     update(); showDialog(productDialog, opener, productDialog.querySelector('select') || document.getElementById('product-detail-close'));
   }
-  function familyDescription(family) { var product = skuById[defaultVariant(family).sku] || productsFor(family)[0]; return shortDescription((product || {}).description || 'A Tapestry Acres farm-shop good.'); }
+  // Quick view is where the full text belongs now that the card carries only a teaser.
+  function familyDescription(family) { var product = skuById[defaultVariant(family).sku] || productsFor(family)[0]; return cleanCopy((product || {}).description || 'A Tapestry Acres farm-shop good.'); }
   function bindEvents() {
     if (toggle) toggle.addEventListener('click', function () { toggle.setAttribute('aria-expanded', toggle.getAttribute('aria-expanded') !== 'true'); });
     search.addEventListener('input', function () { activeState.query = search.value; suggestionsOpen = true; renderedCount = CHUNK_SIZE; updateSuggestions(); clearTimeout(searchTimer); searchTimer = setTimeout(function () { writeUrl('replace'); render(); }, 90); });

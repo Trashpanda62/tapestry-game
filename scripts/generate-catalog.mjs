@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
+import { readWebpSize, shortEdge } from "../src/image-size.mjs";
 
 const familyKeyFor = (title) => {
   const key = String(title).trim().toLowerCase().replace(/\s+/g, " ");
@@ -32,12 +33,90 @@ function fail(message) {
   throw new Error(`[catalog] ${message}`);
 }
 
+// A photo has to be at least half again as sharp as the current lead before it takes
+// over the card. The importer's order is usually deliberate — the styled hero shot
+// first, detail crops after — so reordering on any difference at all would trade a
+// representative photo for a marginally larger one. Only a real gap earns the swap,
+// and 122 of the 650 multi-image SKUs have one: a 100px thumbnail leading a set that
+// also contains the 704px photograph.
+const HERO_PROMOTION_RATIO = 1.5;
+
+// Resolution alone is not enough to pick a hero. The Winter Alpaca Heavy Mini Crew Sock
+// carries four 180x180 product shots and one 540x339 near-black size chart; ranking on
+// size alone put the chart on the card. Product photography in this catalogue is square
+// or portrait, so a candidate whose proportions disagree with the incumbent's is a
+// banner, chart or size guide rather than a better photograph of the same thing.
+const HERO_ASPECT_TOLERANCE = 1.2;
+
+// Shape is still not enough on its own: the Craft Yarn Council weight symbol shipped
+// with Brights Mix Luna Paints Yarn is a 266px SQUARE, so it passed the aspect check and
+// took the card from a 100px photograph of the actual yarn. Line art is what has to be
+// excluded, and colourfulness is what identifies it — see scripts/build-image-stats.py.
+// Measured: the two known diagrams score 1.69 and 0.12, real photographs 8.07 upward.
+const HERO_MIN_COLORFULNESS = 4;
+const HERO_MIN_COLOR_RATIO = 0.4;
+
+function comparableShape(candidate, lead) {
+  if (!candidate.width || !candidate.height || !lead.width || !lead.height) return false;
+  const ratio = (candidate.width / candidate.height) / (lead.width / lead.height);
+  return ratio <= HERO_ASPECT_TOLERANCE && ratio >= 1 / HERO_ASPECT_TOLERANCE;
+}
+
+function looksPhotographic(candidate, lead) {
+  // Unmeasured assets are never promoted. Failing closed leaves the hero as the store
+  // ordered it, which is the safe outcome.
+  if (!candidate.colorfulness) return false;
+  if (candidate.colorfulness < HERO_MIN_COLORFULNESS) return false;
+  return !lead.colorfulness || candidate.colorfulness >= lead.colorfulness * HERO_MIN_COLOR_RATIO;
+}
+
+async function measureImages(root, stats, product) {
+  const paths = Array.isArray(product.images_local) ? product.images_local : [];
+  const measured = [];
+  for (const path of paths) {
+    let size = null;
+    try {
+      size = readWebpSize(await readFile(join(root, path)));
+    } catch {
+      size = null;
+    }
+    const stat = stats[path] || {};
+    measured.push({
+      path,
+      px: shortEdge(size),
+      width: size ? size.width : 0,
+      height: size ? size.height : 0,
+      colorfulness: Number(stat.colorfulness) || 0
+    });
+  }
+  if (!measured.length) return { ...product, images_px: [], heroPx: 0 };
+
+  const lead = measured[0];
+  const best = measured
+    .filter((entry) => entry === lead || (comparableShape(entry, lead) && looksPhotographic(entry, lead)))
+    .reduce((winner, entry) => (entry.px > winner.px ? entry : winner), lead);
+  const ordered = best !== lead && lead.px > 0 && best.px >= lead.px * HERO_PROMOTION_RATIO
+    ? [best, ...measured.filter((entry) => entry !== best)]
+    : measured;
+
+  return {
+    ...product,
+    images_local: ordered.map(({ path }) => path),
+    images_px: ordered.map(({ px }) => px),
+    heroPx: ordered[0].px
+  };
+}
+
 export async function generateCatalog(root, dist) {
   await mkdir(join(dist, "data"), { recursive: true });
-  const products = JSON.parse(await readFile(join(root, "store-products.json"), "utf8"));
+  const sourceProducts = JSON.parse(await readFile(join(root, "store-products.json"), "utf8"));
   const curated = JSON.parse(await readFile(join(root, "src", "featured-skus.json"), "utf8"));
   const wixProducts = JSON.parse(await readFile(join(root, "src", "wix-products-2026-06-23.json"), "utf8"));
-  if (!Array.isArray(products) || products.length !== 830) fail(`expected 830 SKUs, found ${products.length}.`);
+  if (!Array.isArray(sourceProducts) || sourceProducts.length !== 830) fail(`expected 830 SKUs, found ${sourceProducts.length}.`);
+  // Measured here rather than in the browser: the card has to choose a hero and a fit
+  // mode before it paints, and an onload measurement would land a frame too late.
+  const imageStats = JSON.parse(await readFile(join(root, "src", "image-stats.json"), "utf8"));
+  const products = await Promise.all(sourceProducts.map((product) => measureImages(root, imageStats, product)));
   if (!Array.isArray(curated)) fail("featured-skus.json must be an array.");
   if (!Array.isArray(wixProducts) || wixProducts.length !== 242) fail("expected 242 Wix product records with option metadata.");
   const bySku = new Map(products.map((product) => [product.sku, product]));

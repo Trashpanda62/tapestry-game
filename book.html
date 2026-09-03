@@ -9,34 +9,60 @@
   <meta property="og:title" content="Book an experience | Tapestry Acres"><meta property="og:description" content="Choose a date, hold your place, and pay securely on the Tapestry Acres site for alpaca walks, farm tours, and other first-party experiences."><meta property="og:image" content="https://sites.obscurastudio.design/s/tapestry-acres/assets/og.jpg">
   <link rel="stylesheet" href="assets/site.css">
   <style>
-    .booking-page{max-width:820px;margin:0 auto;padding:clamp(38px,7vw,84px) 20px 100px}.booking-kicker{color:var(--accent);font-weight:800;letter-spacing:.04em}.booking-page h1{max-width:18ch;margin:8px 0 14px}.booking-lede{max-width:62ch;color:var(--muted);font-size:1.08rem}.booking-panel{margin-top:28px;padding:clamp(22px,4vw,38px);border:1px solid var(--cardborder);border-radius:18px;background:var(--card);box-shadow:var(--shadow)}.booking-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}.field{display:flex;flex-direction:column;gap:7px}.field label{font-weight:750}.field input,.field select{width:100%;padding:12px 13px;border:1px solid var(--field-border);border-radius:10px;background:var(--field-bg);color:var(--ink);font:inherit}.slot-list{display:grid;gap:10px;margin-top:10px}.slot-option{display:flex;align-items:center;gap:10px;padding:13px;border:1px solid var(--cardborder);border-radius:11px;cursor:pointer}.slot-option:has(input:checked){border-color:var(--accent);outline:2px solid color-mix(in srgb,var(--accent) 30%,transparent)}.slot-option[aria-disabled="true"]{opacity:.5;cursor:not-allowed}.booking-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}.booking-note{margin:16px 0 0;color:var(--muted);font-size:.92rem}.error{margin-top:14px;color:var(--alert);font-weight:700}.success{padding:16px;border-radius:12px;background:color-mix(in srgb,var(--accent) 14%,transparent)}#card-container{min-height:90px;margin-top:14px}.is-hidden{display:none!important}@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
-    .calendar-shell{margin:24px 0;padding:18px;border:1px solid var(--cardborder);border-radius:14px;background:color-mix(in srgb,var(--card) 72%,transparent)}.calendar-shell h2{margin:0 0 6px;font-size:1.2rem}.calendar-status{margin:10px 0 0;color:var(--muted);font-size:.94rem}
+    .booking-page{max-width:820px;margin:0 auto;padding:clamp(38px,7vw,84px) 20px 100px}.booking-kicker{color:var(--accent);font-weight:800;letter-spacing:.04em}.booking-page h1{max-width:18ch;margin:8px 0 14px}.booking-lede{max-width:62ch;color:var(--muted);font-size:1.15rem}.booking-panel{margin-top:28px;padding:clamp(22px,4vw,38px);border:1px solid var(--cardborder);border-radius:18px;background:var(--card);box-shadow:var(--shadow)}.booking-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}.field{display:flex;flex-direction:column;gap:7px}
+    .field label{display:flex;align-items:baseline;gap:8px;font-weight:750}
+    /* "Required" is stated on the label rather than left to a bare asterisk or to the
+       browser's validation bubble, which only shows up after a failed submit. */
+    .req{padding:2px 7px;border-radius:999px;background:#f0e3c8;color:#6b4d12;font:700 11px var(--sans);letter-spacing:.04em;text-transform:uppercase}
+    .field-help{margin:6px 0 0;color:var(--muted);font-size:.85rem}
+    .field-help:empty{display:none}
+    .slot-lost{grid-column:1/-1;margin:0 0 4px;color:var(--alert);font-weight:700}
+    /* Direct-child only. The time-slot fieldset also carries .field, so a descendant
+       selector here inflated every slot radio to width:100% — the radio ate the row and
+       shoved its own label text to the right edge, where it wrapped. */
+    .field>input,.field>select{width:100%;min-width:0;padding:12px 13px;border:1px solid var(--field-border);border-radius:10px;background:var(--field-bg);color:var(--ink);font:inherit}
+    /* Seven full-width rows pushed the submit button below the fold. The day is already
+       named by the calendar and the status line, so a chip only needs the time. */
+    .slot-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:10px;margin-top:12px}
+    .slot-option{display:flex;align-items:center;gap:10px;min-height:44px;padding:11px 13px;border:1px solid var(--cardborder);border-radius:11px;background:var(--field-bg);cursor:pointer}
+    .slot-option input{flex:none;width:16px;height:16px;margin:0;accent-color:var(--accent)}
+    .slot-text{display:flex;min-width:0;flex-direction:column;gap:2px}
+    .slot-time{font-weight:750;white-space:nowrap}
+    .slot-meta{color:var(--muted);font-size:.88rem}
+    .slot-option:has(input:checked){border-color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,var(--field-bg));outline:2px solid color-mix(in srgb,var(--accent) 30%,transparent)}
+    .slot-option:has(input:focus-visible){outline:2px solid var(--accent);outline-offset:2px}
+    .slot-option[aria-disabled="true"]{opacity:.5;cursor:not-allowed}
+    /* The experience name plus its price overflows an equal-width column and the select
+       clips it ("…with Alpaca Walk · Frc"). Guests never needs more than a few characters. */
+    .booking-grid.booking-grid-lead{grid-template-columns:minmax(0,3fr) minmax(104px,1fr)}
+    @media(max-width:560px){.booking-grid.booking-grid-lead{grid-template-columns:1fr}}.booking-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}.booking-note{margin:16px 0 0;color:var(--muted);font-size:.88rem}.error{margin-top:14px;color:var(--alert);font-weight:700}.success{padding:16px;border-radius:12px;background:color-mix(in srgb,var(--accent) 14%,transparent)}#card-container{min-height:90px;margin-top:14px}.is-hidden{display:none!important}@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+    .calendar-shell{margin:24px 0;padding:18px;border:1px solid var(--cardborder);border-radius:14px;background:color-mix(in srgb,var(--card) 72%,transparent)}.calendar-shell h2{margin:0 0 6px;font-size:1.45rem}.calendar-status{margin:10px 0 0;color:var(--muted);font-size:.88rem}
     /* Month grid. Days are only interactive when the slots API actually reports
        openings for them, so the calendar shows availability instead of asking the
        visitor to guess a date and be told "no times". */
     .calendar-nav{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:16px 0 10px}
-    .calendar-nav h3{margin:0;font:700 1.05rem var(--serif)}
+    .calendar-nav h3{margin:0;font:700 1.15rem var(--serif)}
     .calendar-step{display:grid;place-items:center;width:44px;height:44px;border:1px solid var(--cardborder);border-radius:999px;background:var(--card);color:var(--ink);font:inherit;font-size:1.1rem;cursor:pointer}
     .calendar-step[disabled]{opacity:.35;cursor:not-allowed}
     .calendar-step:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
     .calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
-    .calendar-dow{padding:4px 0;color:var(--muted);font-size:.74rem;font-weight:750;letter-spacing:.05em;text-align:center;text-transform:uppercase}
+    .calendar-dow{padding:4px 0;color:var(--muted);font-size:.7rem;font-weight:750;letter-spacing:.05em;text-align:center;text-transform:uppercase}
     .calendar-day{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:52px;padding:4px 2px;border:1px solid transparent;border-radius:10px;background:transparent;color:var(--muted);font:inherit;font-size:.94rem}
     .calendar-day.is-open{border-color:var(--cardborder);background:var(--card);color:var(--ink);font-weight:700;cursor:pointer}
     .calendar-day.is-open:hover{border-color:var(--accent)}
     .calendar-day.is-open:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
     .calendar-day[aria-pressed="true"]{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 16%,var(--card));box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 26%,transparent)}
-    .calendar-day .calendar-open-count{color:var(--forest);font-size:.66rem;font-weight:700;letter-spacing:.02em}
+    .calendar-day .calendar-open-count{color:var(--forest);font-size:.7rem;font-weight:700;letter-spacing:.02em}
     .calendar-day[aria-pressed="true"] .calendar-open-count{color:var(--accent)}
     .calendar-empty{min-height:52px}
-    .calendar-legend{margin:12px 0 0;color:var(--muted);font-size:.86rem}
+    .calendar-legend{margin:12px 0 0;color:var(--muted);font-size:.88rem}
     /* The inquiry link used to carry an inline display:inline-block, which outranks
        the UA rule behind the hidden attribute — so it stayed on screen offering an
        off-season email even when the calendar was showing open times. */
     #calendar-inquiry{display:inline-flex;margin-top:10px}
     #calendar-inquiry[hidden]{display:none}
     .calendar-typed{margin-top:14px}
-    .calendar-typed label{font-size:.86rem;color:var(--muted);font-weight:700}
+    .calendar-typed label{font-size:.88rem;color:var(--muted);font-weight:700}
     /* Three levels of nested padding (page, panel, shell) squeezed the seven day
        columns to 32px on a phone. Trim the inner two so day targets stay near 40px. */
     @media(max-width:520px){
@@ -49,7 +75,7 @@
   </style>
 </head>
 <body>
-  <header class="site-header"><div class="header-inner"><div class="brand">TAPESTRY ACRES</div><nav class="site-nav" aria-label="Primary navigation"><a href="/s/tapestry-acres/">Home</a><a href="/s/tapestry-acres/experiences">Experiences</a><a href="/s/tapestry-acres/shop">Shop</a><a href="/s/tapestry-acres/herd">Meet the Herd</a></nav></div></header>
+  <header class="site-header"><div class="header-inner"><div class="brand"><img class="brand-mark" src="assets/logo-mark.webp" alt="" aria-hidden="true" width="74" height="120" decoding="async">TAPESTRY ACRES</div><nav class="site-nav" aria-label="Primary navigation"><a href="/s/tapestry-acres/">Home</a><a href="/s/tapestry-acres/experiences">Experiences</a><a href="/s/tapestry-acres/shop">Shop</a><a href="/s/tapestry-acres/herd">Meet the Herd</a></nav></div></header>
   <main id="main-content" class="booking-page">
     <p class="booking-kicker">Plan your farm visit</p>
     <h1 id="booking-title">Choose an experience</h1>
@@ -71,9 +97,9 @@
         <a id="calendar-inquiry" class="btn secondary" href="mailto:tapestryacres@gmail.com" hidden>Email the farm about a private off-season visit</a>
       </section>
       <form id="booking-form">
-        <div class="booking-grid"><div class="field"><label for="service">Experience</label><select id="service" required></select></div><div class="field"><label for="guests">Guests</label><input id="guests" type="number" min="1" max="24" value="1" required></div></div>
+        <div class="booking-grid booking-grid-lead"><div class="field"><label for="service">Experience</label><select id="service" required></select></div><div class="field"><label for="guests">Guests</label><input id="guests" type="number" min="1" max="6" value="1" required aria-describedby="guests-help"><p id="guests-help" class="field-help"></p></div></div>
         <fieldset class="field" style="margin-top:22px;border:0;padding:0"><legend style="font-weight:750">Choose a time</legend><div id="slots" class="slot-list"><p class="booking-note">Select an experience to load available times.</p></div></fieldset>
-        <div class="booking-grid" style="margin-top:22px"><div class="field"><label for="email">Email for your receipt</label><input id="email" type="email" autocomplete="email" required></div></div>
+        <div class="booking-grid" style="margin-top:22px"><div class="field"><label for="email">Email for your receipt <span class="req">Required</span></label><input id="email" type="email" autocomplete="email" required aria-describedby="email-help"><p id="email-help" class="field-help">We send your confirmation and receipt here. Nothing else.</p></div></div>
         <p class="booking-note">Your place is held only after the next step succeeds. Availability is rechecked on the server before payment.</p>
         <div class="booking-actions"><button class="btn" type="submit">Hold this time</button><a class="btn secondary" href="/s/tapestry-acres/experiences">Back to experiences</a></div>
       </form>
@@ -82,6 +108,7 @@
       <p id="error" class="error" role="alert" hidden></p>
     </section>
   </main>
+  <footer><img class="footer-seal" src="assets/logo-seal.webp" alt="Tapestry Acres: farm store, stays, and events. Blending animals, products, and people." width="320" height="320" loading="lazy" decoding="async"><div class="footer-logo">TAPESTRY ACRES</div><div class="footer-flourish" aria-hidden="true">❖ ✳ ❖</div><a class="footer-link" href="mailto:tapestryacres@gmail.com">tapestryacres@gmail.com</a></footer>
   <script>
     (function(){
       var baseTag=document.querySelector('base'), base=(baseTag?new URL(baseTag.href).pathname:'/s/tapestry-acres/').replace(/\/$/,''), serviceSelect=document.getElementById('service'), slotsEl=document.getElementById('slots'), form=document.getElementById('booking-form'), paymentStep=document.getElementById('payment-step'), paymentCopy=document.getElementById('payment-copy'), bookingSubtotal=document.getElementById('booking-subtotal'), bookingTax=document.getElementById('booking-tax'), bookingTotal=document.getElementById('booking-total'), payButton=document.getElementById('pay-button'), error=document.getElementById('error'), success=document.getElementById('success'), serviceSummary=document.getElementById('service-summary'), guests=document.getElementById('guests'), email=document.getElementById('email'), calendarDate=document.getElementById('calendar-experience'), calendarStatus=document.getElementById('calendar-status'), calendarGrid=document.getElementById('calendar-grid'), calendarHeading=document.getElementById('calendar-heading'), calendarPrev=document.getElementById('calendar-prev'), calendarNext=document.getElementById('calendar-next'), reservationId='', card=null, services=[];
@@ -97,6 +124,9 @@
       var DOW=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
       var CT_DATE=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Chicago',year:'numeric',month:'2-digit',day:'2-digit'});
       var slotCache={}, availability=new Map(), monthCursor=null, seasonInfo=null, rawSlotCount=0, maxParty=null;
+      /* Survives a slot-list rebuild; the DOM cannot hold the choice because the list
+         is replaced wholesale whenever the party size or the day changes. */
+      var chosenSlotId='';
       function pad(value){return String(value).padStart(2,'0');}
       function dateKey(year,month,day){return year+'-'+pad(month)+'-'+pad(day);}
       function prettyDate(key){if(!key)return '';var parts=key.split('-');return MONTHS[Number(parts[1])-1]+' '+Number(parts[2])+', '+parts[0];}
@@ -106,6 +136,19 @@
         availability=new Map();
         rawSlotCount=slots.length;
         maxParty=Number(payload.maxPartySize||0)||null;
+        /* The ceiling comes from what the slots can ACTUALLY seat, not from the
+           advertised maxPartySize. Those two disagree today — the API advertises a
+           party size of 6 while every generated slot has capacity 1 — and promising
+           six to someone who can only ever book one is how this page lost a booking.
+           Taking the real number means the hint self-corrects if capacity changes. */
+        var seatable=slots.reduce(function(most,slot){return Math.max(most,Number(slot.availableGuests||0));},0);
+        var ceiling=Math.min(maxParty||seatable||1,seatable||maxParty||1);
+        if(ceiling){
+          guests.max=String(ceiling);
+          if(Number(guests.value||1)>ceiling)guests.value=String(ceiling);
+          var hint=document.getElementById('guests-help');
+          if(hint)hint.textContent=ceiling===1?'One guest per appointment.':'Up to '+ceiling+' per booking.';
+        }
         var wanted=Number(guests.value||1);
         slots.forEach(function(slot){
           if(Number(slot.availableGuests||0)<wanted)return;
@@ -184,6 +227,11 @@
       function clearError(){error.hidden=true;error.textContent='';}
       function selected(){return services.find(function(item){return item.key===serviceSelect.value;})||null;}
       function renderSlots(){
+        /* The list is rebuilt from scratch on every party-size change, which used to
+           throw away whatever time the visitor had already chosen — they picked a day,
+           picked a time, set the guest count, and silently lost both. Remember the
+           choice across the rebuild and restore it if that time is still offered. */
+        var previous=(document.querySelector('input[name="slot"]:checked')||{}).value||chosenSlotId;
         slotsEl.replaceChildren();
         var times=calendarDate.value?availability.get(calendarDate.value):null;
         if(!times||!times.length){
@@ -192,14 +240,34 @@
           slotsEl.appendChild(note);return;
         }
         times.forEach(function(slot){
+          var start=new Date(slot.startsAt);
+          var open=Number(slot.availableGuests||0);
+          /* "place"+(n===1?'':' places') read "2 place places" for every slot with more
+             than one opening. Pluralise the whole word once. */
+          var places=open+(open===1?' place left':' places left');
+          var clock=start.toLocaleString([],{hour:'numeric',minute:'2-digit'});
           var label=document.createElement('label');label.className='slot-option';
           var input=document.createElement('input');input.type='radio';input.name='slot';input.value=slot.id;input.required=true;
-          var start=new Date(slot.startsAt);
-          label.appendChild(input);
-          label.appendChild(document.createTextNode(start.toLocaleString([],{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})));
-          label.appendChild(document.createTextNode(' · '+slot.availableGuests+' place'+(slot.availableGuests===1?'':' places')));
+          /* The chip shows only the clock time — the calendar and the status line above
+             both already name the day. Screen readers still get the full date. */
+          input.setAttribute('aria-label',start.toLocaleString([],{weekday:'long',month:'long',day:'numeric',hour:'numeric',minute:'2-digit'})+', '+places);
+          var text=document.createElement('span');text.className='slot-text';
+          var time=document.createElement('span');time.className='slot-time';time.textContent=clock;
+          var meta=document.createElement('span');meta.className='slot-meta';meta.textContent=places;
+          text.appendChild(time);text.appendChild(meta);
+          if(slot.id===previous){input.checked=true;chosenSlotId=slot.id;}
+          input.addEventListener('change',function(){if(input.checked)chosenSlotId=input.value;});
+          label.appendChild(input);label.appendChild(text);
           slotsEl.appendChild(label);
         });
+        // If the remembered time is genuinely gone, say so rather than leaving the
+        // visitor to notice their choice quietly vanished.
+        if(previous&&!document.querySelector('input[name="slot"]:checked')){
+          chosenSlotId='';
+          var lost=document.createElement('p');lost.className='booking-note slot-lost';
+          lost.textContent='The time you had picked is not available for this party size — choose another below.';
+          slotsEl.insertBefore(lost,slotsEl.firstChild);
+        }
       }
       /* One request per service; the grid, the status line and the time list all read
          the same cached payload, so changing party size or month never refetches. */
@@ -223,7 +291,11 @@
       function applyAvailability(payload){
         indexAvailability(payload);
         var keys=openKeys();
-        if(!keys.length){monthCursor=null;calendarDate.value='';}
+        /* Raising the party size used to blank the chosen date as well as the chosen
+           time, so a visitor who added a guest was thrown back to an empty form with
+           no explanation. Keep the date on screen — the status line explains why it
+           has no times, and lowering the party size restores it immediately. */
+        if(!keys.length){monthCursor=calendarDate.value?monthOf(calendarDate.value):null;}
         else if(!calendarDate.value||!availability.has(calendarDate.value)){calendarDate.value=keys[0];monthCursor=monthOf(keys[0]);}
         else{monthCursor=monthOf(calendarDate.value);}
         renderCalendar();updateCalendarStatus();renderSlots();

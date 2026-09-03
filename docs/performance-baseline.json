@@ -4,11 +4,13 @@
   "rows": [
     {
       "route": "Home",
-      "htmlBytes": 28196,
-      "requests": 5,
-      "transferBytes": 505578,
+      "htmlBytes": 28883,
+      "requests": 7,
+      "transferBytes": 547731,
       "resources": [
         "assets/bg/highland2.webp",
+        "assets/logo-mark.webp",
+        "assets/logo-seal.webp",
         "assets/portfolio/alpaca-face.webp",
         "assets/portfolio/walk-family.webp",
         "assets/portfolio/walk-summer.webp",
@@ -17,56 +19,68 @@
     },
     {
       "route": "Experiences",
-      "htmlBytes": 15724,
-      "requests": 1,
-      "transferBytes": 15724,
+      "htmlBytes": 17262,
+      "requests": 3,
+      "transferBytes": 58728,
       "resources": [
+        "assets/logo-mark.webp",
+        "assets/logo-seal.webp",
         "experiences.html"
       ]
     },
     {
       "route": "Book",
-      "htmlBytes": 27652,
-      "requests": 1,
-      "transferBytes": 27652,
+      "htmlBytes": 34088,
+      "requests": 3,
+      "transferBytes": 75554,
       "resources": [
+        "assets/logo-mark.webp",
+        "assets/logo-seal.webp",
         "book.html"
       ]
     },
     {
       "route": "Shop",
-      "htmlBytes": 14700,
-      "requests": 1,
-      "transferBytes": 14700,
+      "htmlBytes": 17626,
+      "requests": 3,
+      "transferBytes": 59092,
       "resources": [
+        "assets/logo-mark.webp",
+        "assets/logo-seal.webp",
         "shop.html"
       ]
     },
     {
       "route": "Bag",
-      "htmlBytes": 4661,
-      "requests": 1,
-      "transferBytes": 4661,
+      "htmlBytes": 5025,
+      "requests": 3,
+      "transferBytes": 46491,
       "resources": [
+        "assets/logo-mark.webp",
+        "assets/logo-seal.webp",
         "bag.html"
       ]
     },
     {
       "route": "Checkout",
-      "htmlBytes": 5062,
-      "requests": 1,
-      "transferBytes": 5062,
+      "htmlBytes": 5431,
+      "requests": 3,
+      "transferBytes": 46897,
       "resources": [
+        "assets/logo-mark.webp",
+        "assets/logo-seal.webp",
         "checkout.html"
       ]
     },
     {
       "route": "Herd",
-      "htmlBytes": 9310,
-      "requests": 2,
-      "transferBytes": 277056,
+      "htmlBytes": 9749,
+      "requests": 4,
+      "transferBytes": 318961,
       "resources": [
         "assets/bg/meadow.webp",
+        "assets/logo-mark.webp",
+        "assets/logo-seal.webp",
         "meet-the-herd.html"
       ]
     }
@@ -77,8 +91,8 @@
       "fullCatalogHomeParse": false
     },
     "shopSearchRuntime": {
-      "runtimeBytes": 33212,
-      "gzipBytes": 7956,
+      "runtimeBytes": 39819,
+      "gzipBytes": 10539,
       "budgetGzipBytes": 153600,
       "withinBudget": true
     },

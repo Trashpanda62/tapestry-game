@@ -33,7 +33,10 @@ if (!/data-hero="documentary" data-palette="pasture-ochre" data-typography="stur
 if (files.some((file) => /design-preview|selector/i.test(path.relative(dist, file)))) throw new Error('preview/selector asset leaked into release');
 const rows = [
   ['LOCK', 'Exact Steve combo baked into production HTML', /data-hero="documentary"/.test(html), 'design-lock + locked-visual'],
-  ['ROUTES', 'Canonical route manifest and branded utility routes', routeManifest.routes.length === 11, 'route-matrix'],
+  // 12 = the 11 public/utility routes plus /rv-admin, the passcode-gated
+  // availability editor. Counted rather than excluded: the release should know
+  // exactly how many routes it serves, including the staff one.
+  ['ROUTES', 'Canonical route manifest, branded utility routes, and the staff availability editor', routeManifest.routes.length === 12, 'route-matrix'],
   ['EXPERIENCES', '6 source-backed experiences with embedded calendars and Square checkout', (experiences.data || experiences).length === 6, 'experience-audit'],
   ['CATALOG', '242 families / 830 SKUs retain checkout identity', catalog.familyCount === 242 && catalog.skuCount === 830, 'catalog-map'],
   ['ANIMALS', '8 species groups with named/unnamed and for-sale distinction', fileHashes.some(({ path: file }) => file.includes('animals.v1.json')), 'animals-audit'],

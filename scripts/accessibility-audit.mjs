@@ -21,7 +21,15 @@ for (const file of routes) {
   const h1 = html.match(/<h1\b/gi) || [];
   if (h1.length !== 1) fail(file, `expected one H1, found ${h1.length}`);
   if (!/<main\b/i.test(html) || !/<nav\b/i.test(html) || !/skip-link/i.test(html)) fail(file, 'missing main/nav/skip-link landmarks');
-  for (const tag of html.match(/<img\b[^>]*>/gi) || []) if (!/\balt=["'][^"']+["']/i.test(tag)) fail(file, 'image is missing a non-empty alt attribute');
+  // A decorative image may be silent, but it has to say so in both places: alt="" takes
+  // it out of the accessibility tree, and aria-hidden proves the empty alt was deliberate
+  // rather than forgotten. Only the header logo mark qualifies — it sits beside the
+  // wordmark that already announces the brand, so describing it would say it twice.
+  for (const tag of html.match(/<img\b[^>]*>/gi) || []) {
+    const described = /\balt=["'][^"']+["']/i.test(tag);
+    const decorative = /\balt=["']["']/i.test(tag) && /\baria-hidden=["']true["']/i.test(tag);
+    if (!described && !decorative) fail(file, 'image is missing a non-empty alt attribute (or a decorative alt="" + aria-hidden pair)');
+  }
   for (const match of html.matchAll(/<button\b([^>]*)>([\s\S]*?)<\/button>/gi)) {
     const attrs = match[1];
     const text = `${match[2].replace(/<[^>]+>/g, '')} ${(match[2].match(/\balt=["']([^"']+)["']/i)?.[1] || '')}`.replace(/&(?:amp|lt|gt|quot|#\d+);/g, '').trim();

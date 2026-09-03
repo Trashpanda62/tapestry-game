@@ -1,0 +1,29 @@
+Baseline timestamp (UTC): 2026-07-21T04:38:48.829Z
+ABSOLUTE_PATH=C:\dev\webstudio
+REPOSITORY_STATUS=git repository
+HEAD=9b45378349a1f1a8cdaaf26f594affae6586f922
+BRANCH=master
+
+PORCELAIN (git status --porcelain=v1 --untracked-files=all):
+ D scripts/rebake-livingston.mjs
+?? scripts/.gen-tapestry-rv-delivery-cache.json
+?? scripts/BRIEF-S7-orp-embed.md
+?? scripts/add-rv-crosslinks.mjs
+?? scripts/gen-tapestry-rv-delivery.mjs
+?? scripts/internalize-tapestry-links.mjs
+?? scripts/make-rv-deposit-link.mjs
+?? scripts/orp-add-coa-tool.mjs
+?? test/genTapestryRvDelivery.test.ts
+
+WORKTREES (git worktree list --porcelain):
+worktree C:/dev/webstudio
+HEAD 9b45378349a1f1a8cdaaf26f594affae6586f922
+branch refs/heads/master
+
+worktree C:/dev/webstudio-domint
+HEAD 3feccd23ab8ba82c12ceb714e30eb15aeadfedd1
+branch refs/heads/feat/domains-live
+
+worktree C:/Users/Steve/AppData/Local/Temp/claude/C--dev-ObsidianVault-ObsidianVault/ceb482d9-15bb-448f-a10b-4f26665ae5a2/scratchpad/orp-live
+HEAD f74b95e6d306bad0e39f890bcd806161873915c9
+branch refs/heads/orp-live

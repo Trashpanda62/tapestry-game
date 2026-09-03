@@ -20,7 +20,20 @@
     .experiences-intro{padding:72px 20px 28px;text-align:center}.experiences-intro h1{margin:0 auto 16px;color:var(--ink);text-shadow:none}.experiences-intro p{margin:0 auto;color:var(--muted);font-size:1.08rem}.experience-filter{display:flex;align-items:center;justify-content:center;gap:10px;margin:34px auto 18px;color:var(--muted);font-size:14px;font-weight:700}.experience-filter select{min-height:44px;padding:9px 34px 9px 12px;border:1px solid var(--cardborder);border-radius:999px;background:var(--card);color:var(--ink);font:inherit}.experience-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin:28px 0 90px}.experience-card{display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--cardborder);border-radius:18px;background:var(--card);box-shadow:var(--shadow)}.experience-image{position:relative}.experience-image picture{display:contents}
     /* height:auto is load-bearing — the width/height attributes on these images would
        otherwise beat aspect-ratio, since no author rule sets a height. */
-    .experience-image img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover}.experience-badge{position:absolute;top:14px;left:14px;padding:6px 11px;border-radius:999px;background:var(--gold);color:var(--ink);font-size:12px;font-weight:700}.experience-body{display:flex;flex:1;flex-direction:column;padding:24px}.experience-body h2{margin:0 0 8px;color:var(--forest);font-size:25px}.experience-meta{display:flex;justify-content:space-between;gap:16px;margin:0 0 15px;color:var(--muted);font-size:14px}.experience-meta strong{color:var(--accent);white-space:nowrap}.experience-blurb{margin:0 0 15px}.experience-card details{margin:0 0 22px;box-shadow:none}.experience-card .btn{align-self:flex-start;margin-top:auto}.load-error{margin:30px 0 90px;padding:22px;border:1px solid var(--accent);border-radius:16px;background:var(--card);color:var(--alert);text-align:center;font-weight:700}@media(max-width:700px){.experiences-intro{padding-top:45px}.experience-grid{grid-template-columns:1fr}}
+    .experience-image img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover}.experience-badge{position:absolute;top:14px;left:14px;padding:6px 11px;border-radius:999px;background:var(--gold);color:var(--ink);font-size:12px;font-weight:700}/* Row alignment across a grid row: the title wraps to 1-2 lines depending on the
+       name ("Coffee with the Cows" vs "Alpaca Experience with Alpaca Walk"), which used
+       to push meta/description/actions down by a different amount per card. Explicit
+       row tracks give every row a shared baseline; the description row is the only
+       flexible one (1fr), so it absorbs whatever slack a shorter title leaves instead
+       of the title track growing or the rows below drifting. */
+    .experience-body{display:grid;grid-template-rows:auto auto 1fr auto auto;flex:1;padding:24px}
+    /* Clamp to 2 lines and reserve that height even for 1-line titles, so a 3-line
+       name can never grow the title track past what 2 lines already reserve. */
+    .experience-body h2{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;margin:0 0 8px;min-height:2.4em;color:var(--forest);font-size:25px;line-height:1.2}.experience-meta{display:flex;justify-content:space-between;gap:16px;margin:0 0 15px;color:var(--muted);font-size:14px}.experience-meta strong{color:var(--accent);white-space:nowrap}.experience-blurb{margin:0 0 15px}.experience-card details{margin:0 0 22px;box-shadow:none}
+    /* The 1fr description row above already pins this to a shared baseline across the
+       row; only horizontal placement is needed, since grid's default stretch would
+       otherwise full-width the button. */
+    .experience-card .btn{justify-self:flex-start}.load-error{margin:30px 0 90px;padding:22px;border:1px solid var(--accent);border-radius:16px;background:var(--card);color:var(--alert);text-align:center;font-weight:700}@media(max-width:700px){.experiences-intro{padding-top:45px}.experience-grid{grid-template-columns:1fr}}
   </style>
   <style>
     .visit-guide{display:grid;grid-template-columns:minmax(220px,.7fr) minmax(0,1.3fr);gap:clamp(28px,6vw,72px);margin:0 0 90px;padding:clamp(28px,5vw,54px);border-radius:22px;background:var(--forest);color:#fff;box-shadow:var(--shadow)}
@@ -40,7 +53,7 @@
 <body>
   <header class="site-header">
     <div class="header-inner">
-      <div class="brand">TAPESTRY ACRES</div>
+      <div class="brand"><img class="brand-mark" src="assets/logo-mark.webp" alt="" aria-hidden="true" width="74" height="120" decoding="async">TAPESTRY ACRES</div>
       <button class="site-nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="site-nav"><span class="sr-only">Toggle navigation</span><span aria-hidden="true"></span></button>
       <nav class="site-nav" id="site-nav" aria-label="Primary navigation">
         <a href="index.html">Home</a>
@@ -82,7 +95,7 @@
       </section>
     </div>
   </main>
-  <footer><div class="footer-logo">TAPESTRY ACRES</div><div class="footer-flourish" aria-hidden="true">❖ ✳ ❖</div><a class="footer-link" href="mailto:tapestryacres@gmail.com">tapestryacres@gmail.com</a></footer>
+  <footer><img class="footer-seal" src="assets/logo-seal.webp" alt="Tapestry Acres: farm store, stays, and events. Blending animals, products, and people." width="320" height="320" loading="lazy" decoding="async"><div class="footer-logo">TAPESTRY ACRES</div><div class="footer-flourish" aria-hidden="true">❖ ✳ ❖</div><a class="footer-link" href="mailto:tapestryacres@gmail.com">tapestryacres@gmail.com</a></footer>
   <script defer>
     (function(){
       /* The nav toggle is wired by assets/site-shell.js, which the build injects into

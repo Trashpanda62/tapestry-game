@@ -19,13 +19,15 @@ const legacySourceRoutes = {
   "index.html": "/",
   "animals.html": "/animals",
   "experiences.html": "/experiences",
+  "book.html": "/book",
   "meet-the-herd.html": "/herd",
   "rv-rentals.html": "/stay",
   "shop.html": "/shop",
   "bag.html": "/bag",
   "checkout.html": "/checkout",
   "404.html": "/404",
-  "thanks.html": "/thanks"
+  "thanks.html": "/thanks",
+  "rv-admin.html": "/rv-admin"
 };
 const lockedAttrs = 'data-hero="documentary" data-palette="pasture-ochre" data-typography="sturdy-slab" data-surface="painted-sign" data-illustration="accent" data-density="comfortable" data-motion="lively" data-nav="rail" data-calendar-layout="month-grid" data-facet-layout="left-rail" data-quickview-style="modal"';
 const previewBuild = process.env.TAPESTRY_PREVIEW === "1";
@@ -50,6 +52,7 @@ async function copy(relativePath) {
   const target = join(dist, relativePath);
   await mkdir(dirname(target), { recursive: true });
   await cp(source, target, { force: true, preserveTimestamps: false });
+  const sourceKey = relativePath.replaceAll("\\", "/");
   if (relativePath.endsWith(".html")) {
     let html = await readFile(target, "utf8");
     // Published tenant pages are served at `/s/tapestry-acres/<route>` and
@@ -82,12 +85,24 @@ async function copy(relativePath) {
     if (!html.includes('src="assets/state-skeletons.js"')) html = html.replace(/<\/head>/i, '  <script src="assets/state-skeletons.js" defer></script>\n</head>');
     if (!html.includes('src="assets/journey-analytics.js"')) html = html.replace(/<\/head>/i, '  <script src="assets/journey-analytics.js" defer></script>\n</head>');
     if (!/<main[^>]*id="main-content"/i.test(html)) html = html.replace(/<main(\s|>)/i, '<main id="main-content"$1');
+    // The `<base>` above is required for relative assets, but it also captures
+    // bare fragment links: `href="#booking"` resolves against the BASE, not the
+    // current route, so every in-page anchor jumped to the home page instead of
+    // scrolling. Bind fragments to their own route. Must run last so it also
+    // catches the skip link and anything else injected above.
+    const ownRoute = routeBySource[sourceKey] ?? legacySourceRoutes[sourceKey];
+    if (ownRoute) {
+      const selfUrl = tenantUrl(ownRoute);
+      html = html.replace(/(<a\b[^>]*?\bhref=)(["'])(#[^"']*)\2/gi, (match, prefix, quote, fragment) => `${prefix}${quote}${selfUrl}${fragment}${quote}`);
+    }
     await writeFile(target, html);
   } else if (previewBuild && relativePath.replaceAll("\\", "/").startsWith("assets/") && relativePath.endsWith(".js")) {
     const script = await readFile(target, "utf8");
     await writeFile(target, script.replaceAll(configFile.basePath, config.basePath));
   } else if (relativePath === "sitemap.xml") {
-    const urls = config.routes.filter(({ path }) => !['/404', '/thanks'].includes(path)).map(({ path }) => `  <url><loc>${config.publicOrigin}${tenantUrl(path)}</loc></url>`).join("\n");
+    // /rv-admin is a staff tool behind a passcode. It carries a noindex meta tag
+    // of its own; keeping it out of the sitemap stops us advertising it too.
+    const urls = config.routes.filter(({ path }) => !['/404', '/thanks', '/rv-admin'].includes(path)).map(({ path }) => `  <url><loc>${config.publicOrigin}${tenantUrl(path)}</loc></url>`).join("\n");
     await writeFile(target, `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`);
   } else if (relativePath === "robots.txt") {
     await writeFile(target, `User-agent: *\nAllow: /\n\nSitemap: ${config.publicOrigin}${tenantUrl("/sitemap.xml")}\n`);

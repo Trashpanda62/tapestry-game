@@ -1,0 +1,14 @@
+Baseline timestamp (UTC): 2026-07-21T04:38:48.829Z
+ABSOLUTE_PATH=C:\dev\tapestry-herd
+REPOSITORY_STATUS=git repository
+HEAD=218ac5979b732c052d3e5f3a950ed395a3ff02b5
+BRANCH=main
+
+PORCELAIN (git status --porcelain=v1 --untracked-files=all):
+ M index.html
+ M sw.js
+
+WORKTREES (git worktree list --porcelain):
+worktree C:/dev/tapestry-herd
+HEAD 218ac5979b732c052d3e5f3a950ed395a3ff02b5
+branch refs/heads/main

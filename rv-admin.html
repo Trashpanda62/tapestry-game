@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RV availability | Tapestry Acres</title>
+  <!-- Staff tool. Not linked from anywhere, absent from sitemap.xml, and kept
+       out of every index. The passcode is the access control; this is hygiene. -->
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <link rel="stylesheet" href="assets/site.css">
+  <style>
+    .admin-page{max-width:1180px;margin:0 auto;padding:clamp(26px,5vw,52px) 18px 90px}
+    .admin-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:6px}
+    .admin-head h1{margin:0;font-size:clamp(1.9rem,4vw,2.6rem)}
+    .admin-lede{max-width:64ch;margin:0 0 22px;color:var(--muted);font-size:1.02rem}
+    .admin-panel{padding:clamp(18px,3vw,26px);border:1px solid var(--cardborder);border-radius:16px;background:var(--card);box-shadow:var(--shadow)}
+
+    .signin{max-width:380px}
+    .signin label{display:block;margin-bottom:7px;font-weight:750}
+    .signin input{width:100%;min-height:44px;padding:11px 13px;border:1px solid var(--field-border);border-radius:10px;background:var(--field-bg);color:var(--ink);font:inherit}
+    .signin .btn{margin-top:14px;width:100%;min-height:44px}
+
+    .toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}
+    .toolbar .spacer{flex:1 1 auto}
+    .toolbar-hint{flex:1 1 260px;margin:0;color:var(--muted);font-size:.9rem}
+    .month-step{display:grid;place-items:center;width:44px;height:44px;border:1px solid var(--cardborder);border-radius:999px;background:var(--card);color:var(--ink);font-size:1.05rem;cursor:pointer}
+    .toolbar .btn{min-height:44px}
+    .range-label{font-weight:750}
+
+    /* The grid scrolls horizontally on its own; the page must never do that. */
+    .grid-scroll{overflow-x:auto;border:1px solid var(--cardborder);border-radius:12px;background:var(--field-bg)}
+    table.rv-grid{border-collapse:separate;border-spacing:0;font:600 12px var(--sans)}
+    table.rv-grid th,table.rv-grid td{padding:0;margin:0}
+    .unit-head{position:sticky;left:0;z-index:3;min-width:132px;padding:8px 11px;border-right:1px solid var(--cardborder);background:var(--card);text-align:left;white-space:nowrap}
+    thead .unit-head{z-index:4}
+    .month-head{padding:6px 8px;border-bottom:1px solid var(--cardborder);color:var(--muted);font-size:11px;letter-spacing:.06em;text-align:left;text-transform:uppercase;white-space:nowrap}
+    .dow-head{width:26px;padding:3px 0;border-bottom:1px solid var(--cardborder);color:var(--muted);font-size:10px;font-weight:700;text-align:center}
+    .dow-head.weekend{color:var(--accent)}
+    .day{width:26px;height:32px;border:0;border-right:1px solid rgba(0,0,0,.06);border-bottom:1px solid rgba(0,0,0,.06);background:#f2f7ee;cursor:pointer}
+    .day.weekend{background:#eaf1e4}
+    .day.blocked{background:var(--accent)}
+    .day.past{background:#e8e4da;cursor:not-allowed}
+    .day.painting{outline:2px solid var(--forest);outline-offset:-2px}
+    .day:focus-visible{outline:2px solid var(--forest);outline-offset:-2px}
+    .month-edge{border-left:2px solid var(--cardborder)}
+
+    .legend{display:flex;flex-wrap:wrap;gap:16px;margin-top:12px;color:var(--muted);font-size:.88rem}
+    .legend span{display:inline-flex;align-items:center;gap:7px}
+    .legend i{display:inline-block;width:14px;height:14px;border-radius:4px}
+    /* The grid is good for painting a range and hopeless for reading one back, so
+       every block is also listed in words. This is where notes get typed, and it
+       gives a plain Remove button next to each range — the drag-to-open gesture
+       is not discoverable on its own, which is exactly the complaint it fixes. */
+    .ranges{margin-top:22px}
+    .ranges h3{margin:0 0 10px;font-size:1.05rem}
+    .ranges-empty{margin:0;color:var(--muted);font-size:.92rem}
+    .range-list{display:grid;gap:9px;margin:0;padding:0;list-style:none}
+    .range-row{display:grid;grid-template-columns:minmax(150px,1.1fr) minmax(0,1.6fr) auto;gap:11px;align-items:center;padding:11px 13px;border:1px solid var(--cardborder);border-radius:11px;background:var(--field-bg)}
+    .range-when{min-width:0}
+    .range-unit{display:block;font-weight:750;font-size:.94rem}
+    .range-dates{display:block;color:var(--muted);font-size:.86rem}
+    .range-note{width:100%;min-width:0;min-height:40px;padding:9px 11px;border:1px solid var(--field-border);border-radius:9px;background:var(--card);color:var(--ink);font:inherit;font-size:.92rem}
+    .range-remove{min-height:40px;padding:0 14px;border:1px solid var(--cardborder);border-radius:999px;background:var(--card);color:var(--alert);font:700 13px var(--sans);cursor:pointer;white-space:nowrap}
+    .range-remove:hover{border-color:var(--alert)}
+    .range-remove:focus-visible{outline:2px solid var(--alert);outline-offset:2px}
+    @media(max-width:640px){.range-row{grid-template-columns:1fr}}
+    .save-bar{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:20px;padding-top:18px;border-top:1px solid var(--cardborder)}
+    .save-bar .btn{min-height:44px}
+    .save-state{color:var(--muted);font-size:.92rem}
+    .save-state.dirty{color:var(--accent);font-weight:700}
+    .save-state.error{color:var(--alert);font-weight:700}
+    .is-hidden{display:none!important}
+    /* 26px columns are the right density for a 90-day view on a desktop, but they
+       are a miserable finger target. The grid already scrolls horizontally, so on
+       a phone the cells simply get bigger rather than the view getting shorter. */
+    @media(max-width:760px){
+      .unit-head{min-width:104px;font-size:11px}
+      .day,.dow-head{width:38px}
+      .day{height:42px}
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header"><div class="header-inner"><div class="brand"><img class="brand-mark" src="assets/logo-mark.webp" alt="" aria-hidden="true" width="74" height="120" decoding="async">TAPESTRY ACRES</div><nav class="site-nav" aria-label="Primary navigation"><a href="/s/tapestry-acres/">Home</a><a href="/s/tapestry-acres/stay">RV Rentals</a></nav></div></header>
+
+  <main id="main-content" class="admin-page">
+    <div class="admin-head"><h1>RV availability</h1></div>
+    <p class="admin-lede">Click a day to block it, or click and drag across a run of days. Blocked days stop showing as available on the public calendar as soon as you save.</p>
+
+    <section id="signin" class="admin-panel signin" aria-labelledby="signin-title">
+      <h2 id="signin-title" style="margin:0 0 12px;font-size:1.2rem">Sign in</h2>
+      <form id="signin-form">
+        <label for="passcode">Passcode</label>
+        <input id="passcode" name="passcode" type="password" autocomplete="current-password" required>
+        <button class="btn" type="submit">Sign in</button>
+      </form>
+      <p id="signin-error" class="save-state error is-hidden" role="alert"></p>
+    </section>
+
+    <section id="editor" class="admin-panel is-hidden" aria-labelledby="editor-title">
+      <h2 id="editor-title" class="sr-only">Availability grid</h2>
+      <div class="toolbar">
+        <p class="toolbar-hint">Drag across free days to block them. Drag across blocked days to open them back up.</p>
+        <button type="button" id="range-prev" class="month-step" aria-label="Earlier dates">&larr;</button>
+        <span class="range-label" id="range-label">&nbsp;</span>
+        <button type="button" id="range-next" class="month-step" aria-label="Later dates">&rarr;</button>
+        <span class="spacer"></span>
+        <button type="button" class="btn quick-view-button" id="sign-out">Sign out</button>
+      </div>
+
+      <div class="grid-scroll"><table class="rv-grid" id="rv-grid"><caption class="sr-only">Each row is one RV; each column is one night. Use the arrow keys to move and the space bar to block or open a night.</caption></table></div>
+
+      <div class="legend">
+        <span><i style="background:#f2f7ee;border:1px solid rgba(0,0,0,.12)"></i> Available</span>
+        <span><i style="background:var(--accent)"></i> Blocked</span>
+        <span><i style="background:#e8e4da"></i> Past</span>
+      </div>
+
+      <section class="ranges" aria-labelledby="ranges-title">
+        <h3 id="ranges-title">Blocked ranges</h3>
+        <p class="ranges-empty" id="ranges-empty">Nothing is blocked. Every RV is showing as available.</p>
+        <ul class="range-list" id="range-list"></ul>
+      </section>
+
+      <div class="save-bar">
+        <button class="btn" type="button" id="save">Save</button>
+        <span class="save-state" id="save-state">No changes yet.</span>
+      </div>
+    </section>
+  </main>
+
+  <script>
+  (function(){
+    var baseTag=document.querySelector('base');
+    var base=(baseTag?new URL(baseTag.href).pathname:'/s/tapestry-acres/').replace(/\/$/,'');
+    var DAY_MS=86400000;
+    var WINDOW_DAYS=90;
+
+    var signinSection=document.getElementById('signin');
+    var signinForm=document.getElementById('signin-form');
+    var signinError=document.getElementById('signin-error');
+    var editor=document.getElementById('editor');
+    var gridEl=document.getElementById('rv-grid');
+    var saveState=document.getElementById('save-state');
+    var rangeLabel=document.getElementById('range-label');
+
+    var units=[];
+    var unitNames={'max-1':'Max 1 · Esteem','max-2':'Max 2 · Windsport','max-3':'Max 3 · Odyssey','max-4':'Max 4 · Odyssey','max-5':'Max 5 · Odyssey','max-6':'Max 6 · Sequence'};
+    /* The whole editing model is one Set of "unit|YYYY-MM-DD" night keys. Ranges
+       are a storage format, not a working format: expanding on load and
+       recompacting on save means a drag never has to reason about splitting or
+       merging existing ranges. */
+    var blocked=new Set();
+    /* Notes are held per NIGHT, not per range. Keying them to a range's start date
+       loses the note the moment someone extends that range backwards, which is
+       exactly when they are most likely to be editing it. Every night in a run
+       carries the same note; compact() reads back the first one it finds. */
+    var nightNotes={};
+    var dirty=false;
+    var windowStart=todayDay();
+    var painting=null;
+
+    function todayDay(){var now=new Date();return Math.floor(Date.UTC(now.getFullYear(),now.getMonth(),now.getDate())/DAY_MS);}
+    function iso(day){return new Date(day*DAY_MS).toISOString().slice(0,10);}
+    function dayOf(text){var p=text.split('-');return Math.floor(Date.UTC(+p[0],+p[1]-1,+p[2])/DAY_MS);}
+    function key(unit,day){return unit+'|'+iso(day);}
+
+    function setDirty(on){
+      dirty=on;
+      saveState.className='save-state'+(on?' dirty':'');
+      saveState.textContent=on?'Unsaved changes.':'All changes saved.';
+    }
+    function showError(message){saveState.className='save-state error';saveState.textContent=message;}
+
+    /* end is the checkout day and is EXCLUSIVE, matching bookings.json and the
+       availability engine — so a range covers start .. end-1 as nights. */
+    function expand(list){
+      blocked=new Set();nightNotes={};
+      (list||[]).forEach(function(entry){
+        var from=dayOf(entry.start), to=dayOf(entry.end);
+        for(var day=from;day<to;day++){
+          var k=key(entry.unit,day);
+          blocked.add(k);
+          if(entry.note)nightNotes[k]=entry.note;
+        }
+      });
+    }
+    function compact(){
+      var out=[];
+      units.forEach(function(unit){
+        var days=[];
+        blocked.forEach(function(k){if(k.indexOf(unit+'|')===0)days.push(dayOf(k.slice(unit.length+1)));});
+        days.sort(function(a,b){return a-b;});
+        var index=0;
+        while(index<days.length){
+          var start=days[index], end=start;
+          while(index+1<days.length&&days[index+1]===end+1){index++;end=days[index];}
+          index++;
+          var note='';
+          for(var day=start;day<=end&&!note;day++)note=nightNotes[key(unit,day)]||'';
+          out.push({unit:unit,start:iso(start),end:iso(end+1),note:note});
+        }
+      });
+      return out;
+    }
+    /* Writing the note to every night in the run is what makes it survive the range
+       being extended, split, or merged later. */
+    function setRangeNote(unit,startIso,endIso,note){
+      for(var day=dayOf(startIso);day<dayOf(endIso);day++){
+        var k=key(unit,day);
+        if(note)nightNotes[k]=note;else delete nightNotes[k];
+      }
+    }
+    function clearRange(unit,startIso,endIso){
+      for(var day=dayOf(startIso);day<dayOf(endIso);day++){
+        var k=key(unit,day);
+        blocked.delete(k);delete nightNotes[k];
+      }
+    }
+    function nights(startIso,endIso){return dayOf(endIso)-dayOf(startIso);}
+    function pretty(isoDate){
+      return new Date(dayOf(isoDate)*DAY_MS).toLocaleDateString([],{month:'short',day:'numeric',year:'numeric',timeZone:'UTC'});
+    }
+    function renderRanges(){
+      var list=document.getElementById('range-list');
+      var empty=document.getElementById('ranges-empty');
+      var ranges=compact();
+      list.replaceChildren();
+      empty.hidden=ranges.length>0;
+      ranges.forEach(function(range){
+        var item=document.createElement('li');item.className='range-row';
+        var when=document.createElement('div');when.className='range-when';
+        var unitName=document.createElement('strong');unitName.className='range-unit';unitName.textContent=unitNames[range.unit]||range.unit;
+        var dates=document.createElement('span');dates.className='range-dates';
+        var count=nights(range.start,range.end);
+        // The stored end is the checkout day; showing it raw reads as one night too
+        // many, so the label names the last NIGHT and states the count outright.
+        dates.textContent=pretty(range.start)+' – '+pretty(iso(dayOf(range.end)-1))+' · '+count+(count===1?' night':' nights');
+        when.appendChild(unitName);when.appendChild(dates);
+
+        var note=document.createElement('input');note.type='text';note.className='range-note';
+        note.maxLength=120;note.value=range.note;
+        note.placeholder='Why? e.g. engine service, owner use';
+        note.setAttribute('aria-label','Note for '+(unitNames[range.unit]||range.unit)+', '+pretty(range.start));
+        note.addEventListener('input',function(){setRangeNote(range.unit,range.start,range.end,note.value);setDirty(true);});
+
+        var remove=document.createElement('button');remove.type='button';remove.className='range-remove';
+        remove.textContent='Open back up';
+        remove.setAttribute('aria-label','Open up '+(unitNames[range.unit]||range.unit)+' from '+pretty(range.start));
+        remove.addEventListener('click',function(){
+          clearRange(range.unit,range.start,range.end);
+          repaintCells();renderRanges();setDirty(true);
+        });
+
+        item.appendChild(when);item.appendChild(note);item.appendChild(remove);
+        list.appendChild(item);
+      });
+    }
+
+    function render(){
+      var start=windowStart, end=start+WINDOW_DAYS;
+      // timeZone:'UTC' is not optional. Day numbers are UTC midnights, and
+      // formatting one in a negative-offset zone renders the PREVIOUS day — the
+      // label read "Jul 29" on the 30th before this was added.
+      rangeLabel.textContent=new Date(start*DAY_MS).toLocaleDateString([],{month:'short',day:'numeric',timeZone:'UTC'})+' – '+new Date((end-1)*DAY_MS).toLocaleDateString([],{month:'short',day:'numeric',year:'numeric',timeZone:'UTC'});
+      gridEl.replaceChildren();
+      var today=todayDay();
+
+      var thead=document.createElement('thead');
+      var monthRow=document.createElement('tr');
+      var monthCorner=document.createElement('th');monthCorner.className='unit-head';monthCorner.scope='col';monthRow.appendChild(monthCorner);
+      var dowRow=document.createElement('tr');
+      var dowCorner=document.createElement('th');dowCorner.className='unit-head';dowCorner.scope='col';dowCorner.textContent='RV';dowRow.appendChild(dowCorner);
+
+      var runMonth=-1, runCell=null, runCount=0;
+      for(var day=start;day<end;day++){
+        var date=new Date(day*DAY_MS);
+        var month=date.getUTCMonth();
+        if(month!==runMonth){
+          runCell=document.createElement('th');runCell.className='month-head';runCell.scope='col';
+          runCell.textContent=date.toLocaleDateString([],{month:'long',year:'numeric',timeZone:'UTC'});
+          monthRow.appendChild(runCell);runMonth=month;runCount=1;
+        }else{runCount++;runCell.colSpan=runCount;}
+        var dow=document.createElement('th');dow.scope='col';
+        var weekday=date.getUTCDay();
+        dow.className='dow-head'+(weekday===0||weekday===6?' weekend':'');
+        dow.textContent=String(date.getUTCDate());
+        dowRow.appendChild(dow);
+      }
+      thead.appendChild(monthRow);thead.appendChild(dowRow);gridEl.appendChild(thead);
+
+      var tbody=document.createElement('tbody');
+      units.forEach(function(unit,rowIndex){
+        var row=document.createElement('tr');
+        var head=document.createElement('th');head.className='unit-head';head.scope='row';head.textContent=unitNames[unit]||unit;row.appendChild(head);
+        for(var day=start;day<end;day++){
+          var cell=document.createElement('td');
+          var button=document.createElement('button');
+          button.type='button';button.className='day';
+          var date=new Date(day*DAY_MS), weekday=date.getUTCDay();
+          if(weekday===0||weekday===6)button.classList.add('weekend');
+          if(date.getUTCDate()===1)button.classList.add('month-edge');
+          var isPast=day<today;
+          var on=blocked.has(key(unit,day));
+          if(isPast){button.classList.add('past');button.disabled=true;}
+          if(on)button.classList.add('blocked');
+          button.dataset.unit=unit;button.dataset.day=String(day);
+          button.dataset.row=String(rowIndex);
+          button.setAttribute('aria-pressed',on?'true':'false');
+          button.setAttribute('aria-label',(unitNames[unit]||unit)+', '+date.toLocaleDateString([],{weekday:'long',month:'long',day:'numeric',year:'numeric',timeZone:'UTC'})+', '+(isPast?'in the past':(on?'blocked':'available')));
+          cell.appendChild(button);row.appendChild(cell);
+        }
+        tbody.appendChild(row);
+      });
+      gridEl.appendChild(tbody);
+    }
+
+    function apply(unit,day,on){
+      var k=key(unit,day);
+      if(on)blocked.add(k);else{blocked.delete(k);delete nightNotes[k];}
+    }
+    function paintRange(unit,fromDay,toDay,on){
+      var low=Math.min(fromDay,toDay), high=Math.max(fromDay,toDay);
+      var today=todayDay();
+      for(var day=low;day<=high;day++){if(day>=today)apply(unit,day,on);}
+    }
+    function repaintCells(){
+      Array.from(gridEl.querySelectorAll('.day')).forEach(function(button){
+        var on=blocked.has(key(button.dataset.unit,Number(button.dataset.day)));
+        button.classList.toggle('blocked',on);
+        button.setAttribute('aria-pressed',on?'true':'false');
+        // The label carries the state in words, so it has to move with the
+        // colour. Updating only aria-pressed left a screen reader announcing
+        // "available" for a night that had just been blocked.
+        if(!button.disabled){
+          var label=button.getAttribute('aria-label')||'';
+          button.setAttribute('aria-label',label.replace(/, (blocked|available)$/,', '+(on?'blocked':'available')));
+        }
+        button.classList.remove('painting');
+      });
+    }
+
+    /* Pointer painting. Pointer events rather than mouse events so a stylus or a
+       touch drag works the same; pointer capture keeps the drag alive when the
+       cursor leaves the cell it started in. */
+    gridEl.addEventListener('pointerdown',function(event){
+      var button=event.target.closest('.day');
+      if(!button||button.disabled)return;
+      event.preventDefault();
+      /* The day you start on decides the direction: begin on a free day and you are
+         blocking, begin on a blocked day and you are opening. This replaced an
+         explicit Block/Open mode toggle that worked correctly but that nobody
+         found — the first report from the farm was "there's no way to unblock". */
+      var on=!blocked.has(key(button.dataset.unit,Number(button.dataset.day)));
+      painting={unit:button.dataset.unit,from:Number(button.dataset.day),on:on};
+      apply(painting.unit,painting.from,on);
+      repaintCells();
+      gridEl.setPointerCapture(event.pointerId);
+    });
+    gridEl.addEventListener('pointermove',function(event){
+      if(!painting)return;
+      var button=document.elementFromPoint(event.clientX,event.clientY);
+      button=button&&button.closest?button.closest('.day'):null;
+      if(!button||button.disabled||button.dataset.unit!==painting.unit)return;
+      // Repaint the whole run from the anchor each move, so dragging back over
+      // your own path un-paints instead of leaving a smear behind.
+      expandFromSnapshot();
+      paintRange(painting.unit,painting.from,Number(button.dataset.day),painting.on);
+      repaintCells();
+    });
+    function endPaint(){
+      if(!painting)return;
+      painting=null;snapshot=null;setDirty(true);renderRanges();
+    }
+    gridEl.addEventListener('pointerup',endPaint);
+    gridEl.addEventListener('pointercancel',endPaint);
+
+    /* The drag needs the pre-drag state to recompute from on every move. */
+    var snapshot=null;
+    function expandFromSnapshot(){
+      if(!snapshot)return;
+      blocked=new Set(snapshot);
+    }
+    gridEl.addEventListener('pointerdown',function(){if(!snapshot)snapshot=new Set(blocked);},true);
+
+    /* Keyboard equivalent: arrows move, space toggles, shift+arrows extend a run.
+       A staff tool still has to be operable without a mouse. */
+    gridEl.addEventListener('keydown',function(event){
+      var button=event.target.closest('.day');
+      if(!button)return;
+      var day=Number(button.dataset.day), row=Number(button.dataset.row);
+      var move=0, rowMove=0;
+      if(event.key==='ArrowRight')move=1;
+      else if(event.key==='ArrowLeft')move=-1;
+      else if(event.key==='ArrowDown')rowMove=1;
+      else if(event.key==='ArrowUp')rowMove=-1;
+      else if(event.key===' '||event.key==='Enter'){
+        event.preventDefault();
+        var on=!blocked.has(key(button.dataset.unit,day));
+        apply(button.dataset.unit,day,on);repaintCells();setDirty(true);renderRanges();
+        return;
+      }else return;
+      event.preventDefault();
+      if(event.shiftKey&&move!==0){
+        // Same rule as the drag: the day you are extending FROM decides whether
+        // shift+arrow is blocking or opening.
+        paintRange(button.dataset.unit,day,day+move,blocked.has(key(button.dataset.unit,day)));
+        repaintCells();setDirty(true);renderRanges();
+      }
+      var nextRow=Math.min(units.length-1,Math.max(0,row+rowMove));
+      var nextDay=day+move;
+      var target=gridEl.querySelector('.day[data-row="'+nextRow+'"][data-day="'+nextDay+'"]')||gridEl.querySelector('.day[data-row="'+nextRow+'"][data-day="'+day+'"]');
+      if(target)target.focus();
+    });
+
+    document.getElementById('range-prev').addEventListener('click',function(){windowStart=Math.max(todayDay(),windowStart-WINDOW_DAYS);render();});
+    document.getElementById('range-next').addEventListener('click',function(){windowStart+=WINDOW_DAYS;render();});
+
+    window.addEventListener('beforeunload',function(event){
+      if(!dirty)return;
+      event.preventDefault();event.returnValue='';
+    });
+
+    function loadBlocks(){
+      return fetch(base+'/api/rv/admin/blocks',{credentials:'same-origin',cache:'no-store'}).then(function(response){
+        if(response.status===401)return null;
+        if(!response.ok)throw new Error('load failed');
+        return response.json();
+      });
+    }
+    function showEditor(payload){
+      units=(payload.units&&payload.units.length)?payload.units.slice():['max-1','max-2','max-3','max-4','max-5','max-6'];
+      expand(payload.blocks);
+      signinSection.classList.add('is-hidden');
+      editor.classList.remove('is-hidden');
+      render();renderRanges();setDirty(false);
+      saveState.textContent='All changes saved.';
+    }
+
+    signinForm.addEventListener('submit',function(event){
+      event.preventDefault();
+      signinError.classList.add('is-hidden');
+      var input=document.getElementById('passcode');
+      var submit=signinForm.querySelector('button');
+      submit.disabled=true;
+      fetch(base+'/api/rv/session',{
+        method:'POST',credentials:'same-origin',
+        headers:{'content-type':'application/json'},
+        body:JSON.stringify({passcode:input.value})
+      }).then(function(response){
+        return response.json().then(function(body){
+          if(!response.ok)throw new Error(body.error||'Sign-in failed.');
+          return body;
+        });
+      }).then(function(){
+        input.value='';
+        return loadBlocks();
+      }).then(function(payload){
+        if(!payload)throw new Error('Sign-in did not stick. Check that cookies are allowed.');
+        showEditor(payload);
+      }).catch(function(error){
+        submit.disabled=false;
+        signinError.textContent=error.message;
+        signinError.classList.remove('is-hidden');
+      });
+    });
+
+    document.getElementById('sign-out').addEventListener('click',function(){
+      if(dirty&&!confirm('You have unsaved changes. Sign out anyway?'))return;
+      fetch(base+'/api/rv/session/end',{method:'POST',credentials:'same-origin'}).then(function(){location.reload();});
+    });
+
+    document.getElementById('save').addEventListener('click',function(){
+      var button=this;
+      button.disabled=true;
+      saveState.className='save-state';saveState.textContent='Saving…';
+      fetch(base+'/api/rv/blocks',{
+        method:'POST',credentials:'same-origin',
+        headers:{'content-type':'application/json','x-rv-admin':'1'},
+        body:JSON.stringify({blocks:compact()})
+      }).then(function(response){
+        return response.json().then(function(body){
+          if(!response.ok)throw new Error(body.error||'Save failed.');
+          return body;
+        });
+      }).then(function(body){
+        button.disabled=false;
+        dirty=false;
+        saveState.className='save-state';
+        saveState.textContent=body.saved===1
+          ? 'Saved — 1 blocked range is live on the public calendar.'
+          : 'Saved — '+body.saved+' blocked ranges are live on the public calendar.';
+      }).catch(function(error){
+        button.disabled=false;
+        showError(error.message);
+      });
+    });
+
+    // An existing session skips the passcode form entirely.
+    loadBlocks().then(function(payload){if(payload)showEditor(payload);}).catch(function(){});
+  }());
+  </script>
+</body>
+</html>

@@ -19,7 +19,12 @@ assert(html.includes("document.createElement('article')"), 'experience card arti
 assert(html.includes("card.className='experience-card'"), 'rendered article is missing the experience-card class');
 assert(html.includes('experiences.forEach(renderCard)'), 'experience entries are not rendered as cards');
 assert(html.includes('No experiences listed right now — check back soon.'), 'missing experiences empty-state message');
-assert(/document\.createElement\(['"]img['"]\)[\s\S]*?image\.alt\s*=\s*experience\.name/.test(html), 'rendered experience images are missing non-empty alt text');
+// Was pinned to the old inline renderer's variable name (`image.alt = experience.name`).
+// The card renderer now builds a <picture> with AVIF/WebP sources via a `cardImage(src, alt)`
+// helper, so that exact string no longer appears — but the alt is still set, from the
+// experience name, at the call site. Assert the behaviour, not the old variable name.
+assert(/document\.createElement\(['"]img['"]\)[\s\S]*?\bimg\.alt\s*=\s*alt\b/.test(html), 'rendered experience images do not set alt text');
+assert(/cardImage\(\s*[^,)]+,\s*experience\.name/.test(html), 'experience card images are not given the experience name as alt text');
 assert(/<button\b(?=[^>]*\bclass=["'][^"']*\bsite-nav-toggle\b)(?=[^>]*\baria-label=["'][^"']+["'])[^>]*>/i.test(html), 'mobile navigation toggle is missing an aria-label');
 
 assert(experiences.length > 0, 'generated experiences feed has no entries');

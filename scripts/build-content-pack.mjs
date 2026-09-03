@@ -269,9 +269,10 @@ function normalizeRvFacts(html) {
     includedDeliveryMiles: 50,
     deliveryOveragePerMile: 4,
     petsAllowed: true,
+    petFee: 20,
     towelsIncludedOnFarm: true,
     deliveredTowelAddOn: 25,
-    propaneIncluded: false,
+    deliverySiteRequirements: ["30 amp power", "level ground", "easy access", "14 ft overhead clearance"],
     currentPastureHerd: "Alpacas",
     fleetIds: ["max-1", "max-2", "max-3", "max-4", "max-5", "max-6"]
   };
@@ -282,8 +283,10 @@ function normalizeRvFacts(html) {
     ["balanceDueHoursBeforeCheckIn", "balance is due 24 hours before check-in"],
     ["incidentalDeposit", "refundable $500 incidental"],
     ["deliveryPricing", "Delivery $400 (first 50 mi), $4/mile beyond."],
-    ["petsAllowed", "pets are welcome."],
-    ["towels", "towels included for on-farm stays ($25 add-on for deliveries); propane is not included."],
+    ["petFee", "pets are welcome, for a flat $20 pet fee per stay."],
+    ["towels", "towels included for on-farm stays ($25 add-on for deliveries)."],
+    ["deliverySiteRequirements", "<strong>30 amp power</strong>, <strong>level ground</strong>, <strong>easy access</strong>"],
+    ["deliverySiteClearance", "<strong>14 feet of overhead clearance</strong>"],
     ["currentPastureHerd", "var farmFieldNow='Alpacas';"]
   ]) requireFact(file, html, field, expected);
   for (const id of facts.fleetIds) requireFact(file, html, `fleetIds.${id}`, `id:'${id}'`);

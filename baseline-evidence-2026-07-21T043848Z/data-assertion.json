@@ -1,0 +1,17 @@
+{
+  "checkedAt": "2026-07-20T23:47:00-05:00",
+  "experiences": 7,
+  "squareLinkedExperiences": 5,
+  "animalGroups": 8,
+  "catalogSkus": 830,
+  "productImageReferences": 3955,
+  "missingProductImageReferences": 0,
+  "herdSourcePresent": true,
+  "herdSourceFileCount": 7,
+  "sha256": {
+    "experiences.json": "3C5E5237E8413C1D50D1BF69767AC2747D239DBDB62FC292FF2E4488D50006F9",
+    "animals.json": "5B44A3360084C40D0264F1E8354A6117F7EE1C7CB436197DA8DCF27AB550524B",
+    "store-products.json": "290FFE281F37EF0C59ABE9CC3DE8CF76A30803D6301BCA68AE16EB310086DC59"
+  },
+  "result": "PASS"
+}

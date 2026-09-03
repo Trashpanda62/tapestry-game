@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-29T09:13:40.115Z",
-  "releaseHash": "8b62b571e68d2adb5f3cabf861aac6eaa8ae942ff29fd27b73ec485012cfd8ff",
-  "fileCount": 775,
-  "totalBytes": 35882005,
+  "generatedAt": "2026-07-30T15:56:24.257Z",
+  "releaseHash": "479241a17aa08aaf5204932f8551d3951751b4d1ede1b99c4c3715553278dbbf",
+  "fileCount": 784,
+  "totalBytes": 36724329,
   "rows": [
     {
       "id": "LOCK",
@@ -12,7 +12,7 @@
     },
     {
       "id": "ROUTES",
-      "requirement": "Canonical route manifest and branded utility routes",
+      "requirement": "Canonical route manifest, branded utility routes, and the staff availability editor",
       "pass": true,
       "evidence": "route-matrix"
     },

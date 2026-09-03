@@ -1,0 +1,13 @@
+Baseline timestamp (UTC): 2026-07-21T04:38:48.829Z
+ABSOLUTE_PATH=C:\dev\tapestry-area-map
+REPOSITORY_STATUS=git repository
+HEAD=1a5bb548fa1aeae1651043b6dad5280c67ca60ba
+BRANCH=main
+
+PORCELAIN (git status --porcelain=v1 --untracked-files=all):
+(clean)
+
+WORKTREES (git worktree list --porcelain):
+worktree C:/dev/tapestry-area-map
+HEAD 1a5bb548fa1aeae1651043b6dad5280c67ca60ba
+branch refs/heads/main

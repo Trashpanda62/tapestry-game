@@ -10,7 +10,8 @@ const routeManifest = JSON.parse(await read('route-manifest.json'));
 const catalog = JSON.parse(await read('data/catalog-index.json'));
 const animals = JSON.parse(await read('data/animals.v1.json'));
 const herd = JSON.parse(await read('herd/herd.json'));
-assert(routeManifest.routes.length === 11, 'route count drift');
+// 12 since the passcode-gated /rv-admin availability editor joined the bundle.
+assert(routeManifest.routes.length === 12, 'route count drift');
 assert(catalog.familyCount === 242 && catalog.skuCount === 830, 'catalog count drift');
 assert((animals.data?.groups || []).length === 8, 'animal group count drift');
 assert(herd.totals?.headcount === 110 && herd.totals?.named === 65, 'herd count drift');
