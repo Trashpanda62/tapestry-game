@@ -72,6 +72,7 @@
       .calendar-day .calendar-open-count{display:none}
     }
     @media(max-width:430px){.calendar-day{min-height:48px;font-size:.9rem}}
+    .service-photo{display:block;width:100%;max-height:260px;object-fit:cover;border-radius:12px;margin-bottom:12px}
   </style>
 </head>
 <body>
@@ -84,7 +85,7 @@
       <div id="service-summary"><p>Loading experiences…</p></div>
       <section class="calendar-shell" aria-labelledby="availability-title">
         <h2 id="availability-title">Availability calendar</h2>
-        <p class="booking-note">Farm visits are bookable March 1–June 30 and September 1–December 31, 10:00 a.m.–5:00 p.m. CT.</p>
+        <p class="booking-note" id="season-note">Farm visits are bookable March 1–June 30 and September 1–December 31, 10:00 a.m.–5:00 p.m. CT.</p>
         <div class="calendar-nav">
           <button id="calendar-prev" class="calendar-step" type="button" aria-label="Previous month">←</button>
           <h3 id="calendar-heading" aria-live="polite">Loading availability…</h3>
@@ -103,7 +104,7 @@
         <p class="booking-note">Your place is held only after the next step succeeds. Availability is rechecked on the server before payment.</p>
         <div class="booking-actions"><button class="btn" type="submit">Hold this time</button><a class="btn secondary" href="/s/tapestry-acres/experiences">Back to experiences</a></div>
       </form>
-      <section id="payment-step" class="is-hidden" aria-labelledby="payment-title"><h2 id="payment-title">Complete payment</h2><p id="payment-copy"></p><div id="booking-totals" class="checkout-lines" aria-live="polite"><div class="checkout-line"><span>Subtotal</span><span id="booking-subtotal">—</span></div><div class="checkout-line"><span>Shipping</span><span id="booking-shipping">$0.00</span></div><div class="checkout-line"><span>Tax (9.75%)</span><span id="booking-tax">—</span></div><div class="checkout-total"><span>Total</span><span id="booking-total">—</span></div></div><div id="card-container"></div><p class="booking-note">Sandbox preview: card details are collected by Square’s secure fields and never sent to this site.</p><div class="booking-actions"><button class="btn" id="pay-button" type="button">Pay and confirm</button></div></section>
+      <section id="payment-step" class="is-hidden" aria-labelledby="payment-title"><h2 id="payment-title">Complete payment</h2><p id="payment-copy"></p><div id="booking-totals" class="checkout-lines" aria-live="polite"><div class="checkout-line"><span>Subtotal</span><span id="booking-subtotal">—</span></div><div class="checkout-line"><span>Shipping</span><span id="booking-shipping">$0.00</span></div><div class="checkout-line"><span>Tax (9.75%)</span><span id="booking-tax">—</span></div><div class="checkout-total"><span>Total</span><span id="booking-total">—</span></div></div><div id="card-container"></div><p class="booking-note" id="card-status">Card fields are loading…</p><p class="booking-note">Card details are collected by Square’s secure fields and never sent to this site.</p><div class="booking-actions"><button class="btn" id="pay-button" type="button">Pay and confirm</button></div></section>
       <div id="success" class="success is-hidden" tabindex="-1"><h2>You're confirmed</h2><p>Your reservation is confirmed. A receipt will be sent to the email you provided.</p></div>
       <p id="error" class="error" role="alert" hidden></p>
     </section>
@@ -111,7 +112,7 @@
   <footer><img class="footer-seal" src="assets/logo-seal.webp" alt="Tapestry Acres: farm store, stays, and events. Blending animals, products, and people." width="320" height="320" loading="lazy" decoding="async"><div class="footer-logo">TAPESTRY ACRES</div><div class="footer-flourish" aria-hidden="true">❖ ✳ ❖</div><a class="footer-link" href="mailto:tapestryacres@gmail.com">tapestryacres@gmail.com</a></footer>
   <script>
     (function(){
-      var baseTag=document.querySelector('base'), base=(baseTag?new URL(baseTag.href).pathname:'/s/tapestry-acres/').replace(/\/$/,''), serviceSelect=document.getElementById('service'), slotsEl=document.getElementById('slots'), form=document.getElementById('booking-form'), paymentStep=document.getElementById('payment-step'), paymentCopy=document.getElementById('payment-copy'), bookingSubtotal=document.getElementById('booking-subtotal'), bookingTax=document.getElementById('booking-tax'), bookingTotal=document.getElementById('booking-total'), payButton=document.getElementById('pay-button'), error=document.getElementById('error'), success=document.getElementById('success'), serviceSummary=document.getElementById('service-summary'), guests=document.getElementById('guests'), email=document.getElementById('email'), calendarDate=document.getElementById('calendar-experience'), calendarStatus=document.getElementById('calendar-status'), calendarGrid=document.getElementById('calendar-grid'), calendarHeading=document.getElementById('calendar-heading'), calendarPrev=document.getElementById('calendar-prev'), calendarNext=document.getElementById('calendar-next'), reservationId='', card=null, services=[];
+      var baseTag=document.querySelector('base'), base=(baseTag?new URL(baseTag.href).pathname:'/s/tapestry-acres/').replace(/\/$/,''), serviceSelect=document.getElementById('service'), slotsEl=document.getElementById('slots'), form=document.getElementById('booking-form'), paymentStep=document.getElementById('payment-step'), paymentCopy=document.getElementById('payment-copy'), bookingSubtotal=document.getElementById('booking-subtotal'), bookingTax=document.getElementById('booking-tax'), bookingTotal=document.getElementById('booking-total'), payButton=document.getElementById('pay-button'), error=document.getElementById('error'), success=document.getElementById('success'), serviceSummary=document.getElementById('service-summary'), guests=document.getElementById('guests'), email=document.getElementById('email'), calendarDate=document.getElementById('calendar-experience'), calendarStatus=document.getElementById('calendar-status'), calendarGrid=document.getElementById('calendar-grid'), calendarHeading=document.getElementById('calendar-heading'), calendarPrev=document.getElementById('calendar-prev'), calendarNext=document.getElementById('calendar-next'), reservationId='', card=null, services=[], seasonText='', squareLoading=false, seasonNote=document.getElementById('season-note'), cardStatus=document.getElementById('card-status');
       var routeParts=location.pathname.replace(/\/+$/,'').split('/'),pathKey=routeParts[routeParts.length-2]==='book'?routeParts[routeParts.length-1]:'';
       var key=new URLSearchParams(location.search).get('experience')||pathKey;
       /* Availability is derived from the slots API, not from a hard-coded season
@@ -213,7 +214,7 @@
           inquiry.href='mailto:tapestryacres@gmail.com?subject='+encodeURIComponent('Group booking inquiry')+'&body='+encodeURIComponent('Hi Tapestry Acres, I would like to ask about booking for '+wanted+' guests.');
           inquiry.hidden=false;
         }else{
-          calendarStatus.textContent='Closed for the season — reopens March 1 / September 1. Ask the farm about private inquiries.';
+          calendarStatus.textContent=seasonText?'Closed for the season. Farm visits are bookable '+seasonText+'. Ask the farm about private inquiries.':'Closed for the season — reopens March 1 / September 1. Ask the farm about private inquiries.';
           var picked=key?' on '+key:'';
           inquiry.textContent='Email the farm about a private off-season visit';
           inquiry.href='mailto:tapestryacres@gmail.com?subject='+encodeURIComponent('Private off-season visit inquiry')+'&body='+encodeURIComponent('Hi Tapestry Acres, I would like to ask about a private visit'+picked+' while the farm is closed for the regular season.');
@@ -223,6 +224,32 @@
           calendarStatus.textContent+=' The farm is closed today and reopens '+prettyDate(seasonInfo.reopens)+'.';
         }
       }
+      function escapeHtml(text){return String(text==null?'':text).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+      /* The summary is rebuilt on load and on every experience change; the photo
+         comes from the Site Manager (services API `image`) and is absent otherwise. */
+      function showService(service){
+        serviceSummary.innerHTML=(service.image?'<img class="service-photo" src="'+escapeHtml(service.image)+'" alt="">':'')+'<h2>'+escapeHtml(service.name)+'</h2><p>'+escapeHtml(service.description)+'</p><p><strong>'+escapeHtml(service.priceDisplay)+'</strong> · '+escapeHtml(service.cadence)+'</p>';
+      }
+      /* Season and hours are set in the Site Manager; the API sends them as one
+         sentence so this page never hard-codes months again. */
+      function applySeason(season){
+        if(!season||!season.text)return;
+        seasonText=season.text;
+        if(seasonNote)seasonNote.textContent='Farm visits are bookable '+seasonText+'.';
+      }
+      function money(cents){return '$'+(Number(cents||0)/100).toFixed(2);}
+      /* Totals before payment: the quote route does the same arithmetic as the pay
+         route, so what is shown here is what the card is charged. */
+      function updateQuote(){
+        var service=selected();
+        if(!service||!service.priceCents){bookingSubtotal.textContent='—';bookingTax.textContent='—';bookingTotal.textContent='—';return;}
+        fetch(base+'/api/booking/quote?serviceId='+encodeURIComponent(service.id)+'&guests='+encodeURIComponent(Number(guests.value||1))).then(function(r){return r.ok?r.json():null;}).then(function(q){
+          if(!q)return;bookingSubtotal.textContent=money(q.baseCents);bookingTax.textContent=money(q.taxCents);bookingTotal.textContent=money(q.totalCents);
+        }).catch(function(){});
+      }
+      /* Square's card fields load once, at page open, so they are ready by the time
+         a time is held. The hold path still calls this in case the first load failed. */
+      function ensureSquare(){if(squareLoading)return Promise.resolve();squareLoading=true;return loadSquare();}
       function showError(message){error.textContent=message;error.hidden=false;}
       function clearError(){error.hidden=true;error.textContent='';}
       function selected(){return services.find(function(item){return item.key===serviceSelect.value;})||null;}
@@ -279,6 +306,7 @@
         var request=cached?Promise.resolve(cached):fetch(base+'/api/booking/slots?serviceId='+encodeURIComponent(service.id)).then(function(r){if(!r.ok)throw new Error();return r.json();}).then(function(payload){slotCache[service.id]=payload;return payload;});
         return request.then(function(payload){
           seasonInfo=payload.season||null;
+          applySeason(seasonInfo);
           applyAvailability(payload);
         }).catch(function(){
           slotsEl.replaceChildren();calendarGrid.replaceChildren();
@@ -306,19 +334,20 @@
         if(next<1){next=12;year--;}else if(next>12){next=1;year++;}
         monthCursor={y:year,m:next};renderCalendar();
       }
-      function loadSquare(){return fetch(base+'/api/payment-config').then(function(r){if(!r.ok)throw new Error();return r.json();}).then(function(config){var script=document.createElement('script');script.src=config.sandbox?'https://sandbox.web.squarecdn.com/v1/square.js':'https://web.squarecdn.com/v1/square.js';script.onload=function(){window.Square.payments(config.applicationId,config.locationId).then(function(payments){return payments.card();}).then(function(next){card=next;return card.attach('#card-container');}).catch(function(){showError('Card fields could not load. Please try again.');});};script.onerror=function(){showError('Card fields could not load. Please try again.');};document.head.appendChild(script);});}
+      function loadSquare(){return fetch(base+'/api/payment-config').then(function(r){if(!r.ok)throw new Error();return r.json();}).then(function(config){var script=document.createElement('script');script.src=config.sandbox?'https://sandbox.web.squarecdn.com/v1/square.js':'https://web.squarecdn.com/v1/square.js';script.onload=function(){/* Square.payments() returns the Payments object directly in the current SDK (older builds returned a promise); Promise.resolve covers both. */Promise.resolve(window.Square.payments(config.applicationId,config.locationId)).then(function(payments){return payments.card();}).then(function(next){card=next;return card.attach('#card-container');}).then(function(){if(cardStatus)cardStatus.hidden=true;}).catch(function(){squareLoading=false;showError('Card fields could not load. Please try again.');});};script.onerror=function(){squareLoading=false;showError('Card fields could not load. Please try again.');};document.head.appendChild(script);});}
       /* No default of "today" — for half the year today is out of season, which is how
          the page used to open on an empty "no times" state. The first genuinely open
          date is selected once availability arrives. */
       calendarPrev.addEventListener('click',function(){stepMonth(-1);});
       calendarNext.addEventListener('click',function(){stepMonth(1);});
       calendarDate.addEventListener('change',function(){selectDate(calendarDate.value);});
-      fetch(base+'/api/booking/services').then(function(r){if(!r.ok)throw new Error();return r.json();}).then(function(payload){services=payload.services||[];serviceSelect.replaceChildren();services.forEach(function(item){var option=document.createElement('option');option.value=item.key;option.textContent=item.name+' · '+(item.priceDisplay||'Price on request');serviceSelect.appendChild(option);});if(services.some(function(item){return item.key===key;}))serviceSelect.value=key;var service=selected();if(service){serviceSummary.innerHTML='<h2>'+service.name+'</h2><p>'+service.description+'</p><p><strong>'+service.priceDisplay+'</strong> · '+service.cadence+'</p>';}loadAvailability();}).catch(function(){showError('We could not load the experiences. Please refresh and try again.');});
-      serviceSelect.addEventListener('change',function(){var service=selected();if(service)serviceSummary.innerHTML='<h2>'+service.name+'</h2><p>'+service.description+'</p><p><strong>'+service.priceDisplay+'</strong> · '+service.cadence+'</p>';calendarDate.value='';loadAvailability();});
+      fetch(base+'/api/booking/services').then(function(r){if(!r.ok)throw new Error();return r.json();}).then(function(payload){services=payload.services||[];serviceSelect.replaceChildren();services.forEach(function(item){var option=document.createElement('option');option.value=item.key;option.textContent=item.name+' · '+(item.priceDisplay||'Price on request');serviceSelect.appendChild(option);});if(services.some(function(item){return item.key===key;}))serviceSelect.value=key;applySeason(payload.season);var service=selected();if(service){showService(service);}updateQuote();loadAvailability();}).catch(function(){showError('We could not load the experiences. Please refresh and try again.');});
+      ensureSquare().catch(function(){squareLoading=false;});
+      serviceSelect.addEventListener('change',function(){var service=selected();if(service)showService(service);calendarDate.value='';updateQuote();loadAvailability();});
       /* Party size changes which days still have room, so the grid is rebuilt from the
          cached payload rather than refetched. */
-      guests.addEventListener('change',function(){var service=selected();if(service&&slotCache[service.id])applyAvailability(slotCache[service.id]);});
-      form.addEventListener('submit',function(event){event.preventDefault();clearError();var slot=document.querySelector('input[name="slot"]:checked'),service=selected();if(!slot||!service){showError('Choose an available time first.');return;}var submit=form.querySelector('button[type="submit"]');submit.disabled=true;fetch(base+'/api/booking/hold',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({serviceId:service.id,slotId:slot.value,guests:Number(guests.value),email:email.value,idempotencyKey:crypto.randomUUID()})}).then(function(r){return r.json().then(function(body){if(!r.ok)throw new Error(body.error||'That time is no longer available.');return body;});}).then(function(body){reservationId=body.reservation.id;form.classList.add('is-hidden');paymentStep.classList.remove('is-hidden');paymentCopy.textContent='Your place is held until '+new Date(body.reservation.holdExpiresAt).toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})+'.';return loadSquare();}).catch(function(err){submit.disabled=false;showError(err.message||'We could not hold that time.');});});
+      guests.addEventListener('change',function(){var service=selected();if(service&&slotCache[service.id])applyAvailability(slotCache[service.id]);updateQuote();});
+      form.addEventListener('submit',function(event){event.preventDefault();clearError();var slot=document.querySelector('input[name="slot"]:checked'),service=selected();if(!slot||!service){showError('Choose an available time first.');return;}var submit=form.querySelector('button[type="submit"]');submit.disabled=true;fetch(base+'/api/booking/hold',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({serviceId:service.id,slotId:slot.value,guests:Number(guests.value),email:email.value,idempotencyKey:crypto.randomUUID()})}).then(function(r){return r.json().then(function(body){if(!r.ok)throw new Error(body.error||'That time is no longer available.');return body;});}).then(function(body){reservationId=body.reservation.id;form.classList.add('is-hidden');paymentStep.classList.remove('is-hidden');paymentCopy.textContent='Your place is held until '+new Date(body.reservation.holdExpiresAt).toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})+'.';updateQuote();return ensureSquare();}).catch(function(err){submit.disabled=false;showError(err.message||'We could not hold that time.');});});
       payButton.addEventListener('click',function(){clearError();if(!card||!reservationId){showError('Card fields are still loading.');return;}payButton.disabled=true;card.tokenize().then(function(result){if(result.status!=='OK')throw new Error('Please check your card details.');return fetch(base+'/api/booking/pay',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({reservationId:reservationId,sourceId:result.token,idempotencyKey:crypto.randomUUID()})});}).then(function(r){return r.json().then(function(body){if(!r.ok)throw new Error(body.error||'Payment could not be completed.');return body;});}).then(function(body){if(body.payment){bookingSubtotal.textContent='$'+(Number(body.payment.baseCents||0)/100).toFixed(2);bookingTax.textContent='$'+(Number(body.payment.taxCents||0)/100).toFixed(2);bookingTotal.textContent='$'+(Number(body.payment.totalCents||0)/100).toFixed(2);}var tries=0;function poll(){return fetch(base+'/api/booking/status?reservationId='+encodeURIComponent(reservationId),{cache:'no-store'}).then(function(r){return r.json();}).then(function(body){if(body.reservation&&body.reservation.status==='confirmed'){paymentStep.classList.add('is-hidden');success.classList.remove('is-hidden');success.focus();return;}if(++tries>30)throw new Error('Payment is processing. Please check your email before trying again.');setTimeout(poll,1000);});}return poll();}).catch(function(err){payButton.disabled=false;showError(err.message||'Payment could not be completed.');});});
     }());
   </script>

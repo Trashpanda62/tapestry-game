@@ -87,7 +87,7 @@
         </div>
         <div class="visit-faq-list">
           <details open><summary>What should I wear?</summary><p>Closed-toe shoes, anywhere on the farm. This is a working farm, not a walkway through a petting zoo, and every experience puts you outdoors on pasture and farm paths. Dress for the forecast while you are at it, and call if the weather looks doubtful.</p></details>
-          <details><summary>When is the farm open?</summary><p>Visits are bookable March 1 to June 30 and September 1 to December 31, between 10:00 a.m. and 5:00 p.m. Central. Outside those months the farm is closed to scheduled visits, but you can still email about a private one.</p></details>
+          <details><summary>When is the farm open?</summary><p><span id="faq-season">Visits are bookable March 1 to June 30 and September 1 to December 31, between 10:00 a.m. and 5:00 p.m. Central.</span> Outside those dates the farm is closed to scheduled visits, but you can still email about a private one.</p></details>
           <details><summary>How do I choose a date?</summary><p>Open an experience and pick a highlighted day on its availability calendar. Those are the days with times still free. Choose a time, hold it for ten minutes, and pay here on the site. Your card details go straight to Square and never touch this page.</p></details>
           <details><summary>How much time should I plan?</summary><p>The farm shopping experience runs 30 minutes. The alpaca experience and the virtual farm tour are an hour, birthday parties are 90 minutes, and the private guided farm tour is two hours. Coffee with the Cows is a Saturday morning.</p></details>
           <details><summary>What should I confirm before booking?</summary><p>Anything that depends on your group or the day: weather, accessibility, cancellation terms, whether an experience suits the kids you are bringing. Call <a href="tel:+19318233266">(931) 823-3266</a> or email <a href="mailto:tapestryacres@gmail.com">tapestryacres@gmail.com</a> and ask a person rather than guessing.</p></details>
@@ -142,7 +142,7 @@
         var script=document.createElement('script');script.type='application/ld+json';script.textContent=JSON.stringify(data);document.head.appendChild(script);
       }
       function renderCard(experience){
-        var card=document.createElement('article');card.className='experience-card';card.dataset.category=experience.category;
+        var card=document.createElement('article');card.className='experience-card';card.dataset.category=experience.category;card.dataset.id=experience.id;
         var imageWrap=document.createElement('div');imageWrap.className='experience-image';
         imageWrap.appendChild(cardImage(experience.image, experience.name));
         if(experience.category==='recurring'||/saturday/i.test(experience.cadence)){var badge=addText(document.createElement('span'),/saturday/i.test(experience.cadence)?'Saturdays':'Recurring');badge.className='experience-badge';imageWrap.appendChild(badge);}
@@ -155,7 +155,26 @@
         card.appendChild(imageWrap);card.appendChild(body);grid.appendChild(card);
       }
 
-      fetch('data/experiences.v1.json',{cache:'no-cache'}).then(function(response){if(!response.ok)throw new Error('Request failed');return response.json();}).then(function(payload){var experiences=payload.data||[];grid.replaceChildren();grid.setAttribute('aria-busy','false');if(!experiences.length){grid.appendChild(addText(document.createElement('p'),'No experiences listed right now — check back soon.'));return;}addStructuredData(experiences);experiences.forEach(renderCard);}).catch(function(){grid.hidden=true;grid.setAttribute('aria-busy','false');error.hidden=false;});
+      fetch('data/experiences.v1.json',{cache:'no-cache'}).then(function(response){if(!response.ok)throw new Error('Request failed');return response.json();}).then(function(payload){var experiences=payload.data||[];grid.replaceChildren();grid.setAttribute('aria-busy','false');if(!experiences.length){grid.appendChild(addText(document.createElement('p'),'No experiences listed right now — check back soon.'));return;}addStructuredData(experiences);experiences.forEach(renderCard);mergeLive();}).catch(function(){grid.hidden=true;grid.setAttribute('aria-busy','false');error.hidden=false;});
+      /* The static list is the page's fast first paint. The Site Manager is the
+         source of truth for photos, prices, season text and anything added since
+         the last release, so the live services API is merged over it. */
+      var baseTag=document.querySelector('base'), base=(baseTag?new URL(baseTag.href).pathname:'/s/tapestry-acres/').replace(/\/$/,'');
+      function mergeLive(){
+        fetch(base+'/api/booking/services').then(function(r){if(!r.ok)throw new Error();return r.json();}).then(function(payload){
+          var seasonEl=document.getElementById('faq-season');
+          if(payload.season&&payload.season.text&&seasonEl)seasonEl.textContent='Visits are bookable '+payload.season.text+'.';
+          (payload.services||[]).forEach(function(service){
+            var card=grid.querySelector('.experience-card[data-id="'+service.key+'"]');
+            if(card){
+              if(service.image){var wrap=card.querySelector('.experience-image');var old=wrap.querySelector('picture,img');var img=document.createElement('img');img.src=service.image;img.alt=service.name;img.loading='lazy';img.decoding='async';img.width=800;img.height=600;if(old)wrap.replaceChild(img,old);else wrap.insertBefore(img,wrap.firstChild);}
+              if(service.priceDisplay){var price=card.querySelector('.experience-meta strong');if(price)price.textContent=service.priceDisplay;}
+              return;
+            }
+            renderCard({id:service.key,name:service.name,blurb:service.description,longDesc:service.description,price:service.priceDisplay||'Price on request',cadence:service.cadence||(service.kind==='event'?'Special event':'By appointment'),image:service.image||'assets/cards/highlandpair.jpg',category:service.kind==='event'?'event':'one-time',bookPath:service.bookingMode==='calendar'?'book/'+service.key:''});
+          });
+        }).catch(function(){});
+      }
       document.getElementById('experience-filter').addEventListener('change',function(event){var value=event.target.value;grid.querySelectorAll('.experience-card').forEach(function(card){card.hidden=value!=='all'&&card.dataset.category!==value;});});
     }());
   </script>
