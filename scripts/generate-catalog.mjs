@@ -3,8 +3,23 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { readWebpSize, shortEdge } from "../src/image-size.mjs";
 
+const cleanCatalogText = (value) => String(value || "")
+  .replace(/\bFushia\b/gi, "Fuchsia")
+  .replace(/\bfushias\b/gi, "fuchsias")
+  .replace(/\bweght\b/gi, "weight")
+  .replace(/\bYargage\b/g, "Yardage")
+  .replace(/yarnCascade/g, "yarn. Cascade")
+  .replace(/AlpacaYardage/g, "Alpaca. Yardage")
+  .replace(/([a-z0-9)][.!?])(?=[A-Z])/g, "$1 ")
+  .replace(/([a-z0-9)])(?=(?:Yardage|Gauge):)/g, "$1. ")
+  .replace(/perfect fitting Ribbing/gi, "perfect-fitting ribbing");
+
+const canonicalOptionValue = (value) => cleanCatalogText(value)
+  .replace(/\bSmalll\b/g, "Small")
+  .replace(/^blue\/Purple$/, "Blue/Purple");
+
 const familyKeyFor = (title) => {
-  const key = String(title).trim().toLowerCase().replace(/\s+/g, " ");
+  const key = cleanCatalogText(title).trim().toLowerCase().replace(/\s+/g, " ");
   if (key.endsWith(" hand dyed baby alpaca yarn")) return "hand dyed baby alpaca yarn";
   if (key === "alpaca dryer ball") return "dryer balls";
   return key;
@@ -15,6 +30,39 @@ const featuredCount = 8;
 
 const compact = (value) => String(value || "").toUpperCase().replace(/[^A-Z0-9]+/g, "");
 const toFirstPartyProduct = ({ checkout_url: _checkoutUrl, ...product }) => product;
+
+function cleanPublicProduct(product) {
+  return {
+    ...product,
+    title: cleanCatalogText(product.title),
+    description: cleanCatalogText(product.description),
+    category: cleanCatalogText(product.category),
+    subcategory: product.subcategory == null ? null : cleanCatalogText(product.subcategory),
+    extra_category: product.extra_category == null ? null : cleanCatalogText(product.extra_category),
+  };
+}
+
+function normalizeFamilyOptions(options) {
+  return options.map((option) => {
+    const choices = new Map();
+    for (const choice of option.choices || []) {
+      const value = canonicalOptionValue(choice.value);
+      const current = choices.get(value);
+      choices.set(value, {
+        ...choice,
+        value,
+        description: canonicalOptionValue(choice.description || choice.value),
+        inStock: current ? current.inStock || choice.inStock : choice.inStock,
+      });
+    }
+    return { ...option, choices: [...choices.values()] };
+  });
+}
+
+function normalizeSelections(selections) {
+  if (!selections) return selections;
+  return Object.fromEntries(Object.entries(selections).map(([name, value]) => [name, canonicalOptionValue(value)]));
+}
 
 function optionCombinations(options) {
   return options.reduce((combinations, option) => combinations.flatMap((selection) => option.choices.map((choice) => ({ ...selection, [option.name]: choice.value }))), [{}]);
@@ -116,7 +164,7 @@ export async function generateCatalog(root, dist) {
   // Measured here rather than in the browser: the card has to choose a hero and a fit
   // mode before it paints, and an onload measurement would land a frame too late.
   const imageStats = JSON.parse(await readFile(join(root, "src", "image-stats.json"), "utf8"));
-  const products = await Promise.all(sourceProducts.map((product) => measureImages(root, imageStats, product)));
+  const products = (await Promise.all(sourceProducts.map((product) => measureImages(root, imageStats, product)))).map(cleanPublicProduct);
   if (!Array.isArray(curated)) fail("featured-skus.json must be an array.");
   if (!Array.isArray(wixProducts) || wixProducts.length !== 242) fail("expected 242 Wix product records with option metadata.");
   const bySku = new Map(products.map((product) => [product.sku, product]));
@@ -178,8 +226,8 @@ export async function generateCatalog(root, dist) {
   const families = [...familyMap.values()]
     .map((family) => {
       const skus = family.skus.sort(compare);
-      const variants = skus.map((sku) => ({ sku, selections: selectionsForSku(sku, family.options) }));
-      return { ...family, skus, variants };
+      const variants = skus.map((sku) => ({ sku, selections: normalizeSelections(selectionsForSku(sku, family.options)) }));
+      return { ...family, options: normalizeFamilyOptions(family.options), skus, variants };
     })
     .sort((left, right) => compare(left.familyId, right.familyId));
   if (families.length !== 242) fail(`expected 242 product families, found ${families.length}.`);

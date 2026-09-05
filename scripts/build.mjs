@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 import { cp, mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
-import { dirname, join, relative, resolve } from "node:path";
+import { dirname, extname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { canonicalBasePath, tenantUrl } from "../src/base-path.mjs";
 import { buildContentPack } from "./build-content-pack.mjs";
@@ -11,7 +11,12 @@ import { validateInputs } from "./validate-inputs.mjs";
 
 const root = resolve(fileURLToPath(new URL("..", import.meta.url)));
 const configFile = JSON.parse(await readFile(join(root, "src", "build-config.json"), "utf8"));
-const config = { ...configFile, basePath: canonicalBasePath, publicOrigin: process.env.TAPESTRY_PUBLIC_ORIGIN || configFile.publicOrigin };
+const config = {
+  ...configFile,
+  basePath: canonicalBasePath,
+  publicOrigin: process.env.TAPESTRY_PUBLIC_ORIGIN || configFile.publicOrigin,
+  canonicalOrigin: process.env.TAPESTRY_CANONICAL_ORIGIN || configFile.canonicalOrigin || configFile.publicOrigin,
+};
 const dist = join(root, "dist");
 const fail = (message) => { throw new Error(`[build] ${message}`); };
 const routeBySource = Object.fromEntries(config.routes.map(({ source, path }) => [source, path]));
@@ -40,6 +45,7 @@ if (previewBuild) {
 
 if (config.basePath !== canonicalBasePath) fail("build config basePath must match the canonical base-path helper.");
 if (typeof config.publicOrigin !== "string" || !/^https:\/\/[^/]+$/.test(config.publicOrigin)) fail("build config publicOrigin must be an explicit HTTPS origin.");
+if (typeof config.canonicalOrigin !== "string" || !/^https:\/\/[^/]+$/.test(config.canonicalOrigin)) fail("build config canonicalOrigin must be an explicit HTTPS origin.");
 await validateInputs(root, config);
 const media = await packageAssets(root);
 await rm(dist, { recursive: true, force: true, maxRetries: 8, retryDelay: 100 });
@@ -72,9 +78,12 @@ async function copy(relativePath) {
     // Canonicalize absolute GitHub-era URLs embedded in JSON-LD/OG metadata
     // and inline data as well as ordinary hrefs. No published page may point
     // back to the retired static host or retain a .html route.
-    html = html.replaceAll("https://trashpanda62.github.io/tapestry-game", `${config.publicOrigin}${canonicalBasePath}`);
+    html = html.replaceAll("https://trashpanda62.github.io/tapestry-game", config.canonicalOrigin);
+    html = html.replaceAll(`${config.publicOrigin}${canonicalBasePath}`, config.canonicalOrigin);
     for (const [legacy, canonical] of Object.entries(legacySourceRoutes)) {
-      html = html.replaceAll(`${canonicalBasePath}/${legacy}`, tenantUrl(canonical));
+      const canonicalPath = canonical === "/" ? "/" : canonical;
+      html = html.replaceAll(`${config.canonicalOrigin}/${legacy}`, `${config.canonicalOrigin}${canonicalPath}`);
+      html = html.replaceAll(`${config.publicOrigin}${canonicalBasePath}/${legacy}`, `${config.canonicalOrigin}${canonicalPath}`);
     }
     // The source shop page retains a text-only legacy renderer as migration
     // reference. Never publish that old Square-link implementation; the
@@ -102,10 +111,10 @@ async function copy(relativePath) {
   } else if (relativePath === "sitemap.xml") {
     // /rv-admin is a staff tool behind a passcode. It carries a noindex meta tag
     // of its own; keeping it out of the sitemap stops us advertising it too.
-    const urls = config.routes.filter(({ path }) => !['/404', '/thanks', '/rv-admin'].includes(path)).map(({ path }) => `  <url><loc>${config.publicOrigin}${tenantUrl(path)}</loc></url>`).join("\n");
+    const urls = config.routes.filter(({ path }) => !['/404', '/thanks', '/rv-admin'].includes(path)).map(({ path }) => `  <url><loc>${config.canonicalOrigin}${path === '/' ? '/' : path}</loc></url>`).join("\n");
     await writeFile(target, `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`);
   } else if (relativePath === "robots.txt") {
-    await writeFile(target, `User-agent: *\nAllow: /\n\nSitemap: ${config.publicOrigin}${tenantUrl("/sitemap.xml")}\n`);
+    await writeFile(target, `User-agent: *\nAllow: /\n\nSitemap: ${config.canonicalOrigin}/sitemap.xml\n`);
   }
   const bytes = await readFile(target);
   copied.push({
@@ -151,23 +160,28 @@ for (const generated of await generateCatalog(root, dist)) {
 }
 copied.push(...await mirrorHerd(dist));
 
-/* Cache-bust the shared CSS/JS. The published bundle is served with
-   `Cache-Control: public, max-age=14400`, so without a versioned URL a returning
-   visitor runs up to four hours of stale site.css / site-shell.js against fresh HTML
-   (the HTML itself is only cached for 60s). A content hash in the query makes every
-   deploy self-busting while keeping the long asset TTL, which is the point of it. */
+/* Cache-bust the shared CSS/JS. The custom-domain redirect intentionally removes
+   `/s/tapestry-acres` and also drops query strings, so `?v=...` is not a reliable
+   cache key there. Emit content-addressed filename aliases instead: the final path
+   itself is new whenever its bytes change, on both the studio and custom domains. */
 const bustable = new Map();
-for (const entry of copied) {
-  if (/^assets\/[^/]+\.(?:css|js)$/.test(entry.file)) bustable.set(entry.file.slice("assets/".length), entry.sha256.slice(0, 8));
+for (const entry of [...copied]) {
+  if (!/^assets\/[^/]+\.(?:css|js)$/.test(entry.file)) continue;
+  const extension = extname(entry.file);
+  const alias = `${entry.file.slice(0, -extension.length)}.${entry.sha256.slice(0, 12)}${extension}`;
+  const bytes = await readFile(join(dist, entry.file));
+  await writeFile(join(dist, alias), bytes);
+  copied.push({ file: alias, bytes: bytes.byteLength, sha256: entry.sha256 });
+  bustable.set(entry.file, alias);
 }
 for (const entry of copied) {
   if (!entry.file.endsWith(".html")) continue;
   const target = join(dist, entry.file);
   const before = await readFile(target, "utf8");
   let html = before;
-  for (const [name, version] of bustable) {
-    html = html.replaceAll(`"assets/${name}"`, `"assets/${name}?v=${version}"`);
-    html = html.replaceAll(`'assets/${name}'`, `'assets/${name}?v=${version}'`);
+  for (const [asset, alias] of bustable) {
+    html = html.replaceAll(`"${asset}"`, `"${alias}"`);
+    html = html.replaceAll(`'${asset}'`, `'${alias}'`);
   }
   if (html === before) continue;
   await writeFile(target, html);

@@ -3,10 +3,18 @@ import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 
 const pages = ['index.html', 'experiences.html', 'shop.html', 'animals.html', 'meet-the-herd.html', 'rv-rentals.html'];
-const siteRoot = 'https://trashpanda62.github.io/tapestry-game/';
+const siteRoot = 'https://tapestryacres.com/';
+const publicRoute = new Map([
+  ['index.html', ''],
+  ['experiences.html', 'experiences'],
+  ['shop.html', 'shop'],
+  ['animals.html', 'animals'],
+  ['meet-the-herd.html', 'herd'],
+  ['rv-rentals.html', 'stay'],
+]);
 const htmlByPage = new Map(await Promise.all(pages.map(async (page) => [
   page,
-  await readFile(new URL(`./${page}`, import.meta.url), 'utf8'),
+  await readFile(new URL(`./dist/${page}`, import.meta.url), 'utf8'),
 ])));
 
 test('pages have unique titles and canonical URLs', () => {
@@ -28,8 +36,8 @@ test('pages have unique titles and canonical URLs', () => {
 });
 
 test('sitemap lists every page URL', async () => {
-  const sitemap = await readFile(new URL('./sitemap.xml', import.meta.url), 'utf8');
-  const expectedUrls = pages.map((page) => page === 'index.html' ? siteRoot : siteRoot + page);
+  const sitemap = await readFile(new URL('./dist/sitemap.xml', import.meta.url), 'utf8');
+  const expectedUrls = pages.map((page) => siteRoot + publicRoute.get(page));
 
   for (const url of expectedUrls) {
     assert.match(sitemap, new RegExp(`<loc>\\s*${url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*</loc>`), `sitemap is missing ${url}`);
@@ -37,8 +45,8 @@ test('sitemap lists every page URL', async () => {
 });
 
 test('robots.txt references the sitemap', async () => {
-  const robots = await readFile(new URL('./robots.txt', import.meta.url), 'utf8');
-  assert.match(robots, /^Sitemap:\s*https:\/\/trashpanda62\.github\.io\/tapestry-game\/sitemap\.xml\s*$/im);
+  const robots = await readFile(new URL('./dist/robots.txt', import.meta.url), 'utf8');
+  assert.match(robots, /^Sitemap:\s*https:\/\/tapestryacres\.com\/sitemap\.xml\s*$/im);
 });
 
 test('structured data is valid JSON or syntactically sound JavaScript', () => {

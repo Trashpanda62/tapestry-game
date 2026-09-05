@@ -225,10 +225,11 @@
         }
       }
       function escapeHtml(text){return String(text==null?'':text).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+      function priceForGuest(service){var display=service.priceDisplay||'Price on request';return service.priceCents!=null&&!/(?:\/pp|\/guest|per guest)/i.test(display)?display+'/guest':display.replace('/pp','/guest');}
       /* The summary is rebuilt on load and on every experience change; the photo
          comes from the Site Manager (services API `image`) and is absent otherwise. */
       function showService(service){
-        serviceSummary.innerHTML=(service.image?'<img class="service-photo" src="'+escapeHtml(service.image)+'" alt="">':'')+'<h2>'+escapeHtml(service.name)+'</h2><p>'+escapeHtml(service.description)+'</p><p><strong>'+escapeHtml(service.priceDisplay)+'</strong> · '+escapeHtml(service.cadence)+'</p>';
+        serviceSummary.innerHTML=(service.image?'<img class="service-photo" src="'+escapeHtml(service.image)+'" alt="'+escapeHtml(service.name)+'">':'')+'<h2>'+escapeHtml(service.name)+'</h2><p>'+escapeHtml(service.description)+'</p><p><strong>'+escapeHtml(priceForGuest(service))+'</strong> · '+escapeHtml(service.cadence)+'</p>';
       }
       /* Season and hours are set in the Site Manager; the API sends them as one
          sentence so this page never hard-codes months again. */
@@ -353,4 +354,3 @@
   </script>
 </body>
 </html>
-

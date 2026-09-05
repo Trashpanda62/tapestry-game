@@ -4,83 +4,116 @@
   "rows": [
     {
       "route": "Home",
-      "htmlBytes": 28883,
-      "requests": 7,
-      "transferBytes": 547731,
+      "htmlBytes": 28735,
+      "requests": 11,
+      "transferBytes": 596578,
       "resources": [
         "assets/bg/highland2.webp",
+        "assets/journey-analytics.c134c0b54cb5.js",
         "assets/logo-mark.webp",
         "assets/logo-seal.webp",
         "assets/portfolio/alpaca-face.webp",
         "assets/portfolio/walk-family.webp",
         "assets/portfolio/walk-summer.webp",
+        "assets/site-shell.f7a19973a06d.js",
+        "assets/site.f6cb9dd6d23a.css",
+        "assets/state-skeletons.6b9a8cfb71f6.js",
         "index.html"
       ]
     },
     {
       "route": "Experiences",
-      "htmlBytes": 17262,
-      "requests": 3,
-      "transferBytes": 58728,
+      "htmlBytes": 19144,
+      "requests": 7,
+      "transferBytes": 109605,
       "resources": [
+        "assets/journey-analytics.c134c0b54cb5.js",
         "assets/logo-mark.webp",
         "assets/logo-seal.webp",
+        "assets/site-shell.f7a19973a06d.js",
+        "assets/site.f6cb9dd6d23a.css",
+        "assets/state-skeletons.6b9a8cfb71f6.js",
         "experiences.html"
       ]
     },
     {
       "route": "Book",
-      "htmlBytes": 34088,
-      "requests": 3,
-      "transferBytes": 75554,
+      "htmlBytes": 36746,
+      "requests": 7,
+      "transferBytes": 127207,
       "resources": [
+        "assets/journey-analytics.c134c0b54cb5.js",
         "assets/logo-mark.webp",
         "assets/logo-seal.webp",
+        "assets/site-shell.f7a19973a06d.js",
+        "assets/site.f6cb9dd6d23a.css",
+        "assets/state-skeletons.6b9a8cfb71f6.js",
         "book.html"
       ]
     },
     {
       "route": "Shop",
-      "htmlBytes": 17626,
-      "requests": 3,
-      "transferBytes": 59092,
+      "htmlBytes": 18150,
+      "requests": 8,
+      "transferBytes": 149840,
       "resources": [
+        "assets/journey-analytics.c134c0b54cb5.js",
         "assets/logo-mark.webp",
         "assets/logo-seal.webp",
+        "assets/shop.a301e1d753c5.js",
+        "assets/site-shell.f7a19973a06d.js",
+        "assets/site.f6cb9dd6d23a.css",
+        "assets/state-skeletons.6b9a8cfb71f6.js",
         "shop.html"
       ]
     },
     {
       "route": "Bag",
-      "htmlBytes": 5025,
-      "requests": 3,
-      "transferBytes": 46491,
+      "htmlBytes": 4982,
+      "requests": 8,
+      "transferBytes": 99290,
       "resources": [
+        "assets/bag.8dcdd9717117.js",
+        "assets/journey-analytics.c134c0b54cb5.js",
         "assets/logo-mark.webp",
         "assets/logo-seal.webp",
+        "assets/site-shell.f7a19973a06d.js",
+        "assets/site.f6cb9dd6d23a.css",
+        "assets/state-skeletons.6b9a8cfb71f6.js",
         "bag.html"
       ]
     },
     {
       "route": "Checkout",
-      "htmlBytes": 5431,
-      "requests": 3,
-      "transferBytes": 46897,
+      "htmlBytes": 5389,
+      "requests": 8,
+      "transferBytes": 101183,
       "resources": [
+        "assets/checkout.cf28b1c30117.js",
+        "assets/journey-analytics.c134c0b54cb5.js",
         "assets/logo-mark.webp",
         "assets/logo-seal.webp",
+        "assets/site-shell.f7a19973a06d.js",
+        "assets/site.f6cb9dd6d23a.css",
+        "assets/state-skeletons.6b9a8cfb71f6.js",
         "checkout.html"
       ]
     },
     {
       "route": "Herd",
-      "htmlBytes": 9749,
-      "requests": 4,
-      "transferBytes": 318961,
+      "htmlBytes": 9709,
+      "requests": 10,
+      "transferBytes": 387389,
       "resources": [
         "assets/bg/meadow.webp",
+        "assets/farm-steward-core.171797fe7f2a.js",
+        "assets/herd-game.7dc4f413bb71.js",
+        "assets/journey-analytics.c134c0b54cb5.js",
         "assets/logo-mark.webp",
         "assets/logo-seal.webp",
+        "assets/site-shell.f7a19973a06d.js",
+        "assets/site.f6cb9dd6d23a.css",
+        "assets/state-skeletons.6b9a8cfb71f6.js",
         "meet-the-herd.html"
       ]
     }
@@ -91,13 +124,13 @@
       "fullCatalogHomeParse": false
     },
     "shopSearchRuntime": {
-      "runtimeBytes": 39819,
-      "gzipBytes": 10539,
+      "runtimeBytes": 41229,
+      "gzipBytes": 10854,
       "budgetGzipBytes": 153600,
       "withinBudget": true
     },
     "herdServiceWorker": {
-      "bytes": 2091,
+      "bytes": 2089,
       "versionedCache": true,
       "sameOriginBase": true
     }

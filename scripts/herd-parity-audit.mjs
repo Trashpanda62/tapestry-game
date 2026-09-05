@@ -9,6 +9,7 @@ for (const token of ["Name Them", "READONLY", "serviceWorker", "herd.json", "TAB
 // Third token was "experiences#availability" — a link to an id that does not exist on
 // experiences.html, so it dumped the player at the top of the wrong page. The gate was
 // pinning the bug. Assert the real availability surface instead.
-for (const token of ["id=\"herd-game\"", "assets/herd-game.js", "/s/tapestry-acres/book"]) if (!shell.includes(token)) throw new Error(`[herd-parity] shell missing ${token}.`);
+for (const token of ["id=\"herd-game\"", "/s/tapestry-acres/book"]) if (!shell.includes(token)) throw new Error(`[herd-parity] shell missing ${token}.`);
+if (!/assets\/herd-game(?:\.[a-f0-9]{12})?\.js/.test(shell)) throw new Error('[herd-parity] shell missing the content-addressed herd game runtime.');
 if (!checklist.includes("network-first") || !checklist.includes("320px")) throw new Error("[herd-parity] checklist incomplete.");
 console.log("[herd-parity] PASS: chapter shell, browse/quiz/read-only parity, same-origin fallback, and keyboard/modal checklist are present.");

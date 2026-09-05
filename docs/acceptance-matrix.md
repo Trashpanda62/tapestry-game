@@ -1,8 +1,8 @@
 # Acceptance matrix
 
-Release hash: `479241a17aa08aaf5204932f8551d3951751b4d1ede1b99c4c3715553278dbbf`  
-Artifact files: 784  
-Artifact bytes: 36724329
+Release hash: `e6c3939f6d672d7ff907bb9f14a3192b84422ac45c977477a40d2dd5e799fd53`  
+Artifact files: 795  
+Artifact bytes: 38102217
 
 | ID | Requirement | Result | Evidence |
 |---|---|---|---|

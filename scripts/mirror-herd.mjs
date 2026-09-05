@@ -17,7 +17,7 @@ export async function mirrorHerd(dist) {
       body = body.replace("navigator.serviceWorker.register('sw.js')", "navigator.serviceWorker.register('/s/tapestry-acres/herd/sw.js', {scope: '/s/tapestry-acres/herd/'})");
     }
     if (file === "sw.js") {
-      body = body.replace("const SHELL = 'herd-shell-v11';", "const SHELL = 'herd-shell-v11-obscura';");
+      body = body.replace("const SHELL = 'herd-shell-v12';", "const SHELL = 'herd-shell-v12-obscura';");
     }
     const output = join(targetRoot, file);
     await writeFile(output, body);

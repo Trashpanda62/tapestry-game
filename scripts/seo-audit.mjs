@@ -3,8 +3,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('../dist/', import.meta.url));
-const origin = 'https://sites.obscurastudio.design';
-const base = '/s/tapestry-acres';
+const origin = 'https://tapestryacres.com';
+const base = '';
 const routeMap = { 'index.html': '/', 'animals.html': '/animals', 'experiences.html': '/experiences', 'book.html': '/book', 'meet-the-herd.html': '/herd', 'rv-rentals.html': '/stay', 'shop.html': '/shop', 'bag.html': '/bag', 'checkout.html': '/checkout' };
 const read = (file) => readFile(path.join(root, file), 'utf8');
 const assert = (ok, message) => { if (!ok) throw new Error(`[seo] ${message}`); };

@@ -31,7 +31,7 @@ assert(/role="status"/.test(rv) && /aria-live="polite"/.test(rv), 'Stay/RV avail
 // The class filter is a radiogroup, so it is announced as one control with a checked
 // option rather than three unrelated buttons.
 assert(/role="radiogroup"/.test(rv) && /aria-label="Which kind of RV\?"/.test(rv), 'the RV class filter is not announced as a labelled radiogroup');
-assert(/id="herd-game"/.test(herd) && /aria-live="polite"/.test(herd) && /herd-game\.js/.test(herd), 'Herd game lacks spoken context');
+assert(/id="herd-game"/.test(herd) && /aria-live="polite"/.test(herd) && /herd-game(?:\.[a-f0-9]{12})?\.js/.test(herd), 'Herd game lacks spoken context');
 assert(/Availability calendar/.test(book) && /calendar-experience/.test(book) && /Closed for the season/.test(book) && /reopens March 1 \/ September 1/.test(book) && /route\(['"]checkout/.test(bagScript), 'booking calendar controls or checkout route missing');
 // The time chips show only the clock time, because the calendar and the status line
 // above them both already name the day. Non-visual users get the full date from the

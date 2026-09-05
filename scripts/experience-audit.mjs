@@ -11,5 +11,5 @@ if (source.some((item) => item.id === "seasonal-events")) throw new Error("[expe
 if (built.data.filter((item) => item.bookPath).length !== 5) throw new Error("[experiences] built payload must expose five first-party booking paths.");
 if (built.data.some((item) => item.bookingUrl || item.checkoutUrl)) throw new Error("[experiences] built payload must not expose external booking or checkout URLs.");
 for (const needle of ["data/experiences.v1.json", "bookPath", "Choose a date", "experience-filter"]) if (!html.includes(needle)) throw new Error(`[experiences] missing ${needle}.`);
-if (/<iframe\b|bookingUrl|checkoutUrl|square\.link|tapestryacres\.com/i.test(html)) throw new Error("[experiences] external booking iframe/link remains in the page.");
+if (/<iframe\b|bookingUrl|checkoutUrl|square\.link|trashpanda62\.github\.io/i.test(html)) throw new Error("[experiences] external booking iframe/link remains in the page.");
 console.log("[experiences] PASS: 6 records, first-party booking paths, local inquiry fallback, filter, and schema-backed fetch.");

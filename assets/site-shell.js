@@ -1,6 +1,26 @@
 /* Shared semantic shell: keyboard-safe mobile navigation, skip link, breadcrumbs, and contact context. */
 (function () {
   "use strict";
+  var route = (location.pathname.replace(/\/$/, "").split("/").pop() || "index").replace(/\.html$/, "");
+  function tenantPath(name) {
+    var base = document.querySelector("base");
+    return new URL(name, base ? base.href : location.origin + "/s/tapestry-acres/").pathname;
+  }
+  function bagCount() {
+    try {
+      var items = JSON.parse(localStorage.getItem("tapestry-bag-v1") || "[]");
+      return Array.isArray(items) ? items.reduce(function (total, item) { return total + Number(item.quantity || 0); }, 0) : 0;
+    } catch (_) {
+      return 0;
+    }
+  }
+  function refreshBagLinks() {
+    var count = bagCount();
+    document.querySelectorAll(".site-bag-link").forEach(function (link) {
+      link.textContent = count ? "Bag (" + count + ")" : "Bag";
+      link.setAttribute("aria-label", count ? "Bag, " + count + (count === 1 ? " item" : " items") : "Bag, empty");
+    });
+  }
   var toggle = document.querySelector(".site-nav-toggle");
   var nav = document.querySelector(".site-nav");
   if (toggle && nav) {
@@ -22,6 +42,15 @@
     });
     links.forEach(function (link) { link.addEventListener("click", function () { close(false); }); });
   }
+  if (nav && !nav.querySelector(".site-bag-link")) {
+    var bagLink = document.createElement("a");
+    bagLink.className = "site-bag-link";
+    bagLink.href = tenantPath("bag");
+    if (route === "bag" || route === "checkout") bagLink.setAttribute("aria-current", "page");
+    nav.appendChild(bagLink);
+  }
+  refreshBagLinks();
+  window.TapestryBag = { refresh: refreshBagLinks };
 
   var main = document.querySelector("main");
   if (main && !document.getElementById("skip-to-content")) {
@@ -55,8 +84,9 @@
     var navFooter = document.createElement("nav");
     navFooter.className = "site-footer-nav";
     navFooter.setAttribute("aria-label", "Footer navigation");
-    navFooter.innerHTML = '<a href="index.html">Home</a><a href="experiences.html">Experiences</a><a href="shop.html">Shop</a><a href="rv-rentals.html">Stays &amp; RV</a><a href="mailto:tapestryacres@gmail.com">Contact</a><a href="https://maps.google.com/?q=396+Taylor+Crossroads+Rd+Monroe+TN" target="_blank" rel="noopener">Directions</a>';
+    navFooter.innerHTML = '<a href="index.html">Home</a><a href="experiences.html">Experiences</a><a href="shop.html">Shop</a><a class="site-bag-link" href="bag.html">Bag</a><a href="rv-rentals.html">Stays &amp; RV</a><a href="mailto:tapestryacres@gmail.com">Contact</a><a href="https://maps.google.com/?q=396+Taylor+Crossroads+Rd+Monroe+TN" target="_blank" rel="noopener">Directions</a>';
     footer.appendChild(navFooter);
+    refreshBagLinks();
   }
 
   /* Social. The TikTok handle carries a dot: tapestry.acres. Plain "tapestryacres"
@@ -80,7 +110,6 @@
      action a farm visitor has. Skipped where a page already owns the fixed bottom slot
      (rv-rentals) and on the transaction pages, where a call prompt would compete with
      finishing a payment. */
-  var route = (location.pathname.replace(/\/$/, "").split("/").pop() || "index").replace(/\.html$/, "");
   if (!document.querySelector(".mobile-cta") && ["checkout", "bag", "thanks"].indexOf(route) < 0) {
     var bar = document.createElement("div");
     bar.className = "mobile-cta call-bar";

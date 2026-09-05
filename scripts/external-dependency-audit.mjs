@@ -24,7 +24,7 @@ async function walk(dir) {
 }
 
 const allowed = [
-  ['first-party', (url) => ['sites.obscurastudio.design', 'tapestry-sandbox.obscurastudio.design'].includes(url.hostname)],
+  ['first-party', (url) => ['tapestryacres.com', 'sites.obscurastudio.design', 'tapestry-sandbox.obscurastudio.design'].includes(url.hostname)],
   ['Square Web Payments SDK', (url) => ['web.squarecdn.com', 'sandbox.web.squarecdn.com'].includes(url.hostname)],
   ['approved map', (url) => url.hostname === 'maps.google.com'],
   ['approved map', (url) => url.hostname === 'www.google.com' && (url.pathname === '/maps' || url.pathname.startsWith('/maps/'))],

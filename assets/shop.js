@@ -27,6 +27,8 @@
   var activeSuggestion = -1;
   var suggestionsOpen = false;
   var dialogOpener = null;
+  var expandedFacets = {};
+  var FACET_OPTION_LIMIT = 12;
   var familyGroups = ['Socks', 'Yarn & Fiber', 'Apparel & Accessories', 'Bath & Body', 'Stuffies & Kids', 'Blankets & Home', 'Gift Certificates', 'Seasonal'];
   var priceBands = [
     { value: 'under-25', label: 'Under $25', test: function (price) { return price < 25; } },
@@ -188,7 +190,17 @@
     ['category', 'price', 'size', 'color', 'availability'].forEach(function (key) {
       var fieldset = document.createElement('fieldset'); fieldset.className = 'facet-group';
       var legend = document.createElement('legend'); legend.textContent = facetLabel(key); fieldset.appendChild(legend);
-      facetOptions(key).forEach(function (option, index) {
+      var options = facetOptions(key);
+      var expansionKey = (container === mobileFacetGroups ? 'mobile-' : 'desktop-') + key;
+      var canCollapse = (key === 'size' || key === 'color') && options.length > FACET_OPTION_LIMIT;
+      var visibleOptions = options;
+      if (canCollapse && !expandedFacets[expansionKey]) {
+        var selected = selectedValues(key);
+        visibleOptions = options.filter(function (option) { return selected.indexOf(option.value) !== -1; })
+          .concat(options.filter(function (option) { return selected.indexOf(option.value) === -1; }))
+          .slice(0, FACET_OPTION_LIMIT);
+      }
+      visibleOptions.forEach(function (option, index) {
         var count = facetCount(key, option.value); var row = document.createElement('div'); row.className = 'facet-option' + (count ? '' : ' is-disabled');
         var label = document.createElement('label'); var id = 'facet-' + key + '-' + index + '-' + (container === mobileFacetGroups ? 'mobile' : 'desktop');
         var input = document.createElement('input'); input.type = 'checkbox'; input.id = id; input.value = option.value; input.checked = selectedValues(key).indexOf(option.value) !== -1; input.disabled = !count && !input.checked;
@@ -196,6 +208,14 @@
         label.htmlFor = id; label.appendChild(input); label.appendChild(document.createTextNode(option.label)); row.appendChild(label);
         var countText = document.createElement('span'); countText.className = 'facet-count'; countText.textContent = String(count); countText.setAttribute('aria-label', count + ' matching families'); row.appendChild(countText); fieldset.appendChild(row);
       });
+      if (canCollapse) {
+        var more = document.createElement('button'); more.type = 'button'; more.className = 'facet-more';
+        var remaining = Math.max(0, options.length - visibleOptions.length);
+        more.textContent = expandedFacets[expansionKey] ? 'Show fewer ' + key + 's' : 'Show ' + remaining + ' more ' + key + 's';
+        more.setAttribute('aria-expanded', String(Boolean(expandedFacets[expansionKey])));
+        more.addEventListener('click', function () { expandedFacets[expansionKey] = !expandedFacets[expansionKey]; renderFacetControls(container); });
+        fieldset.appendChild(more);
+      }
       container.appendChild(fieldset);
     });
   }
@@ -228,7 +248,7 @@
   function toggleFacet(key, value) { var values = selectedValues(key).slice(); var index = values.indexOf(value); if (index === -1) values.push(value); else values.splice(index, 1); activeState[key] = values; commitState('push'); }
   function clearFilters() { activeState.category = []; activeState.price = []; activeState.size = []; activeState.color = []; activeState.availability = []; commitState('push'); }
   function inventoryItems() { try { var value = JSON.parse(localStorage.getItem('tapestry-bag-v1') || '[]'); return Array.isArray(value) ? value : []; } catch (_) { return []; } }
-  function updateBagBar(items) { var bar = document.getElementById('bag-bar'); if (!bar) return; var count = items.reduce(function (total, item) { return total + Number(item.quantity || 0); }, 0); bar.textContent = count ? count + ' item' + (count === 1 ? '' : 's') + ' in your bag ' : 'Your bag is empty '; var link = document.createElement('a'); link.href = route('bag'); link.textContent = 'View bag'; bar.appendChild(link); }
+  function updateBagBar(items) { var bar = document.getElementById('bag-bar'); var count = items.reduce(function (total, item) { return total + Number(item.quantity || 0); }, 0); if (bar) { bar.textContent = count ? count + ' item' + (count === 1 ? '' : 's') + ' in your bag ' : 'Your bag is empty '; var link = document.createElement('a'); link.href = route('bag'); link.textContent = count ? 'View bag and checkout' : 'Open bag'; bar.appendChild(link); } if (window.TapestryBag && window.TapestryBag.refresh) window.TapestryBag.refresh(); }
   function addToBag(product, selection) {
     var items = inventoryItems(); var found = items.find(function (item) { return item.sku === product.sku; });
     if (found) found.quantity = Math.min(24, Number(found.quantity || 0) + 1); else items.push({ sku: product.sku, title: product.title, quantity: 1, priceCents: Math.round(Number(product.price || 0) * 100), image: firstImage(product), selection: selection || '' });

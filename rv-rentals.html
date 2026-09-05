@@ -658,12 +658,13 @@
           return response.json();
         }).then(function(data){
           if(!data||!Array.isArray(data.bookings))throw new Error('unexpected availability shape');
+          data._availabilitySource='live';
           return data;
         });
         return Promise.race([live,timeout]).catch(function(){
           return fetch('bookings.json',{cache:'no-cache'}).then(function(response){
             if(!response.ok)throw new Error('Availability unavailable');
-            return response.json();
+            return response.json().then(function(data){data._availabilitySource='saved';return data;});
           });
         });
       }
@@ -671,7 +672,9 @@
       loadAvailability().then(function(data){
         bookings=data.bookings;
         bookingIndex=RV.indexBookings(data);
-        availabilityMeta.textContent='Live availability, last updated '+(bookingIndex.updated||'recently')+'. Dates shown are what is open right now.';
+        availabilityMeta.textContent=data._availabilitySource==='live'
+          ? 'Availability is checked live against the farm calendar. Dates shown are what is open right now.'
+          : 'Showing saved availability from '+(bookingIndex.updated||'the latest website release')+'. Send your dates and the farm will confirm them.';
         // Open on the first night this class can actually be had, not on today. If
         // Class C is booked solid through the month, showing a wall of grey and
         // making the guest hunt forward is the page failing at its one job.

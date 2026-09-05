@@ -1,6 +1,6 @@
 {
-  "_note": "Owned To The Max RV availability calendar. Each entry = a booked/unavailable date range for one unit; 'end' is the checkout day (exclusive). No customer names or PII here — this is a public file. Add/remove entries to manage availability. Reconciled 2026-07-29 against the To The Max ops board (.vault-meta/ttm.json in the vault, the live source of record for bookings); external RVshare/Outdoorsy/Wix sync is retired, so this file is hand-maintained. Elapsed ranges are pruned rather than kept — past nights never render anyway.",
-  "updated": "2026-07-29",
+  "_note": "Fallback copy of the live Tapestry Acres RV calendar. Each entry is a blocked date range for one unit; 'end' is the checkout day (exclusive). No customer names or PII are stored here. Reconciled against the live admin calendar on 2026-09-03; the public page uses the live API first and reads this file only if that API is unavailable.",
+  "updated": "2026-09-03",
   "bookings": [
     {
       "unit": "max-2",

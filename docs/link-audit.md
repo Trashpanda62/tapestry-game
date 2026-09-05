@@ -1,6 +1,6 @@
 # Link audit
 
-Generated from `dist/` · base path `/s/tapestry-acres` · 108 internal anchors across 12 pages.
+Generated from `dist/` · base path `/s/tapestry-acres` · 109 internal anchors across 12 pages.
 
 Guards against the `<base href>` fragment bug: a bare `href="#x"` resolves against the
 base, not the current route, so in-page anchors silently became links to the home page.
@@ -109,6 +109,7 @@ base, not the current route, so in-page anchors silently became links to the hom
 | shop.html | /shop | `/s/tapestry-acres/animals` | `/s/tapestry-acres/animals` |
 | shop.html | /shop | `/s/tapestry-acres/herd` | `/s/tapestry-acres/herd` |
 | shop.html | /shop | `/s/tapestry-acres/stay` | `/s/tapestry-acres/stay` |
+| shop.html | /shop | `/s/tapestry-acres/bag` | `/s/tapestry-acres/bag` |
 | thanks.html | /thanks | `/s/tapestry-acres/thanks#main-content` | `/s/tapestry-acres/thanks#main-content` |
 | thanks.html | /thanks | `/s/tapestry-acres/` | `/s/tapestry-acres/` |
 | thanks.html | /thanks | `/s/tapestry-acres/experiences` | `/s/tapestry-acres/experiences` |

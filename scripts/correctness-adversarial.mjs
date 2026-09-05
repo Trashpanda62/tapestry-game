@@ -25,7 +25,7 @@ check('duplicate catalog names and missing images', /skuById\[product\.sku\]/.te
   'duplicate title, images_local=[], images=[]', 'title-count inference + firstImage fallback + card placeholder branch', 'no duplicate-key collapse or broken image exception');
 check('offline/slow catalog JSON', /\.catch\(\s*function/.test(shopRuntime) && /aria-busy/.test(shop),
   'delay or reject catalog index/payload', 'catch clears busy state and publishes a user-facing error', 'no infinite loading shell');
-check('stale herd service worker', /cache-first|network-first|caches\.match/.test(sw) && /herd-shell-v11-obscura/.test(sw),
+check('stale herd service worker', /cache-first|network-first|caches\.match/.test(sw) && /herd-shell-v12-obscura/.test(sw),
   'serve an old cache namespace after a new mirror build', 'versioned namespace + fetch fallback', 'old mirror cannot silently win after release');
 check('herd offline and malformed payload', /catch|fallback|offline/i.test(herd) && /herd\.json/.test(herd),
   'disconnect network or return malformed herd JSON', 'same-origin payload + cached/read-only fallback', 'browse/quiz remains usable or reports failure');

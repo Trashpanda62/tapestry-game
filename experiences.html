@@ -106,6 +106,10 @@
       var error=document.getElementById('load-error');
 
       function addText(element,text){element.textContent=text;return element;}
+      function priceForGuest(service){
+        var display=service.priceDisplay||'Price on request';
+        return service.priceCents!=null&&!/(?:\/pp|\/guest|per guest)/i.test(display)?display+'/guest':display.replace('/pp','/guest');
+      }
       /* Card art arrives from the feed as original-resolution paths. Where the build
          has generated responsive variants (dist/asset-manifest.json -> media.images),
          serve those instead; anything unlisted falls through to the original. */
@@ -168,10 +172,10 @@
             var card=grid.querySelector('.experience-card[data-id="'+service.key+'"]');
             if(card){
               if(service.image){var wrap=card.querySelector('.experience-image');var old=wrap.querySelector('picture,img');var img=document.createElement('img');img.src=service.image;img.alt=service.name;img.loading='lazy';img.decoding='async';img.width=800;img.height=600;if(old)wrap.replaceChild(img,old);else wrap.insertBefore(img,wrap.firstChild);}
-              if(service.priceDisplay){var price=card.querySelector('.experience-meta strong');if(price)price.textContent=service.priceDisplay;}
+              if(service.priceDisplay){var price=card.querySelector('.experience-meta strong');if(price)price.textContent=priceForGuest(service);}
               return;
             }
-            renderCard({id:service.key,name:service.name,blurb:service.description,longDesc:service.description,price:service.priceDisplay||'Price on request',cadence:service.cadence||(service.kind==='event'?'Special event':'By appointment'),image:service.image||'assets/cards/highlandpair.jpg',category:service.kind==='event'?'event':'one-time',bookPath:service.bookingMode==='calendar'?'book/'+service.key:''});
+            renderCard({id:service.key,name:service.name,blurb:service.description,longDesc:service.description,price:priceForGuest(service),cadence:service.cadence||(service.kind==='event'?'Special event':'By appointment'),image:service.image||'assets/cards/highlandpair.jpg',category:service.kind==='event'?'event':'one-time',bookPath:service.bookingMode==='calendar'?'book/'+service.key:''});
           });
         }).catch(function(){});
       }

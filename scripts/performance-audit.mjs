@@ -32,7 +32,7 @@ const result = {
   interactionBudgets: {
     shopFilter: { algorithm: /matches\.slice\(0,renderedCount\)/.test(shop) || /slice\(0, renderedCount\)/.test(shopJs) ? 'bounded chunk render (24)' : 'unknown', fullCatalogHomeParse: false },
     shopSearchRuntime: { runtimeBytes: Buffer.byteLength(shopJs), gzipBytes: gzipSync(shopJs).byteLength, budgetGzipBytes: 150 * 1024, withinBudget: gzipSync(shopJs).byteLength <= 150 * 1024 },
-    herdServiceWorker: { bytes: Buffer.byteLength(sw), versionedCache: /herd-shell-v11-obscura/.test(sw), sameOriginBase: /BASE = '\/s\/tapestry-acres\/herd'/.test(herd) },
+    herdServiceWorker: { bytes: Buffer.byteLength(sw), versionedCache: /herd-shell-v12-obscura/.test(sw), sameOriginBase: /BASE = '\/s\/tapestry-acres\/herd'/.test(herd) },
   },
   browserMetrics: { LCP: 'N/A — in-app browser page context does not expose PerformanceObserver', CLS: 'N/A — same limitation', INP: 'N/A — same limitation', longTasks: 'N/A — same limitation' },
 };

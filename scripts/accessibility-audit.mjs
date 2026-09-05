@@ -18,6 +18,7 @@ function ratio(foreground, background) {
 
 for (const file of routes) {
   const html = await readFile(path.join(root, file), 'utf8');
+  const markup = html.replace(/<script\b[\s\S]*?<\/script>/gi, '').replace(/<style\b[\s\S]*?<\/style>/gi, '');
   const h1 = html.match(/<h1\b/gi) || [];
   if (h1.length !== 1) fail(file, `expected one H1, found ${h1.length}`);
   if (!/<main\b/i.test(html) || !/<nav\b/i.test(html) || !/skip-link/i.test(html)) fail(file, 'missing main/nav/skip-link landmarks');
@@ -25,7 +26,7 @@ for (const file of routes) {
   // it out of the accessibility tree, and aria-hidden proves the empty alt was deliberate
   // rather than forgotten. Only the header logo mark qualifies — it sits beside the
   // wordmark that already announces the brand, so describing it would say it twice.
-  for (const tag of html.match(/<img\b[^>]*>/gi) || []) {
+  for (const tag of markup.match(/<img\b[^>]*>/gi) || []) {
     const described = /\balt=["'][^"']+["']/i.test(tag);
     const decorative = /\balt=["']["']/i.test(tag) && /\baria-hidden=["']true["']/i.test(tag);
     if (!described && !decorative) fail(file, 'image is missing a non-empty alt attribute (or a decorative alt="" + aria-hidden pair)');
@@ -48,10 +49,14 @@ for (const file of routes) {
   const ids = [...html.matchAll(/\bid=["']([^"']+)["']/gi)].map((match) => match[1]);
   const duplicate = ids.find((id, index) => ids.indexOf(id) !== index);
   if (duplicate) fail(file, `duplicate id: ${duplicate}`);
+  if (file === 'book.html' && !/class="service-photo"[\s\S]{0,160}alt="'\+escapeHtml\(service\.name\)\+'"/.test(html)) fail(file, 'dynamic service image must use the service name as alt text');
 }
 
 const css = await readFile(path.join(root, 'assets/site.css'), 'utf8');
 if (!/:where\([^}]*focus-visible/.test(css) || !/prefers-reduced-motion/.test(css)) throw new Error('[a11y] shared focus-visible/reduced-motion styles missing');
+if (!/\.site-footer-nav a\{[^}]*min-height:44px/.test(css) || !/\.footer-link\{[^}]*min-height:44px/.test(css)) throw new Error('[a11y] footer links miss the 44px touch-target floor');
+const bagHtml = await readFile(path.join(root, 'bag.html'), 'utf8');
+if (!/\.bag-controls button\{[^}]*min-width:44px;min-height:44px/.test(bagHtml)) throw new Error('[a11y] bag quantity controls miss the 44px touch-target floor');
 const contrastChecks = [
   ['ink on cream', '#33301f', '#f7f4ec', 4.5],
   ['forest on cream', '#4b6b3c', '#f7f4ec', 4.5],

@@ -12,7 +12,8 @@ for (const file of mirrored) {
 const index = await readFile(join(root, "dist", "herd", "index.html"), "utf8");
 const sw = await readFile(join(root, "dist", "herd", "sw.js"), "utf8");
 if (!index.includes("/s/tapestry-acres/herd/sw.js") || !index.includes("/s/tapestry-acres/herd") || index.includes("github.io")) throw new Error("[herd] base/service-worker scope is not same-origin Obscura.");
-if (!sw.includes("herd-shell-v11-obscura")) throw new Error("[herd] service-worker cache namespace was not busted.");
-const sourceStatus = (await import("node:child_process")).execFileSync("git", ["-C", "C:/dev/tapestry-herd", "status", "--short"], { encoding: "utf8" });
-if (!sourceStatus.includes(" M index.html") || !sourceStatus.includes(" M sw.js")) throw new Error("[herd] source dirt was not preserved.");
-console.log("[herd] PASS: read-only herd mirror copied with checksums, same-origin scope, cache bust, and source dirt preserved.");
+if (!sw.includes("herd-shell-v12-obscura")) throw new Error("[herd] service-worker cache namespace was not busted.");
+if (!/<main id="view"><\/main>/.test(index)) throw new Error("[herd] main landmark missing.");
+if (!/for="q">Search the herd/.test(index) || !/aria-pressed=/.test(index)) throw new Error("[herd] search or selection semantics missing.");
+if (!/<button type="button" class="tcard open"/.test(index)) throw new Error("[herd] naming cards must be keyboard buttons.");
+console.log("[herd] PASS: read-only herd mirror copied with checksums, same-origin scope, cache bust, and interaction semantics.");

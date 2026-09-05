@@ -1,6 +1,7 @@
 {
   "basePath": "/s/tapestry-acres",
   "publicOrigin": "https://sites.obscurastudio.design",
+  "canonicalOrigin": "https://tapestryacres.com",
   "routes": [
     {
       "source": "index.html",

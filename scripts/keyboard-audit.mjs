@@ -19,8 +19,9 @@ assert(/site-nav-toggle/.test(home) && /aria-expanded/.test(home), 'mobile menu 
 // used to require an inline listener, which is how index.html and rv-rentals.html
 // ended up binding a second one: both flipped aria-expanded on the same click, so
 // the menu never opened. Check the real wiring, and guard against the re-bind.
-// Asset URLs carry a ?v=<content-hash> cache buster in the built output.
-assert(/src="assets\/site-shell\.js(?:\?v=[a-f0-9]+)?"/.test(home), 'home page does not load the shared nav shell');
+// Asset URLs use content-addressed filenames so the custom-domain redirect
+// cannot discard their cache key.
+assert(/src="assets\/site-shell(?:\.[a-f0-9]{12})?\.js"/.test(home), 'home page does not load the shared nav shell');
 assert(/addEventListener\(["']click["']/.test(shell) && /aria-expanded/.test(shell), 'nav shell lacks a keyboard-activatable click handler');
 const shellPages = ['index.html', 'experiences.html', 'shop.html', 'animals.html', 'rv-rentals.html', 'meet-the-herd.html', 'book.html', 'bag.html', 'checkout.html', 'thanks.html', '404.html'];
 for (const name of shellPages) {
