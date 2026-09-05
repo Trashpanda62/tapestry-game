@@ -1,78 +1,516 @@
 {
-  "_comment": "Site Manager editing slots. Each copy slot names a page source, a `find` string that locates the element, and the tag whose first occurrence at or after `find` is the element. scripts/content-slots.mjs --emit prints the registry (id, page, kind, text) the app's src/lib/tapestry/copy.ts embeds; --tag stamps data-slot / data-photo / data-fact attributes into the sources; the test asserts every id matches exactly one element in dist.",
+  "_comment": "Site Manager editing slots. Each copy slot names a page source, a `find` string that locates the element, and the tag whose first occurrence at or after `find` is the element. scripts/content-slots.mjs --emit prints the registry (id, page, kind, text) the app's src/lib/tapestry/copy.ts embeds; --tag stamps data-slot / data-photo / data-fact attributes into the sources; the test asserts every id matches exactly one element in dist. meet-the-herd.html is not offered: the /herd route is shadowed by the herd mirror (scripts/mirror-herd.mjs writes dist/herd/index.html), so edits to the game page would show nowhere.",
   "copy": [
-    { "id": "home.h.hero", "page": "home", "kind": "heading", "file": "index.html", "find": "<h1 id=\"hero-title\">", "tag": "h1" },
-    { "id": "home.p.hero", "page": "home", "kind": "lede", "file": "index.html", "find": "<p id=\"hero-subline\">", "tag": "p" },
-    { "id": "home.p.trust", "page": "home", "kind": "subheading", "file": "index.html", "find": "<p class=\"hero-trust\">", "tag": "p" },
-    { "id": "home.b.hero-primary", "page": "home", "kind": "button", "file": "index.html", "find": "<a class=\"btn\" href=\"/s/tapestry-acres/experiences\">", "tag": "a" },
-    { "id": "home.b.hero-secondary", "page": "home", "kind": "button", "file": "index.html", "find": "<a class=\"btn secondary\" href=\"/s/tapestry-acres/stay\">", "tag": "a" },
-    { "id": "home.h.plan", "page": "home", "kind": "heading", "file": "index.html", "find": "<h2 class=\"section-title\" id=\"plan-title\">", "tag": "h2" },
-    { "id": "home.h.plan-experiences", "page": "home", "kind": "subheading", "file": "index.html", "find": "<a class=\"hub-card\" href=\"experiences.html\">", "tag": "h3" },
-    { "id": "home.p.plan-experiences", "page": "home", "kind": "lede", "file": "index.html", "find": "<a class=\"hub-card\" href=\"experiences.html\">", "tag": "p" },
-    { "id": "home.h.plan-shop", "page": "home", "kind": "subheading", "file": "index.html", "find": "<a class=\"hub-card\" href=\"shop.html\">", "tag": "h3" },
-    { "id": "home.p.plan-shop", "page": "home", "kind": "lede", "file": "index.html", "find": "<a class=\"hub-card\" href=\"shop.html\">", "tag": "p" },
-    { "id": "home.h.plan-animals", "page": "home", "kind": "subheading", "file": "index.html", "find": "<a class=\"hub-card\" href=\"animals.html\">", "tag": "h3" },
-    { "id": "home.p.plan-animals", "page": "home", "kind": "lede", "file": "index.html", "find": "<a class=\"hub-card\" href=\"animals.html\">", "tag": "p" },
-    { "id": "home.h.plan-stay", "page": "home", "kind": "subheading", "file": "index.html", "find": "<a class=\"hub-card\" href=\"rv-rentals.html\">", "tag": "h3" },
-    { "id": "home.p.plan-stay", "page": "home", "kind": "lede", "file": "index.html", "find": "<a class=\"hub-card\" href=\"rv-rentals.html\">", "tag": "p" },
-    { "id": "home.h.chapter", "page": "home", "kind": "heading", "file": "index.html", "find": "<h2 id=\"chapter-title\">", "tag": "h2" },
-    { "id": "home.p.chapter", "page": "home", "kind": "lede", "file": "index.html", "find": "<h2 id=\"chapter-title\">", "tag": "p" },
-    { "id": "home.h.experiences", "page": "home", "kind": "heading", "file": "index.html", "find": "<h2 class=\"section-title\" id=\"experiences-title\">", "tag": "h2" },
-    { "id": "home.h.shop", "page": "home", "kind": "heading", "file": "index.html", "find": "<h2 class=\"section-title\" id=\"shop-title\">", "tag": "h2" },
-    { "id": "home.h.herd", "page": "home", "kind": "heading", "file": "index.html", "find": "<h2 id=\"herd-title\">", "tag": "h2" },
-    { "id": "home.p.herd", "page": "home", "kind": "lede", "file": "index.html", "find": "<h2 id=\"herd-title\">", "tag": "p" },
-    { "id": "home.h.proof", "page": "home", "kind": "heading", "file": "index.html", "find": "<h2 class=\"section-title\" id=\"proof-title\">", "tag": "h2" },
-    { "id": "home.p.social", "page": "home", "kind": "lede", "file": "index.html", "find": "<p>Most of what happens here", "tag": "p" },
-    { "id": "home.h.story", "page": "home", "kind": "heading", "file": "index.html", "find": "<h2 id=\"history-title\">", "tag": "h2" },
-    { "id": "home.p.story", "page": "home", "kind": "lede", "file": "index.html", "find": "<h2 id=\"history-title\">", "tag": "p" },
-    { "id": "home.h.giftcert", "page": "home", "kind": "heading", "file": "index.html", "find": "<h2 class=\"section-title\" id=\"giftcert-title\">", "tag": "h2" },
-    { "id": "home.h.find-us", "page": "home", "kind": "heading", "file": "index.html", "find": "<h2 id=\"find-us-title\">", "tag": "h2" },
-    { "id": "home.h.open", "page": "home", "kind": "heading", "file": "index.html", "find": "<h2>When we are open</h2>", "tag": "h2" },
-    { "id": "home.p.open", "page": "home", "kind": "lede", "file": "index.html", "find": "<h2>When we are open</h2>", "tag": "p" },
-    { "id": "animals.h.title", "page": "animals", "kind": "heading", "file": "animals.html", "find": "<h1 id=\"animals-title\">", "tag": "h1" },
-    { "id": "animals.p.intro", "page": "animals", "kind": "lede", "file": "animals.html", "find": "<h1 id=\"animals-title\">", "tag": "p" },
-    { "id": "animals.h.for-sale", "page": "animals", "kind": "heading", "file": "animals.html", "find": "<h2 class=\"section-title\" id=\"for-sale-title\">", "tag": "h2" },
-    { "id": "experiences.h.title", "page": "experiences", "kind": "heading", "file": "experiences.html", "find": "<h1 id=\"experiences-title\">", "tag": "h1" },
-    { "id": "experiences.p.intro", "page": "experiences", "kind": "lede", "file": "experiences.html", "find": "<h1 id=\"experiences-title\">", "tag": "p" },
-    { "id": "experiences.h.faq", "page": "experiences", "kind": "heading", "file": "experiences.html", "find": "<h2 id=\"visit-faq-title\">", "tag": "h2" },
-    { "id": "experiences.p.faq-intro", "page": "experiences", "kind": "lede", "file": "experiences.html", "find": "<p class=\"visit-guide-intro\">", "tag": "p" },
-    { "id": "stay.h.hero", "page": "stay", "kind": "heading", "file": "rv-rentals.html", "find": "<h1 id=\"hero-title\">", "tag": "h1" },
-    { "id": "stay.p.hero", "page": "stay", "kind": "lede", "file": "rv-rentals.html", "find": "<h1 id=\"hero-title\">", "tag": "p" },
-    { "id": "stay.p.pricing", "page": "stay", "kind": "subheading", "file": "rv-rentals.html", "find": "<p>$270/night", "tag": "p" },
-    { "id": "stay.h.how", "page": "stay", "kind": "heading", "file": "rv-rentals.html", "find": "<h2 class=\"section-title\" id=\"how-title\">", "tag": "h2" },
-    { "id": "stay.h.step-reserve", "page": "stay", "kind": "subheading", "file": "rv-rentals.html", "find": "<h3>You reserve your campsite</h3>", "tag": "h3" },
-    { "id": "stay.p.step-reserve", "page": "stay", "kind": "lede", "file": "rv-rentals.html", "find": "<h3>You reserve your campsite</h3>", "tag": "p" },
-    { "id": "stay.h.step-deliver", "page": "stay", "kind": "subheading", "file": "rv-rentals.html", "find": "<h3>We deliver", "tag": "h3" },
-    { "id": "stay.p.step-deliver", "page": "stay", "kind": "lede", "file": "rv-rentals.html", "find": "<h3>We deliver", "tag": "p" },
-    { "id": "stay.h.step-stay", "page": "stay", "kind": "subheading", "file": "rv-rentals.html", "find": "<h3>You just stay</h3>", "tag": "h3" },
-    { "id": "stay.p.step-stay", "page": "stay", "kind": "lede", "file": "rv-rentals.html", "find": "<h3>You just stay</h3>", "tag": "p" },
-    { "id": "stay.h.stays", "page": "stay", "kind": "heading", "file": "rv-rentals.html", "find": "<h2 class=\"section-title\" id=\"stays-title\">", "tag": "h2" },
-    { "id": "stay.h.fleet", "page": "stay", "kind": "heading", "file": "rv-rentals.html", "find": "<h2 class=\"section-title\" id=\"fleet-title\">", "tag": "h2" },
-    { "id": "stay.p.fleet", "page": "stay", "kind": "lede", "file": "rv-rentals.html", "find": "<p class=\"fleet-intro\">", "tag": "p" },
-    { "id": "stay.h.included", "page": "stay", "kind": "heading", "file": "rv-rentals.html", "find": "<h2 class=\"section-title\" id=\"included-title\">", "tag": "h2" },
-    { "id": "stay.h.gallery", "page": "stay", "kind": "heading", "file": "rv-rentals.html", "find": "<h2 class=\"section-title\" id=\"gallery-title\">", "tag": "h2" },
-    { "id": "stay.h.faq", "page": "stay", "kind": "heading", "file": "rv-rentals.html", "find": "<h2 class=\"section-title\" id=\"faq-title\">", "tag": "h2" },
-    { "id": "stay.h.cross-sell", "page": "stay", "kind": "heading", "file": "rv-rentals.html", "find": "<h2 class=\"section-title\" id=\"cross-sell-title\">", "tag": "h2" },
-    { "id": "stay.p.cross-sell", "page": "stay", "kind": "lede", "file": "rv-rentals.html", "find": "<p class=\"cross-sell-intro\">", "tag": "p" },
-    { "id": "stay.h.booking", "page": "stay", "kind": "heading", "file": "rv-rentals.html", "find": "<h2 id=\"booking-title\">", "tag": "h2" },
-    { "id": "shop.h.title", "page": "shop", "kind": "heading", "file": "shop.html", "find": "<h1 id=\"shop-title\">", "tag": "h1" },
-    { "id": "shop.p.intro", "page": "shop", "kind": "lede", "file": "shop.html", "find": "<h1 id=\"shop-title\">", "tag": "p" },
-    { "id": "herd.h.title", "page": "herd", "kind": "heading", "file": "meet-the-herd.html", "find": "<h1 id=\"game-title\">", "tag": "h1" },
-    { "id": "herd.p.intro", "page": "herd", "kind": "lede", "file": "meet-the-herd.html", "find": "<h1 id=\"game-title\">", "tag": "p" },
-    { "id": "herd.h.panel", "page": "herd", "kind": "heading", "file": "meet-the-herd.html", "find": "<h2 id=\"game-panel-title\">", "tag": "h2" }
+    {
+      "id": "home.h.hero",
+      "page": "home",
+      "kind": "heading",
+      "file": "index.html",
+      "find": "<h1 id=\"hero-title\">",
+      "tag": "h1"
+    },
+    {
+      "id": "home.p.hero",
+      "page": "home",
+      "kind": "lede",
+      "file": "index.html",
+      "find": "<p id=\"hero-subline\">",
+      "tag": "p"
+    },
+    {
+      "id": "home.p.trust",
+      "page": "home",
+      "kind": "subheading",
+      "file": "index.html",
+      "find": "<p class=\"hero-trust\">",
+      "tag": "p"
+    },
+    {
+      "id": "home.b.hero-primary",
+      "page": "home",
+      "kind": "button",
+      "file": "index.html",
+      "find": "<a class=\"btn\" href=\"/s/tapestry-acres/experiences\">",
+      "tag": "a"
+    },
+    {
+      "id": "home.b.hero-secondary",
+      "page": "home",
+      "kind": "button",
+      "file": "index.html",
+      "find": "<a class=\"btn secondary\" href=\"/s/tapestry-acres/stay\">",
+      "tag": "a"
+    },
+    {
+      "id": "home.h.plan",
+      "page": "home",
+      "kind": "heading",
+      "file": "index.html",
+      "find": "<h2 class=\"section-title\" id=\"plan-title\">",
+      "tag": "h2"
+    },
+    {
+      "id": "home.h.plan-experiences",
+      "page": "home",
+      "kind": "subheading",
+      "file": "index.html",
+      "find": "<a class=\"hub-card\" href=\"experiences.html\">",
+      "tag": "h3"
+    },
+    {
+      "id": "home.p.plan-experiences",
+      "page": "home",
+      "kind": "lede",
+      "file": "index.html",
+      "find": "<a class=\"hub-card\" href=\"experiences.html\">",
+      "tag": "p"
+    },
+    {
+      "id": "home.h.plan-shop",
+      "page": "home",
+      "kind": "subheading",
+      "file": "index.html",
+      "find": "<a class=\"hub-card\" href=\"shop.html\">",
+      "tag": "h3"
+    },
+    {
+      "id": "home.p.plan-shop",
+      "page": "home",
+      "kind": "lede",
+      "file": "index.html",
+      "find": "<a class=\"hub-card\" href=\"shop.html\">",
+      "tag": "p"
+    },
+    {
+      "id": "home.h.plan-animals",
+      "page": "home",
+      "kind": "subheading",
+      "file": "index.html",
+      "find": "<a class=\"hub-card\" href=\"animals.html\">",
+      "tag": "h3"
+    },
+    {
+      "id": "home.p.plan-animals",
+      "page": "home",
+      "kind": "lede",
+      "file": "index.html",
+      "find": "<a class=\"hub-card\" href=\"animals.html\">",
+      "tag": "p"
+    },
+    {
+      "id": "home.h.plan-stay",
+      "page": "home",
+      "kind": "subheading",
+      "file": "index.html",
+      "find": "<a class=\"hub-card\" href=\"rv-rentals.html\">",
+      "tag": "h3"
+    },
+    {
+      "id": "home.p.plan-stay",
+      "page": "home",
+      "kind": "lede",
+      "file": "index.html",
+      "find": "<a class=\"hub-card\" href=\"rv-rentals.html\">",
+      "tag": "p"
+    },
+    {
+      "id": "home.h.chapter",
+      "page": "home",
+      "kind": "heading",
+      "file": "index.html",
+      "find": "<h2 id=\"chapter-title\">",
+      "tag": "h2"
+    },
+    {
+      "id": "home.p.chapter",
+      "page": "home",
+      "kind": "lede",
+      "file": "index.html",
+      "find": "<h2 id=\"chapter-title\">",
+      "tag": "p"
+    },
+    {
+      "id": "home.h.experiences",
+      "page": "home",
+      "kind": "heading",
+      "file": "index.html",
+      "find": "<h2 class=\"section-title\" id=\"experiences-title\">",
+      "tag": "h2"
+    },
+    {
+      "id": "home.h.shop",
+      "page": "home",
+      "kind": "heading",
+      "file": "index.html",
+      "find": "<h2 class=\"section-title\" id=\"shop-title\">",
+      "tag": "h2"
+    },
+    {
+      "id": "home.h.herd",
+      "page": "home",
+      "kind": "heading",
+      "file": "index.html",
+      "find": "<h2 id=\"herd-title\">",
+      "tag": "h2"
+    },
+    {
+      "id": "home.p.herd",
+      "page": "home",
+      "kind": "lede",
+      "file": "index.html",
+      "find": "<h2 id=\"herd-title\">",
+      "tag": "p"
+    },
+    {
+      "id": "home.h.proof",
+      "page": "home",
+      "kind": "heading",
+      "file": "index.html",
+      "find": "<h2 class=\"section-title\" id=\"proof-title\">",
+      "tag": "h2"
+    },
+    {
+      "id": "home.p.social",
+      "page": "home",
+      "kind": "lede",
+      "file": "index.html",
+      "find": "<p>Most of what happens here",
+      "tag": "p"
+    },
+    {
+      "id": "home.h.story",
+      "page": "home",
+      "kind": "heading",
+      "file": "index.html",
+      "find": "<h2 id=\"history-title\">",
+      "tag": "h2"
+    },
+    {
+      "id": "home.p.story",
+      "page": "home",
+      "kind": "lede",
+      "file": "index.html",
+      "find": "<h2 id=\"history-title\">",
+      "tag": "p"
+    },
+    {
+      "id": "home.h.giftcert",
+      "page": "home",
+      "kind": "heading",
+      "file": "index.html",
+      "find": "<h2 class=\"section-title\" id=\"giftcert-title\">",
+      "tag": "h2"
+    },
+    {
+      "id": "home.h.find-us",
+      "page": "home",
+      "kind": "heading",
+      "file": "index.html",
+      "find": "<h2 id=\"find-us-title\">",
+      "tag": "h2"
+    },
+    {
+      "id": "home.h.open",
+      "page": "home",
+      "kind": "heading",
+      "file": "index.html",
+      "find": "<h2>When we are open</h2>",
+      "tag": "h2"
+    },
+    {
+      "id": "home.p.open",
+      "page": "home",
+      "kind": "lede",
+      "file": "index.html",
+      "find": "<h2>When we are open</h2>",
+      "tag": "p"
+    },
+    {
+      "id": "animals.h.title",
+      "page": "animals",
+      "kind": "heading",
+      "file": "animals.html",
+      "find": "<h1 id=\"animals-title\">",
+      "tag": "h1"
+    },
+    {
+      "id": "animals.p.intro",
+      "page": "animals",
+      "kind": "lede",
+      "file": "animals.html",
+      "find": "<h1 id=\"animals-title\">",
+      "tag": "p"
+    },
+    {
+      "id": "animals.h.for-sale",
+      "page": "animals",
+      "kind": "heading",
+      "file": "animals.html",
+      "find": "<h2 class=\"section-title\" id=\"for-sale-title\">",
+      "tag": "h2"
+    },
+    {
+      "id": "experiences.h.title",
+      "page": "experiences",
+      "kind": "heading",
+      "file": "experiences.html",
+      "find": "<h1 id=\"experiences-title\">",
+      "tag": "h1"
+    },
+    {
+      "id": "experiences.p.intro",
+      "page": "experiences",
+      "kind": "lede",
+      "file": "experiences.html",
+      "find": "<h1 id=\"experiences-title\">",
+      "tag": "p"
+    },
+    {
+      "id": "experiences.h.faq",
+      "page": "experiences",
+      "kind": "heading",
+      "file": "experiences.html",
+      "find": "<h2 id=\"visit-faq-title\">",
+      "tag": "h2"
+    },
+    {
+      "id": "experiences.p.faq-intro",
+      "page": "experiences",
+      "kind": "lede",
+      "file": "experiences.html",
+      "find": "<p class=\"visit-guide-intro\">",
+      "tag": "p"
+    },
+    {
+      "id": "stay.h.hero",
+      "page": "stay",
+      "kind": "heading",
+      "file": "rv-rentals.html",
+      "find": "<h1 id=\"hero-title\">",
+      "tag": "h1"
+    },
+    {
+      "id": "stay.p.hero",
+      "page": "stay",
+      "kind": "lede",
+      "file": "rv-rentals.html",
+      "find": "<h1 id=\"hero-title\">",
+      "tag": "p"
+    },
+    {
+      "id": "stay.p.pricing",
+      "page": "stay",
+      "kind": "subheading",
+      "file": "rv-rentals.html",
+      "find": "<p>$270/night",
+      "tag": "p"
+    },
+    {
+      "id": "stay.h.how",
+      "page": "stay",
+      "kind": "heading",
+      "file": "rv-rentals.html",
+      "find": "<h2 class=\"section-title\" id=\"how-title\">",
+      "tag": "h2"
+    },
+    {
+      "id": "stay.h.step-reserve",
+      "page": "stay",
+      "kind": "subheading",
+      "file": "rv-rentals.html",
+      "find": "<h3>You reserve your campsite</h3>",
+      "tag": "h3"
+    },
+    {
+      "id": "stay.p.step-reserve",
+      "page": "stay",
+      "kind": "lede",
+      "file": "rv-rentals.html",
+      "find": "<h3>You reserve your campsite</h3>",
+      "tag": "p"
+    },
+    {
+      "id": "stay.h.step-deliver",
+      "page": "stay",
+      "kind": "subheading",
+      "file": "rv-rentals.html",
+      "find": "<h3>We deliver",
+      "tag": "h3"
+    },
+    {
+      "id": "stay.p.step-deliver",
+      "page": "stay",
+      "kind": "lede",
+      "file": "rv-rentals.html",
+      "find": "<h3>We deliver",
+      "tag": "p"
+    },
+    {
+      "id": "stay.h.step-stay",
+      "page": "stay",
+      "kind": "subheading",
+      "file": "rv-rentals.html",
+      "find": "<h3>You just stay</h3>",
+      "tag": "h3"
+    },
+    {
+      "id": "stay.p.step-stay",
+      "page": "stay",
+      "kind": "lede",
+      "file": "rv-rentals.html",
+      "find": "<h3>You just stay</h3>",
+      "tag": "p"
+    },
+    {
+      "id": "stay.h.stays",
+      "page": "stay",
+      "kind": "heading",
+      "file": "rv-rentals.html",
+      "find": "<h2 class=\"section-title\" id=\"stays-title\">",
+      "tag": "h2"
+    },
+    {
+      "id": "stay.h.fleet",
+      "page": "stay",
+      "kind": "heading",
+      "file": "rv-rentals.html",
+      "find": "<h2 class=\"section-title\" id=\"fleet-title\">",
+      "tag": "h2"
+    },
+    {
+      "id": "stay.p.fleet",
+      "page": "stay",
+      "kind": "lede",
+      "file": "rv-rentals.html",
+      "find": "<p class=\"fleet-intro\">",
+      "tag": "p"
+    },
+    {
+      "id": "stay.h.included",
+      "page": "stay",
+      "kind": "heading",
+      "file": "rv-rentals.html",
+      "find": "<h2 class=\"section-title\" id=\"included-title\">",
+      "tag": "h2"
+    },
+    {
+      "id": "stay.h.gallery",
+      "page": "stay",
+      "kind": "heading",
+      "file": "rv-rentals.html",
+      "find": "<h2 class=\"section-title\" id=\"gallery-title\">",
+      "tag": "h2"
+    },
+    {
+      "id": "stay.h.faq",
+      "page": "stay",
+      "kind": "heading",
+      "file": "rv-rentals.html",
+      "find": "<h2 class=\"section-title\" id=\"faq-title\">",
+      "tag": "h2"
+    },
+    {
+      "id": "stay.h.cross-sell",
+      "page": "stay",
+      "kind": "heading",
+      "file": "rv-rentals.html",
+      "find": "<h2 class=\"section-title\" id=\"cross-sell-title\">",
+      "tag": "h2"
+    },
+    {
+      "id": "stay.p.cross-sell",
+      "page": "stay",
+      "kind": "lede",
+      "file": "rv-rentals.html",
+      "find": "<p class=\"cross-sell-intro\">",
+      "tag": "p"
+    },
+    {
+      "id": "stay.h.booking",
+      "page": "stay",
+      "kind": "heading",
+      "file": "rv-rentals.html",
+      "find": "<h2 id=\"booking-title\">",
+      "tag": "h2"
+    },
+    {
+      "id": "shop.h.title",
+      "page": "shop",
+      "kind": "heading",
+      "file": "shop.html",
+      "find": "<h1 id=\"shop-title\">",
+      "tag": "h1"
+    },
+    {
+      "id": "shop.p.intro",
+      "page": "shop",
+      "kind": "lede",
+      "file": "shop.html",
+      "find": "<h1 id=\"shop-title\">",
+      "tag": "p"
+    }
   ],
   "photos": [
-    { "id": "home.photo.hero", "page": "home", "label": "Home: the big picture at the top", "file": "index.html", "find": "<img id=\"hero-image\"" },
-    { "id": "home.photo.chapter", "page": "home", "label": "Home: \"A working morning\" photo", "file": "index.html", "find": "<img src=\"assets/portfolio/walk-family.webp\"" },
-    { "id": "home.photo.herd", "page": "home", "label": "Home: \"Meet the animals\" photo", "file": "index.html", "find": "<img src=\"assets/portfolio/alpaca-face.webp\"" },
-    { "id": "home.photo.story", "page": "home", "label": "Home: \"Our story\" photo", "file": "index.html", "find": "<img src=\"assets/bg/highland2.webp\"" },
-    { "id": "stay.photo.hero", "page": "stay", "label": "Stay: the big picture at the top", "file": "rv-rentals.html", "find": "<img src=\"assets/bg/rv-pasture-sunset.webp\"" },
-    { "id": "herd.photo.hero", "page": "herd", "label": "Herd game: the meadow photo", "file": "meet-the-herd.html", "find": "<img src=\"assets/bg/meadow.webp\"" }
+    {
+      "id": "home.photo.hero",
+      "page": "home",
+      "label": "Home: the big picture at the top",
+      "file": "index.html",
+      "find": "<img id=\"hero-image\""
+    },
+    {
+      "id": "home.photo.chapter",
+      "page": "home",
+      "label": "Home: \"A working morning\" photo",
+      "file": "index.html",
+      "find": "<img src=\"assets/portfolio/walk-family.webp\""
+    },
+    {
+      "id": "home.photo.herd",
+      "page": "home",
+      "label": "Home: \"Meet the animals\" photo",
+      "file": "index.html",
+      "find": "<img src=\"assets/portfolio/alpaca-face.webp\""
+    },
+    {
+      "id": "home.photo.story",
+      "page": "home",
+      "label": "Home: \"Our story\" photo",
+      "file": "index.html",
+      "find": "<img src=\"assets/bg/highland2.webp\""
+    },
+    {
+      "id": "stay.photo.hero",
+      "page": "stay",
+      "label": "Stay: the big picture at the top",
+      "file": "rv-rentals.html",
+      "find": "<img src=\"assets/bg/rv-pasture-sunset.webp\""
+    }
   ],
   "facts": [
-    { "fact": "address", "file": "index.html", "find": "<a href=\"https://www.google.com/maps/search/?api=1&amp;query=396+Taylor+Crossroads+Rd+Monroe+TN\">", "tag": "a" },
-    { "fact": "phone", "file": "index.html", "find": "<a href=\"tel:+19318233266\">", "tag": "a" },
-    { "fact": "email", "file": "index.html", "find": "<a href=\"mailto:tapestryacres@gmail.com\">tapestryacres@gmail.com</a>", "tag": "a" },
-    { "fact": "email", "file": "*", "find": "<a class=\"footer-link\" href=\"mailto:tapestryacres@gmail.com\">", "tag": "a" }
+    {
+      "fact": "address",
+      "file": "index.html",
+      "find": "<a href=\"https://www.google.com/maps/search/?api=1&amp;query=396+Taylor+Crossroads+Rd+Monroe+TN\">",
+      "tag": "a"
+    },
+    {
+      "fact": "phone",
+      "file": "index.html",
+      "find": "<a href=\"tel:+19318233266\">",
+      "tag": "a"
+    },
+    {
+      "fact": "email",
+      "file": "index.html",
+      "find": "<a href=\"mailto:tapestryacres@gmail.com\">tapestryacres@gmail.com</a>",
+      "tag": "a"
+    },
+    {
+      "fact": "email",
+      "file": "*",
+      "find": "<a class=\"footer-link\" href=\"mailto:tapestryacres@gmail.com\">",
+      "tag": "a"
+    }
   ]
 }
