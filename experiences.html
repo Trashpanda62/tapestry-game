@@ -68,16 +68,16 @@
   <main>
     <div class="page">
       <section class="experiences-intro" aria-labelledby="experiences-title">
-        <h1 id="experiences-title">Experience the farm</h1>
-        <p>Come meet the herd, wander the pasture, and make a little room for the unhurried.</p>
+        <h1 data-slot="experiences.h.title" id="experiences-title">Experience the farm</h1>
+        <p data-slot="experiences.p.intro">Come meet the herd, wander the pasture, and make a little room for the unhurried.</p>
       </section>
       <label class="experience-filter" for="experience-filter">Compare by timing <select id="experience-filter"><option value="all">All experiences</option><option value="recurring">Recurring</option><option value="one-time">By appointment</option></select></label>
       <div class="experience-grid" id="experience-grid" aria-live="polite" aria-busy="true"><article class="skeleton-card" aria-hidden="true"></article><article class="skeleton-card" aria-hidden="true"></article><article class="skeleton-card" aria-hidden="true"></article><span class="sr-only">Loading experiences…</span></div>
       <p class="load-error" id="load-error" role="alert" hidden>We couldn't load the experiences right now. Please refresh the page or email <a href="mailto:tapestryacres@gmail.com">tapestryacres@gmail.com</a>.</p>
       <section class="visit-guide" aria-labelledby="visit-faq-title">
         <div>
-          <h2 id="visit-faq-title">Before you head to the farm</h2>
-          <p class="visit-guide-intro">A little planning leaves more time for the animals.</p>
+          <h2 data-slot="experiences.h.faq" id="visit-faq-title">Before you head to the farm</h2>
+          <p data-slot="experiences.p.faq-intro" class="visit-guide-intro">A little planning leaves more time for the animals.</p>
           <div class="visit-contact">
             <a href="https://maps.google.com/?q=396+Taylor+Crossroads+Rd+Monroe+TN">396 Taylor Crossroads Rd, Monroe, TN ↗</a>
             <span>Near Dale Hollow Lake</span>
@@ -95,7 +95,7 @@
       </section>
     </div>
   </main>
-  <footer><img class="footer-seal" src="assets/logo-seal.webp" alt="Tapestry Acres: farm store, stays, and events. Blending animals, products, and people." width="320" height="320" loading="lazy" decoding="async"><div class="footer-logo">TAPESTRY ACRES</div><div class="footer-flourish" aria-hidden="true">❖ ✳ ❖</div><a class="footer-link" href="mailto:tapestryacres@gmail.com">tapestryacres@gmail.com</a></footer>
+  <footer><img class="footer-seal" src="assets/logo-seal.webp" alt="Tapestry Acres: farm store, stays, and events. Blending animals, products, and people." width="320" height="320" loading="lazy" decoding="async"><div class="footer-logo">TAPESTRY ACRES</div><div class="footer-flourish" aria-hidden="true">❖ ✳ ❖</div><a data-fact="email" class="footer-link" href="mailto:tapestryacres@gmail.com">tapestryacres@gmail.com</a></footer>
   <script defer>
     (function(){
       /* The nav toggle is wired by assets/site-shell.js, which the build injects into

@@ -75,14 +75,14 @@
       <section class="game-hero" aria-labelledby="game-title">
         <div class="game-hero-copy">
           <p class="game-kicker">Meet the Herd · Farm Steward</p>
-          <h1 id="game-title">Know your way around the pasture?</h1>
-          <p>Run five steward tasks a round: feed, water, vet checks, shearing, and herd moves across the verified herd. Play daily to grow your streak.</p>
+          <h1 data-slot="herd.h.title" id="game-title">Know your way around the pasture?</h1>
+          <p data-slot="herd.p.intro">Run five steward tasks a round: feed, water, vet checks, shearing, and herd moves across the verified herd. Play daily to grow your streak.</p>
         </div>
-        <div class="game-hero-art"><img src="assets/bg/meadow.webp" alt="Alpacas grazing in a Tapestry Acres meadow"></div>
+        <div class="game-hero-art"><img data-photo="herd.photo.hero" src="assets/bg/meadow.webp" alt="Alpacas grazing in a Tapestry Acres meadow"></div>
       </section>
       <section class="game-panel" aria-labelledby="game-panel-title">
         <div class="game-panel-header">
-          <div><p class="game-kicker">Steward tasks</p><h2 id="game-panel-title">Meet the herd by playing.</h2></div>
+          <div><p class="game-kicker">Steward tasks</p><h2 data-slot="herd.h.panel" id="game-panel-title">Meet the herd by playing.</h2></div>
           <p class="game-instructions">Every card uses the farm’s verified herd record, and each task fits its species: alpacas get sheared, chickens never do. This is a game, not an animal-care guide.</p>
         </div>
         <div id="herd-game" aria-live="polite"><p class="game-message">Loading the herd…</p></div>
@@ -90,7 +90,7 @@
       </section>
     </div>
   </main>
-  <footer><img class="footer-seal" src="assets/logo-seal.webp" alt="Tapestry Acres: farm store, stays, and events. Blending animals, products, and people." width="320" height="320" loading="lazy" decoding="async"><div class="footer-logo">TAPESTRY ACRES</div><div class="footer-flourish" aria-hidden="true">❖ ✳ ❖</div><a class="footer-link" href="mailto:tapestryacres@gmail.com">tapestryacres@gmail.com</a></footer>
+  <footer><img class="footer-seal" src="assets/logo-seal.webp" alt="Tapestry Acres: farm store, stays, and events. Blending animals, products, and people." width="320" height="320" loading="lazy" decoding="async"><div class="footer-logo">TAPESTRY ACRES</div><div class="footer-flourish" aria-hidden="true">❖ ✳ ❖</div><a data-fact="email" class="footer-link" href="mailto:tapestryacres@gmail.com">tapestryacres@gmail.com</a></footer>
   <script src="assets/farm-steward-core.js" defer></script>
   <script src="assets/herd-game.js" defer></script>
 </body>

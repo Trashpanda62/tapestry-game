@@ -31,6 +31,13 @@ function textOf(innerHtml) {
   return unescapeHtml(innerHtml.replace(/<[^>]+>/g, '')).replace(/\s+/g, ' ').trim();
 }
 
+/** The sources without our own attributes, so `find` strings written against
+ * the untagged markup keep matching after a --tag pass (which is therefore
+ * idempotent: strip, locate, re-stamp). */
+function pristine(html) {
+  return html.replace(/ data-(?:slot|photo|fact)="[^"]*"/g, '');
+}
+
 /** Locate the element for a slot: the first `<tag` at or after `find`. Returns
  * { open, close, tagEnd, innerStart, innerEnd } offsets, or null. */
 function locate(html, slot) {
@@ -69,14 +76,14 @@ function pageFiles() {
 function emit() {
   const copy = [];
   for (const s of spec.copy) {
-    const html = readFileSync(resolve(root, s.file), 'utf8');
+    const html = pristine(readFileSync(resolve(root, s.file), 'utf8'));
     const loc = locate(html, s);
     if (!loc || loc.error) throw new Error(`${s.id}: ${loc?.error || 'not found'} in ${s.file}`);
     copy.push({ id: s.id, page: s.page, kind: s.kind, text: textOf(html.slice(loc.innerStart, loc.innerEnd)) });
   }
   const photos = [];
   for (const s of spec.photos) {
-    const html = readFileSync(resolve(root, s.file), 'utf8');
+    const html = pristine(readFileSync(resolve(root, s.file), 'utf8'));
     const loc = locateImg(html, s);
     if (!loc || loc.error) throw new Error(`${s.id}: ${loc?.error || 'not found'} in ${s.file}`);
     const openTag = html.slice(loc.open, loc.tagEnd + 1);
@@ -86,46 +93,41 @@ function emit() {
 }
 
 function tagSources() {
-  const edits = new Map();
-  const load = (f) => (edits.has(f) ? edits.get(f) : (edits.set(f, readFileSync(resolve(root, f), 'utf8')), edits.get(f)));
-  const stamp = (f, html, open, attrText) => {
-    // Idempotent: an element already carrying this attribute is left alone.
-    const tagEnd = html.indexOf('>', open);
-    const openTag = html.slice(open, tagEnd);
-    if (openTag.includes(attrText)) return html;
-    const tagName = /^<([a-z0-9]+)/i.exec(openTag)[1];
-    return html.slice(0, open) + `<${tagName} ${attrText}` + openTag.slice(1 + tagName.length) + html.slice(tagEnd);
-  };
+  // Per file: strip our attributes, locate every slot in that pristine text,
+  // then insert from the highest offset down so earlier offsets stay valid.
+  const plan = new Map(); // file -> [{ at, attr }]
+  const add = (f, at, attr) => { if (!plan.has(f)) plan.set(f, []); plan.get(f).push({ at, attr }); };
+  const sources = new Map();
+  const load = (f) => (sources.has(f) ? sources.get(f) : (sources.set(f, pristine(readFileSync(resolve(root, f), 'utf8'))), sources.get(f)));
   for (const s of spec.copy) {
-    let html = load(s.file);
-    const loc = locate(html, s);
+    const loc = locate(load(s.file), s);
     if (!loc || loc.error) throw new Error(`${s.id}: ${loc?.error || 'not found'} in ${s.file}`);
-    html = stamp(s.file, html, loc.open, `data-slot="${s.id}"`);
-    edits.set(s.file, html);
+    add(s.file, loc.open + 1 + s.tag.length, ` data-slot="${s.id}"`);
   }
   for (const s of spec.photos) {
-    let html = load(s.file);
-    const loc = locateImg(html, s);
+    const loc = locateImg(load(s.file), s);
     if (!loc || loc.error) throw new Error(`${s.id}: ${loc?.error || 'not found'} in ${s.file}`);
-    html = stamp(s.file, html, loc.open, `data-photo="${s.id}"`);
-    edits.set(s.file, html);
+    add(s.file, loc.open + 4, ` data-photo="${s.id}"`);
   }
   for (const s of spec.facts) {
-    const files = s.file === '*' ? pageFiles() : [s.file];
-    for (const f of files) {
-      let html = load(f);
+    for (const f of s.file === '*' ? pageFiles() : [s.file]) {
+      const html = load(f);
       let from = 0;
       for (;;) {
         const at = html.indexOf(s.find, from);
         if (at === -1) break;
-        html = stamp(f, html, at, `data-fact="${s.fact}"`);
-        from = at + s.find.length + 20;
+        add(f, at + 1 + s.tag.length, ` data-fact="${s.fact}"`);
+        from = at + s.find.length;
       }
-      edits.set(f, html);
     }
   }
-  for (const [f, html] of edits) writeFileSync(resolve(root, f), html);
-  return [...edits.keys()];
+  for (const [f, inserts] of plan) {
+    let html = sources.get(f);
+    inserts.sort((a, b) => b.at - a.at);
+    for (const { at, attr } of inserts) html = html.slice(0, at) + attr + html.slice(at);
+    writeFileSync(resolve(root, f), html);
+  }
+  return [...plan.keys()];
 }
 
 function check() {
@@ -149,7 +151,8 @@ function check() {
   }
   for (const f of pageFiles()) {
     const html = readFileSync(resolve(dist, f), 'utf8');
-    if (!html.includes('assets/site-content.js')) problems.push(`dist/${f}: site-content.js not injected`);
+    // The build content-hashes asset filenames (site-content.<hash>.js).
+    if (!/assets\/site-content(\.[0-9a-f]+)?\.js/.test(html)) problems.push(`dist/${f}: site-content.js not injected`);
   }
   return problems;
 }

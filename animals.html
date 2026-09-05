@@ -53,19 +53,19 @@
   <main>
     <div class="page">
       <section class="animals-intro" aria-labelledby="animals-title">
-        <h1 id="animals-title">Meet the animals</h1>
-        <p>110 acres, a whole barnyard of personalities. This page is the reference and for-sale guide; the <a href="/s/tapestry-acres/herd">Meet the Herd</a> game is where you test how well you know them.</p>
+        <h1 data-slot="animals.h.title" id="animals-title">Meet the animals</h1>
+        <p data-slot="animals.p.intro">110 acres, a whole barnyard of personalities. This page is the reference and for-sale guide; the <a href="/s/tapestry-acres/herd">Meet the Herd</a> game is where you test how well you know them.</p>
       </section>
       <nav class="animal-jump" aria-label="Jump to species"><label for="animal-filter">Jump to a group</label><select id="animal-filter"><option value="all">All species</option></select></nav>
       <div class="animal-groups" id="animal-groups" aria-live="polite" aria-busy="true"><article class="skeleton-card" aria-hidden="true"></article><article class="skeleton-card" aria-hidden="true"></article><article class="skeleton-card" aria-hidden="true"></article><span class="sr-only">Loading animals…</span></div>
       <section class="for-sale-section" aria-labelledby="for-sale-title">
-        <h2 class="section-title" id="for-sale-title">Currently for sale</h2>
+        <h2 data-slot="animals.h.for-sale" class="section-title" id="for-sale-title">Currently for sale</h2>
         <div class="for-sale-grid" id="for-sale-grid" aria-live="polite"></div>
       </section>
       <p class="load-error" id="load-error" role="alert" hidden>We couldn't load the animal roster right now. Please refresh the page or email <a href="mailto:tapestryacres@gmail.com">tapestryacres@gmail.com</a>.</p>
     </div>
   </main>
-  <footer><img class="footer-seal" src="assets/logo-seal.webp" alt="Tapestry Acres: farm store, stays, and events. Blending animals, products, and people." width="320" height="320" loading="lazy" decoding="async"><div class="footer-logo">TAPESTRY ACRES</div><div class="footer-flourish" aria-hidden="true">❖ ✳ ❖</div><a class="footer-link" href="mailto:tapestryacres@gmail.com">tapestryacres@gmail.com</a></footer>
+  <footer><img class="footer-seal" src="assets/logo-seal.webp" alt="Tapestry Acres: farm store, stays, and events. Blending animals, products, and people." width="320" height="320" loading="lazy" decoding="async"><div class="footer-logo">TAPESTRY ACRES</div><div class="footer-flourish" aria-hidden="true">❖ ✳ ❖</div><a data-fact="email" class="footer-link" href="mailto:tapestryacres@gmail.com">tapestryacres@gmail.com</a></footer>
   <script defer>
     (function(){
       /* The nav toggle is wired by assets/site-shell.js, which the build injects into

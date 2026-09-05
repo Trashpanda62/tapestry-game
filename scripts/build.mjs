@@ -93,6 +93,8 @@ async function copy(relativePath) {
     if (!html.includes('src="assets/site-shell.js"')) html = html.replace(/<\/head>/i, '  <script src="assets/site-shell.js" defer></script>\n</head>');
     if (!html.includes('src="assets/state-skeletons.js"')) html = html.replace(/<\/head>/i, '  <script src="assets/state-skeletons.js" defer></script>\n</head>');
     if (!html.includes('src="assets/journey-analytics.js"')) html = html.replace(/<\/head>/i, '  <script src="assets/journey-analytics.js" defer></script>\n</head>');
+    // Site Manager overlay: words, photos and business details the farm changed in its panel, applied by data-slot / data-photo / data-fact id.
+    if (!html.includes('src="assets/site-content.js"')) html = html.replace(/<\/head>/i, '  <script src="assets/site-content.js" defer></script>\n</head>');
     if (!/<main[^>]*id="main-content"/i.test(html)) html = html.replace(/<main(\s|>)/i, '<main id="main-content"$1');
     // The `<base>` above is required for relative assets, but it also captures
     // bare fragment links: `href="#booking"` resolves against the BASE, not the
