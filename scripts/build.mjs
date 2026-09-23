@@ -95,6 +95,10 @@ async function copy(relativePath) {
     if (!html.includes('src="assets/journey-analytics.js"')) html = html.replace(/<\/head>/i, '  <script src="assets/journey-analytics.js" defer></script>\n</head>');
     // Site Manager overlay: words, photos and business details the farm changed in its panel, applied by data-slot / data-photo / data-fact id.
     if (!html.includes('src="assets/site-content.js"')) html = html.replace(/<\/head>/i, '  <script src="assets/site-content.js" defer></script>\n</head>');
+    // Browser-tab and home-screen icons: the header's alpaca brand mark on the
+    // brand cream. Absolute first-party URLs so they answer 200 directly instead
+    // of through the /s/<slug> -> custom-domain redirect the <base> would cause.
+    if (!/<link[^>]+rel="icon"/i.test(html)) html = html.replace(/<\/head>/i, `  <link rel="icon" href="${config.canonicalOrigin}/favicon.ico" sizes="16x16 32x32 48x48">\n  <link rel="icon" href="${config.canonicalOrigin}/assets/favicon-32.png" sizes="32x32" type="image/png">\n  <link rel="icon" href="${config.canonicalOrigin}/assets/favicon-48.png" sizes="48x48" type="image/png">\n  <link rel="apple-touch-icon" href="${config.canonicalOrigin}/assets/apple-touch-icon-180.png" sizes="180x180">\n</head>`);
     if (!/<main[^>]*id="main-content"/i.test(html)) html = html.replace(/<main(\s|>)/i, '<main id="main-content"$1');
     // The `<base>` above is required for relative assets, but it also captures
     // bare fragment links: `href="#booking"` resolves against the BASE, not the
