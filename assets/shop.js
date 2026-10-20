@@ -21,7 +21,12 @@
   var families = [];
   var skuById = {};
   var variantBySku = {};
-  var activeState = { query: '', category: [], price: [], size: [], color: [], availability: [], sort: 'featured' };
+  var activeState = { query: '', category: [], price: [], size: [], color: [], availability: [], sort: 'featured', sub: [] };
+  // The shop's tabs and their subcategories from Square (the Site Manager's
+  // Categories screen), once the live feed has loaded. Until then the
+  // collection map below groups the bundled catalogue.
+  var liveTree = null;
+  var FACET_KEYS = ['category', 'sub', 'price', 'size', 'color', 'availability'];
   var renderedCount = CHUNK_SIZE;
   var searchTimer = null;
   var activeSuggestion = -1;
@@ -50,7 +55,7 @@
   }
   function normalize(value) { return String(value || '').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ').trim(); }
   function unique(values) { return Array.from(new Set(values.filter(Boolean))); }
-  function groupFor(family) { return collectionToGroup[family.category] || 'Apparel & Accessories'; }
+  function groupFor(family) { return family.group || collectionToGroup[family.category] || 'Apparel & Accessories'; }
   function imageList(product) { return (product && (product.images_local || product.images)) || []; }
   function firstImage(product) { return imageList(product)[0] || ''; }
   // The catalogue records each photo's real short edge at build time. Half the imported
@@ -119,6 +124,7 @@
   }
   function facetValues(family, product, key) {
     if (key === 'category') return [groupFor(family)];
+    if (key === 'sub') return family.sub ? [family.sub] : [];
     if (key === 'price') { var band = priceBand(product.price); return band ? [band.value] : []; }
     if (key === 'availability') return [isAvailable(family, product) ? 'in-stock' : 'sold-out'];
     var variant = variantForProduct(family, product);
@@ -163,8 +169,9 @@
   function matchesSearch(family) { return searchScore(family, activeState.query) > 0; }
   function selectedValues(key) { return activeState[key] || []; }
   function productMatchesFacet(family, product, skipKey) {
-    return ['category', 'price', 'size', 'color', 'availability'].every(function (key) {
-      if (key === skipKey) return true;
+    return FACET_KEYS.every(function (key) {
+      // Counting tabs ignores the subcategory picked inside one of them.
+      if (key === skipKey || (skipKey === 'category' && key === 'sub')) return true;
       var selected = selectedValues(key);
       return !selected.length || selected.some(function (value) { return allFacetValues(family, product, key).indexOf(value) !== -1; });
     });
@@ -180,17 +187,28 @@
   }
   function facetOptions(key) {
     if (key === 'category') return familyGroups.map(function (value) { return { value: value, label: value }; });
+    if (key === 'sub') return subOptions();
     if (key === 'price') return priceBands.map(function (band) { return { value: band.value, label: band.label }; });
     if (key === 'availability') return [{ value: 'in-stock', label: 'Available' }, { value: 'sold-out', label: 'Sold out' }];
     var optionName = key === 'size' ? 'Size' : 'Color';
     var values = unique(families.flatMap(function (family) { return optionValues(family, optionName); }));
     return values.sort(function (a, b) { return a.localeCompare(b); }).map(function (value) { return { value: value, label: value }; });
   }
-  function facetLabel(key) { return key === 'category' ? 'Category' : key.charAt(0).toUpperCase() + key.slice(1); }
+  // Subcategories of the one tab picked, in Square's order, if it has any.
+  function subOptions() {
+    if (activeState.category.length !== 1) return [];
+    var group = activeState.category[0];
+    var used = unique(families.filter(function (family) { return groupFor(family) === group; }).map(function (family) { return family.sub; }));
+    var entry = (liveTree || []).find(function (top) { return top.name === group; });
+    var order = entry ? entry.subs.filter(function (name) { return used.indexOf(name) !== -1; }) : [];
+    return order.concat(used.filter(function (name) { return order.indexOf(name) === -1; }).sort()).map(function (value) { return { value: value, label: value }; });
+  }
+  function facetLabel(key) { return key === 'category' ? 'Category' : key === 'sub' ? 'Type' : key.charAt(0).toUpperCase() + key.slice(1); }
   function renderFacetControls(container) {
     if (!container) return;
     container.replaceChildren();
-    ['category', 'price', 'size', 'color', 'availability'].forEach(function (key) {
+    FACET_KEYS.forEach(function (key) {
+      if (key === 'sub' && !subOptions().length) return;
       var fieldset = document.createElement('fieldset'); fieldset.className = 'facet-group';
       var legend = document.createElement('legend'); legend.textContent = facetLabel(key); fieldset.appendChild(legend);
       var options = facetOptions(key);
@@ -225,31 +243,48 @@
   function renderTabs() {
     if (!tabs) return;
     tabs.replaceChildren();
-    var allTab = document.createElement('button'); allTab.type = 'button'; allTab.className = 'filter-tab'; allTab.dataset.filter = 'All'; allTab.setAttribute('role', 'tab'); allTab.setAttribute('aria-selected', String(!activeState.category.length)); allTab.textContent = 'All'; allTab.addEventListener('click', function () { activeState.category = []; commitState('push'); }); tabs.appendChild(allTab);
+    var allTab = document.createElement('button'); allTab.type = 'button'; allTab.className = 'filter-tab'; allTab.dataset.filter = 'All'; allTab.setAttribute('role', 'tab'); allTab.setAttribute('aria-selected', String(!activeState.category.length)); allTab.textContent = 'All'; allTab.addEventListener('click', function () { activeState.category = []; activeState.sub = []; commitState('push'); }); tabs.appendChild(allTab);
     familyGroups.forEach(function (value) {
       var tab = document.createElement('button'); tab.type = 'button'; tab.className = 'filter-tab'; tab.dataset.filter = value; tab.setAttribute('role', 'tab'); tab.setAttribute('aria-selected', String(activeState.category.length === 1 && activeState.category[0] === value));
       tab.appendChild(document.createTextNode(value + ' ')); var count = document.createElement('span'); count.className = 'filter-count'; count.textContent = '(' + facetCount('category', value) + ')'; tab.appendChild(count);
-      tab.addEventListener('click', function () { activeState.category = activeState.category.length === 1 && activeState.category[0] === value ? [] : [value]; commitState('push'); }); tabs.appendChild(tab);
+      tab.addEventListener('click', function () { activeState.category = activeState.category.length === 1 && activeState.category[0] === value ? [] : [value]; activeState.sub = []; commitState('push'); }); tabs.appendChild(tab);
+    });
+    renderSubTabs();
+  }
+  // A second, smaller row under the tabs for the picked tab's subcategories.
+  function renderSubTabs() {
+    var row = document.getElementById('filter-subtabs');
+    if (!row) { row = document.createElement('div'); row.id = 'filter-subtabs'; row.className = 'filter-tabs filter-subtabs'; row.setAttribute('role', 'tablist'); row.setAttribute('aria-label', 'Filter by type'); tabs.insertAdjacentElement('afterend', row); }
+    row.replaceChildren();
+    var options = subOptions();
+    row.hidden = !options.length;
+    if (!options.length) return;
+    var group = activeState.category[0];
+    var all = document.createElement('button'); all.type = 'button'; all.className = 'filter-tab'; all.setAttribute('role', 'tab'); all.setAttribute('aria-selected', String(!activeState.sub.length)); all.textContent = 'All ' + group; all.addEventListener('click', function () { activeState.sub = []; commitState('push'); }); row.appendChild(all);
+    options.forEach(function (option) {
+      var tab = document.createElement('button'); tab.type = 'button'; tab.className = 'filter-tab'; tab.setAttribute('role', 'tab'); tab.setAttribute('aria-selected', String(activeState.sub.length === 1 && activeState.sub[0] === option.value));
+      tab.appendChild(document.createTextNode(option.label + ' ')); var count = document.createElement('span'); count.className = 'filter-count'; count.textContent = '(' + facetCount('sub', option.value) + ')'; tab.appendChild(count);
+      tab.addEventListener('click', function () { activeState.sub = activeState.sub.length === 1 && activeState.sub[0] === option.value ? [] : [option.value]; commitState('push'); }); row.appendChild(tab);
     });
   }
   function syncControls() { search.value = activeState.query; sortSelect.value = activeState.sort; renderTabs(); renderFacetControls(facetGroups); renderFacetControls(mobileFacetGroups); }
   function parseList(params, key, legacyKey) { var value = params.get(key) || (legacyKey && params.get(legacyKey)) || ''; return value ? value.split(',').map(function (item) { return item.trim(); }).filter(Boolean) : []; }
   function readState() {
     var params = new URLSearchParams(location.search);
-    activeState = { query: params.get('q') || '', category: parseList(params, 'cat', 'category'), price: parseList(params, 'price'), size: parseList(params, 'size'), color: parseList(params, 'color'), availability: parseList(params, 'availability'), sort: params.get('sort') || 'featured' };
+    activeState = { query: params.get('q') || '', category: parseList(params, 'cat', 'category'), sub: parseList(params, 'sub'), price: parseList(params, 'price'), size: parseList(params, 'size'), color: parseList(params, 'color'), availability: parseList(params, 'availability'), sort: params.get('sort') || 'featured' };
     if (['featured', 'price-asc', 'price-desc', 'name-asc'].indexOf(activeState.sort) === -1) activeState.sort = 'featured';
   }
   function writeUrl(mode) {
     var params = new URLSearchParams(); if (activeState.query) params.set('q', activeState.query);
-    if (activeState.category.length) params.set('cat', activeState.category.join(',')); if (activeState.price.length) params.set('price', activeState.price.join(','));
+    if (activeState.category.length) params.set('cat', activeState.category.join(',')); if (activeState.sub.length) params.set('sub', activeState.sub.join(',')); if (activeState.price.length) params.set('price', activeState.price.join(','));
     if (activeState.size.length) params.set('size', activeState.size.join(',')); if (activeState.color.length) params.set('color', activeState.color.join(',')); if (activeState.availability.length) params.set('availability', activeState.availability.join(','));
     if (activeState.sort !== 'featured') params.set('sort', activeState.sort);
     var url = location.pathname + (params.toString() ? '?' + params.toString() : '');
     if (mode === 'push') history.pushState({ shop: true }, '', url); else history.replaceState({ shop: true }, '', url);
   }
   function commitState(mode) { renderedCount = CHUNK_SIZE; writeUrl(mode || 'replace'); render(); }
-  function toggleFacet(key, value) { var values = selectedValues(key).slice(); var index = values.indexOf(value); if (index === -1) values.push(value); else values.splice(index, 1); activeState[key] = values; commitState('push'); }
-  function clearFilters() { activeState.category = []; activeState.price = []; activeState.size = []; activeState.color = []; activeState.availability = []; commitState('push'); }
+  function toggleFacet(key, value) { var values = selectedValues(key).slice(); var index = values.indexOf(value); if (index === -1) values.push(value); else values.splice(index, 1); activeState[key] = values; if (key === 'category') activeState.sub = []; commitState('push'); }
+  function clearFilters() { activeState.category = []; activeState.sub = []; activeState.price = []; activeState.size = []; activeState.color = []; activeState.availability = []; commitState('push'); }
   function inventoryItems() { try { var value = JSON.parse(localStorage.getItem('tapestry-bag-v1') || '[]'); return Array.isArray(value) ? value : []; } catch (_) { return []; } }
   function updateBagBar(items) { var bar = document.getElementById('bag-bar'); var count = items.reduce(function (total, item) { return total + Number(item.quantity || 0); }, 0); if (bar) { bar.textContent = count ? count + ' item' + (count === 1 ? '' : 's') + ' in your bag ' : 'Your bag is empty '; var link = document.createElement('a'); link.href = route('bag'); link.textContent = count ? 'View bag and checkout' : 'Open bag'; bar.appendChild(link); } if (window.TapestryBag && window.TapestryBag.refresh) window.TapestryBag.refresh(); }
   function addToBag(product, selection) {
@@ -452,6 +487,18 @@
       return Object.assign({}, family, { skus: keep, variants: (family.variants || []).filter(function (variant) { return known[variant.sku]; }) });
     }).filter(function (family) { return family.skus.length; });
     liveFamilies.forEach(function (family) { families.push(family); });
+    // Tabs and subcategories as arranged in Square, when the feed has them.
+    if (Array.isArray(live.categories) && live.placement) {
+      families = families.map(function (family) {
+        var sku = (family.skus || []).find(function (s) { return live.placement[s]; });
+        if (!sku) return family;
+        return Object.assign({}, family, { group: live.placement[sku][0], sub: live.placement[sku][1] || '' });
+      });
+      liveTree = live.categories;
+      var used = unique(families.map(groupFor));
+      familyGroups = live.categories.map(function (top) { return top.name; }).filter(function (name) { return used.indexOf(name) !== -1; })
+        .concat(used.filter(function (name) { return !live.categories.some(function (top) { return top.name === name; }); }));
+    }
     liveCatalog = true;
     return Object.assign({}, data, { families: families, skus: skus });
   }
@@ -461,6 +508,6 @@
   }
   readState(); syncControls(); updateBagBar(inventoryItems()); bindEvents();
     loadCatalog().then(function (data) {
-    if (!Array.isArray(data.families) || !Array.isArray(data.skus)) throw new Error('Invalid catalog feed'); families = data.families; data.skus.forEach(function (product) { skuById[product.sku] = product; }); families.forEach(function (family) { (family.variants || []).forEach(function (variant) { variantBySku[variant.sku] = variant; }); family.searchText = normalize([family.title, family.category, groupFor(family)].concat(productsFor(family).flatMap(function (product) { return [product.title, product.description, product.category, product.subcategory, product.extra_category]; })).concat((family.options || []).flatMap(function (option) { return option.choices.map(function (choice) { return choice.value; }); })).join(' ')); }); status.classList.remove('sr-only'); if (typeof addStructuredData === 'function') addStructuredData(families); render();
+    if (!Array.isArray(data.families) || !Array.isArray(data.skus)) throw new Error('Invalid catalog feed'); families = data.families; data.skus.forEach(function (product) { skuById[product.sku] = product; }); families.forEach(function (family) { (family.variants || []).forEach(function (variant) { variantBySku[variant.sku] = variant; }); family.searchText = normalize([family.title, family.category, groupFor(family), family.sub].concat(productsFor(family).flatMap(function (product) { return [product.title, product.description, product.category, product.subcategory, product.extra_category]; })).concat((family.options || []).flatMap(function (option) { return option.choices.map(function (choice) { return choice.value; }); })).join(' ')); }); status.classList.remove('sr-only'); if (typeof addStructuredData === 'function') addStructuredData(families); render();
   }).catch(function () { grid.replaceChildren(); grid.setAttribute('aria-busy', 'false'); status.classList.remove('sr-only'); status.hidden = false; status.textContent = 'We could not load the shop right now. Please try again later.'; });
 }());
