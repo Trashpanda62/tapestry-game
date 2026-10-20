@@ -99,7 +99,10 @@
   function addText(parent, tag, className, value) { var element = document.createElement(tag); if (className) element.className = className; element.textContent = value; parent.appendChild(element); return element; }
   function productsFor(family) { return (family.skus || []).map(function (sku) { return skuById[sku]; }).filter(Boolean); }
   function variantForProduct(family, product) { return variantBySku[product && product.sku] || (family.variants || []).find(function (variant) { return variant.sku === (product && product.sku); }) || { selections: {} }; }
-  function isAvailable(family, product) { return Number(product && product.qty) > 0 || (family.skus || []).length > 1; }
+  // With the live Square feed loaded, stock is real per SKU. Without it (the
+  // static fallback), multi-variant families have no per-SKU counts to trust.
+  var liveCatalog = false;
+  function isAvailable(family, product) { return Number(product && product.qty) > 0 || (!liveCatalog && (family.skus || []).length > 1); }
   function priceBand(price) { return priceBands.find(function (band) { return band.test(Number(price)); }); }
   function priceLabel(family) {
     var prices = productsFor(family).map(function (product) { return Number(product.price || 0); }).filter(function (price) { return price >= 0; });
@@ -402,8 +405,59 @@
     document.getElementById('open-filters').addEventListener('click', function () { showDialog(drawerDialog, document.getElementById('open-filters'), document.getElementById('mobile-filter-close')); }); document.getElementById('mobile-filter-close').addEventListener('click', function () { closeDialog(drawerDialog, true); }); document.getElementById('mobile-apply-filters').addEventListener('click', function () { closeDialog(drawerDialog, true); });
     bindDialog(productDialog, document.getElementById('product-detail-close')); bindDialog(drawerDialog, null); window.addEventListener('popstate', function () { readState(); renderedCount = CHUNK_SIZE; syncControls(); render(); }); document.addEventListener('click', function (event) { if (!event.target.closest('.shop-search')) { suggestionsOpen = false; suggestions.hidden = true; search.setAttribute('aria-expanded', 'false'); } });
   }
+  function apiRoute(name) { var base = document.querySelector('base'); return new URL(name, base ? base.href : location.origin + '/s/tapestry-acres/').pathname; }
+  // Live price, stock and new products from Square (the Site Manager's
+  // Products screen). Best effort: the shop still opens on the static catalog.
+  function loadLive() {
+    var timeout = new Promise(function (resolve) { setTimeout(function () { resolve(null); }, 4000); });
+    var live = fetch(apiRoute('api/store/live'), { cache: 'no-cache' }).then(function (response) { return response.ok ? response.json() : null; }).catch(function () { return null; });
+    return Promise.race([live, timeout]);
+  }
+  function applyLive(data, live) {
+    if (!live || live.schemaVersion !== 1 || !live.skus) return data;
+    var hidden = {}; (live.hidden || []).forEach(function (sku) { hidden[sku] = true; });
+    var liveProducts = {}; (live.products || []).forEach(function (product) { liveProducts[product.sku] = product; });
+    // A family created or edited in the Site Manager replaces the bundled one
+    // that holds any of the same SKUs.
+    var replaced = {};
+    var liveFamilies = (live.families || []).map(function (family) {
+      var old = data.families.filter(function (f) { return (f.skus || []).some(function (sku) { return family.skus.indexOf(sku) >= 0; }); });
+      old.forEach(function (f) { replaced[f.familyId] = true; });
+      var options = family.options || [];
+      if (old.length === 1 && options.length === 1 && options[0].name === 'Option' && (old[0].options || []).length === 1) {
+        var name = old[0].options[0].name;
+        options = [Object.assign({}, options[0], { name: name })];
+        family = Object.assign({}, family, { options: options, variants: (family.variants || []).map(function (v) { return v.selections && 'Option' in v.selections ? { sku: v.sku, selections: { [name]: v.selections.Option } } : v; }) });
+      }
+      return family;
+    });
+    var bundled = {}; data.skus.forEach(function (product) { bundled[product.sku] = product; });
+    var skus = data.skus.filter(function (product) { return !hidden[product.sku] && !liveProducts[product.sku]; }).map(function (product) {
+      var next = Object.assign({}, product);
+      var stock = live.skus[product.sku];
+      if (stock) { if (stock.price !== null && stock.price !== undefined) next.price = stock.price; next.qty = stock.qty; } else next.qty = 0;
+      return next;
+    });
+    Object.keys(liveProducts).forEach(function (sku) {
+      var product = Object.assign({}, liveProducts[sku]);
+      var old = bundled[sku];
+      // Same photos as the bundle: keep the measured sizes the cards use to pick a fit.
+      if (old && JSON.stringify(old.images_local) === JSON.stringify(product.images_local)) { product.images_px = old.images_px; product.heroPx = old.heroPx; }
+      if (old && !product.extra_category) product.extra_category = old.extra_category;
+      skus.push(product);
+    });
+    var known = {}; skus.forEach(function (product) { known[product.sku] = true; });
+    var families = data.families.filter(function (family) { return !replaced[family.familyId]; }).map(function (family) {
+      var keep = (family.skus || []).filter(function (sku) { return known[sku]; });
+      return Object.assign({}, family, { skus: keep, variants: (family.variants || []).filter(function (variant) { return known[variant.sku]; }) });
+    }).filter(function (family) { return family.skus.length; });
+    liveFamilies.forEach(function (family) { families.push(family); });
+    liveCatalog = true;
+    return Object.assign({}, data, { families: families, skus: skus });
+  }
   function loadCatalog() {
-    return fetch('data/catalog-index.json', { cache: 'no-cache' }).then(function (response) { if (!response.ok) throw new Error('Catalog index unavailable'); return response.json(); }).then(function (index) { return fetch('data/' + index.catalog, { cache: 'no-cache' }); }).then(function (response) { if (!response.ok) throw new Error('Catalog feed unavailable'); return response.json(); });
+    var live = loadLive();
+    return fetch('data/catalog-index.json', { cache: 'no-cache' }).then(function (response) { if (!response.ok) throw new Error('Catalog index unavailable'); return response.json(); }).then(function (index) { return fetch('data/' + index.catalog, { cache: 'no-cache' }); }).then(function (response) { if (!response.ok) throw new Error('Catalog feed unavailable'); return response.json(); }).then(function (data) { return live.then(function (feed) { return applyLive(data, feed); }); });
   }
   readState(); syncControls(); updateBagBar(inventoryItems()); bindEvents();
     loadCatalog().then(function (data) {
