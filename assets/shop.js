@@ -217,8 +217,12 @@
       var visibleOptions = options;
       if (canCollapse && !expandedFacets[expansionKey]) {
         var selected = selectedValues(key);
-        visibleOptions = options.filter(function (option) { return selected.indexOf(option.value) !== -1; })
-          .concat(options.filter(function (option) { return selected.indexOf(option.value) === -1; }))
+        // Picked ones first, then ones that still match something, so a narrowed
+        // shop does not open the short list on a run of greyed-out zeros.
+        var picked = function (option) { return selected.indexOf(option.value) !== -1; };
+        visibleOptions = options.filter(picked)
+          .concat(options.filter(function (option) { return !picked(option) && facetCount(key, option.value); }))
+          .concat(options.filter(function (option) { return !picked(option) && !facetCount(key, option.value); }))
           .slice(0, FACET_OPTION_LIMIT);
       }
       visibleOptions.forEach(function (option, index) {
