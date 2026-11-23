@@ -173,7 +173,7 @@
          the last release, so the live services API is merged over it. */
       var baseTag=document.querySelector('base'), base=(baseTag?new URL(baseTag.href).pathname:new URL('./',location.href).pathname).replace(/\/$/,'');
       function mergeLive(){
-        fetch(base+'/api/booking/services').then(function(r){if(!r.ok)throw new Error();return r.json();}).then(function(payload){
+        (/\.github\.io$/.test(location.hostname)?Promise.reject(new Error('mirror has no booking API')):fetch(base+'/api/booking/services')).then(function(r){if(!r.ok)throw new Error();return r.json();}).then(function(payload){
           var seasonEl=document.getElementById('faq-season');
           if(payload.season&&payload.season.text&&seasonEl)seasonEl.textContent='Visits are bookable '+payload.season.text+'.';
           (payload.services||[]).forEach(function(service){
