@@ -373,6 +373,12 @@
   function render() {
     var matches = matchingFamilies(); if (activeState.sort === 'price-asc') matches.sort(function (a, b) { return familyPrice(a) - familyPrice(b); });
     if (activeState.sort === 'price-desc') matches.sort(function (a, b) { return familyPrice(b) - familyPrice(a); }); if (activeState.sort === 'name-asc') matches.sort(function (a, b) { return a.title.localeCompare(b.title); });
+    if (activeState.sort === 'featured') {
+      // Featured order keeps Square's order but lists what can be bought now before what is sold out.
+      var buyable = [], soldOut = [];
+      matches.forEach(function (family) { (productsFor(family).some(function (product) { return isAvailable(family, product); }) ? buyable : soldOut).push(family); });
+      matches = buyable.concat(soldOut);
+    }
     grid.setAttribute('aria-busy', 'false'); grid.replaceChildren(); matches.slice(0, renderedCount).forEach(function (family) { grid.appendChild(renderCard(family)); });
     var variants = matches.reduce(function (total, family) { return total + matchingVariantCount(family); }, 0); resultCount.innerHTML = '<strong>' + matches.length + ' product ' + (matches.length === 1 ? 'family' : 'families') + '</strong> · ' + variants + ' matching ' + (variants === 1 ? 'variant' : 'variants');
     loadMoreBtn.hidden = matches.length <= renderedCount; status.hidden = matches.length > 0; if (!matches.length) status.textContent = families.length ? 'No products match your filters.' : 'No products are available right now.';
