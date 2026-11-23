@@ -11,6 +11,9 @@
   if (/\.github\.io$/.test(location.hostname)) {
     var LIVE = "https://tapestryacres.com", DYNAMIC = /(?:^|\/)(book|bag|checkout|rv-admin|shop|rv-rentals)(?:\.html)?(\/[^/]+)?\/?$/;
     var liveRoute = function (name) { return name === "rv-rentals" ? "stay" : name; };
+    var rel = location.pathname.replace(/^\/[^/]+\//, "");
+    if (/^herd$/.test(rel)) { location.replace(new URL("meet-the-herd.html", location.origin + location.pathname.slice(0, location.pathname.length - rel.length)).href + location.search + location.hash); return; }
+    if (/^stay\/?$/.test(rel)) { location.replace(LIVE + "/stay" + location.search + location.hash); return; }
     var here = location.pathname.match(DYNAMIC);
     if (here) { location.replace(LIVE + "/" + liveRoute(here[1]) + (here[2] || "") + location.search + location.hash); return; }
     var sendLive = function (a) {
