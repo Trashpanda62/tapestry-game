@@ -51,7 +51,7 @@ for (const content of ['$270', '10% off weekly', '50%', '$500', '24 hours']) {
 }
 
 for (let photo = 1; photo <= 6; photo += 1) {
-  assert(html.includes(`assets/rv-${photo}.jpg`), `missing photo reference: assets/rv-${photo}.jpg`);
+  assert(html.includes(`assets/rv-${photo}.webp`), `missing photo reference: assets/rv-${photo}.webp`);
 }
 
 for (const photo of ['odyssey.png', 'sequence.png']) {
