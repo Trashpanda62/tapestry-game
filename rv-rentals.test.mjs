@@ -29,7 +29,7 @@ assert(/<button\b(?=[^>]*\bclass=["'][^"']*\bsite-nav-toggle\b)(?=[^>]*\baria-la
 assert(/<head>[\s\S]*<link rel="stylesheet" href="assets\/site\.css">[\s\S]*<\/head>/i.test(html), 'missing site stylesheet link in head');
 
 const nav = html.match(/<nav\b[^>]*>[\s\S]*?<\/nav>/i)?.[0] || '';
-for (const href of ['index.html', 'experiences.html', 'shop.html', 'animals.html', 'meet-the-herd.html', 'rv-rentals.html']) {
+for (const href of ['shop.html', 'freeze-dried.html', 'animals.html', 'experiences.html', 'index.html#our-story']) {
   assert(nav.includes(`href="${href}"`), `missing navigation href: ${href}`);
 }
 

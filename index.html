@@ -3,33 +3,33 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Alpaca Farm Visits, Shop &amp; Stays in Monroe TN | Tapestry Acres</title>
-  <meta name="description" content="Meet alpacas and Highland cattle, shop local fiber, and plan a farm stay at Tapestry Acres in Monroe, Tennessee.">
+  <title>Alpaca Yarn, Socks &amp; Freeze Dried Candy | Tapestry Acres, Monroe TN</title>
+  <meta name="description" content="Shop alpaca yarn, socks and blankets plus freeze dried candy from our family farm in Monroe, Tennessee.">
   <link rel="canonical" href="https://trashpanda62.github.io/tapestry-game/">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Tapestry Acres | An alpaca &amp; Highland-cattle farm-stay in Monroe, TN">
-  <meta property="og:description" content="110 acres of alpacas, Highland cattle, and farm stays in Monroe, Tennessee — meet the herd, shop the fiber, stay the night.">
+  <meta property="og:title" content="Tapestry Acres | Alpaca yarn, socks &amp; freeze dried candy, Monroe TN">
+  <meta property="og:description" content="A family farm store in Tennessee's Upper Cumberland: alpaca yarn, socks, blankets and freeze dried candy. Visit the herd or stay the night.">
   <meta property="og:url" content="https://trashpanda62.github.io/tapestry-game/">
   <meta property="og:image" content="https://trashpanda62.github.io/tapestry-game/assets/og.jpg">
   <meta property="og:image:alt" content="The pasture and herd at Tapestry Acres">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Tapestry Acres | An alpaca &amp; Highland-cattle farm-stay in Monroe, TN">
-  <meta name="twitter:description" content="110 acres of alpacas, Highland cattle, and farm stays in Monroe, Tennessee — meet the herd, shop the fiber, stay the night.">
+  <meta name="twitter:title" content="Tapestry Acres | Alpaca yarn, socks &amp; freeze dried candy, Monroe TN">
+  <meta name="twitter:description" content="A family farm store in Tennessee's Upper Cumberland: alpaca yarn, socks, blankets and freeze dried candy. Visit the herd or stay the night.">
   <meta name="twitter:image" content="https://trashpanda62.github.io/tapestry-game/assets/og.jpg">
   <link rel="stylesheet" href="assets/site.css">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
+    "@type": ["LocalBusiness", "Store"],
     "name": "Tapestry Acres",
-    "description": "A 110-acre alpaca and Highland-cattle heritage-breed farm near Dale Hollow Lake in Monroe, Tennessee — alpaca walks, farm tours, RV sites and farm stays.",
+    "description": "A 110-acre alpaca farm and farm store near Dale Hollow Lake in Monroe, Tennessee: alpaca yarn, socks and blankets, freeze dried candy, plus alpaca walks, farm tours, RV sites and farm stays.",
     "image": "https://trashpanda62.github.io/tapestry-game/assets/og.jpg",
     "url": "https://trashpanda62.github.io/tapestry-game/",
     "telephone": "(931) 823-3266",
     "email": "tapestryacres@gmail.com",
     "address": {"@type":"PostalAddress","streetAddress":"396 Taylor Crossroads Rd","addressLocality":"Monroe","addressRegion":"TN","addressCountry":"US"},
     "geo": {"@type":"GeoCoordinates","latitude":36.4973,"longitude":-85.2460},
-    "priceRange": "$20–$270",
+    "priceRange": "$5–$270",
     "sameAs": ["https://www.facebook.com/tapestryacres", "https://www.instagram.com/tapestryacres/", "https://www.tiktok.com/@tapestry.acres"]
   }
   </script>
@@ -124,6 +124,24 @@
       .home-hero .hero-copy p{font-size:1.05rem!important}
       .home-hero .hero-copy{bottom:24px}
     }
+    /* Farm-shop home (2026-11-23): shop first, stays and experiences as one lower section. */
+    .shop-by{grid-template-columns:repeat(3,1fr)}
+    .shop-by .hub-card{min-height:150px}
+    .product-grid.featured{grid-template-columns:repeat(4,1fr)}
+    a.product-card{color:var(--ink); text-decoration:none; transition:transform .15s}
+    a.product-card:hover{transform:translateY(-4px)}
+    a.product-card:focus-visible{outline:3px solid var(--accent); outline-offset:3px}
+    .product-card .card-copy{padding:16px 18px}.product-card .card-copy h3{margin:0 0 8px; font-size:17px; line-height:1.25}
+    .live-note{margin:6px auto 22px; font-size:13px}
+    .fd-feature{display:grid; grid-template-columns:1fr 1.1fr; align-items:center; gap:36px; padding:34px; border:1px solid var(--cardborder); border-radius:24px; background:var(--card); box-shadow:var(--shadow)}
+    .fd-feature img{display:block; width:100%; height:auto; border-radius:16px; border:1px solid var(--cardborder)}
+    .fd-feature h2{margin:0 0 14px; font-size:clamp(2rem,5vw,2.65rem)}
+    .fd-feature .fd-names{margin:0 0 18px; color:var(--muted-deep); font-weight:700}
+    .field-label{margin:0 0 8px; color:var(--accent); font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase}
+    .visit-grid{grid-template-columns:repeat(3,1fr)}
+    .visit-lead{max-width:62ch; margin:0 auto 26px; text-align:center; color:var(--muted)}
+    @media(max-width:860px){.fd-feature{grid-template-columns:1fr; padding:24px}.shop-by,.visit-grid{grid-template-columns:1fr 1fr}.product-grid.featured{grid-template-columns:1fr 1fr}}
+    @media(max-width:560px){.shop-by,.visit-grid{grid-template-columns:1fr}.shop-by .hub-card{min-height:0}.product-grid.featured{gap:12px}.product-card .card-copy{padding:12px 14px}.product-card .card-copy h3{font-size:15px}}
   </style>
 </head>
 <body>
@@ -131,14 +149,7 @@
     <div class="header-inner">
       <div class="brand"><img class="brand-mark" src="assets/logo-mark.webp" alt="" aria-hidden="true" width="74" height="120" decoding="async">TAPESTRY ACRES</div>
       <button class="site-nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="site-nav"><span aria-hidden="true"></span></button>
-      <nav class="site-nav" id="site-nav" aria-label="Primary navigation">
-        <a href="index.html" aria-current="page">Home</a>
-        <a href="experiences.html">Experiences</a>
-        <a href="shop.html">Shop</a>
-        <a href="animals.html">Animals</a>
-        <a href="meet-the-herd.html">Herd Game</a>
-        <a href="rv-rentals.html">RV Rentals</a>
-      </nav>
+      <nav class="site-nav" id="site-nav" aria-label="Primary navigation"><a href="shop.html">Shop</a><a href="freeze-dried.html">Freeze Dried</a><a href="animals.html">Our Herd</a><a href="experiences.html">Visit &amp; Stay</a><a href="index.html#our-story">About</a></nav>
     </div>
   </header>
   <!-- The nav toggle is wired by assets/site-shell.js, which the build injects into
@@ -147,55 +158,62 @@
   <main>
     <section class="hero home-hero" aria-labelledby="hero-title">
       <div class="hero-media"><picture>
-        <source type="image/avif" srcset="public/media/home-hero-480.avif 480w, public/media/home-hero-700.avif 700w" sizes="100vw">
-        <source type="image/webp" srcset="public/media/home-hero-480.webp 480w, public/media/home-hero-700.webp 700w" sizes="100vw">
-        <img data-photo="home.photo.hero" id="hero-image" src="assets/portfolio/walk-summer.webp" width="700" height="700" fetchpriority="high" decoding="async" alt="A Tapestry Acres host and guest walking with an alpaca and child">
+        <source type="image/avif" srcset="assets/farm-shop/hero-640.avif 640w, assets/farm-shop/hero-1125.avif 1125w" sizes="100vw">
+        <source type="image/webp" srcset="assets/farm-shop/hero-640.webp 640w, assets/farm-shop/hero-1125.webp 1125w" sizes="100vw">
+        <img data-photo="home.photo.hero" id="hero-image" src="assets/farm-shop/hero-1125.webp" width="1125" height="900" fetchpriority="high" decoding="async" alt="An alpaca resting in the pasture in front of the Tapestry Acres farm store">
       </picture></div>
-      <div class="hero-copy"><h1 data-slot="home.h.hero" id="hero-title">Meet the family, walk the working farm</h1><p data-slot="home.p.hero" id="hero-subline">Come to Tapestry Acres in Monroe, Tennessee for an unhurried alpaca experience, Highland cattle, a practical farm stay, and a shop full of useful fiber.</p><div class="hero-actions"><a data-slot="home.b.hero-primary" class="btn" href="/s/tapestry-acres/experiences">Book a farm experience</a><a data-slot="home.b.hero-secondary" class="btn secondary" href="/s/tapestry-acres/stay">Plan a stay</a></div><p data-slot="home.p.trust" class="hero-trust">110 acres · Upper Cumberland Valley · real farm, real animals</p><div class="flourish" aria-hidden="true">❖ ✳ ❖</div></div>
+      <div class="hero-copy"><h1 data-slot="home.h.hero" id="hero-title">Alpaca goods and freeze dried treats from our family farm</h1><p data-slot="home.p.hero" id="hero-subline">Soft yarn, warm socks and blankets, and crunchy freeze dried candy, made and sold at Tapestry Acres in Monroe, Tennessee.</p><div class="hero-actions"><a data-slot="home.b.hero-primary" class="btn" href="shop.html">Shop the farm store</a><a data-slot="home.b.hero-secondary" class="btn secondary" href="freeze-dried.html">Freeze dried treats</a></div><p data-slot="home.p.trust" class="hero-trust">110 acres · Upper Cumberland Valley · real farm, real animals</p><div class="flourish" aria-hidden="true">❖ ✳ ❖</div></div>
     </section>
     <div class="page">
-      <section class="content-section" aria-labelledby="plan-title">
-        <h2 data-slot="home.h.plan" class="section-title" id="plan-title">Plan your visit</h2>
-        <div class="hub-grid">
-          <a class="hub-card" href="experiences.html"><h3 data-slot="home.h.plan-experiences">Experiences</h3><p data-slot="home.p.plan-experiences">Share a slow farm morning, walk an alpaca, or book a private tour.</p><span>Explore experiences →</span></a>
-          <a class="hub-card" href="shop.html"><h3 data-slot="home.h.plan-shop">Shop</h3><p data-slot="home.p.plan-shop">Bring home yarn, alpaca goods, and useful finds from the farm.</p><span>Visit the shop →</span></a>
-          <a class="hub-card" href="animals.html"><h3 data-slot="home.h.plan-animals">Meet the Animals</h3><p data-slot="home.p.plan-animals">Get to know the animals and personalities that make this place home.</p><span>Meet the animals →</span></a>
-          <a class="hub-card" href="rv-rentals.html"><h3 data-slot="home.h.plan-stay">RV Rentals</h3><p data-slot="home.p.plan-stay">Stay on the farm or have a fully set-up motorhome delivered nearby.</p><span>Plan a stay →</span></a>
+      <section class="content-section" aria-labelledby="shopby-title">
+        <h2 data-slot="home.h.shopby" class="section-title" id="shopby-title">Shop the farm store</h2>
+        <div class="hub-grid shop-by">
+          <a class="hub-card" href="shop.html?cat=Yarn%20%26%20Fiber"><h3 data-slot="home.h.shop-yarn">Yarn &amp; Fiber</h3><p data-slot="home.p.shop-yarn">Baby alpaca yarn, hand-dyed skeins and roving.</p><span>Shop yarn →</span></a>
+          <a class="hub-card" href="shop.html?cat=Socks"><h3 data-slot="home.h.shop-socks">Socks</h3><p data-slot="home.p.shop-socks">Comfy and outdoor alpaca socks, plus therapeutic pairs.</p><span>Shop socks →</span></a>
+          <a class="hub-card" href="shop.html?cat=Blankets%20%26%20Home"><h3 data-slot="home.h.shop-blankets">Blankets &amp; Home</h3><p data-slot="home.p.shop-blankets">Alpaca blankets, throws and things for the house.</p><span>Shop blankets →</span></a>
+          <a class="hub-card" href="shop.html?cat=Apparel%20%26%20Accessories"><h3 data-slot="home.h.shop-apparel">Apparel &amp; Accessories</h3><p data-slot="home.p.shop-apparel">Scarves, hats, gloves, mittens and sweaters.</p><span>Shop apparel →</span></a>
+          <a class="hub-card" href="shop.html?cat=Bath%20%26%20Body"><h3 data-slot="home.h.shop-bath">Bath &amp; Body</h3><p data-slot="home.p.shop-bath">Soaps, scrubs and wax melts.</p><span>Shop bath &amp; body →</span></a>
+          <a class="hub-card" href="shop.html?cat=Stuffies%20%26%20Kids"><h3 data-slot="home.h.shop-kids">Stuffies &amp; Kids</h3><p data-slot="home.p.shop-kids">Alpaca stuffies and small gifts for kids.</p><span>Shop stuffies →</span></a>
         </div>
       </section>
 
-      <section class="content-section editorial-sequence" aria-labelledby="chapter-title">
-        <figure><picture>
-          <source type="image/avif" srcset="public/media/family-proof-480.avif 480w, public/media/family-proof-700.avif 700w" sizes="(max-width:860px) 100vw, 570px">
-          <source type="image/webp" srcset="public/media/family-proof-480.webp 480w, public/media/family-proof-700.webp 700w" sizes="(max-width:860px) 100vw, 570px">
-          <img data-photo="home.photo.chapter" src="assets/portfolio/walk-family.webp" loading="lazy" decoding="async" width="700" height="700" alt="A family walking with alpacas at Tapestry Acres">
-        </picture></figure>
-        <div class="editorial-note"><p class="field-label">A working morning</p><h2 data-slot="home.h.chapter" id="chapter-title">Come for the animals. Leave with a clearer day.</h2><p data-slot="home.p.chapter">Walk at the pace of the herd, ask the practical questions, and let the farm set the rhythm. Named animals, useful fiber, and a place to stay all meet on the same 110-acre farm.</p><a class="btn" href="/s/tapestry-acres/herd">Meet the herd</a></div>
-      </section>
-
-      <section class="content-section" aria-labelledby="experiences-title">
-        <h2 data-slot="home.h.experiences" class="section-title" id="experiences-title">Featured experiences</h2>
-        <p class="section-note">Start with <a href="experiences.html">Coffee with the Cows, an alpaca walk, or a private guided farm tour</a>.</p>
-        <!-- The static contents are the no-JS answer: a permanent "Loading…" is a dead
-             end for anyone whose script never runs. JS replaces this on boot. -->
-        <div class="feature-grid" id="featured-experiences" aria-live="polite"><p class="section-note">See the full list on the <a href="experiences.html">experiences page</a>.</p></div>
-        <p class="section-action"><a class="btn" href="experiences.html">See all experiences</a></p>
-      </section>
-
       <section class="content-section" aria-labelledby="shop-title">
-        <h2 data-slot="home.h.shop" class="section-title" id="shop-title">From the farm shop</h2>
-        <p class="section-note">Browse <a href="shop.html">socks, hand-dyed yarn, roving, gloves, and more from the full farm store</a>.</p>
-        <div class="product-grid" id="featured-products" aria-live="polite"><p class="section-note">Browse everything in the <a href="shop.html">farm shop</a>.</p></div>
+        <h2 data-slot="home.h.shop" class="section-title" id="shop-title">Fresh from the farm shop</h2>
+        <p class="section-note live-note">Prices and stock come straight from the farm store, so what you see is on the shelf.</p>
+        <div class="product-grid featured" id="featured-products" aria-live="polite"><p class="section-note">Browse everything in the <a href="shop.html">farm shop</a>.</p></div>
         <p class="section-action"><a class="btn" href="shop.html">Visit the shop →</a></p>
       </section>
 
-      <section class="content-section herd-teaser" aria-labelledby="herd-title">
-        <picture>
-          <source type="image/avif" srcset="public/media/animal-proof-360.avif 360w, public/media/animal-proof-700.avif 700w" sizes="(max-width:860px) 100vw, 500px">
-          <source type="image/webp" srcset="public/media/animal-proof-360.webp 360w, public/media/animal-proof-700.webp 700w" sizes="(max-width:860px) 100vw, 500px">
-          <img data-photo="home.photo.herd" src="assets/portfolio/alpaca-face.webp" loading="lazy" decoding="async" width="700" height="700" alt="A friendly alpaca at Tapestry Acres">
-        </picture>
-        <div><p class="field-label">Meet them by name</p><h2 data-slot="home.h.herd" id="herd-title">Meet the animals</h2><p data-slot="home.p.herd">Agnis, Andy, Avalanche, Bailey, and Bianca are among the alpacas in the source herd record. Come meet them and the rest of the Tapestry Acres family.</p><a class="btn" href="animals.html">Meet the animals →</a> <a class="herd-game-link" href="meet-the-herd.html">Or test yourself with the herd game</a></div>
+      <section class="content-section fd-feature" aria-labelledby="fd-title">
+        <img data-photo="home.photo.freeze-dried" src="assets/freeze-dried/crunchy-rainbows-label.webp" loading="lazy" decoding="async" width="1000" height="623" alt="The Tapestry Acres Crunchy Rainbows label: freeze-dried fruit-flavored candy, net weight 4 oz">
+        <div><p class="field-label">New from the farm</p><h2 data-slot="home.h.fd" id="fd-title">Freeze dried candy</h2><p data-slot="home.p.fd">Small batches, freeze dried on our family farm. Each piece puffs up light and crunchy, with the same flavor as the candy it started as.</p><p class="fd-names">Crunchy Rainbows and Crunchy Boulders</p><a class="btn" href="freeze-dried.html">See the freeze dried treats →</a></div>
+      </section>
+
+      <section class="content-section editorial-sequence" aria-labelledby="chapter-title">
+        <figure><img data-photo="home.photo.chapter" src="assets/bg/alpaca-fence-sunset.webp" loading="lazy" decoding="async" width="700" height="526" alt="A visitor at the pasture fence with alpacas at sunset at Tapestry Acres"></figure>
+        <div class="editorial-note"><p class="field-label">From our herd</p><h2 data-slot="home.h.chapter" id="chapter-title">Every skein starts with an alpaca.</h2><p data-slot="home.p.chapter">Alpaca fiber is soft, warm and long-wearing, and it comes from animals like the ones that live on this farm. Say hello to Agnis, Andy, Avalanche, Bailey and Bianca, then see what alpaca fiber becomes in the shop.</p><p class="hero-actions" style="justify-content:flex-start;margin-top:6px"><a class="btn" href="animals.html">Meet the herd</a><a class="btn secondary" href="shop.html?cat=Yarn%20%26%20Fiber">Shop alpaca yarn</a></p></div>
+      </section>
+
+      <section class="content-section" aria-labelledby="visit-title">
+        <h2 data-slot="home.h.visit" class="section-title" id="visit-title">Visit the farm or stay the night</h2>
+        <p class="visit-lead" data-slot="home.p.visit">Come meet the animals in person. Book an alpaca walk or a private farm tour, or stay beside the pasture.</p>
+        <div class="hub-grid visit-grid">
+          <a class="hub-card" href="experiences.html"><h3 data-slot="home.h.plan-experiences">Experiences</h3><p data-slot="home.p.plan-experiences">Share a slow farm morning, walk an alpaca, or book a private tour.</p><span>Explore experiences →</span></a>
+          <a class="hub-card" href="rv-rentals.html"><h3 data-slot="home.h.plan-stay">RV Rentals &amp; Stays</h3><p data-slot="home.p.plan-stay">Stay on the farm or have a fully set-up motorhome delivered nearby.</p><span>Plan a stay →</span></a>
+          <a class="hub-card" href="meet-the-herd.html"><h3 data-slot="home.h.plan-game">Herd Game</h3><p data-slot="home.p.plan-game">Test how well you know the animals before you visit.</p><span>Play the herd game →</span></a>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="giftcert-title">
+        <h2 data-slot="home.h.giftcert" class="section-title" id="giftcert-title">Gift certificates</h2>
+        <p class="section-note">Give the farm: an alpaca experience, an adoption, or an adoption with fiber.</p>
+        <div class="giftcert-strip">
+          <!-- All three go to the same filtered shop view, so the buttons name what
+               they buy rather than offering a choice that resolves to one URL. -->
+          <div class="giftcert-card"><h3>Alpaca Experience</h3><p class="giftcert-price">$40</p><a class="btn" href="shop.html?q=gift%20certificate">Gift an experience</a></div>
+          <div class="giftcert-card"><h3>Alpaca Adoption</h3><p class="giftcert-price">$100</p><a class="btn" href="shop.html?q=gift%20certificate">Gift an adoption</a></div>
+          <div class="giftcert-card"><h3>Adoption with Fiber</h3><p class="giftcert-price">$200</p><a class="btn" href="shop.html?q=gift%20certificate">Gift adoption and fiber</a></div>
+        </div>
       </section>
 
       <!-- Point-in-time figures, verified 2026-07-29: Google 4.3 from 6 reviews
@@ -221,21 +239,9 @@
         </div>
       </section>
 
-      <section class="content-section about-section" aria-labelledby="history-title">
+      <section class="content-section about-section" id="our-story" aria-labelledby="history-title">
         <div><h2 data-slot="home.h.story" id="history-title">Our story</h2><p data-slot="home.p.story">Tapestry Acres is a family farm run by Dale and Tari Maxfield. It started as W Oaks Alpacas — alpaca pop-up shops around Prior Lake, Minnesota, beginning in 2006. In 2023 the family relocated to 110 acres in Tennessee's Upper Cumberland Valley and opened Tapestry Acres: alpacas, Highland cattle, goats, pigs, and more, alongside a working farm store and overnight farm-stays.</p></div>
         <img data-photo="home.photo.story" src="assets/bg/highland2.webp" loading="lazy" width="700" height="525" alt="Highland cattle in the pasture at Tapestry Acres">
-      </section>
-
-      <section class="content-section" aria-labelledby="giftcert-title">
-        <h2 data-slot="home.h.giftcert" class="section-title" id="giftcert-title">Gift certificates</h2>
-        <p class="section-note">Give the farm — an alpaca experience, an adoption, or an adoption with fiber.</p>
-        <div class="giftcert-strip">
-          <!-- All three go to the same filtered shop view, so the buttons name what
-               they buy rather than offering a choice that resolves to one URL. -->
-          <div class="giftcert-card"><h3>Alpaca Experience</h3><p class="giftcert-price">$40</p><a class="btn" href="shop.html?q=gift%20certificate">Gift an experience</a></div>
-          <div class="giftcert-card"><h3>Alpaca Adoption</h3><p class="giftcert-price">$100</p><a class="btn" href="shop.html?q=gift%20certificate">Gift an adoption</a></div>
-          <div class="giftcert-card"><h3>Adoption with Fiber</h3><p class="giftcert-price">$200</p><a class="btn" href="shop.html?q=gift%20certificate">Gift adoption and fiber</a></div>
-        </div>
       </section>
 
       <!-- This block used to open with a third telling of the farm's story, after the
@@ -248,14 +254,14 @@
     </div>
   </main>
   <footer><img class="footer-seal" src="assets/logo-seal.webp" alt="Tapestry Acres: farm store, stays, and events. Blending animals, products, and people." width="320" height="320" loading="lazy" decoding="async"><div class="footer-logo">TAPESTRY ACRES</div><div class="footer-flourish" aria-hidden="true">❖ ✳ ❖</div><a data-fact="email" class="footer-link" href="mailto:tapestryacres@gmail.com">tapestryacres@gmail.com</a></footer>
+  <script src="assets/storefront.js" defer></script>
   <script defer>
-    (function(){
+    /* assets/storefront.js is a deferred external script; inline scripts run first, so wait for it. */
+    document.addEventListener('DOMContentLoaded',function(){
       function text(tag,className,value){var el=document.createElement(tag);if(className)el.className=className;el.textContent=value;return el;}
-      /* Card art comes from the experiences/products feeds as original-resolution
-         paths. Three of those files also back the editorial images above, which now
-         load as responsive AVIF/WebP variants — without this map the page would fetch
-         BOTH the variant and the original of the same photograph. Keys mirror
-         dist/asset-manifest.json (media.images[].source -> .id); anything not listed
+      /* Card art comes from the featured feed as original-resolution paths. Files that
+         also back the editorial images load as responsive AVIF/WebP variants; keys mirror
+         dist/asset-manifest.json (media.images[].source -> .id). Anything not listed
          falls through to a bare image element, so a new feed entry can never break. */
       var VARIANTS={
         'assets/portfolio/walk-summer.webp':{id:'home-hero',widths:[480,700]},
@@ -264,9 +270,7 @@
         'assets/portfolio/walk-blossoms.webp':{id:'seasonal-proof',widths:[480,700]},
         'assets/cards/highlandpair.jpg':{id:'coffee-proof',widths:[480,760]}
       };
-      var CARD_SIZES='(max-width:860px) 100vw, 340px';
-      /* Intrinsic 4:3 dimensions match the CSS aspect-ratio these cards render at, so
-         the card box is the right height before the image decodes. */
+      var CARD_SIZES='(max-width:860px) 50vw, 250px';
       function image(src,alt){
         var img=document.createElement('img');img.src=src;img.alt=alt;img.loading='lazy';img.decoding='async';img.width=800;img.height=600;
         var variant=VARIANTS[src];
@@ -282,29 +286,61 @@
         picture.appendChild(img);
         return picture;
       }
-      /* Reserve the row instead of collapsing it to one line of text: .skeleton-card
-         is already in the stylesheet and matches the loaded card height. */
       function placeholders(mount,count,message){
         mount.textContent='';
         mount.appendChild(text('p','sr-only',message));
         for(var i=0;i<count;i++)mount.appendChild(text('div','skeleton-card',''));
       }
-      function loadExperiences(){
-        var mount=document.getElementById('featured-experiences');
-        placeholders(mount,3,'Loading experiences…');
-        fetch('data/experiences.v1.json',{cache:'no-cache'}).then(function(response){if(!response.ok)throw new Error('Unable to load experiences');return response.json();}).then(function(payload){var items=payload.data||[];
-          mount.textContent='';items.slice(0,3).forEach(function(item){var card=text('article','feature-card','');var copy=text('div','card-copy','');card.appendChild(image(item.image,item.name));copy.appendChild(text('h3','',item.name));copy.appendChild(text('p','',item.blurb));copy.appendChild(text('p','card-price',item.price));card.appendChild(copy);mount.appendChild(card);});
-        }).catch(function(){mount.textContent='';mount.appendChild(text('p','section-note','Experiences are taking a pasture break. Please visit the experiences page to see what is available.'));});
-      }
+      var FEATURED=8;
       function loadProducts(){
         var mount=document.getElementById('featured-products');
+        var S=window.TapestryStore;
         placeholders(mount,4,'Loading shop favorites…');
-        fetch('data/featured-products.json',{cache:'no-cache'}).then(function(response){if(!response.ok)throw new Error('Unable to load products');return response.json();}).then(function(payload){var items=payload.products||[];
-          mount.textContent='';items.slice(0,4).forEach(function(item){var card=text('article','product-card','');var copy=text('div','card-copy','');var src=(item.images_local&&item.images_local[0])||(item.images&&item.images[0]);if(src)card.appendChild(image(src,item.title));copy.appendChild(text('h3','',item.title));copy.appendChild(text('p','card-price','$'+Number(item.price).toFixed(2)));card.appendChild(copy);mount.appendChild(card);});
+        Promise.all([
+          S.live(),
+          fetch('data/featured-products.json',{cache:'no-cache'}).then(function(response){return response.ok?response.json():null;}).catch(function(){return null;})
+        ]).then(function(results){
+          var feed=results[0],curated=(results[1]&&results[1].products)||[];
+          var items=[],seen={};
+          function add(title,price,src,sku){
+            var family=S.familyTitle(title);
+            if(!family||seen[family]||!src||price===null||price===undefined||isNaN(Number(price)))return;
+            seen[family]=true;items.push({title:family,price:Number(price),src:src,sku:sku});
+          }
+          function localImage(item){return (item.images_local&&item.images_local[0])||(item.images&&item.images[0]);}
+          if(feed){
+            /* Square is the source of truth: only what is in stock now, at today's price. */
+            var hidden={};(feed.hidden||[]).forEach(function(sku){hidden[sku]=true;});
+            var inStock=function(sku){var row=feed.skus[sku];return !hidden[sku]&&row&&Number(row.qty)>0?row:null;};
+            var livePrice=function(row,item){return row.price!==null&&row.price!==undefined?row.price:item.price;};
+            curated.forEach(function(item){var row=inStock(item.sku);if(row)add(item.title,livePrice(row,item),localImage(item),item.sku);});
+            (feed.products||[]).forEach(function(item){var row=inStock(item.sku);if(row)add(item.title,livePrice(row,item),localImage(item),item.sku);});
+          }else{
+            curated.forEach(function(item){add(item.title,item.price,localImage(item),item.sku);});
+          }
+          items=items.slice(0,FEATURED);
+          if(!items.length)throw new Error('No products');
+          mount.textContent='';
+          items.forEach(function(item){
+            var card=document.createElement('a');card.className='product-card';card.href=S.shopHref(item.title);
+            var copy=text('div','card-copy','');
+            card.appendChild(image(item.src,item.title));
+            copy.appendChild(text('h3','',item.title));copy.appendChild(text('p','card-price',S.money(item.price)));
+            card.appendChild(copy);mount.appendChild(card);
+          });
+          mount.setAttribute('data-count',String(items.length));mount.setAttribute('data-live',feed?'square':'static');
+          if(feed){
+            /* Product markup is generated from the same live rows, so price and availability never go stale. */
+            var ld=document.createElement('script');ld.type='application/ld+json';
+            ld.textContent=JSON.stringify({'@context':'https://schema.org','@type':'ItemList',name:'Featured alpaca goods from the Tapestry Acres farm shop',itemListElement:items.map(function(item,index){
+              return {'@type':'ListItem',position:index+1,item:{'@type':'Product',name:item.title,image:new URL(item.src,location.href).href,brand:{'@type':'Brand',name:'Tapestry Acres'},offers:{'@type':'Offer',price:item.price.toFixed(2),priceCurrency:'USD',availability:'https://schema.org/InStock',url:new URL(S.shopHref(item.title),location.href).href}}};
+            })});
+            document.head.appendChild(ld);
+          }
         }).catch(function(){mount.textContent='';mount.appendChild(text('p','section-note','The shop preview is unavailable right now. Please visit the shop to browse our products.'));});
       }
-      loadExperiences();loadProducts();
-    }());
+      loadProducts();
+    });
   </script>
 </body>
 </html>

@@ -36,7 +36,7 @@ const rows = [
   // 12 = the 11 public/utility routes plus /rv-admin, the passcode-gated
   // availability editor. Counted rather than excluded: the release should know
   // exactly how many routes it serves, including the staff one.
-  ['ROUTES', 'Canonical route manifest, branded utility routes, and the staff availability editor', routeManifest.routes.length === 12, 'route-matrix'],
+  ['ROUTES', 'Canonical route manifest, branded utility routes, and the staff availability editor', routeManifest.routes.length === 13, 'route-matrix'],
   ['EXPERIENCES', '6 source-backed experiences with embedded calendars and Square checkout', (experiences.data || experiences).length === 6, 'experience-audit'],
   ['CATALOG', '242 families / 830 SKUs retain checkout identity', catalog.familyCount === 242 && catalog.skuCount === 830, 'catalog-map'],
   ['ANIMALS', '8 species groups with named/unnamed and for-sale distinction', fileHashes.some(({ path: file }) => file.includes('animals.v1.json')), 'animals-audit'],

@@ -12,17 +12,17 @@ function assert(condition, message) {
 assert(/<section\b[^>]*\bclass=["'][^"']*\bhero\b[^"']*["'][^>]*>/i.test(html), 'missing hero section');
 assert(/document\.createElement\(['"]img['"]\)[\s\S]*?img\.alt\s*=\s*alt/.test(html), 'rendered images are missing non-empty alt text');
 assert(/<button\b(?=[^>]*\bclass=["'][^"']*\bsite-nav-toggle\b)(?=[^>]*\baria-label=["'][^"']+["'])[^>]*>/i.test(html), 'mobile navigation toggle is missing an aria-label');
-assert(html.includes("fetch('data/experiences.v1.json',{cache:'no-cache'})"), 'missing generated experiences feed fetch');
+assert(html.includes('src="assets/storefront.js"') && html.includes('S.live()'), 'featured products must read the live Square feed');
 assert(html.includes("fetch('data/featured-products.json',{cache:'no-cache'})"), 'missing generated featured-products fetch');
 
-const planSection = html.match(/<section\b[^>]*\baria-labelledby=["']plan-title["'][^>]*>[\s\S]*?<\/section>/i)?.[0] || '';
+const planSection = html.match(/<section\b[^>]*\baria-labelledby=["']visit-title["'][^>]*>[\s\S]*?<\/section>/i)?.[0] || '';
 const planCards = planSection.match(/<a\b[^>]*\bclass=["'][^"']*\bhub-card\b[^"']*["'][^>]*>/gi) || [];
-assert(planCards.length >= 4, 'fewer than 4 Plan your visit cards');
+assert(planCards.length >= 3, 'fewer than 3 Visit and stay cards');
 
 // `meet-the-herd.html` is the quiz GAME. The hub card whose copy promises animal
 // profiles now points at `animals.html`, the actual reference guide; the game keeps a
 // separate secondary link. The old assertion pinned the mismatch it should have caught.
-for (const href of ['experiences.html', 'shop.html', 'animals.html', 'rv-rentals.html']) {
+for (const href of ['experiences.html', 'rv-rentals.html', 'meet-the-herd.html']) {
   assert(planCards.some((card) => card.includes(`href="${href}"`)), `missing Plan your visit card link: ${href}`);
 }
 
@@ -36,7 +36,9 @@ assert(!/HERO_DATA/.test(html), 'baked hero must not retain the HERO_DATA preset
 assert(!html.includes('PresetSwitcher.init'), 'baked hero must not retain PresetSwitcher.init');
 const heroSection = html.match(/<section\b[^>]*\bclass=["'][^"']*\bhero\b[^"']*["'][^>]*>[\s\S]*?<\/section>/i)?.[0] || '';
 assert(/alpaca/i.test(heroSection), 'hero copy must mention alpacas');
-assert(/highland/i.test(heroSection), 'hero copy must mention Highland cattle');
+assert(/freeze dried/i.test(heroSection), 'hero copy must mention freeze dried treats');
+assert(/href="shop\.html"/.test(heroSection) && /href="freeze-dried\.html"/.test(heroSection), 'hero actions must lead to the shop and the freeze dried page');
+assert(html.indexOf('id="shopby-title"') < html.indexOf('id="visit-title"'), 'shop sections must come before stays and experiences');
 
 // About/history section.
 assert(/<section\b[^>]*\baria-labelledby=["']history-title["'][^>]*>/i.test(html), 'missing About/history section');

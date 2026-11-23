@@ -3,7 +3,7 @@ import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = resolve(fileURLToPath(new URL("..", import.meta.url)));
-const routes = ["index.html", "animals.html", "experiences.html", "meet-the-herd.html", "rv-rentals.html", "shop.html", "404.html", "thanks.html"];
+const routes = ["index.html", "animals.html", "experiences.html", "meet-the-herd.html", "rv-rentals.html", "shop.html", "freeze-dried.html", "404.html", "thanks.html"];
 for (const route of routes) {
   const html = await readFile(join(root, "dist", route), "utf8");
   const count = (html.match(/<h1(?:\s|>)/gi) || []).length;

@@ -32,6 +32,10 @@
       "path": "/shop"
     },
     {
+      "source": "freeze-dried.html",
+      "path": "/freeze-dried"
+    },
+    {
       "source": "bag.html",
       "path": "/bag"
     },

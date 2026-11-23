@@ -68,6 +68,16 @@
     if (route === "bag" || route === "checkout") bagLink.setAttribute("aria-current", "page");
     nav.appendChild(bagLink);
   }
+  /* The logo goes home. The primary nav leads with the shop, so it carries no Home link. */
+  var brand = document.querySelector(".site-header .brand");
+  if (brand && !brand.querySelector("a")) {
+    var home = document.createElement("a");
+    home.className = "brand-link";
+    home.href = tenantPath("./");
+    home.setAttribute("aria-label", "Tapestry Acres, home");
+    while (brand.firstChild) home.appendChild(brand.firstChild);
+    brand.appendChild(home);
+  }
   refreshBagLinks();
   window.TapestryBag = { refresh: refreshBagLinks };
 
@@ -103,7 +113,7 @@
     var navFooter = document.createElement("nav");
     navFooter.className = "site-footer-nav";
     navFooter.setAttribute("aria-label", "Footer navigation");
-    navFooter.innerHTML = '<a href="index.html">Home</a><a href="experiences.html">Experiences</a><a href="shop.html">Shop</a><a class="site-bag-link" href="bag.html">Bag</a><a href="rv-rentals.html">Stays &amp; RV</a><a href="mailto:tapestryacres@gmail.com">Contact</a><a href="https://maps.google.com/?q=396+Taylor+Crossroads+Rd+Monroe+TN" target="_blank" rel="noopener">Directions</a>';
+    navFooter.innerHTML = '<a href="index.html">Home</a><a href="shop.html">Shop</a><a href="freeze-dried.html">Freeze Dried</a><a href="animals.html">Our Herd</a><a href="experiences.html">Experiences</a><a href="rv-rentals.html">Stays &amp; RV</a><a href="meet-the-herd.html">Herd Game</a><a class="site-bag-link" href="bag.html">Bag</a><a href="mailto:tapestryacres@gmail.com">Contact</a><a href="https://maps.google.com/?q=396+Taylor+Crossroads+Rd+Monroe+TN" target="_blank" rel="noopener">Directions</a>';
     footer.appendChild(navFooter);
     refreshBagLinks();
   }

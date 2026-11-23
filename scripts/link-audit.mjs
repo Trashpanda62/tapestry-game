@@ -25,7 +25,7 @@ const routes = JSON.parse(await readFile(join(root, "src", "build-config.json"),
 const routeBySource = Object.fromEntries(routes.map(({ source, path }) => [source, path]));
 
 // Query params that some script actually reads. Anything else in a link is dead.
-const LIVE_PARAMS = new Set(["experience", "q", "state", "add_to_bag", "sku",
+const LIVE_PARAMS = new Set(["experience", "q", "cat" /* shop.js parseList(params, "cat") */, "state", "add_to_bag", "sku",
   "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "print"]);
 
 const failures = [];

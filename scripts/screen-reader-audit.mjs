@@ -15,7 +15,7 @@ const herd = await read('meet-the-herd.html');
 const shopScript = await read('assets/shop.js');
 const bagScript = await read('assets/bag.js');
 
-assert(/host and guest/i.test(home) && /aria-labelledby="hero-title"/.test(home), 'hero does not state host/guest context with heading association');
+assert(/alpaca/i.test(home) && /aria-labelledby="hero-title"/.test(home), 'hero does not state alpaca context with heading association');
 // The two destinations must be told apart in prose, not just by their nav labels. The
 // phrasing is free; what matters is that the reference page says it is the reference
 // page and names the Meet the Herd game as the other thing.

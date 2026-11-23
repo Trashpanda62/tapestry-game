@@ -31,6 +31,7 @@ const legacySourceRoutes = {
   "bag.html": "/bag",
   "checkout.html": "/checkout",
   "404.html": "/404",
+  "freeze-dried.html": "/freeze-dried",
   "thanks.html": "/thanks",
   "rv-admin.html": "/rv-admin"
 };
@@ -74,6 +75,7 @@ async function copy(relativePath) {
       html = html.replaceAll(`href="${legacy}"`, `href="${destination}"`);
       html = html.replaceAll(`href='./${legacy}'`, `href="${destination}"`);
       html = html.replaceAll(`href="${legacy}?`, `href="${destination}?`);
+      html = html.replaceAll(`href="${legacy}#`, `href="${destination}#`);
     }
     // Canonicalize absolute GitHub-era URLs embedded in JSON-LD/OG metadata
     // and inline data as well as ordinary hrefs. No published page may point

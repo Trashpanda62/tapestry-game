@@ -3,7 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('../dist/', import.meta.url));
-const routes = ['index.html', 'experiences.html', 'shop.html', 'animals.html', 'rv-rentals.html', 'meet-the-herd.html'];
+const routes = ['index.html', 'experiences.html', 'shop.html', 'freeze-dried.html', 'animals.html', 'rv-rentals.html', 'meet-the-herd.html'];
 const strip = (html) => html.replace(/<head[\s\S]*?<\/head>/gi, '').replace(/<script[\s\S]*?<\/script>/gi, '').replace(/<style[\s\S]*?<\/style>/gi, '').replace(/<[^>]+>/g, ' ').replace(/&(?:amp|lt|gt|quot|apos|nbsp);/gi, ' ').replace(/\s+/g, ' ').trim();
 const pages = await Promise.all(routes.map(async (route) => strip(await readFile(path.join(root, route), 'utf8'))));
 const text = pages.join(' ');
