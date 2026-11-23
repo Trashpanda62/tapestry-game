@@ -6,16 +6,17 @@
     var base = document.querySelector("base");
     return new URL(name, base ? base.href : new URL("./", location.href).href).pathname;
   }
-  /* GitHub Pages mirror only. Booking, bag and checkout need the live server, which
+  /* GitHub Pages mirror only. Booking, shop, bag, checkout and the RV form need the live server, which
      exists only on the farm's own domain, so send those routes there. No-op elsewhere. */
   if (/\.github\.io$/.test(location.hostname)) {
-    var LIVE = "https://tapestryacres.com", DYNAMIC = /(?:^|\/)(book|bag|checkout|rv-admin)(?:\.html)?(\/[^/]+)?\/?$/;
+    var LIVE = "https://tapestryacres.com", DYNAMIC = /(?:^|\/)(book|bag|checkout|rv-admin|shop|rv-rentals)(?:\.html)?(\/[^/]+)?\/?$/;
+    var liveRoute = function (name) { return name === "rv-rentals" ? "stay" : name; };
     var here = location.pathname.match(DYNAMIC);
-    if (here) { location.replace(LIVE + "/" + here[1] + (here[2] || "") + location.search + location.hash); return; }
+    if (here) { location.replace(LIVE + "/" + liveRoute(here[1]) + (here[2] || "") + location.search + location.hash); return; }
     var sendLive = function (a) {
       var u; try { u = new URL(a.getAttribute("href"), location.href); } catch (_) { return; }
       var m = u.origin === location.origin && u.pathname.match(DYNAMIC);
-      if (m) a.setAttribute("href", LIVE + "/" + m[1] + (m[2] || "") + u.search + u.hash);
+      if (m) a.setAttribute("href", LIVE + "/" + liveRoute(m[1]) + (m[2] || "") + u.search + u.hash);
     };
     var sweep = function () { document.querySelectorAll("a[href]").forEach(sendLive); };
     sweep();
