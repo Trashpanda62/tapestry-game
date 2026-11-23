@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
-const root = "C:/dev/tapestry-game";
+const root = decodeURIComponent(new URL("..", import.meta.url).pathname).replace(/^\/([A-Za-z]:)/, "$1").replace(/\/$/, "");
 const source = JSON.parse(await readFile(join("C:/dev/tapestry-herd", "herd.json"), "utf8"));
 const mirror = JSON.parse(await readFile(join(root, "dist", "herd", "herd.json"), "utf8"));
 if (source.totals.headcount !== 110 || source.totals.named !== 65 || mirror.totals.headcount !== 110 || mirror.totals.named !== 65) throw new Error("[herd-offline] herd totals changed.");

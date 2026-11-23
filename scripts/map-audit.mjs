@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
-const html = await readFile(join("C:/dev/tapestry-game", "dist", "meet-the-herd.html"), "utf8");
+const html = await readFile(join(decodeURIComponent(new URL("..", import.meta.url).pathname).replace(/^\/([A-Za-z]:)/, "$1").replace(/\/$/, ""), "dist", "meet-the-herd.html"), "utf8");
 if (html.includes("tapestry-area-map") || html.includes("trashpanda62.github.io/tapestry-herd")) throw new Error("[map] third-party map/herd iframe dependency remains.");
 // The second alternative was 'experiences#availability', an anchor whose id does not
 // exist on experiences.html. It satisfied this gate while sending the visitor nowhere

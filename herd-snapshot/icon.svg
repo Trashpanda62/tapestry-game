@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#4b6b3c"/>
+  <circle cx="256" cy="230" r="120" fill="#f7f4ec"/>
+  <ellipse cx="212" cy="215" rx="18" ry="24" fill="#33301f"/>
+  <ellipse cx="300" cy="215" rx="18" ry="24" fill="#33301f"/>
+  <path d="M188 150c-30-40-70-30-70 10 0 26 26 44 52 40" fill="#f7f4ec"/>
+  <path d="M324 150c30-40 70-30 70 10 0 26-26 44-52 40" fill="#f7f4ec"/>
+  <path d="M230 290q26 22 52 0" stroke="#8a6a44" stroke-width="10" fill="none" stroke-linecap="round"/>
+  <text x="256" y="440" font-family="Georgia, serif" font-size="72" fill="#e0a23c" text-anchor="middle" font-weight="bold">🌾</text>
+</svg>

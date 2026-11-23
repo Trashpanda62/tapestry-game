@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
-const root = "C:/dev/tapestry-game";
+const root = decodeURIComponent(new URL("..", import.meta.url).pathname).replace(/^\/([A-Za-z]:)/, "$1").replace(/\/$/, "");
 const html = await readFile(join(root, "design-preview.html"), "utf8");
 const doc = await readFile(join(root, "docs", "selector-sanity.md"), "utf8");
 for (const token of ["@media(max-width:700px)", "prefers-reduced-motion", "preview-hero", "preview-nav", "overflow"]) if (!html.includes(token) && !doc.includes(token)) throw new Error(`[selector-sanity] missing ${token}.`);

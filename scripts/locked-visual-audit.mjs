@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
-const root = "C:/dev/tapestry-game";
+const root = decodeURIComponent(new URL("..", import.meta.url).pathname).replace(/^\/([A-Za-z]:)/, "$1").replace(/\/$/, "");
 const html = await readFile(join(root, "dist", "index.html"), "utf8");
 for (const token of ["data-hero=\"documentary\"", "data-palette=\"pasture-ochre\"", "data-surface=\"painted-sign\"", "data-motion=\"lively\"", "walk-summer.webp", "hero-actions", "hero-trust"]) if (!html.includes(token)) throw new Error(`[locked-visual] missing ${token}.`);
 if (html.includes("preset-switcher") || html.includes("Design presets") || html.includes("data-preview")) throw new Error("[locked-visual] selector/default preview leaked into production.");

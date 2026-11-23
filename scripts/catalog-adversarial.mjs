@@ -1,8 +1,8 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
-const source = await readFile(join("C:/dev/tapestry-game", "shop.html"), "utf8");
-const runtime = await readFile(join("C:/dev/tapestry-game", "assets", "shop.js"), "utf8");
+const source = await readFile(join(decodeURIComponent(new URL("..", import.meta.url).pathname).replace(/^\/([A-Za-z]:)/, "$1").replace(/\/$/, ""), "shop.html"), "utf8");
+const runtime = await readFile(join(decodeURIComponent(new URL("..", import.meta.url).pathname).replace(/^\/([A-Za-z]:)/, "$1").replace(/\/$/, ""), "assets", "shop.js"), "utf8");
 for (const token of ["localeCompare", "isAvailable", "firstImage", "No products match", "catch(function", "history.replaceState", "URLSearchParams", "matchingVariantCount"]) if (!runtime.includes(token)) throw new Error(`[catalog-adversarial] missing guard for ${token}.`);
 for (const token of ["product-search", "search-suggestions", "mobile-filter-drawer", "product-detail"]) if (!source.includes(token)) throw new Error(`[catalog-adversarial] missing S4 surface ${token}.`);
 const unicode = ["Ångström Alpaca", "羊毛 yarn", "Zebra socks"].sort((a, b) => a.localeCompare(b));

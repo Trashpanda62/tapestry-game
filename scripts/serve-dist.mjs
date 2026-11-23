@@ -4,7 +4,7 @@ import { createServer } from 'node:http';
 import { readFile, stat } from 'node:fs/promises';
 import { join, extname, normalize } from 'node:path';
 
-const ROOT = 'C:/dev/tapestry-game/dist';
+const ROOT = (decodeURIComponent(new URL("..", import.meta.url).pathname).replace(/^\/([A-Za-z]:)/, "$1").replace(/\/$/, "")) + "/dist";
 const PREFIX = '/s/tapestry-acres';
 const PORT = Number(process.env.PORT || 8791);
 const TYPES = {

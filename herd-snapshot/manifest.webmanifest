@@ -1,0 +1,14 @@
+{
+  "name": "Tapestry Acres — Meet the Herd",
+  "short_name": "The Herd",
+  "description": "Meet, name, and manage the Tapestry Acres herd.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#13110d",
+  "theme_color": "#4b6b3c",
+  "icons": [
+    { "src": "icon.svg", "type": "image/svg+xml", "sizes": "any", "purpose": "any maskable" }
+  ]
+}

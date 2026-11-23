@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
-const root = "C:/dev/tapestry-game";
+const root = decodeURIComponent(new URL("..", import.meta.url).pathname).replace(/^\/([A-Za-z]:)/, "$1").replace(/\/$/, "");
 const app = await readFile(join(root, "dist", "herd", "index.html"), "utf8");
 const shell = await readFile(join(root, "dist", "meet-the-herd.html"), "utf8");
 const checklist = await readFile(join(root, "docs", "herd-parity-checklist.md"), "utf8");

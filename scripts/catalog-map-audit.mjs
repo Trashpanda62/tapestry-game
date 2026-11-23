@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
-const root = "C:/dev/tapestry-game";
+const root = decodeURIComponent(new URL("..", import.meta.url).pathname).replace(/^\/([A-Za-z]:)/, "$1").replace(/\/$/, "");
 const index = JSON.parse(await readFile(join(root, "dist", "data", "catalog-index.json"), "utf8"));
 const catalog = JSON.parse(await readFile(join(root, "dist", "data", index.catalog), "utf8"));
 if (catalog.families.length !== 242 || catalog.skus.length !== 830) throw new Error("[catalog-map] family/SKU counts changed.");

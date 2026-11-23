@@ -1,7 +1,7 @@
 import { access, readFile } from "node:fs/promises";
 import { join } from "node:path";
 
-const root = "C:/dev/tapestry-game";
+const root = decodeURIComponent(new URL("..", import.meta.url).pathname).replace(/^\/([A-Za-z]:)/, "$1").replace(/\/$/, "");
 const attrs = ["data-hero=\"documentary\"", "data-palette=\"pasture-ochre\"", "data-typography=\"sturdy-slab\"", "data-surface=\"painted-sign\"", "data-illustration=\"accent\"", "data-density=\"comfortable\"", "data-motion=\"lively\"", "data-nav=\"rail\"", "data-calendar-layout=\"month-grid\"", "data-facet-layout=\"left-rail\"", "data-quickview-style=\"modal\""];
 const files = ["index.html", "animals.html", "experiences.html", "meet-the-herd.html", "rv-rentals.html", "shop.html", "404.html", "thanks.html"];
 for (const file of files) {

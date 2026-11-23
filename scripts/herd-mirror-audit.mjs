@@ -2,12 +2,12 @@ import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
-const root = "C:/dev/tapestry-game";
+const root = decodeURIComponent(new URL("..", import.meta.url).pathname).replace(/^\/([A-Za-z]:)/, "$1").replace(/\/$/, "");
 const mirrored = ["index.html", "herd.json", "icon.svg", "manifest.webmanifest", "sw.js", ".nojekyll"];
 for (const file of mirrored) {
-  const source = await readFile(join("C:/dev/tapestry-herd", file));
+  const source = await readFile(new URL(`../herd-snapshot/${file}`, import.meta.url));
   const target = await readFile(join(root, "dist", "herd", file));
-  if (file !== "index.html" && file !== "sw.js" && !source.equals(target)) throw new Error(`[herd] mirror drift: ${file}`);
+  if (!source.equals(target)) throw new Error(`[herd] mirror drift: ${file}`);
 }
 const index = await readFile(join(root, "dist", "herd", "index.html"), "utf8");
 const sw = await readFile(join(root, "dist", "herd", "sw.js"), "utf8");

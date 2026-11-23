@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
-const root = "C:/dev/tapestry-game";
+const root = decodeURIComponent(new URL("..", import.meta.url).pathname).replace(/^\/([A-Za-z]:)/, "$1").replace(/\/$/, "");
 const selector = await readFile(join(root, "assets", "design-selector.js"), "utf8");
 const preview = await readFile(join(root, "design-preview.html"), "utf8");
 const production = await readFile(join(root, "dist", "index.html"), "utf8");

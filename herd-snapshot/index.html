@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#4b6b3c">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://tapestryacres.com/herd">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg">
+<title>Tapestry Acres — Meet the Herd</title>
+<meta name="description" content="Meet the alpacas and Highland cattle at Tapestry Acres, then play the daily Farm Steward herd-care game in Monroe, Tennessee.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Meet the Herd | Tapestry Acres">
+<meta property="og:description" content="Meet the Tapestry Acres herd and play the daily Farm Steward game in Monroe, Tennessee.">
+<meta property="og:image" content="https://tapestryacres.com/assets/bg/meadow.webp">
+<style>
+  :root{
+    --cream:#f7f4ec; --ink:#33301f; --muted:#6f6a55;
+    --forest:#4b6b3c; --meadow:#6b8e4e; --earth:#8a6a44;
+    --lake:#3f7fa6; --plum:#7b5d77; --accent:#c0492f;
+    --gold:#e0a23c; --lantern:#f4c873; --night:#1d2436;
+    --card:#fbf6e9; --cardborder:#e6d9b3; --line:#e3ddcd;
+    --rare:#3f7fa6; --legendary:#b8923a; --common:#6b8e4e;
+    --serif:Georgia,'Iowan Old Style','Palatino Linotype',serif;
+    --sans:Arial,'Helvetica Neue',system-ui,sans-serif;
+    --ok:#3c7a4e; --warn:#e0a23c; --shadow:0 1px 2px rgba(60,45,20,.05),0 8px 24px -16px rgba(60,45,20,.45);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{font-family:var(--sans);color:var(--ink);background:var(--cream);line-height:1.5;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden;
+    padding:0 14px calc(84px + env(safe-area-inset-bottom)) 14px;}
+  .wrap{max-width:640px;margin:0 auto;}
+  a{color:var(--forest)}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+
+  /* ---- header ---- */
+  header{padding:calc(16px + env(safe-area-inset-top)) 2px 4px;}
+  .brand{display:flex;align-items:center;gap:9px;}
+  .brand h1{font-family:var(--serif);font-size:24px;font-weight:700;margin:0;letter-spacing:-.01em;}
+  .brand .leaf{font-size:24px;}
+  .sub{font-size:13px;color:var(--muted);margin:2px 0 0;}
+
+  /* ---- tab bar (bottom, app-like) ---- */
+  .tabbar{position:fixed;left:0;right:0;bottom:0;z-index:20;
+    display:flex;gap:2px;padding:6px 8px calc(6px + env(safe-area-inset-bottom));
+    background:rgba(247,244,236,.92);backdrop-filter:blur(10px);border-top:1px solid var(--line);}
+  .tabbar button{flex:1;min-width:0;font:inherit;font-size:11px;font-weight:700;
+    display:flex;flex-direction:column;align-items:center;gap:3px;
+    padding:6px 2px;border:0;border-radius:12px;background:transparent;color:var(--muted);cursor:pointer;
+    transition:color .15s,background .15s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;}
+  .tabbar button .ic{font-size:19px;line-height:1;}
+  .tabbar button.on{color:var(--forest);background:rgba(75,107,60,.1);}
+  .tabbar button .cnt{font-size:10px;font-weight:800;color:#fff;background:var(--accent);
+    border-radius:999px;padding:0 5px;min-width:16px;line-height:15px;position:absolute;transform:translate(14px,-8px);}
+  .tabbar button{position:relative;}
+
+  /* ---- buttons (journey-site parity) ---- */
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;border-radius:999px;
+    padding:13px 20px;font:inherit;font-size:15px;font-weight:700;text-decoration:none;
+    background:var(--forest);color:#fff;cursor:pointer;transition:transform .12s ease,filter .12s ease;}
+  .btn:hover{transform:translateY(-2px);filter:brightness(1.07)}
+  .btn:active{transform:translateY(0)}
+  .btn.accent{background:var(--accent)}
+  .btn.gold{background:var(--legendary);color:#2c2410}
+  .btn.ghost{background:rgba(255,255,255,.7);color:var(--ink);border:1px solid var(--cardborder)}
+  .btn.added{background:#7d8a6a;pointer-events:none}
+  .btn.block{width:100%}
+  .btnrow{display:flex;flex-wrap:wrap;gap:10px}
+  .pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:7px 13px;font-size:13px;
+    font-weight:700;border:1px solid var(--cardborder);background:var(--card);color:var(--ink);cursor:pointer;white-space:nowrap;}
+  .pill.on{background:var(--forest);color:#fff;border-color:var(--forest);}
+
+  /* ---- cards ---- */
+  .card{background:var(--card);border:1px solid var(--cardborder);border-radius:18px;padding:16px;box-shadow:var(--shadow);}
+  .badge{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.02em;padding:3px 8px;border-radius:7px;color:#fff;vertical-align:middle;}
+
+  /* ---- herd grid (tcard vocab) ---- */
+  .tools{display:flex;flex-direction:column;gap:10px;margin:14px 0 10px;}
+  .search{width:100%;padding:12px 14px;border:1px solid var(--cardborder);border-radius:12px;background:var(--card);color:var(--ink);font:inherit;font-size:15px;}
+  .chips{display:flex;gap:7px;overflow-x:auto;padding-bottom:3px;scrollbar-width:none;}
+  .chips::-webkit-scrollbar{display:none}
+  .chip{flex:0 0 auto;}
+  .count{font-size:12px;color:var(--muted);margin:0 2px 10px;}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:13px;}
+  @media(min-width:520px){.grid{grid-template-columns:1fr 1fr 1fr;}}
+  .tcard{background:var(--card);border:1px solid var(--cardborder);border-radius:16px;overflow:hidden;box-shadow:var(--shadow);}
+  .tcard .ph{aspect-ratio:4/5;background:linear-gradient(135deg,#efe9d6,#e3dcc4);display:flex;align-items:center;justify-content:center;font-size:52px;position:relative;}
+  .tcard .ph img{width:100%;height:100%;object-fit:cover;}
+  .tcard.soon .ph::after{content:"📷 soon";position:absolute;bottom:7px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:700;color:#fff;background:rgba(45,35,20,.6);padding:3px 9px;border-radius:999px;}
+  .pcount{position:absolute;right:7px;bottom:7px;font-size:10.5px;font-weight:700;background:rgba(45,35,20,.62);color:#fff;padding:2px 8px;border-radius:999px;}
+  .tcard .b{display:block;padding:10px 12px 12px;}
+  .tcard .nm{font-family:var(--serif);font-size:16px;font-weight:700;margin:0;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+  .tcard .sp{display:block;font-size:12px;color:var(--muted);margin:2px 0 0;}
+  .tcard .ft{font-size:11px;color:var(--muted);margin:6px 0 0;font-style:italic;line-height:1.35;}
+  .tcard.open{display:block;width:100%;padding:0;text-align:left;font:inherit;color:inherit;border:1.5px dashed var(--forest);cursor:pointer;}
+  .namecta{position:absolute;bottom:7px;left:50%;transform:translateX(-50%);font-size:10.5px;font-weight:800;color:#fff;background:var(--forest);padding:3px 10px;border-radius:999px;white-space:nowrap;}
+  .sectlbl{grid-column:1/-1;font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:10px 2px 0;}
+  .sectlbl.help{color:var(--forest);}
+  .empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:40px 0;}
+
+  /* ---- Name Them multi-stage flow ---- */
+  .stage{max-width:440px;margin:14px auto 0;}
+  .progress{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--muted);margin:2px 4px 12px;}
+  .progress .left{font-weight:700;color:var(--ink);}
+  .progress .streak{color:var(--forest);font-weight:800;}
+  .crop{position:relative;width:100%;aspect-ratio:1/1;border-radius:16px;overflow:hidden;background:linear-gradient(135deg,#efe9d6,#e3dcc4);box-shadow:var(--shadow);}
+  .crop img{width:100%;height:100%;object-fit:cover;display:block;}
+  .crop .spchip{position:absolute;top:10px;left:10px;background:rgba(45,35,20,.72);color:#fff;font-size:12px;font-weight:700;padding:5px 11px;border-radius:999px;text-transform:capitalize;}
+  .crop .seal{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(60,122,78,.86);color:#fff;font-size:64px;opacity:0;pointer-events:none;transition:opacity .2s;}
+  .crop.saved .seal{opacity:1;}
+  .prompt{font-family:var(--serif);font-size:19px;font-weight:700;text-align:center;margin:16px 0 4px;}
+  .promptsub{font-size:13px;color:var(--muted);text-align:center;margin:0 0 14px;}
+  .namelist{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:0 0 12px;max-height:34vh;overflow-y:auto;}
+  .statuses{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0 12px;}
+  .statuses .pill{justify-content:flex-start;}
+  .statuses .pill .dot{width:9px;height:9px;border-radius:50%;flex:0 0 auto;}
+  .newrow{display:flex;gap:8px;margin:8px 0 0;}
+  .newrow .search{margin:0;}
+  .fade-enter{animation:fadein .22s cubic-bezier(.2,.7,.2,1);}
+  @keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .lift{animation:lift .32s cubic-bezier(.2,.7,.2,1);}
+  @keyframes lift{0%{transform:none}40%{transform:translateY(-6px)}100%{transform:none}}
+
+  /* ---- toast ---- */
+  #toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);
+    background:var(--ink);color:#fff;font-size:14px;font-weight:600;padding:11px 18px;border-radius:999px;
+    box-shadow:0 8px 24px -8px rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:40;white-space:nowrap;}
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+  #toast.ok{background:var(--ok);} #toast.err{background:var(--accent);}
+
+  /* ---- quiz ---- */
+  .qbar{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin:6px 2px 12px;}
+  .qbar b{color:var(--ink);}
+  .photo{width:100%;aspect-ratio:4/5;border-radius:14px;overflow:hidden;background:linear-gradient(135deg,#efe9d6,#e3dcc4);}
+  .photo img{width:100%;height:100%;object-fit:cover;}
+  .choices{display:grid;gap:9px;margin-top:12px;}
+  .choices button{font:inherit;font-size:16px;font-weight:700;padding:14px;border:1px solid var(--cardborder);border-radius:12px;background:var(--card);color:var(--ink);cursor:pointer;}
+  .choices button.correct{background:var(--forest);color:#fff;border-color:var(--forest);}
+  .choices button.wrong{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .choices button:disabled{opacity:.92;cursor:default;}
+  .learn{text-align:center;font-size:14px;color:var(--muted);margin-top:12px;min-height:20px;}
+  .big{font-family:var(--serif);font-size:46px;font-weight:800;color:var(--forest);margin:6px 0 2px;text-align:center;}
+
+  /* ---- name board (overlay) ---- */
+  .overlay{position:fixed;inset:0;background:rgba(30,24,12,.6);backdrop-filter:blur(3px);z-index:50;display:flex;align-items:flex-start;justify-content:center;padding:18px 14px;overflow-y:auto;}
+  .obcard{background:var(--card);border-radius:20px;max-width:460px;width:100%;margin:auto;padding:18px;box-shadow:0 20px 60px -20px rgba(0,0,0,.5);}
+  .obclose{position:absolute;top:16px;right:18px;font-size:26px;color:#fff;background:0;border:0;cursor:pointer;}
+  .nbphoto{width:120px;height:150px;object-fit:cover;border-radius:14px;margin:0 auto;display:block;}
+  .nblist{display:flex;flex-direction:column;gap:7px;margin:12px 0;max-height:44vh;overflow-y:auto;}
+  .nbrow{position:relative;overflow:hidden;display:flex;align-items:center;gap:9px;background:rgba(75,107,60,.06);border-radius:11px;padding:8px 11px;}
+  .nbbar{position:absolute;left:0;top:0;bottom:0;background:var(--forest);opacity:.14;border-radius:11px 0 0 11px;transition:width .25s;}
+  .nbrow>*:not(.nbbar){position:relative;z-index:1;}
+  .nbname{flex:1;font-size:15px;font-weight:600;word-break:break-word;}
+  .nbvote{font:inherit;font-size:14px;font-weight:800;padding:7px 11px;border:1px solid var(--cardborder);border-radius:9px;background:var(--card);color:var(--forest);cursor:pointer;min-width:52px;}
+  .nbvote.on{background:var(--forest);color:#fff;border-color:var(--forest);cursor:default;}
+  .nbpct{font-size:12px;font-weight:700;color:var(--muted);min-width:36px;text-align:right;}
+
+  .foot{font-size:11px;color:var(--muted);text-align:center;margin:24px 0 6px;}
+  .conn{display:inline-block;width:8px;height:8px;border-radius:50%;background:#c9c2ad;margin-right:5px;vertical-align:middle;}
+  .conn.live{background:var(--ok);} .conn.off{background:var(--accent);}
+  button:focus-visible,input:focus-visible,.tcard:focus-visible{outline:2px solid var(--forest);outline-offset:2px;}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
+
+  /* ---- MAP tab (plans-hub painted styling) ---- */
+  .maphint{font-size:12.5px;color:var(--muted);text-align:center;margin:10px 2px 8px;}
+  /* cream page-edge frame like the plans hub, on a warm dark stage */
+  .mapframe{border-radius:16px;padding:6px;background:#efe6d2;
+    box-shadow:0 0 0 1px #d9cdb0,0 10px 30px -14px rgba(60,45,25,.5);}
+  .mapstage{position:relative;width:100%;height:min(74vh,640px);border-radius:11px;overflow:hidden;
+    background:radial-gradient(120% 100% at 50% 30%,#6b5236,#4a3924 72%,#3a2c1b);
+    touch-action:none;cursor:grab;}
+  .mapstage:active{cursor:grabbing;}
+  .mapstage.editing{cursor:default;}
+  .mapworld{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform;}
+  .mapart{display:block;width:100%;height:100%;user-select:none;-webkit-user-drag:none;pointer-events:none;}
+  .penlayer,.tokenlayer{position:absolute;inset:0;pointer-events:none;}
+  /* pen drop-zone: invisible box in normal mode (only the sign shows); dashed in edit */
+  .penzone{position:absolute;pointer-events:none;border-radius:12px;transition:background .15s,box-shadow .15s;}
+  .penzone.hot{background:rgba(224,162,60,.30);box-shadow:0 0 0 3px rgba(224,162,60,.5),0 6px 18px -6px rgba(0,0,0,.4);}
+  .penzone.editing{pointer-events:auto;cursor:move;border:2px dashed rgba(255,253,249,.6);background:rgba(122,139,90,.14);}
+  .rz{position:absolute;right:-7px;bottom:-7px;width:16px;height:16px;border-radius:50%;
+    background:var(--gold);border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.4);cursor:nwse-resize;pointer-events:auto;}
+  /* ---- wooden signpost (plans-hub 1:1) ---- */
+  .penzone .sign{position:absolute;left:50%;top:0;transform:translate(-50%,-100%);transform-origin:50% 100%;
+    display:flex;flex-direction:column;align-items:center;pointer-events:none;
+    filter:drop-shadow(0 4px 6px rgba(40,30,15,.4));transition:transform .25s var(--ease,cubic-bezier(.2,.7,.2,1));z-index:3;}
+  .penzone:not(.editing) .sign{animation:sway 5s ease-in-out infinite;}
+  .penzone .plank{position:relative;background:linear-gradient(#c79a5f,#b07f45);border:1.5px solid #8a5f31;border-radius:5px;
+    padding:3px 9px;font-family:var(--serif);font-weight:700;font-size:10px;line-height:1.05;color:#3d2a15;text-align:center;white-space:nowrap;
+    box-shadow:inset 0 1px 0 rgba(255,244,224,.5),inset 0 -2px 3px rgba(90,60,25,.35);}
+  .penzone .plank::before,.penzone .plank::after{content:"";position:absolute;top:3px;width:3px;height:3px;border-radius:50%;background:#6e4a26;box-shadow:inset 0 1px 0 rgba(255,240,220,.4);}
+  .penzone .plank::before{left:4px;} .penzone .plank::after{right:4px;}
+  .penzone .sub{display:block;font-family:var(--sans);font-size:7px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;color:#2f6b3d;margin-top:1px;}
+  .penzone .post{width:3px;height:12px;background:linear-gradient(90deg,#7a5228,#a06e39 40%,#7a5228);border-radius:0 0 2px 2px;margin-top:-1px;}
+  .penzone.hot .sign,.penzone.editing .sign{animation-play-state:paused;transform:translate(-50%,-100%) scale(1.08);}
+  @keyframes sway{0%,100%{transform:translate(-50%,-100%) rotate(-1.3deg);}50%{transform:translate(-50%,-100%) rotate(1.3deg);}}
+  /* features draggable only in edit mode */
+  .mapstage.editing .feat{cursor:move;}
+  /* animal tokens */
+  .token{position:absolute;transform:translate(-50%,-50%);width:52px;pointer-events:auto;cursor:grab;
+    display:flex;flex-direction:column;align-items:center;gap:2px;touch-action:none;}
+  .token.tray{position:relative;transform:none;flex:0 0 auto;}
+  .token img,.token .tkemoji{width:44px;height:44px;border-radius:50%;object-fit:cover;
+    background:var(--card);border:2.5px solid #fff;box-shadow:0 2px 6px rgba(40,30,15,.35);
+    display:flex;align-items:center;justify-content:center;font-size:26px;}
+  .token .tkname{font-size:9.5px;font-weight:700;color:#33301f;background:rgba(255,253,249,.9);
+    padding:1px 5px;border-radius:6px;max-width:60px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,.15);}
+  .token.onmap .tkname{opacity:0;transition:opacity .12s;}
+  .token.onmap:hover .tkname{opacity:1;}
+  .token.dragging{opacity:.35;}
+  .dragghost{position:fixed;z-index:60;width:52px;pointer-events:none;transform:none;opacity:.95;}
+  .mapctrls{position:absolute;right:10px;bottom:10px;display:flex;flex-direction:column;gap:6px;z-index:5;}
+  .ctrlbtn{width:36px;height:36px;border:none;border-radius:10px;background:rgba(255,253,249,.94);
+    color:var(--forest);font-size:18px;font-weight:700;cursor:pointer;box-shadow:0 3px 10px -3px rgba(0,0,0,.4);
+    display:flex;align-items:center;justify-content:center;}
+  .ctrlbtn:active{transform:scale(.93);}
+  .editbar{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;}
+  .editbar .btn{flex:1;min-width:120px;font-size:14px;padding:11px 14px;}
+  .tray{margin-top:12px;background:var(--card);border:1px solid var(--cardborder);border-radius:14px;padding:10px 12px 12px;box-shadow:var(--shadow);}
+  .traylbl{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em;}
+  .trayrow{display:flex;gap:12px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;min-height:64px;align-items:flex-start;}
+  .trayrow::-webkit-scrollbar{display:none;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand"><span class="leaf">🌾</span><h1>Meet the Herd</h1></div>
+    <p class="sub" id="sub"><span class="conn" id="conn"></span>Tapestry Acres</p>
+  </header>
+  <main id="view"></main>
+  <p class="foot" id="foot"></p>
+</div>
+
+<nav class="tabbar" id="tabbar"></nav>
+<div id="toast"></div>
+
+<script>
+/* ============================ config + state ============================ */
+// The daemon serves this app AND the API on the same origin, but it may be
+// mounted under a path prefix by Tailscale serve (e.g. https://host/herd/).
+// Tailscale strips that prefix before forwarding, so the app is served at
+// "/herd/" while the daemon sees "/". We must therefore send API calls back
+// through the SAME prefix the app was loaded under, or they'd hit the wrong
+// backend (the sibling service mounted at "/"). Derive the prefix from our own
+// path: everything up to the last "/" (drops any trailing index.html).
+const BASE = '/s/tapestry-acres/herd';
+const API = location.origin + BASE;          // origin + mount prefix
+const ADMIN = /[?&]admin=1/.test(location.search);
+let HERD = null;                             // herd.json read-model
+let TAB = 'herd';
+
+const STATUSES = ["Active","For Sale","Reserved","Breeding","Pregnant","Sold","Deceased"];
+const SCOLOR = {"Active":"#4b6b3c","For Sale":"#3f7fa6","Sold":"#8a8478","Reserved":"#e0a23c","Breeding":"#7b5d77","Pregnant":"#c07b9e","Deceased":"#6f6a55"};
+const EMOJI = {"alpaca":"🦙","cattle":"🐮","highland cattle":"🐮","cow":"🐮","goat":"🐐","mule":"🐴","horse":"🐴","donkey":"🐴","chicken":"🐔","duck":"🦆","runner duck":"🦆","pig":"🐷","turkey":"🦃","sheep":"🐑"};
+const $ = id => document.getElementById(id);
+const emoji = sp => EMOJI[(sp||"").toLowerCase()] || "🐾";
+const esc = s => { const d=document.createElement('div'); d.textContent=(s==null?'':String(s)); return d.innerHTML; };
+const badge = s => `<span class="badge" style="background:${SCOLOR[s]||'#888'}">${esc(s)}</span>`;
+const hasPhoto = a => !!(a.photos && a.photos.length);
+const primary = a => a.photos && a.photos[0] && a.photos[0].thumb;
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const CATTLE=/\b(cattle|cow|galloway|jersey|highland|steer|heifer|bull|calf|bovine)\b/;
+function spMatch(a,b){a=(a||'').toLowerCase().trim();b=(b||'').toLowerCase().trim();if(!a||!b)return false;if(a===b)return true;if(CATTLE.test(a)&&CATTLE.test(b))return true;const wb=(h,n)=>new RegExp('\\b'+n.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\b').test(h);return wb(a,b)||wb(b,a);}
+const named = a => !!(a&&a.name) && !a.name_open && !/^\s*(no\s*name|unnamed|unknown|tbd)\s*$/i.test(a.name);
+
+function toast(msg,kind){const t=$('toast');t.textContent=msg;t.className='show'+(kind?' '+kind:'');clearTimeout(t._t);t._t=setTimeout(()=>t.className='',1900);}
+function setConn(ok){const c=$('conn');if(c)c.className='conn '+(ok?'live':'off');}
+async function api(path,opts){
+  const r=await fetch(API+path,Object.assign({cache:'no-store'},opts||{}));
+  setConn(true);
+  if(!r.ok && r.status>=500) throw new Error('server '+r.status);
+  return r.json();
+}
+function post(path,body){return api(path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body||{})});}
+
+/* ============================ boot ============================ */
+// READONLY = served from a static mirror (GitHub Pages) with no live daemon:
+// /healthz 404s there but returns "ok" on the daemon. In READONLY mode the app
+// browses + quizzes from the bundled herd.json but every write path is disabled
+// (admin tabs never show anyway without ?admin=1; the suggest/vote board is also
+// gated so it doesn't POST into the void). The tailnet daemon = full features.
+let READONLY = false;
+async function probeLive(){
+  try{ const r=await fetch(API+'/healthz',{cache:'no-store'}); return r.ok; }catch(e){ return false; }
+}
+async function boot(){
+  READONLY = !(await probeLive());
+  try{
+    // daemon serves /herd.json live; the mirror ships it as a static file next to index.html
+    HERD = await api('/herd.json');
+  }catch(e){ setConn(false); HERD = null; }
+  const t=HERD&&HERD.totals||{};
+  $('sub').innerHTML=`<span class="conn ${READONLY?'':'live'}" id="conn"></span>Tapestry Acres · ${t.headcount||0} animals · ${t.named||0} named`;
+  const bs=Object.entries((t.by_species)||{}).map(([k,v])=>`${v} ${k.toLowerCase()}`).join(' · ');
+  $('foot').textContent=bs?('Herd: '+bs):'';
+  // deep-link: ?tab=map opens straight to a tab (admin tabs need ?admin=1 too)
+  const wantTab=(location.search.match(/[?&]tab=(\w+)/)||[])[1];
+  const valid=TABS.some(t=>t.k===wantTab && (!t.admin||ADMIN));
+  setTab(valid?wantTab:'herd');
+  if('serviceWorker' in navigator){ try{ navigator.serviceWorker.register('/s/tapestry-acres/herd/sw.js', {scope: '/s/tapestry-acres/herd/'}); }catch(e){} }
+}
+
+const TABS = [
+  {k:'herd', ic:'🐾', label:'Herd'},
+  {k:'quiz', ic:'🎯', label:'Quiz'},
+  {k:'name', ic:'✍️', label:'Name Them', admin:true, cnt:d=>d&&d.counts&&d.counts.pending},
+  {k:'photos', ic:'📷', label:'Photos', admin:true, cnt:d=>d&&d.counts&&d.counts.gallery},
+  {k:'map', ic:'🗺️', label:'Map', admin:true},
+];
+function renderTabs(){
+  const bar=$('tabbar');
+  bar.innerHTML=TABS.filter(t=>!t.admin||ADMIN).map(t=>{
+    const n=t.cnt?t.cnt(HERD):0;
+    return `<button data-k="${t.k}" onclick="setTab('${t.k}')" class="${TAB===t.k?'on':''}" aria-pressed="${TAB===t.k?'true':'false'}">
+      ${n?`<span class="cnt">${n}</span>`:''}<span class="ic" aria-hidden="true">${t.ic}</span>${esc(t.label)}</button>`;
+  }).join('');
+}
+function setTab(t){
+  TAB=t; renderTabs();
+  if(t==='herd') renderHerd();
+  else if(t==='quiz') startQuiz();
+  else if(t==='name') startName();
+  else if(t==='photos') startPhotos();
+  else if(t==='map') startMap();
+}
+
+/* ============================ HERD (guest) ============================ */
+let FILTER='all';
+function speciesList(){const c={};(HERD.individuals||[]).forEach(a=>{const s=a.species||'Other';c[s]=(c[s]||0)+1;});return Object.keys(c).sort((x,y)=>c[y]-c[x]).map(s=>({s,n:c[s]}));}
+function renderHerd(){
+  if(!HERD){ $('view').innerHTML=`<div class="card empty">Can't reach the farm right now.<br>Pull to refresh when you're back online.</div>`; return; }
+  const chips=[`<button class="pill chip ${FILTER==='all'?'on':''}" aria-pressed="${FILTER==='all'?'true':'false'}" onclick="setFilter('all')">All</button>`]
+    .concat(speciesList().map(o=>`<button class="pill chip ${FILTER===o.s?'on':''}" aria-pressed="${FILTER===o.s?'true':'false'}" onclick="setFilter('${esc(o.s)}')">${esc(o.s)} ${o.n}</button>`)).join('');
+  $('view').innerHTML=`<div class="tools"><label class="sr-only" for="q">Search the herd</label><input class="search" id="q" type="search" placeholder="Search a name…" oninput="drawHerd()"><div class="chips" aria-label="Filter by species">${chips}</div></div><div class="count" id="cnt" aria-live="polite"></div><div class="grid" id="grid"></div>`;
+  drawHerd();
+}
+function setFilter(s){const q=(($('q')||{}).value||'');FILTER=s;renderHerd();const i=$('q');if(i&&q){i.value=q;drawHerd();}}
+function drawHerd(){
+  const q=(($('q')||{}).value||'').toLowerCase().trim();
+  let inds=(HERD.individuals||[]).slice();
+  if(FILTER!=='all') inds=inds.filter(a=>(a.species||'Other')===FILTER);
+  if(q) inds=inds.filter(a=>[a.name,a.species,a.status,(a.features||[]).join(' ')].join(' ').toLowerCase().includes(q));
+  const open=inds.filter(a=>a.name_open).sort((a,b)=>hasPhoto(b)-hasPhoto(a));
+  inds=inds.filter(a=>!a.name_open).sort((a,b)=>(hasPhoto(b)-hasPhoto(a))||(a.name||'').localeCompare(b.name||''));
+  const withP=inds.filter(hasPhoto), noP=inds.filter(a=>!hasPhoto(a));
+  let html='';
+  if(open.length){ html+=`<div class="sectlbl help">🍼 Help name the herd · tap to suggest</div>`; open.forEach(a=>html+=tileOpen(a)); }
+  withP.forEach(a=>html+=tile(a));
+  if(noP.length){ html+=`<div class="sectlbl">More of the herd · photos coming soon</div>`; noP.forEach(a=>html+=tile(a)); }
+  if(FILTER==='all'){
+    const fl=(HERD.flocks||[]).filter(f=>!q||[f.label,f.species,f.status].join(' ').toLowerCase().includes(q));
+    if(fl.length){ html+=`<div class="sectlbl">Flocks &amp; groups</div>`; fl.forEach(f=>html+=tileFlock(f)); }
+  }
+  $('grid').innerHTML=html||`<div class="empty">No matches.</div>`;
+  $('cnt').textContent=`${withP.length} with photos · ${withP.length+noP.length+open.length} animals${FILTER==='all'?'':' ('+FILTER+')'}`;
+}
+function tile(a){
+  const np=(a.photos||[]).length, soon=np?'':' soon';
+  const inner=np?`<img src="${primary(a)}" alt="${esc(a.name)}" loading="lazy">`+(np>1?`<span class="pcount">📷 ${np}</span>`:''):emoji(a.species);
+  const click=np?` onclick="openViewer('${esc(a.id)}')" style="cursor:pointer"`:'';
+  return `<div class="tcard${soon}"><div class="ph"${click}>${inner}</div><div class="b"><p class="nm">${esc(a.name)} ${badge(a.status)}</p><p class="sp">${esc(a.species||'')}${a.sex?(' · '+esc(a.sex)):''}</p>${a.features&&a.features.length?`<p class="ft">${esc(a.features.join(' · '))}</p>`:''}</div></div>`;
+}
+function tileOpen(a){
+  const np=(a.photos||[]).length;
+  const inner=(np?`<img src="${primary(a)}" alt="Unnamed ${esc((a.species||'animal').toLowerCase())}" loading="lazy">`:`<span aria-hidden="true">${emoji(a.species)}</span>`)+`<span class="namecta"><span aria-hidden="true">💡</span> Help name me</span>`;
+  return `<button type="button" class="tcard open" onclick="openBoard('${esc(a.id)}')"><span class="ph">${inner}</span><span class="b"><span class="nm">Name this ${esc((a.species||'animal').toLowerCase())}</span><span class="sp">${esc(a.species||'')}${a.sex?(' · '+esc(a.sex)):''} · open suggestions</span></span></button>`;
+}
+function tileFlock(f){
+  const sp=esc((f.species||'').toLowerCase()), c=f.count;
+  const label=(c==null)?`${sp} · flock`:`${c} ${sp}${c===1?'':'s'} · flock`;
+  return `<div class="tcard"><div class="ph">${emoji(f.species)}</div><div class="b"><p class="nm">${esc(f.label||f.species)} ${badge(f.status)}</p><p class="sp">${label}</p>${f.notes?`<p class="ft">${esc(f.notes)}</p>`:''}</div></div>`;
+}
+
+/* photo viewer */
+let VIEW=null;
+function openViewer(id){const a=(HERD.individuals||[]).find(x=>x.id===id);if(!a||!(a.photos||[]).length)return;VIEW={a,i:0};renderViewer();}
+function renderViewer(){
+  let o=$('viewer');
+  if(!o){o=document.createElement('div');o.id='viewer';o.className='overlay';o.style.alignItems='center';document.body.appendChild(o);o.addEventListener('click',e=>{if(e.target===o)closeViewer();});}
+  const a=VIEW.a,ph=a.photos,src=ph[VIEW.i].thumb;
+  o.innerHTML=`<button class="obclose" onclick="closeViewer()">✕</button><div style="text-align:center;color:#fff"><div style="font-family:var(--serif);font-size:18px;font-weight:700;margin-bottom:10px">${esc(a.name)}</div><img src="${src}" style="max-width:92vw;max-height:70vh;border-radius:14px" alt="">${ph.length>1?`<div style="margin-top:12px"><button class="btn ghost" onclick="vnav(-1)">‹</button> <span style="color:#fff;margin:0 8px">${VIEW.i+1}/${ph.length}</span> <button class="btn ghost" onclick="vnav(1)">›</button></div>`:''}</div>`;
+  o.style.display='flex';
+}
+function vnav(d){const n=VIEW.a.photos.length;VIEW.i=(VIEW.i+d+n)%n;renderViewer();}
+function closeViewer(){const o=$('viewer');if(o)o.style.display='none';VIEW=null;}
+
+/* ============================ NAME suggestions board ============================ */
+const SCLIENT='g'+Math.random().toString(36).slice(2);
+const VOTED=(()=>{try{return new Set(JSON.parse(localStorage.getItem('herd_voted')||'[]'));}catch(e){return new Set();}})();
+function markVoted(sid){if(!sid||VOTED.has(sid))return;VOTED.add(sid);try{localStorage.setItem('herd_voted',JSON.stringify([...VOTED]));}catch(e){}}
+let NB=null;
+function openBoard(id){const a=(HERD.individuals||[]).find(x=>x.id===id);if(!a)return;NB={id,a,list:(HERD.name_suggestions||{})[id]||[]};renderBoard();}
+function renderBoard(){
+  let o=$('board');
+  if(!o){o=document.createElement('div');o.id='board';o.className='overlay';document.body.appendChild(o);o.addEventListener('click',e=>{if(e.target===o)closeBoard();});}
+  const a=NB.a,np=(a.photos||[]).length;
+  const img=np?`<img class="nbphoto" src="${primary(a)}" alt="">`:`<div style="font-size:70px;text-align:center">${emoji(a.species)}</div>`;
+  const total=NB.list.reduce((t,s)=>t+(s.votes||0),0)||1;
+  const rows=NB.list.length?NB.list.map(s=>{
+    const voted=VOTED.has(s.sid),pct=Math.round((s.votes||0)/total*100);
+    const vbtn=READONLY?`<span class="nbpct">▲ ${s.votes}</span>`:`<button class="nbvote${voted?' on':''}" ${voted?'disabled':''} onclick="nbVote('${esc(s.sid)}')">▲ ${s.votes}</button>`;
+    return `<div class="nbrow"><div class="nbbar" style="width:${pct}%"></div>${vbtn}<span class="nbname">${esc(s.name)}</span><span class="nbpct">${pct}%</span></div>`;
+  }).join(''):`<div class="empty">${READONLY?'No suggestions yet.':'No suggestions yet — be the first! 🌟'}</div>`;
+  const addrow=READONLY?`<div class="nbpct" style="text-align:center;margin-top:10px">Open the herd app on the farm Wi-Fi to suggest &amp; vote.</div>`:`<div class="newrow"><input id="nbin" class="search" placeholder="✚ Suggest a name…" maxlength="40"><button class="btn" onclick="nbSubmit()">Add</button></div>`;
+  o.innerHTML=`<button class="obclose" onclick="closeBoard()">✕</button><div class="obcard"><div style="text-align:center">${img}<div style="font-family:var(--serif);font-size:18px;font-weight:800;margin-top:8px">Help name this ${esc((a.species||'animal').toLowerCase())}</div><div style="font-size:13px;color:var(--muted)">${esc(a.species||'')}${a.sex?(' · '+esc(a.sex)):''}</div></div><div class="nblist">${rows}</div>${addrow}</div>`;
+  o.style.display='flex';
+  const i=$('nbin');if(i)i.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();nbSubmit();}});
+}
+function nbSubmit(){
+  const i=$('nbin');if(!i||!NB)return;const v=(i.value||'').trim();if(!v)return;i.value='';
+  post('/suggest',{animal_id:NB.id,name:v}).then(r=>{
+    if(r&&r.ok===false){ toast(r.error==='rejected'?"Let's keep names friendly 🙂":r.error==='not-open'?"That animal isn't open for names":"Try again",'err'); }
+    if(r&&r.sid) markVoted(r.sid);
+    if(r&&r.suggestions){ NB.list=r.suggestions; if(HERD.name_suggestions) HERD.name_suggestions[NB.id]=r.suggestions; renderBoard(); }
+  }).catch(()=>toast('Network error','err'));
+}
+function nbVote(sid){
+  if(!NB||VOTED.has(sid))return; markVoted(sid);
+  post('/vote',{animal_id:NB.id,sid}).then(r=>{ if(r&&r.suggestions){NB.list=r.suggestions;if(HERD.name_suggestions)HERD.name_suggestions[NB.id]=r.suggestions;renderBoard();} }).catch(()=>toast('Network error','err'));
+}
+function closeBoard(){const o=$('board');if(o)o.style.display='none';NB=null;}
+
+/* ============================ QUIZ (guest) ============================ */
+let quiz=null;
+const quizPool=()=>(HERD.individuals||[]).filter(a=>hasPhoto(a)&&named(a));
+function startQuiz(){
+  const pool=quizPool();
+  if(pool.length<4){ $('view').innerHTML=`<div class="card stage" style="text-align:center"><div class="prompt">The quiz unlocks as more animals get photos.</div><div class="big">${pool.length}/4</div><button class="btn block" onclick="setTab('herd')">Browse the herd</button></div>`; return; }
+  quiz={deck:shuffle(pool),i:0,score:0,streak:0,best:0,misses:[]};
+  renderQuiz();
+}
+function renderQuiz(){
+  if(quiz.i>=quiz.deck.length) return quizEnd();
+  const a=quiz.deck[quiz.i],pool=quizPool();
+  const same=pool.filter(x=>x.id!==a.id&&spMatch(a.species,x.species)).map(x=>x.name);
+  let dis=shuffle(same).slice(0,3).filter(n=>n!==a.name);
+  if(dis.length<3){const need=shuffle([...new Set(pool.filter(x=>x.id!==a.id).map(x=>x.name))].filter(n=>n!==a.name&&!dis.includes(n)));dis=dis.concat(need).slice(0,3);}
+  const opts=shuffle([...new Set([a.name,...dis])]).slice(0,4);
+  $('view').innerHTML=`<div class="stage fade-enter"><div class="qbar"><span>Q <b>${quiz.i+1}</b>/${quiz.deck.length}</span><span>Score <b>${quiz.score}</b>${quiz.streak>1?` · <span style="color:var(--forest);font-weight:800">🔥 ${quiz.streak}</span>`:''}</span></div><div class="card"><div class="photo"><img src="${primary(a)}" alt="Quiz animal: ${esc((a.species||'animal').toLowerCase())}"></div><h2 class="prompt">Who is this ${esc((a.species||'animal').toLowerCase())}?</h2><div class="choices" id="ch"></div><div class="learn" id="learn" aria-live="polite"></div></div></div>`;
+  const c=$('ch');let done=false;
+  opts.forEach(o=>{const b=document.createElement('button');b.textContent=o;b.onclick=()=>{if(done)return;done=true;const ok=o===a.name;[...c.children].forEach(x=>{x.disabled=true;if(x.textContent===a.name)x.className='correct';});if(!ok)b.className='wrong';if(ok){quiz.score++;quiz.streak++;quiz.best=Math.max(quiz.best,quiz.streak);$('learn').innerHTML=`✓ Yes — that's <b>${esc(a.name)}</b>`;}else{quiz.streak=0;if(!quiz.misses.includes(a))quiz.misses.push(a);$('learn').innerHTML=`This is <b>${esc(a.name)}</b>`;}const nx=document.createElement('button');nx.className='btn block';nx.style.marginTop='12px';nx.textContent=quiz.i+1>=quiz.deck.length?'See results':'Next →';nx.onclick=()=>{quiz.i++;renderQuiz();};c.parentNode.appendChild(nx);};c.appendChild(b);});
+}
+function quizEnd(){
+  $('view').innerHTML=`<div class="stage card" style="text-align:center"><div class="prompt">You knew</div><div class="big">${quiz.score} / ${quiz.deck.length}</div><div class="promptsub">Best streak 🔥 ${quiz.best}</div><div class="promptsub">${quiz.misses.length?('Brush up on: '+quiz.misses.map(m=>esc(m.name)).join(', ')):'Perfect — you know the whole album! 🎉'}</div><button class="btn block" onclick="startQuiz()">Play again</button></div>`;
+}
+
+/* ============================ NAME THEM (multi-stage, instant persist) ============================ */
+let N={crops:[],i:0,step:'draw',cur:null,name:'',status:'Active',other:false,left:0,done:0,skips:[],busy:false};
+function startName(){
+  N={crops:[],i:0,step:'draw',cur:null,name:'',status:'Active',other:false,left:0,done:0,skips:[],busy:false};
+  $('view').innerHTML=`<div class="stage card" style="text-align:center"><div class="prompt">Loading headshots…</div><div class="big">⏳</div></div>`;
+  api('/crops').then(d=>{ N.crops=(d&&d.crops)||[]; N.left=(d&&d.remaining)||N.crops.length; N.i=0; drawCrop(); })
+    .catch(()=>{$('view').innerHTML=`<div class="card empty">Naming needs the live farm connection.<br>Open this on the tailnet/Funnel link, not the public mirror.</div>`;});
+}
+function curCrop(){ while(N.i<N.crops.length && N.skips.includes(N.crops[N.i].cid)) N.i++; return N.crops[N.i]||null; }
+function drawCrop(){
+  N.step='name'; N.name=''; N.other=false; N.status='Active';
+  const c=curCrop(); N.cur=c;
+  if(!c){ $('view').innerHTML=`<div class="stage card" style="text-align:center"><div class="prompt">The whole herd has names! 🎉</div><div class="big">✓ ${N.done}</div><div class="promptsub">${N.done?'You named '+N.done+' this session.':'Nothing left in the queue.'}</div><button class="btn block" onclick="setTab('herd')">Browse the herd</button></div>`; return; }
+  renderNameStage();
+}
+function renderNameStage(){
+  const c=N.cur;
+  const head=`<div class="progress"><span class="left">${N.left} left${N.done?` · <span class="streak">✓ ${N.done} done</span>`:''}</span><span>${esc(c.species||'')}${c.sex?(' · '+esc(c.sex)):''}</span></div>`;
+  const cropImg=`<div class="crop${N.step==='saved'?' saved':''}" id="cropbox"><img src="${c.thumb}" alt=""><span class="spchip">${esc(c.species||'animal')}</span><span class="seal">✓</span></div>`;
+  let body='';
+  if(N.step==='draw'){
+    body=`${cropImg}<div class="prompt">Meet a new face</div><div class="promptsub">Give this ${esc((c.species||'animal').toLowerCase())} a name.</div>
+      <button class="btn accent block" onclick="nameBegin()">Name this one</button>
+      <div class="btnrow" style="margin-top:10px"><button class="btn ghost" style="flex:1" onclick="nameSkip()">Skip</button>${ADMIN?`<button class="btn ghost" style="flex:1;color:var(--accent)" onclick="nameReject()">✕ Too poor</button>`:''}</div>`;
+  } else if(N.step==='name'){
+    const spAll=(HERD.individuals||[]).filter(a=>spMatch(c.species,a.species));
+    const sameSex=spAll.filter(a=>!c.sex||a.sex===c.sex);
+    const showAll=N.other||!sameSex.length;
+    const opts=(showAll?spAll:sameSex).map(a=>a.name).sort();
+    body=`${cropImg}<div class="prompt">Who is this ${esc(c.sex?c.sex+' ':'')}${esc((c.species||'animal').toLowerCase())}?</div>
+      <div class="namelist">${opts.map(nm=>`<button class="pill" onclick="namePick('${esc(nm).replace(/'/g,"\\'")}')">${esc(nm)}</button>`).join('')||'<span style="color:var(--muted)">No existing names for this species yet.</span>'}</div>
+      ${(!showAll&&spAll.length>sameSex.length)?`<button class="btn ghost block" onclick="nameOther()">Not here? Show all ${esc((c.species||'animals').toLowerCase())} ▾</button>`:''}
+      <div class="newrow"><input id="newname" class="search" placeholder="✚ New name…" maxlength="40"><button class="btn" onclick="nameNew()">Add</button></div>
+      <div class="btnrow" style="margin-top:10px"><button class="btn ghost" style="flex:1" onclick="nameSkip()">Skip</button>${ADMIN?`<button class="btn ghost" style="flex:1;color:var(--accent)" onclick="nameReject()">✕ Too poor</button>`:''}</div>`;
+  } else if(N.step==='status'){
+    body=`${cropImg}<div class="prompt"><b>${esc(N.name)}</b></div><div class="promptsub">What's their status?</div>
+      <div class="statuses">${STATUSES.map(s=>`<button class="pill" onclick="nameStatus('${s}')"><span class="dot" style="background:${SCOLOR[s]}"></span>${s}</button>`).join('')}</div>
+      <button class="btn ghost block" onclick="nameBegin()">← Back to name</button>`;
+  } else if(N.step==='saving'){
+    body=`${cropImg}<div class="prompt">Saving <b>${esc(N.name)}</b>…</div><div class="big">⏳</div>`;
+  } else if(N.step==='saved'){
+    body=`${cropImg}<div class="prompt" style="color:var(--ok)">Saved to the vault ✓</div><div class="promptsub"><b>${esc(N.name)}</b> is now in the herd.</div>`;
+  }
+  $('view').innerHTML=`<div class="stage fade-enter">${head}${body}</div>`;
+  const ni=$('newname'); if(ni) ni.addEventListener('keydown',e=>{if(e.key==='Enter')nameNew();});
+}
+function nameBegin(){ N.step='name'; renderNameStage(); }
+function nameOther(){ N.other=true; renderNameStage(); }
+function namePick(nm){ N.name=nm; N.step='status'; renderNameStage(); }
+function nameNew(){ const v=($('newname').value||'').trim(); if(v){N.name=v;N.step='status';renderNameStage();} }
+function nameSkip(){ if(N.cur) N.skips.push(N.cur.cid); N.i++; drawCrop(); }
+function nameStatus(s){
+  const c=N.cur; if(!c) return; N.status=s; N.step='saving'; renderNameStage();
+  post('/name',{cid:c.cid,name:N.name,status:s}).then(r=>{
+    if(r&&r.ok){
+      N.done++; N.left=(typeof r.remaining==='number')?r.remaining:Math.max(0,N.left-1);
+      N.crops=N.crops.filter(x=>x.cid!==c.cid); // drop the named one locally
+      N.step='saved'; renderNameStage();
+      const box=$('cropbox'); if(box) box.classList.add('lift');
+      renderTabs();
+      const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+      setTimeout(()=>drawCrop(), reduce?0:900);
+    } else if(r&&r.error==='crop gone'){
+      toast('Already named — next one','ok'); N.crops=N.crops.filter(x=>x.cid!==c.cid); N.left=r.remaining||N.left; drawCrop();
+    } else { toast((r&&r.error)||'Save failed','err'); N.step='status'; renderNameStage(); }
+  }).catch(()=>{ toast("Can't reach the farm — try again",'err'); N.step='status'; renderNameStage(); });
+}
+function nameReject(){
+  const c=N.cur; if(!c) return;
+  if(!confirm('Remove this photo from the game? Too poor to name, won\'t be shown again.')) return;
+  N.step='saving'; N.name='(removing)'; renderNameStage();
+  post('/reject',{cid:c.cid}).then(r=>{
+    if(r&&r.ok){ N.left=r.remaining||Math.max(0,N.left-1); N.crops=N.crops.filter(x=>x.cid!==c.cid); toast('Removed','ok'); renderTabs(); drawCrop(); }
+    else { toast('Failed','err'); drawCrop(); }
+  }).catch(()=>{toast('Network error','err');drawCrop();});
+}
+
+/* ============================ PHOTOS (admin) — attach a gallery photo ============================ */
+let P={list:[],i:0,other:false,busy:false};
+function startPhotos(){
+  P={list:[],i:0,other:false,busy:false};
+  $('view').innerHTML=`<div class="stage card" style="text-align:center"><div class="prompt">Loading photos…</div><div class="big">⏳</div></div>`;
+  api('/gallery').then(d=>{ P.list=(d&&d.photos)||[]; P.i=0; showPhoto(); })
+    .catch(()=>{$('view').innerHTML=`<div class="card empty">Filing photos needs the live farm connection.</div>`;});
+}
+function showPhoto(){
+  if(P.i>=P.list.length){ $('view').innerHTML=`<div class="stage card" style="text-align:center"><div class="prompt">${P.list.length?'All filed!':'No photos to file.'}</div><div class="big">🎉</div><button class="btn block" onclick="setTab('herd')">Browse the herd</button></div>`; return; }
+  const c=P.list[P.i];
+  const all=(HERD.individuals||[]);
+  const match=all.filter(a=>spMatch(c.species,a.species));
+  const list=(P.other||!match.length)?all.slice():match; list.sort((a,b)=>a.name.localeCompare(b.name));
+  const hint=[c.species,(c.colors||[]).join('/'),c.markings].filter(Boolean).join(' · ');
+  const guess=c.guess_name?`<button class="btn accent block" onclick="photoPick('${esc(c.guess_id)}')">✓ Looks like ${esc(c.guess_name)}</button>`:'';
+  $('view').innerHTML=`<div class="stage fade-enter">
+    <div class="progress"><span class="left">Photo ${P.i+1} / ${P.list.length}</span><span>${esc(hint)}</span></div>
+    <div class="crop"><img src="${c.url}" alt="" loading="lazy"><span class="spchip">${esc(c.species||'?')}</span></div>
+    <div class="prompt">Whose photo is this?</div>${guess}
+    <input class="search" id="pq" placeholder="Search a name…" oninput="photoList()" style="margin:10px 0 8px">
+    <div class="namelist" id="pch"></div>
+    <div class="btnrow" style="margin-top:10px">
+      <button class="btn ghost" style="flex:1" onclick="photoOther()">${(P.other||!match.length)?'Showing all':'Show all ▾'}</button>
+      <button class="btn ghost" style="flex:1" onclick="photoSkip()">Skip</button></div></div>`;
+  window.__plist=list; photoList();
+}
+function photoList(){
+  const q=(($('pq')||{}).value||'').toLowerCase(); const ch=$('pch'); if(!ch)return;
+  const items=(window.__plist||[]).filter(a=>a.name.toLowerCase().includes(q)||(a.species||'').toLowerCase().includes(q));
+  ch.innerHTML=items.slice(0,40).map(a=>`<button class="pill" onclick="photoPick('${esc(a.id)}')">${esc(a.name)}${a.sex?(' · '+esc(a.sex)):''}</button>`).join('')||'<span style="color:var(--muted)">No matches.</span>';
+}
+function photoOther(){ P.other=true; showPhoto(); }
+function photoSkip(){ P.i++; P.other=false; showPhoto(); }
+function photoPick(aid){
+  if(P.busy)return; const c=P.list[P.i]; if(!c)return; P.busy=true;
+  post('/photo',{pid:c.pid,animal_id:aid,url:c.url}).then(r=>{
+    P.busy=false;
+    if(r&&r.ok){ toast('Filed ✓','ok'); P.i++; P.other=false; renderTabs(); showPhoto(); }
+    else { toast((r&&r.error)||'Failed','err'); }
+  }).catch(()=>{P.busy=false;toast('Network error','err');});
+}
+
+function sexGlyph(s){ return s==='female'?'♀ ':s==='male'?'♂ ':''; }
+
+/* ============================ MAP (admin) — farm layout + drag animals into pens ============================
+   A painted SVG farm map (plans-hub style) traced from the real satellite layout.
+   Two modes:
+     • Normal: drag an animal token from the tray onto a pen (saves position + pen via POST /place).
+     • Edit ("Edit layout"): drag/resize the PENS and drag the map FEATURES (barn,
+       farmhouse, cabin, pond, roads, fields) to match the real fencing; Save persists
+       the whole layout via POST /layout. Everything renders from that layout over defaults. */
+const MAP_ART = {w:800, h:2000};   // SVG viewBox
+
+// ---- static painted backdrop (ground + woods + tree dots) — not individually draggable ----
+const FARM_BACKDROP = `
+<rect x="0" y="0" width="800" height="2000" fill="url(#grass)"/>
+<g filter="url(#sh)">
+<path d="M0,0 H340 C300,90 210,120 150,190 C90,255 70,360 40,430 C15,480 0,520 0,560 Z" fill="#5f7a44"/>
+<path d="M0,560 C70,610 60,760 20,880 C0,940 10,1040 0,1120 Z" fill="#5f7a44"/>
+<path d="M0,1360 C90,1410 100,1560 55,1690 C25,1780 40,1900 0,2000 Z" fill="#5f7a44"/>
+<path d="M0,1840 C220,1780 470,1900 660,1820 C740,1788 780,1880 800,1910 V2000 H0 Z" fill="#5f7a44"/>
+<path d="M800,260 C740,330 745,520 800,600 V260 Z" fill="#5f7a44"/>
+<path d="M800,1450 C755,1520 760,1660 800,1740 V1450 Z" fill="#5f7a44"/></g>
+<g fill="#6f9450" stroke="#4f6a37" stroke-width="2" opacity="0.95">
+<circle cx="70" cy="120" r="30"/><circle cx="150" cy="90" r="24"/><circle cx="40" cy="200" r="26"/>
+<circle cx="350" cy="520" r="30"/><circle cx="320" cy="560" r="22"/><circle cx="280" cy="1180" r="28"/>
+<circle cx="500" cy="1240" r="24"/><circle cx="650" cy="1030" r="30"/><circle cx="690" cy="1080" r="20"/><circle cx="120" cy="1500" r="26"/></g>`;
+
+// ---- draggable FEATURES: each drawn at its own origin, positioned by {x,y} (map px) ----
+// `d(...)` = the inner SVG for the feature, drawn around (0,0)-ish so translate moves it cleanly.
+const FEATURE_DEFS = {
+  nelsonRd:  {label:'Nelson Cemetery Rd', x:0, y:0, kind:'path', big:true, d:`
+    <path d="M540,20 C505,140 460,235 395,310 C320,395 205,435 110,470 C70,485 45,495 30,505" fill="none" stroke="#8f8f88" stroke-width="30" stroke-linecap="round"/>
+    <path d="M540,20 C505,140 460,235 395,310 C320,395 205,435 110,470 C70,485 45,495 30,505" fill="none" stroke="#d7d7cf" stroke-width="3" stroke-dasharray="12 16"/>`},
+  taylorRd:  {label:'Taylor Crossroads Rd', x:0, y:0, kind:'path', big:true, d:`
+    <path d="M600,20 C640,300 655,700 650,1100 C646,1470 635,1760 625,1980" fill="none" stroke="#8f8f88" stroke-width="30" stroke-linecap="round"/>
+    <path d="M600,20 C640,300 655,700 650,1100 C646,1470 635,1760 625,1980" fill="none" stroke="#d7d7cf" stroke-width="3" stroke-dasharray="12 16"/>`},
+  driveway:  {label:'Driveway', x:0, y:0, kind:'path', big:true, d:`
+    <path d="M430,300 C452,430 472,560 500,700 C524,820 540,960 520,1080 C505,1180 435,1245 365,1345 C305,1435 335,1560 305,1670" fill="none" stroke="#d8bd8c" stroke-width="36" stroke-linecap="round"/>
+    <path d="M520,760 C560,800 610,822 655,832" fill="none" stroke="#d8bd8c" stroke-width="28" stroke-linecap="round"/>`},
+  topField:  {label:'Top pasture', x:335, y:330, kind:'rect', d:`<rect x="0" y="0" width="255" height="320" rx="20" fill="#a6bf74" stroke="#8a6238" stroke-width="5" stroke-dasharray="3 13"/>`},
+  rightField:{label:'Right pasture', x:560, y:360, kind:'rect', d:`<rect x="0" y="0" width="150" height="400" rx="18" fill="#aac378" stroke="#8a6238" stroke-width="5" stroke-dasharray="3 13"/>`},
+  bottomField:{label:'Bottom paddock', x:70, y:1130, kind:'rect', d:`<rect x="0" y="0" width="410" height="540" rx="24" fill="#a6bf74" stroke="#8a6238" stroke-width="5" stroke-dasharray="3 13"/>`},
+  tilled:    {label:'Tilled field', x:130, y:650, kind:'rect', d:`<rect x="0" y="0" width="255" height="230" rx="12" fill="url(#till)" stroke="#8a6a44" stroke-width="5"/>`},
+  pond:      {label:'Pond', x:382, y:923, kind:'blob', d:`<g filter="url(#sh)"><ellipse cx="88" cy="62" rx="88" ry="62" fill="url(#pondg)" stroke="#4a8aab" stroke-width="4"/><ellipse cx="66" cy="45" rx="15" ry="8" fill="#c4e9f5" opacity="0.7"/><ellipse cx="116" cy="77" rx="11" ry="6" fill="#c4e9f5" opacity="0.6"/></g>`},
+  barn:      {label:'Barn', x:556, y:772, kind:'bldg', d:`<g filter="url(#sh)"><rect x="4" y="48" width="130" height="95" fill="#c2ad90" stroke="#6e5236" stroke-width="4"/><rect x="4" y="48" width="130" height="20" fill="#a98f6e"/><polygon points="0,48 69,0 138,48" fill="#9aa0a6" stroke="#6e5236" stroke-width="4"/><polygon points="0,48 69,0 69,48" fill="#8a9096"/><rect x="54" y="90" width="34" height="53" fill="#7a5c3c" stroke="#5a4026" stroke-width="2"/><rect x="140" y="28" width="18" height="115" fill="#c8ccd0" stroke="#6e5236" stroke-width="2"/><ellipse cx="149" cy="28" rx="9" ry="5" fill="#dfe3e6" stroke="#6e5236" stroke-width="2"/></g>`},
+  farmhouse: {label:'Farmhouse', x:596, y:896, kind:'bldg', d:`<g filter="url(#sh)"><rect x="4" y="39" width="95" height="72" fill="#f6f1e8" stroke="#6e5236" stroke-width="4"/><polygon points="0,39 51,0 102,39" fill="#c0492f" stroke="#6e5236" stroke-width="4"/><polygon points="0,39 51,0 51,39" fill="#a83e28"/><rect x="40" y="76" width="22" height="35" fill="#7a5c3c"/><rect x="12" y="56" width="16" height="16" fill="#bcd6e0" stroke="#6e5236" stroke-width="2"/><rect x="76" y="56" width="16" height="16" fill="#bcd6e0" stroke="#6e5236" stroke-width="2"/></g>`},
+  cabin:     {label:'Cabin', x:246, y:1546, kind:'bldg', d:`<g filter="url(#sh)"><rect x="4" y="39" width="95" height="72" fill="#b09378" stroke="#6e5236" stroke-width="4"/><polygon points="0,39 51,0 102,39" fill="#7f8288" stroke="#6e5236" stroke-width="4"/><rect x="106" y="14" width="12" height="97" fill="#8a8074"/><rect x="39" y="76" width="24" height="35" fill="#5a4026"/></g>`},
+};
+// draw order (back to front)
+const FEATURE_ORDER = ['nelsonRd','taylorRd','driveway','topField','rightField','bottomField','tilled','pond','barn','farmhouse','cabin'];
+
+// ---- default pen zones (over the fields) — x/y/w/h as % of the map ----
+const PEN_DEFAULTS = [
+  {key:'Alpaca|female', label:'Alpaca Girls',  x:10, y:60, w:22, h:9,  emoji:'🦙'},
+  {key:'Alpaca|male',   label:'Alpaca Boys',   x:10, y:72, w:22, h:9,  emoji:'🦙'},
+  {key:'Goat|female',   label:'Goat Does',     x:36, y:60, w:20, h:9,  emoji:'🐐'},
+  {key:'Goat|male',     label:'Goat Bucks',    x:36, y:72, w:20, h:9,  emoji:'🐐'},
+  {key:'Mule|',         label:'Mules',         x:10, y:84, w:22, h:7,  emoji:'🐴'},
+  {key:'Cattle|female', label:'Cattle Cows',   x:45, y:18, w:22, h:6,  emoji:'🐮'},
+  {key:'Cattle|male',   label:'Cattle Bulls',  x:45, y:26, w:22, h:6,  emoji:'🐮'},
+  {key:'Turkey|female', label:'Turkey Hens',   x:74, y:20, w:20, h:6,  emoji:'🦃'},
+  {key:'Turkey|male',   label:'Turkey Toms',   x:74, y:30, w:20, h:6,  emoji:'🦃'},
+  {key:'Chicken|female',label:'Hens',          x:74, y:42, w:18, h:5,  emoji:'🐔'},
+  {key:'Chicken|male',  label:'Roosters',      x:74, y:49, w:18, h:5,  emoji:'🐔'},
+  {key:'Pig|',          label:'Pigs',          x:36, y:84, w:20, h:7,  emoji:'🐷'},
+  {key:'Ducks|',        label:'Ducks',         x:52, y:44, w:16, h:6,  emoji:'🦆'},
+];
+
+let M=null;  // {pens, features, placements, view, fit, edit, dirty}
+
+function penForZone(z){
+  const [sp,sx]=z.key.split('|');
+  return (M.pens||[]).find(f=>spMatch(sp,f.species)&&((f.sex||'')===(sx||''))) ||
+         (M.pens||[]).find(f=>spMatch(sp,f.species)&&!sx);
+}
+// The list of Drive pens (folders) comes from /placements; matched to a zone by key.
+let PEN_FOLDERS=[];
+
+function startMap(){
+  $('view').innerHTML=`<div class="stage card" style="text-align:center"><div class="prompt">Rolling out the map…</div><div class="big">🗺️</div></div>`;
+  Promise.all([api('/placements'), api('/layout').catch(()=>({layout:{}}))]).then(([p,l])=>{
+    PEN_FOLDERS=(p&&p.pens)||[];
+    M={pens:PEN_FOLDERS, placements:(p&&p.placements)||{}, view:{scale:1,tx:0,ty:0}, fit:1, edit:false, dirty:false};
+    const saved=(l&&l.layout)||{};
+    // merge saved pen positions over defaults (by label), and feature positions over defaults
+    M.zones=PEN_DEFAULTS.map(d=>Object.assign({}, d, (saved.pens&&saved.pens[d.label])||{}));
+    M.features={}; FEATURE_ORDER.forEach(id=>{ const f=FEATURE_DEFS[id]; M.features[id]={x:f.x,y:f.y, ...(saved.features&&saved.features[id]||{})}; });
+    renderMap();
+  }).catch(()=>{$('view').innerHTML=`<div class="card empty">The map needs the live farm connection.</div>`;});
+}
+function unplacedAnimals(){ return (HERD.individuals||[]).filter(a=>!(M.placements[a.id]&&typeof M.placements[a.id].x==='number')); }
+
+function farmSVG(){
+  const feats=FEATURE_ORDER.map(id=>{
+    const f=FEATURE_DEFS[id], p=M.features[id];
+    return `<g class="feat" data-feat="${id}" transform="translate(${p.x},${p.y})">${f.d}</g>`;
+  }).join('');
+  return `<svg class="mapart" id="mapart" viewBox="0 0 ${MAP_ART.w} ${MAP_ART.h}" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" font-family="Georgia,serif">
+    <defs>
+      <linearGradient id="grass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b3c884"/><stop offset="1" stop-color="#93ad66"/></linearGradient>
+      <radialGradient id="pondg" cx="0.4" cy="0.35" r="0.8"><stop offset="0" stop-color="#9ed6ec"/><stop offset="1" stop-color="#5aa0c4"/></radialGradient>
+      <pattern id="till" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(24)"><rect width="16" height="16" fill="#c39468"/><rect width="16" height="6" fill="#a97b4f"/></pattern>
+      <filter id="sh" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#2e2413" flood-opacity="0.28"/></filter>
+    </defs>
+    ${FARM_BACKDROP}
+    ${feats}
+  </svg>`;
+}
+function renderMap(){
+  const placed=(HERD.individuals||[]).filter(a=>M.placements[a.id]&&typeof M.placements[a.id].x==='number');
+  const tray=unplacedAnimals();
+  const zones=M.zones.map((z,i)=>{
+    const pen=penForZone(z);
+    const n=placed.filter(a=>M.placements[a.id].pen===(pen&&pen.id)).length;
+    return `<div class="penzone${M.edit?' editing':''}" data-zone="${i}" style="left:${z.x}%;top:${z.y}%;width:${z.w}%;height:${z.h}%">
+      <span class="sign"><span class="plank">${z.emoji} ${esc(z.label)}${n?`<span class="sub">${n} here</span>`:''}</span><span class="post"></span></span>
+      ${M.edit?'<span class="rz"></span>':''}</div>`;
+  }).join('');
+  const tokens=M.edit?'':placed.map(a=>{ const p=M.placements[a.id]; return tokenHTML(a,`left:${p.x*100}%;top:${p.y*100}%`,'onmap'); }).join('');
+  $('view').innerHTML=`
+    <div class="maphint">${M.edit?'✏️ Edit mode — drag the signs &amp; features to match your fencing; drag a corner to resize a pen.':'Drag an animal onto its pen. Pinch or ＋/－ to zoom.'}</div>
+    <div class="mapframe"><div class="mapstage${M.edit?' editing':''}" id="mapstage">
+      <div class="mapworld" id="mapworld">
+        ${farmSVG()}
+        <div class="penlayer" id="penlayer">${zones}</div>
+        <div class="tokenlayer" id="tokenlayer">${tokens}</div>
+      </div>
+      <div class="mapctrls">
+        <button class="ctrlbtn" onclick="mapZoom(1.25)">＋</button>
+        <button class="ctrlbtn" onclick="mapZoom(0.8)">－</button>
+        <button class="ctrlbtn" onclick="mapReset()" title="Fit whole map">⟳</button>
+      </div>
+    </div></div>
+    <div class="editbar">
+      <button class="btn ${M.edit?'accent':'ghost'}" onclick="toggleEdit()">${M.edit?'Done editing':'✏️ Edit layout'}</button>
+      ${M.edit?`<button class="btn" onclick="saveLayout()" ${M.dirty?'':'disabled style=opacity:.5'}>Save layout</button><button class="btn ghost" onclick="resetLayout()">Reset to default</button>`:''}
+    </div>
+    ${M.edit?'':`<div class="tray" id="tray"><div class="traylbl">${tray.length} to place · drag onto the map</div>
+      <div class="trayrow">${tray.map(a=>tokenHTML(a,'','tray')).join('')||'<span style="color:var(--muted);padding:8px">Everyone is placed! 🎉</span>'}</div></div>`}`;
+  sizeWorld(); fitMap(); wireMapPanZoom();
+  if(M.edit) wireEditDrag(); else wireTokenDrag();
+}
+function tokenHTML(a,style,cls){
+  const img=primary(a);
+  const face=img?`<img src="${img}" alt="">`:`<span class="tkemoji">${emoji(a.species)}</span>`;
+  return `<div class="token ${cls}" data-aid="${esc(a.id)}" style="${style}" title="${esc(a.name)}">${face}<span class="tkname">${esc(a.name)}</span></div>`;
+}
+function sizeWorld(){ const stage=$('mapstage'), w=$('mapworld'); if(!stage||!w) return; const sw=stage.clientWidth; w.style.width=sw+'px'; w.style.height=(sw*MAP_ART.h/MAP_ART.w)+'px'; }
+function applyMapView(){ const w=$('mapworld'); if(w){ const v=M.view; w.style.transform=`translate(${v.tx}px,${v.ty}px) scale(${v.scale})`; } }
+function fitMap(){ const stage=$('mapstage'), w=$('mapworld'); if(!stage||!w) return; const sh=stage.clientHeight, wh=w.clientHeight||1, ww=w.clientWidth||1; M.fit=Math.min(1, sh/wh); M.view.scale=M.fit; M.view.tx=(stage.clientWidth-ww*M.fit)/2; M.view.ty=(sh-wh*M.fit)/2; applyMapView(); }
+function mapZoom(f){ const min=M.fit||0.2; M.view.scale=Math.max(min,Math.min(4,M.view.scale*f)); applyMapView(); }
+function mapReset(){ fitMap(); }
+function wireMapPanZoom(){
+  const stage=$('mapstage'); if(!stage) return;
+  let px=0,py=0,panning=false,pinchD=0;
+  stage.addEventListener('pointerdown',e=>{ if(e.target.closest('.token,.penzone,.feat'))return; panning=true; px=e.clientX; py=e.clientY; });
+  stage.addEventListener('pointermove',e=>{ if(!panning)return; M.view.tx+=e.clientX-px; M.view.ty+=e.clientY-py; px=e.clientX; py=e.clientY; applyMapView(); });
+  window.addEventListener('pointerup',()=>{ panning=false; });
+  stage.addEventListener('wheel',e=>{ e.preventDefault(); mapZoom(e.deltaY<0?1.12:0.9); },{passive:false});
+  stage.addEventListener('touchmove',e=>{ if(e.touches.length===2){ e.preventDefault(); const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY); if(pinchD) mapZoom(d/pinchD); pinchD=d; } },{passive:false});
+  stage.addEventListener('touchend',()=>{ pinchD=0; });
+}
+
+/* ---------- EDIT MODE: drag/resize pens + drag features ---------- */
+function toggleEdit(){ M.edit=!M.edit; renderMap(); }
+function resetLayout(){ if(!confirm('Reset all pen & feature positions to the default layout?'))return;
+  M.zones=PEN_DEFAULTS.map(d=>Object.assign({},d));
+  M.features={}; FEATURE_ORDER.forEach(id=>{ const f=FEATURE_DEFS[id]; M.features[id]={x:f.x,y:f.y}; });
+  M.dirty=true; renderMap();
+}
+function saveLayout(){
+  const layout={pens:{}, features:{}};
+  M.zones.forEach(z=>{ layout.pens[z.label]={x:z.x,y:z.y,w:z.w,h:z.h}; });
+  FEATURE_ORDER.forEach(id=>{ layout.features[id]={x:M.features[id].x,y:M.features[id].y}; });
+  post('/layout',{layout}).then(r=>{ if(r&&r.ok){ M.dirty=false; toast('Layout saved ✓','ok'); renderMap(); } else toast('Save failed','err'); }).catch(()=>toast('Network error','err'));
+}
+// convert a client delta to map-% (pens) or map-px (features), accounting for zoom
+function artRect(){ return $('mapart').getBoundingClientRect(); }
+function wireEditDrag(){
+  const stage=$('mapstage'); if(!stage) return;
+  let mode=null, target=null, startX=0, startY=0, orig=null;
+  function down(e){
+    const rz=e.target.closest('.rz'); const pz=e.target.closest('.penzone'); const ft=e.target.closest('.feat');
+    if(rz){ mode='resize'; target=pz; orig={w:+pz.style.width.replace('%',''),h:+pz.style.height.replace('%','')}; }
+    else if(pz){ mode='movePen'; target=pz; orig={x:+pz.style.left.replace('%',''),y:+pz.style.top.replace('%','')}; }
+    else if(ft){ mode='moveFeat'; target=ft; const i=ft.dataset.feat; orig={x:M.features[i].x,y:M.features[i].y}; }
+    else return;
+    e.preventDefault(); e.stopPropagation();
+    startX=e.clientX; startY=e.clientY;
+    document.addEventListener('pointermove',move); document.addEventListener('pointerup',up);
+  }
+  function move(e){
+    if(!mode)return; e.preventDefault();
+    const r=artRect(); const dxp=(e.clientX-startX)/r.width*100, dyp=(e.clientY-startY)/r.height*100;
+    if(mode==='movePen'){ const i=+target.dataset.zone; const nx=Math.max(0,Math.min(96,orig.x+dxp)), ny=Math.max(0,Math.min(97,orig.y+dyp));
+      M.zones[i].x=nx; M.zones[i].y=ny; target.style.left=nx+'%'; target.style.top=ny+'%'; }
+    else if(mode==='resize'){ const i=+target.dataset.zone; const nw=Math.max(6,Math.min(60,orig.w+dxp)), nh=Math.max(4,Math.min(40,orig.h+dyp));
+      M.zones[i].w=nw; M.zones[i].h=nh; target.style.width=nw+'%'; target.style.height=nh+'%'; }
+    else if(mode==='moveFeat'){ const id=target.dataset.feat; const dxpx=(e.clientX-startX)/r.width*MAP_ART.w, dypx=(e.clientY-startY)/r.height*MAP_ART.h;
+      const nx=orig.x+dxpx, ny=orig.y+dypx; M.features[id].x=nx; M.features[id].y=ny; target.setAttribute('transform',`translate(${nx},${ny})`); }
+  }
+  function up(){ document.removeEventListener('pointermove',move); document.removeEventListener('pointerup',up); if(mode){ M.dirty=true; refreshSaveBtn(); } mode=null; target=null; }
+  stage.addEventListener('pointerdown',down);
+}
+function refreshSaveBtn(){ const b=[...document.querySelectorAll('.editbar .btn')].find(x=>x.textContent==='Save layout'); if(b){ b.disabled=false; b.style.opacity=1; } }
+
+/* ---------- NORMAL MODE: drag an animal token onto a pen ---------- */
+function wireTokenDrag(){
+  const layer=$('view'); let cur=null, ghost=null;
+  function down(e){ const tk=e.target.closest('.token'); if(!tk)return; e.preventDefault();
+    cur={aid:tk.dataset.aid, tk}; ghost=tk.cloneNode(true); ghost.classList.add('dragghost'); document.body.appendChild(ghost);
+    moveGhost(e); tk.classList.add('dragging'); document.addEventListener('pointermove',move); document.addEventListener('pointerup',up); }
+  function moveGhost(e){ if(ghost){ ghost.style.left=(e.clientX-26)+'px'; ghost.style.top=(e.clientY-26)+'px'; } }
+  function move(e){ if(!cur)return; e.preventDefault(); moveGhost(e); highlightZoneAt(e.clientX,e.clientY); }
+  function up(e){ document.removeEventListener('pointermove',move); document.removeEventListener('pointerup',up);
+    if(cur&&cur.tk) cur.tk.classList.remove('dragging'); document.querySelectorAll('.penzone.hot').forEach(z=>z.classList.remove('hot'));
+    if(ghost){ ghost.remove(); ghost=null; } if(cur) dropToken(cur.aid, e.clientX, e.clientY); cur=null; }
+  layer.addEventListener('pointerdown',down);
+}
+function zoneAt(cx,cy){ for(const z of [...document.querySelectorAll('.penzone')]){ const r=z.getBoundingClientRect(); if(cx>=r.left&&cx<=r.right&&cy>=r.top&&cy<=r.bottom) return z; } return null; }
+function highlightZoneAt(cx,cy){ const z=zoneAt(cx,cy); document.querySelectorAll('.penzone.hot').forEach(x=>{ if(x!==z) x.classList.remove('hot'); }); if(z) z.classList.add('hot'); }
+function dropToken(aid, cx, cy){
+  const r=artRect(); const x=Math.max(0,Math.min(1,(cx-r.left)/r.width)), y=Math.max(0,Math.min(1,(cy-r.top)/r.height));
+  const z=zoneAt(cx,cy); const a=(HERD.individuals||[]).find(x=>x.id===aid); const body={aid,x,y}; let penName='the open field';
+  if(z){ const zone=M.zones[+z.dataset.zone]; const pen=penForZone(zone); body.pen=pen?pen.id:''; penName=zone.label;
+    const [sp]=zone.key.split('|'); if(a&&a.species&&!spMatch(sp,a.species)) toast(`Note: ${esc(a.name)} is a ${esc(a.species)} — placed in ${esc(zone.label)} anyway`,''); }
+  else body.pen='';
+  M.placements[aid]=Object.assign({},M.placements[aid],{x,y,pen:body.pen});
+  post('/place',body).then(r=>{ if(r&&r.ok) toast(`${esc(a?a.name:'Animal')} → ${esc(penName)} ✓`,'ok'); else toast((r&&r.error)||'Save failed','err'); }).catch(()=>toast('Network error','err'));
+  renderMap();
+}
+
+boot();
+</script>
+</body>
+</html>
