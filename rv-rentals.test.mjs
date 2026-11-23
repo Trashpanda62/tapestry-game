@@ -54,7 +54,7 @@ for (let photo = 1; photo <= 6; photo += 1) {
   assert(html.includes(`assets/rv-${photo}.webp`), `missing photo reference: assets/rv-${photo}.webp`);
 }
 
-for (const photo of ['odyssey.png', 'sequence.png']) {
+for (const photo of ['odyssey.webp', 'sequence.webp']) {
   assert(html.includes(`assets/fleet/${photo}`), `missing fleet photo reference: assets/fleet/${photo}`);
 }
 
