@@ -503,14 +503,16 @@
         var scope=unitsInScope();
         var start=checkInDay(), end=checkOutDay();
         calendarGrid.replaceChildren();
+        var headRow=document.createElement('div'); headRow.className='calendar-row'; headRow.setAttribute('role','row'); calendarGrid.appendChild(headRow);
         WEEKDAYS.forEach(function(name){
           var head=document.createElement('div'); head.className='calendar-weekday'; head.setAttribute('role','columnheader');
           head.innerHTML='<abbr title="'+name+'day">'+name.charAt(0)+'</abbr>';
-          calendarGrid.appendChild(head);
+          headRow.appendChild(head);
         });
         grid.weeks.forEach(function(week){
+          var weekRow=document.createElement('div'); weekRow.className='calendar-row'; weekRow.setAttribute('role','row'); calendarGrid.appendChild(weekRow);
           week.forEach(function(cell){
-            if(!cell){var blank=document.createElement('div'); blank.className='calendar-day is-blank'; blank.setAttribute('role','gridcell'); calendarGrid.appendChild(blank); return;}
+            if(!cell){var blank=document.createElement('div'); blank.className='calendar-day is-blank'; blank.setAttribute('role','gridcell'); weekRow.appendChild(blank); return;}
             var openUnits=scope.filter(function(id){return !RV.isNightBooked(bookingIndex,id,cell.date);}).length;
             var button=document.createElement('button');
             button.type='button'; button.className='calendar-day'; button.setAttribute('role','gridcell');
@@ -551,7 +553,7 @@
                 (scope.length===1?label+' — '+activeClass.label+' open':
                   label+' — '+openUnits+' of '+scope.length+' '+noun+' open')));
             if(cell.date===start)button.setAttribute('aria-current','date');
-            calendarGrid.appendChild(button);
+            weekRow.appendChild(button);
           });
         });
         if(!calendarGrid.querySelector('.calendar-day[tabindex="0"]')){

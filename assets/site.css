@@ -112,6 +112,7 @@
     .calendar-step{min-width:44px; min-height:44px; border:1px solid var(--cardborder); border-radius:999px; background:var(--field-bg); color:var(--ink); font-size:17px; cursor:pointer}
     .calendar-step:hover{filter:brightness(.97)}
     .calendar-grid{display:grid; grid-template-columns:repeat(7,1fr); gap:5px}
+    .calendar-row{display:contents}
     .calendar-weekday{padding:5px 0; color:var(--muted-deep); font-size:12px; font-weight:700; text-align:center}
     .calendar-weekday abbr{text-decoration:none; border:0}
     .calendar-day{display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:44px; padding:0; border:1px solid transparent; border-radius:10px; background:#eef2e8; color:var(--ink); font:700 14px/1.05 var(--sans); cursor:pointer}
