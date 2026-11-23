@@ -129,6 +129,7 @@
   if (!document.querySelector(".mobile-cta") && ["checkout", "bag", "thanks"].indexOf(route) < 0) {
     var bar = document.createElement("div");
     bar.className = "mobile-cta call-bar";
+    bar.setAttribute("role", "region");
     bar.setAttribute("aria-label", "Contact Tapestry Acres");
     bar.innerHTML = '<a class="btn" href="tel:+19318233266">Call the farm</a>'
       + '<a class="btn btn--ghost" href="https://maps.google.com/?q=396+Taylor+Crossroads+Rd+Monroe+TN" target="_blank" rel="noopener">Directions</a>';
