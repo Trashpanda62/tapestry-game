@@ -1,6 +1,6 @@
 (function(){
   var lines=document.getElementById('checkout-lines'),subtotalEl=document.getElementById('checkout-subtotal'),shippingEl=document.getElementById('checkout-shipping'),taxEl=document.getElementById('checkout-tax'),totalEl=document.getElementById('checkout-total'),email=document.getElementById('checkout-email'),button=document.getElementById('pay-order'),cardContainer=document.getElementById('card-container'),message=document.getElementById('checkout-message');
-  function route(name){var base=document.querySelector('base');return new URL(name,base?base.href:location.origin+'/s/tapestry-acres/').pathname;}
+  function route(name){var base=document.querySelector('base');return new URL(name,base?base.href:new URL('./', location.href).href).pathname;}
   function read(){try{var value=JSON.parse(localStorage.getItem('tapestry-bag-v1')||'[]');return Array.isArray(value)?value:[];}catch(_){return [];}}
   function money(cents){return '$'+(Number(cents||0)/100).toFixed(2);}
   function show(text,error){message.hidden=false;message.textContent=text;message.setAttribute('data-error',error?'true':'false');}

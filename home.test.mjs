@@ -28,7 +28,7 @@ for (const href of ['experiences.html', 'shop.html', 'animals.html', 'rv-rentals
 
 assert(/<header\b[^>]*\bclass=["'][^"']*\bsite-header\b[^"']*["'][^>]*>/i.test(html), 'missing shared site-header');
 assert(/<footer\b[^>]*>/i.test(html), 'missing footer');
-assert(/<link\b[^>]*\brel=["']canonical["'][^>]*\bhref=["']https:\/\/trashpanda62\.github\.io\/tapestry-game\/["'][^>]*>/i.test(html), 'canonical link does not point to the site root');
+assert(/<link\b[^>]*\brel=["']canonical["'][^>]*\bhref=["']https:\/\/tapestryacres\.com\/["'][^>]*>/i.test(html), 'canonical link does not point to the farm domain root');
 
 // Hero is locked (baked) on the "identity" combo: no live switcher, copy names both species.
 assert(!html.includes('preset-switcher'), 'baked hero must not reference the retired preset-switcher');

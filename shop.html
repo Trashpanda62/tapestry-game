@@ -1,15 +1,15 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-hero="documentary" data-palette="pasture-ochre" data-typography="sturdy-slab" data-surface="painted-sign" data-illustration="accent" data-density="comfortable" data-motion="lively" data-nav="rail" data-calendar-layout="month-grid" data-facet-layout="left-rail" data-quickview-style="modal">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Farm Shop | Tapestry Acres</title>
   <meta name="description" content="Shop the full Tapestry Acres farm store — alpaca socks, hand-dyed yarn, roving, gloves, and more.">
-  <link rel="canonical" href="https://trashpanda62.github.io/tapestry-game/shop.html">
+  <link rel="canonical" href="https://tapestryacres.com/shop">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Farm Shop | Tapestry Acres">
   <meta property="og:description" content="Shop the full Tapestry Acres farm store — alpaca socks, hand-dyed yarn, roving, gloves, and more.">
-  <meta property="og:url" content="https://trashpanda62.github.io/tapestry-game/shop.html">
+  <meta property="og:url" content="https://tapestryacres.com/shop">
   <meta property="og:image" content="https://items-images-production.s3.us-west-2.amazonaws.com/files/a642fa779bf9ce22c4775aa32dff49046b88d88f/original.jpeg">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Farm Shop | Tapestry Acres">
@@ -57,8 +57,16 @@
     @media(max-width:700px){.shop-page{padding-top:35px}.shop-intro h1{font-size:clamp(2.6rem,14vw,4rem)}.product-grid{grid-template-columns:1fr}.shop-toolbar{align-items:stretch;flex-direction:column}.filter-tabs{display:none}.shop-sort{justify-content:space-between;margin-left:0}.filter-drawer-button{width:100%}.filter-drawer-button .btn{width:100%}.quick-view-content{grid-template-columns:1fr;gap:18px}.shop-dialog-inner{padding:22px 18px 26px}.quick-view-copy{padding-top:0}}
     @media(prefers-reduced-motion:reduce){.shop-dialog,.drawer-dialog{scroll-behavior:auto}}
   </style>
+  <script src="assets/site-shell.js" defer></script>
+  <script src="assets/state-skeletons.js" defer></script>
+  <script src="assets/journey-analytics.js" defer></script>
+  <script src="assets/site-content.js" defer></script>
+  <link rel="icon" href="https://tapestryacres.com/favicon.ico" sizes="16x16 32x32 48x48">
+  <link rel="icon" href="https://tapestryacres.com/assets/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="https://tapestryacres.com/assets/favicon-48.png" sizes="48x48" type="image/png">
+  <link rel="apple-touch-icon" href="https://tapestryacres.com/assets/apple-touch-icon-180.png" sizes="180x180">
 </head>
-<body>
+<body><a id="skip-to-content" class="skip-link" href="#main-content">Skip to content</a>
   <header class="site-header">
     <div class="header-inner">
       <div class="brand"><img class="brand-mark" src="assets/logo-mark.webp" alt="" aria-hidden="true" width="74" height="120" decoding="async">TAPESTRY ACRES</div>
@@ -68,7 +76,7 @@
       </nav>
     </div>
   </header>
-  <main class="page shop-page">
+  <main id="main-content" class="page shop-page">
     <section class="shop-intro" aria-labelledby="shop-title"><h1 data-slot="shop.h.title" id="shop-title">The Farm Shop</h1><p data-slot="shop.p.intro">Soft alpaca fiber and useful goods, made and selected with care at Tapestry Acres.</p></section>
     <section aria-label="Products">
       <div class="shop-controls">

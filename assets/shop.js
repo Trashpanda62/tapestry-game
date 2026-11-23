@@ -51,7 +51,7 @@
 
   function route(name) {
     var base = document.querySelector('base');
-    return new URL(name, base ? base.href : location.origin + '/s/tapestry-acres/').pathname;
+    return new URL(name, base ? base.href : new URL('./', location.href).href).pathname;
   }
   function normalize(value) { return String(value || '').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ').trim(); }
   function unique(values) { return Array.from(new Set(values.filter(Boolean))); }
@@ -444,7 +444,7 @@
     document.getElementById('open-filters').addEventListener('click', function () { showDialog(drawerDialog, document.getElementById('open-filters'), document.getElementById('mobile-filter-close')); }); document.getElementById('mobile-filter-close').addEventListener('click', function () { closeDialog(drawerDialog, true); }); document.getElementById('mobile-apply-filters').addEventListener('click', function () { closeDialog(drawerDialog, true); });
     bindDialog(productDialog, document.getElementById('product-detail-close')); bindDialog(drawerDialog, null); window.addEventListener('popstate', function () { readState(); renderedCount = CHUNK_SIZE; syncControls(); render(); }); document.addEventListener('click', function (event) { if (!event.target.closest('.shop-search')) { suggestionsOpen = false; suggestions.hidden = true; search.setAttribute('aria-expanded', 'false'); } });
   }
-  function apiRoute(name) { var base = document.querySelector('base'); return new URL(name, base ? base.href : location.origin + '/s/tapestry-acres/').pathname; }
+  function apiRoute(name) { var base = document.querySelector('base'); return new URL(name, base ? base.href : new URL('./', location.href).href).pathname; }
   // Live price, stock and new products from Square (the Site Manager's
   // Products screen). Best effort: the shop still opens on the static catalog.
   function loadLive() {

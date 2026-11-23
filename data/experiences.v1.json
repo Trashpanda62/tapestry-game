@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "1.0.0",
+  "data": [
+    {
+      "id": "coffee-with-the-cows",
+      "name": "Coffee with the Cows",
+      "blurb": "Saturday mornings among the herd, coffee in hand.",
+      "longDesc": "Start your Saturday slow. Bring a mug (or borrow one of ours) and wander into the pasture while our Highland cattle graze around you. No agenda, no rush — just the animals, the fields, and a quiet farm morning. Kids welcome; closed-toe shoes recommended.",
+      "price": "$20/guest",
+      "cadence": "Saturday mornings, recurring",
+      "image": "assets/cards/highlandpair.jpg",
+      "category": "recurring",
+      "bookPath": "book/coffee-with-the-cows"
+    },
+    {
+      "id": "alpaca-experience-walk",
+      "name": "Alpaca Experience with Alpaca Walk",
+      "blurb": "Learn about our alpacas and take one for a walk.",
+      "longDesc": "Perfect for the alpaca enthusiast or animal lover: you'll get to learn about our alpacas and take one for a walk on one of our paths.",
+      "price": "From $50/guest",
+      "cadence": "By appointment, 1 hr",
+      "image": "assets/portfolio/alpaca-face.webp",
+      "category": "one-time",
+      "bookPath": "book/alpaca-experience-walk"
+    },
+    {
+      "id": "private-guided-farm-tour",
+      "name": "Private Guided Farm Tour",
+      "blurb": "A full walkthrough of Tapestry Acres, just for your group.",
+      "longDesc": "A 2-hour private guided tour — great for the animal lover. You'll visit all of the animals, including alpacas, Highland cows, Nigerian Dwarf goats, Kune Kune pigs, and more; learn about each one, interact with most of them, and feed most of the animals. Animal interactions vary depending on which animals we have at the time of your visit, and whether we have baby animals that season.",
+      "price": "From $100/guest",
+      "cadence": "By appointment, 2 hr",
+      "image": "assets/portfolio/walk-family.webp",
+      "category": "one-time",
+      "bookPath": "book/private-guided-farm-tour"
+    },
+    {
+      "id": "virtual-farm-tour",
+      "name": "Virtual Farm Tour",
+      "blurb": "Can't make it out? We'll bring the farm to you, live on video.",
+      "longDesc": "Explore our farm from anywhere with a guided virtual tour — great for classrooms, remote family, or anyone curious about alpaca life before booking an in-person visit.",
+      "price": "$25/guest",
+      "cadence": "By appointment, 1 hr",
+      "image": "assets/bg/hero.webp",
+      "category": "one-time",
+      "bookPath": "book/virtual-farm-tour"
+    },
+    {
+      "id": "birthday-party",
+      "name": "Birthday Party",
+      "blurb": "Celebrate surrounded by alpacas, Highland cattle, and open pasture.",
+      "longDesc": "Host your birthday party at the farm! Includes a farm experience for the group, plus use of our picnic tables and lawn games if you choose. We can add on a birthday cake or cupcakes for an extra fee.",
+      "price": "$200/guest",
+      "cadence": "By appointment, 1 hr 30 min",
+      "image": "assets/portfolio/walk-blossoms.webp",
+      "category": "one-time",
+      "bookPath": "book/birthday-party"
+    },
+    {
+      "id": "farm-shopping-experience",
+      "name": "Farm Shopping Experience",
+      "blurb": "A private shopping visit to our farm store.",
+      "longDesc": "Enjoy a private shopping experience at our farm store — we have all the alpaca products, yarns, and more!",
+      "price": "Contact us",
+      "cadence": "By appointment, 30 min",
+      "image": "assets/farm/nigerian-dwarf-goats-barn.webp",
+      "category": "one-time",
+      "bookPath": null
+    }
+  ]
+}

@@ -4,7 +4,22 @@
   var route = (location.pathname.replace(/\/$/, "").split("/").pop() || "index").replace(/\.html$/, "");
   function tenantPath(name) {
     var base = document.querySelector("base");
-    return new URL(name, base ? base.href : location.origin + "/s/tapestry-acres/").pathname;
+    return new URL(name, base ? base.href : new URL("./", location.href).href).pathname;
+  }
+  /* GitHub Pages mirror only. Booking, bag and checkout need the live server, which
+     exists only on the farm's own domain, so send those routes there. No-op elsewhere. */
+  if (/\.github\.io$/.test(location.hostname)) {
+    var LIVE = "https://tapestryacres.com", DYNAMIC = /(?:^|\/)(book|bag|checkout|rv-admin)(?:\.html)?\/?$/;
+    var here = location.pathname.match(DYNAMIC);
+    if (here) { location.replace(LIVE + "/" + here[1] + location.search + location.hash); return; }
+    var sendLive = function (a) {
+      var u; try { u = new URL(a.getAttribute("href"), location.href); } catch (_) { return; }
+      var m = u.origin === location.origin && u.pathname.match(DYNAMIC);
+      if (m) a.setAttribute("href", LIVE + "/" + m[1] + u.search + u.hash);
+    };
+    var sweep = function () { document.querySelectorAll("a[href]").forEach(sendLive); };
+    sweep();
+    new MutationObserver(sweep).observe(document.documentElement, { childList: true, subtree: true });
   }
   function bagCount() {
     try {

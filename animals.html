@@ -1,15 +1,15 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-hero="documentary" data-palette="pasture-ochre" data-typography="sturdy-slab" data-surface="painted-sign" data-illustration="accent" data-density="comfortable" data-motion="lively" data-nav="rail" data-calendar-layout="month-grid" data-facet-layout="left-rail" data-quickview-style="modal">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Meet the Animals | Tapestry Acres</title>
   <meta name="description" content="Alpacas, Highland cattle, Nigerian Dwarf goats, Kune Kune pigs, mules, and more at Tapestry Acres in Monroe, Tennessee — plus animals currently for sale.">
-  <link rel="canonical" href="https://trashpanda62.github.io/tapestry-game/animals.html">
+  <link rel="canonical" href="https://tapestryacres.com/animals">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Meet the Animals | Tapestry Acres">
   <meta property="og:description" content="Alpacas, Highland cattle, Nigerian Dwarf goats, Kune Kune pigs, mules, and more at Tapestry Acres in Monroe, Tennessee.">
-  <meta property="og:url" content="https://trashpanda62.github.io/tapestry-game/animals.html">
+  <meta property="og:url" content="https://tapestryacres.com/animals">
   <meta property="og:image" content="https://trashpanda62.github.io/tapestry-game/assets/portfolio/alpaca-face.webp">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Meet the Animals | Tapestry Acres">
@@ -34,8 +34,16 @@
     .load-error{margin:30px 0 90px;padding:22px;border:1px solid var(--accent);border-radius:16px;background:var(--card);color:var(--alert);text-align:center;font-weight:700}
     @media(max-width:700px){.animals-intro{padding-top:45px}.animal-groups,.for-sale-grid{grid-template-columns:1fr}}
   </style>
+  <script src="assets/site-shell.js" defer></script>
+  <script src="assets/state-skeletons.js" defer></script>
+  <script src="assets/journey-analytics.js" defer></script>
+  <script src="assets/site-content.js" defer></script>
+  <link rel="icon" href="https://tapestryacres.com/favicon.ico" sizes="16x16 32x32 48x48">
+  <link rel="icon" href="https://tapestryacres.com/assets/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="https://tapestryacres.com/assets/favicon-48.png" sizes="48x48" type="image/png">
+  <link rel="apple-touch-icon" href="https://tapestryacres.com/assets/apple-touch-icon-180.png" sizes="180x180">
 </head>
-<body>
+<body><a id="skip-to-content" class="skip-link" href="#main-content">Skip to content</a>
   <header class="site-header">
     <div class="header-inner">
       <div class="brand"><img class="brand-mark" src="assets/logo-mark.webp" alt="" aria-hidden="true" width="74" height="120" decoding="async">TAPESTRY ACRES</div>
@@ -50,11 +58,11 @@
       </nav>
     </div>
   </header>
-  <main>
+  <main id="main-content">
     <div class="page">
       <section class="animals-intro" aria-labelledby="animals-title">
         <h1 data-slot="animals.h.title" id="animals-title">Meet the animals</h1>
-        <p data-slot="animals.p.intro">110 acres, a whole barnyard of personalities. This page is the reference and for-sale guide; the <a href="/s/tapestry-acres/herd">Meet the Herd</a> game is where you test how well you know them.</p>
+        <p data-slot="animals.p.intro">110 acres, a whole barnyard of personalities. This page is the reference and for-sale guide; the <a href="meet-the-herd.html">Meet the Herd</a> game is where you test how well you know them.</p>
       </section>
       <nav class="animal-jump" aria-label="Jump to species"><label for="animal-filter">Jump to a group</label><select id="animal-filter"><option value="all">All species</option></select></nav>
       <div class="animal-groups" id="animal-groups" aria-live="polite" aria-busy="true"><article class="skeleton-card" aria-hidden="true"></article><article class="skeleton-card" aria-hidden="true"></article><article class="skeleton-card" aria-hidden="true"></article><span class="sr-only">Loading animals…</span></div>

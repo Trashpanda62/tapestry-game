@@ -1,15 +1,15 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-hero="documentary" data-palette="pasture-ochre" data-typography="sturdy-slab" data-surface="painted-sign" data-illustration="accent" data-density="comfortable" data-motion="lively" data-nav="rail" data-calendar-layout="month-grid" data-facet-layout="left-rail" data-quickview-style="modal">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Tapestry Acres | Farm Experiences, Shop &amp; Stays in Monroe, TN</title>
   <meta name="description" content="An alpaca &amp; Highland-cattle farm-stay in Monroe, Tennessee. 110 acres of alpacas, Highland cattle, and farm stays — meet the herd, shop the fiber, stay the night.">
-  <link rel="canonical" href="https://trashpanda62.github.io/tapestry-game/">
+  <link rel="canonical" href="https://tapestryacres.com/">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Tapestry Acres | An alpaca &amp; Highland-cattle farm-stay in Monroe, TN">
   <meta property="og:description" content="110 acres of alpacas, Highland cattle, and farm stays in Monroe, Tennessee — meet the herd, shop the fiber, stay the night.">
-  <meta property="og:url" content="https://trashpanda62.github.io/tapestry-game/">
+  <meta property="og:url" content="https://tapestryacres.com/">
   <meta property="og:image" content="https://trashpanda62.github.io/tapestry-game/assets/bg/hero.webp">
   <meta property="og:image:alt" content="The pasture and herd at Tapestry Acres">
   <meta name="twitter:card" content="summary_large_image">
@@ -24,7 +24,7 @@
     "name": "Tapestry Acres",
     "description": "A 110-acre alpaca and Highland-cattle heritage-breed farm near Dale Hollow Lake in Monroe, Tennessee — alpaca walks, farm tours, RV sites and farm stays.",
     "image": "https://trashpanda62.github.io/tapestry-game/assets/og.jpg",
-    "url": "https://trashpanda62.github.io/tapestry-game/",
+    "url": "https://tapestryacres.com/",
     "telephone": "(931) 823-3266",
     "email": "tapestryacres@gmail.com",
     "address": {"@type":"PostalAddress","streetAddress":"396 Taylor Crossroads Rd","addressLocality":"Monroe","addressRegion":"TN","addressCountry":"US"},
@@ -124,8 +124,16 @@
       .home-hero .hero-copy{bottom:24px}
     }
   </style>
+  <script src="assets/site-shell.js" defer></script>
+  <script src="assets/state-skeletons.js" defer></script>
+  <script src="assets/journey-analytics.js" defer></script>
+  <script src="assets/site-content.js" defer></script>
+  <link rel="icon" href="https://tapestryacres.com/favicon.ico" sizes="16x16 32x32 48x48">
+  <link rel="icon" href="https://tapestryacres.com/assets/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="https://tapestryacres.com/assets/favicon-48.png" sizes="48x48" type="image/png">
+  <link rel="apple-touch-icon" href="https://tapestryacres.com/assets/apple-touch-icon-180.png" sizes="180x180">
 </head>
-<body>
+<body><a id="skip-to-content" class="skip-link" href="#main-content">Skip to content</a>
   <header class="site-header">
     <div class="header-inner">
       <div class="brand"><img class="brand-mark" src="assets/logo-mark.webp" alt="" aria-hidden="true" width="74" height="120" decoding="async">TAPESTRY ACRES</div>
@@ -143,14 +151,14 @@
   <!-- The nav toggle is wired by assets/site-shell.js, which the build injects into
        every page (scripts/build.mjs). A second inline handler used to live here; both
        flipped aria-expanded on the same click, so the menu never opened. -->
-  <main>
+  <main id="main-content">
     <section class="hero home-hero" aria-labelledby="hero-title">
       <div class="hero-media"><picture>
         <source type="image/avif" srcset="public/media/home-hero-480.avif 480w, public/media/home-hero-700.avif 700w" sizes="100vw">
         <source type="image/webp" srcset="public/media/home-hero-480.webp 480w, public/media/home-hero-700.webp 700w" sizes="100vw">
         <img data-photo="home.photo.hero" id="hero-image" src="assets/portfolio/walk-summer.webp" width="700" height="700" fetchpriority="high" decoding="async" alt="A Tapestry Acres host and guest walking with an alpaca and child">
       </picture></div>
-      <div class="hero-copy"><h1 data-slot="home.h.hero" id="hero-title">Meet the family, walk the working farm</h1><p data-slot="home.p.hero" id="hero-subline">Come to Tapestry Acres in Monroe, Tennessee for an unhurried alpaca experience, Highland cattle, a practical farm stay, and a shop full of useful fiber.</p><div class="hero-actions"><a data-slot="home.b.hero-primary" class="btn" href="/s/tapestry-acres/experiences">Book a farm experience</a><a data-slot="home.b.hero-secondary" class="btn secondary" href="/s/tapestry-acres/stay">Plan a stay</a></div><p data-slot="home.p.trust" class="hero-trust">110 acres · Upper Cumberland Valley · real farm, real animals</p><div class="flourish" aria-hidden="true">❖ ✳ ❖</div></div>
+      <div class="hero-copy"><h1 data-slot="home.h.hero" id="hero-title">Meet the family, walk the working farm</h1><p data-slot="home.p.hero" id="hero-subline">Come to Tapestry Acres in Monroe, Tennessee for an unhurried alpaca experience, Highland cattle, a practical farm stay, and a shop full of useful fiber.</p><div class="hero-actions"><a data-slot="home.b.hero-primary" class="btn" href="experiences.html">Book a farm experience</a><a data-slot="home.b.hero-secondary" class="btn secondary" href="rv-rentals.html">Plan a stay</a></div><p data-slot="home.p.trust" class="hero-trust">110 acres · Upper Cumberland Valley · real farm, real animals</p><div class="flourish" aria-hidden="true">❖ ✳ ❖</div></div>
     </section>
     <div class="page">
       <section class="content-section" aria-labelledby="plan-title">
@@ -169,7 +177,7 @@
           <source type="image/webp" srcset="public/media/family-proof-480.webp 480w, public/media/family-proof-700.webp 700w" sizes="(max-width:860px) 100vw, 570px">
           <img data-photo="home.photo.chapter" src="assets/portfolio/walk-family.webp" loading="lazy" decoding="async" width="700" height="700" alt="A family walking with alpacas at Tapestry Acres">
         </picture></figure>
-        <div class="editorial-note"><p class="field-label">A working morning</p><h2 data-slot="home.h.chapter" id="chapter-title">Come for the animals. Leave with a clearer day.</h2><p data-slot="home.p.chapter">Walk at the pace of the herd, ask the practical questions, and let the farm set the rhythm. Named animals, useful fiber, and a place to stay all meet on the same 110-acre farm.</p><a class="btn" href="/s/tapestry-acres/herd">Meet the herd</a></div>
+        <div class="editorial-note"><p class="field-label">A working morning</p><h2 data-slot="home.h.chapter" id="chapter-title">Come for the animals. Leave with a clearer day.</h2><p data-slot="home.p.chapter">Walk at the pace of the herd, ask the practical questions, and let the farm set the rhythm. Named animals, useful fiber, and a place to stay all meet on the same 110-acre farm.</p><a class="btn" href="meet-the-herd.html">Meet the herd</a></div>
       </section>
 
       <section class="content-section" aria-labelledby="experiences-title">

@@ -1,15 +1,15 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-hero="documentary" data-palette="pasture-ochre" data-typography="sturdy-slab" data-surface="painted-sign" data-illustration="accent" data-density="comfortable" data-motion="lively" data-nav="rail" data-calendar-layout="month-grid" data-facet-layout="left-rail" data-quickview-style="modal">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Farm Experiences | Tapestry Acres</title>
   <meta name="description" content="Check live availability for alpaca walks, private farm tours, birthdays, virtual tours, and private farm-store visits at Tapestry Acres.">
-  <link rel="canonical" href="https://trashpanda62.github.io/tapestry-game/experiences.html">
+  <link rel="canonical" href="https://tapestryacres.com/experiences">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Farm Experiences | Tapestry Acres">
   <meta property="og:description" content="Check live availability for alpaca walks, private farm tours, birthdays, virtual tours, and private farm-store visits at Tapestry Acres.">
-  <meta property="og:url" content="https://trashpanda62.github.io/tapestry-game/experiences.html">
+  <meta property="og:url" content="https://tapestryacres.com/experiences">
   <meta property="og:image" content="https://trashpanda62.github.io/tapestry-game/assets/bg/meadow.webp">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Farm Experiences | Tapestry Acres">
@@ -49,8 +49,16 @@
     .visit-faq-list a{color:#fff;font-weight:750}
     @media(max-width:760px){.visit-guide{grid-template-columns:1fr;padding:28px 20px}}
   </style>
+  <script src="assets/site-shell.js" defer></script>
+  <script src="assets/state-skeletons.js" defer></script>
+  <script src="assets/journey-analytics.js" defer></script>
+  <script src="assets/site-content.js" defer></script>
+  <link rel="icon" href="https://tapestryacres.com/favicon.ico" sizes="16x16 32x32 48x48">
+  <link rel="icon" href="https://tapestryacres.com/assets/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="https://tapestryacres.com/assets/favicon-48.png" sizes="48x48" type="image/png">
+  <link rel="apple-touch-icon" href="https://tapestryacres.com/assets/apple-touch-icon-180.png" sizes="180x180">
 </head>
-<body>
+<body><a id="skip-to-content" class="skip-link" href="#main-content">Skip to content</a>
   <header class="site-header">
     <div class="header-inner">
       <div class="brand"><img class="brand-mark" src="assets/logo-mark.webp" alt="" aria-hidden="true" width="74" height="120" decoding="async">TAPESTRY ACRES</div>
@@ -65,7 +73,7 @@
       </nav>
     </div>
   </header>
-  <main>
+  <main id="main-content">
     <div class="page">
       <section class="experiences-intro" aria-labelledby="experiences-title">
         <h1 data-slot="experiences.h.title" id="experiences-title">Experience the farm</h1>
@@ -163,7 +171,7 @@
       /* The static list is the page's fast first paint. The Site Manager is the
          source of truth for photos, prices, season text and anything added since
          the last release, so the live services API is merged over it. */
-      var baseTag=document.querySelector('base'), base=(baseTag?new URL(baseTag.href).pathname:'/s/tapestry-acres/').replace(/\/$/,'');
+      var baseTag=document.querySelector('base'), base=(baseTag?new URL(baseTag.href).pathname:new URL('./',location.href).pathname).replace(/\/$/,'');
       function mergeLive(){
         fetch(base+'/api/booking/services').then(function(r){if(!r.ok)throw new Error();return r.json();}).then(function(payload){
           var seasonEl=document.getElementById('faq-season');

@@ -1,0 +1,201 @@
+{
+  "schemaVersion": 1,
+  "curatedSkus": [
+    "TAP-BABYALPACAYARN-FUSHIATWILIGHT",
+    "TAP-BABYALPACAYARN-SPEARMINTBLUSH",
+    "TAP-ALPACADRYERBALL",
+    "TAP-WIX-PREMIUMALPACAGOL-SMALLBALLETROSE",
+    "TAP-WIX-FINGERLESSALPACA-SMALLBROWN",
+    "TAP-WIX-THERAPEUTICALPACASOCKS1-MEDIUMBLUE",
+    "TAP-WIX-ALPACAFELTTRIVET-BLACK",
+    "TAP-WIX-ALPACASOAP-ROSECLAY",
+    "TAP-WIX-ALPACADOGTOY-SMALL",
+    "TAP-WIX-ALPACASCARF-NATURAL",
+    "TAP-WIX-ALPACAHAT-BROWN",
+    "TAP-WIX-ALPACABABYBLANKET-NATURAL"
+  ],
+  "fallback": "Use catalog SKUs in ascending order when a curated SKU is absent; preserve the curated order for every SKU that exists.",
+  "fallbackUsed": true,
+  "products": [
+    {
+      "sku": "TAP-BABYALPACAYARN-FUSHIATWILIGHT",
+      "title": "Fuchsia Twilight Hand Dyed Baby Alpaca Yarn",
+      "description": "This lovely hand dyed yarn is 100% baby alpaca and is as soft as can be! It is hand dyed in fuchsias, purples, grays and white. There is 108 yards per skein in this bulky weight yarn. Only 3 skeins of this limited dye lot were made!",
+      "price": 24,
+      "category": "Yarn",
+      "subcategory": "Bulky",
+      "extra_category": "Hand Dyed Yarns",
+      "qty": 3,
+      "images_local": [
+        "assets/products/0/0.webp",
+        "assets/products/0/1.webp",
+        "assets/products/0/2.webp",
+        "assets/products/0/3.webp",
+        "assets/products/0/4.webp"
+      ],
+      "images_px": [
+        602,
+        602,
+        602,
+        602,
+        602
+      ],
+      "heroPx": 602
+    },
+    {
+      "sku": "TAP-BABYALPACAYARN-SPEARMINTBLUSH",
+      "title": "Spearmint Blush Hand Dyed Baby Alpaca Yarn",
+      "description": "This lovely hand dyed yarn is 100% baby alpaca and is as soft as can be! It is hand dyed in spearmint green and peach blush. There is 108 yards per skein in this bulky weight yarn. Only 3 skeins of this limited dye lot were made!",
+      "price": 24,
+      "category": "Yarn",
+      "subcategory": "Bulky",
+      "extra_category": "Hand Dyed Yarns",
+      "qty": 3,
+      "images_local": [
+        "assets/products/1/0.webp",
+        "assets/products/1/1.webp",
+        "assets/products/1/2.webp",
+        "assets/products/1/3.webp",
+        "assets/products/1/4.webp"
+      ],
+      "images_px": [
+        602,
+        600,
+        602,
+        602,
+        602
+      ],
+      "heroPx": 602
+    },
+    {
+      "sku": "TAP-ALPACADRYERBALL",
+      "title": "Alpaca Dryer Ball",
+      "description": "Did you know dryer sheets are one of the most chemically laden household objects? Our all-natural, hypoallergenic alpaca dryer balls are an excellent, environmentally friendly alternative! They bounce around the dryer helping to soften fabric, reduce static, wrinkles and drying time! For the best results, you want at least 2 dryer balls and up to 5! (We use 4 here!) If you like scented things, you can place a few drops of your favorite essential oil on the balls occasionally! Dryer balls are sold individually.",
+      "price": 5,
+      "category": "Household",
+      "subcategory": null,
+      "extra_category": null,
+      "qty": 17,
+      "images_local": [
+        "assets/products/2/0.webp",
+        "assets/products/2/1.webp",
+        "assets/products/2/2.webp",
+        "assets/products/2/3.webp"
+      ],
+      "images_px": [
+        640,
+        640,
+        640,
+        640
+      ],
+      "heroPx": 640
+    },
+    {
+      "sku": "TAP-WIX-PREMIUMALPACAGOL-SMALLBALLETROSE",
+      "title": "Premium Alpaca Golf Socks",
+      "description": "The Premium Sport Golf Socks are crafted from a base yarn of 70% alpaca and 30% acrylic, delivering natural softness, warmth, and durability. Designed for sports performance, they feature a cuff detail and an elastic band across the instep for a secure fit. The sole, heel, and toe are reinforced with dense terry cushioning, offering comfort and shock absorption. The ankle area remains light and breathable, ensuring freshness and flexibility. Composition: 54% Alpaca / 23% Acrylic / 17% Spandex / 4% Elastic / 2% Nylon Weight: 1.8 oz.",
+      "price": 18,
+      "category": "Sport Socks",
+      "subcategory": null,
+      "extra_category": null,
+      "qty": 0,
+      "images_local": [
+        "assets/products/3/0.webp",
+        "assets/products/3/1.webp",
+        "assets/products/3/2.webp"
+      ],
+      "images_px": [
+        504,
+        504,
+        504
+      ],
+      "heroPx": 504
+    },
+    {
+      "sku": "TAP-WIX-FINGERLESSALPACA-SMALLBROWN",
+      "title": "Fingerless Alpaca Gloves",
+      "description": "Mid-weight Fingerless Gloves are perfect for tasks requiring a sure fingered grip or cellphone use. When you want the warmth of alpaca, but require the practical use of your fingers, the Fingerless Glove is a great option.",
+      "price": 24,
+      "category": "Gloves",
+      "subcategory": null,
+      "extra_category": null,
+      "qty": 0,
+      "images_local": [
+        "assets/products/4/0.webp",
+        "assets/products/4/1.webp",
+        "assets/products/4/2.webp",
+        "assets/products/4/3.webp",
+        "assets/products/4/4.webp"
+      ],
+      "images_px": [
+        800,
+        800,
+        374,
+        800,
+        800
+      ],
+      "heroPx": 800
+    },
+    {
+      "sku": "TAP-WIX-THERAPEUTICALPACASOCKS1-MEDIUMBLUE",
+      "title": "Therapeutic Alpaca Socks",
+      "description": "DESIGNED FOR DIABETICS : These socks are designed in the USA and made in Peru for diabetics and those with sensitive feet. They have an extra amount of stretch (150% more) in the leg to relieve the pressure and help the circulation. The top band of the sock has enough elastic built in it to keep it up with out constricting the leg, and a loose ribbing and loose knit which does not restrict circulation. You will notice the difference in your body when your feet are feeling their best. GENTLE AGAINST SENSITIVE SKIN : These are medium weight, therapeutic alpaca fiber socks that have a flat seam that reduce pressure and protect against blisters. The alpaca within the fabric helps protect from irritation, and the softness of the yarn and the stitch make this sock breathable, comfortable, and gentle against sensitive skin. SOFT ALPACA FIBER : The sock is lined with terry for comfort and cushion, and reinforced in the heel, toe, and foot for durability. It also has cushion on the foot bottom to provide extra protection and comfort. It can be worn any time of the year due to some of the characteristics of the alpaca fiber, such as wicking of moisture from the feet, keeping it dry and thus preventing fungal growth. CREW AND BOOT LENGTH : These socks come in different colors and lengths, and there's a great variety to choose from! They are available in both boot length and crew length heights, and in black, blue, brown, gray, beige, white, purple and multi colors. MATERIAL : The fabric is made up of 47% Alpaca, 38% Acrylic, 9% Nylon and 6% Elastic. And its machine washable!",
+      "price": 24,
+      "category": "Socks",
+      "subcategory": null,
+      "extra_category": null,
+      "qty": 0,
+      "images_local": [
+        "assets/products/45/0.webp",
+        "assets/products/45/1.webp",
+        "assets/products/45/2.webp",
+        "assets/products/45/3.webp",
+        "assets/products/45/4.webp",
+        "assets/products/45/5.webp"
+      ],
+      "images_px": [
+        540,
+        540,
+        540,
+        180,
+        180,
+        339
+      ],
+      "heroPx": 540
+    },
+    {
+      "sku": "TAP-WIX-13X19PHOTOPRINT",
+      "title": "13x19 Photo Print",
+      "description": "13x19 Photo Print",
+      "price": 20,
+      "category": "Uncategorized",
+      "subcategory": null,
+      "extra_category": null,
+      "qty": 0,
+      "images_local": [
+        "assets/products/112/0.webp"
+      ],
+      "images_px": [
+        358
+      ],
+      "heroPx": 358
+    },
+    {
+      "sku": "TAP-WIX-4X6PHOTOPRINT",
+      "title": "4x6 Photo print",
+      "description": "4x6 printed photo.",
+      "price": 7,
+      "category": "Uncategorized",
+      "subcategory": null,
+      "extra_category": null,
+      "qty": 0,
+      "images_local": [
+        "assets/products/115/0.webp"
+      ],
+      "images_px": [
+        450
+      ],
+      "heroPx": 450
+    }
+  ]
+}

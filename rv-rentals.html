@@ -1,23 +1,31 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-hero="documentary" data-palette="pasture-ochre" data-typography="sturdy-slab" data-surface="painted-sign" data-illustration="accent" data-density="comfortable" data-motion="lively" data-nav="rail" data-calendar-layout="month-grid" data-facet-layout="left-rail" data-quickview-style="modal">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>RV Rentals &amp; Farm Stays in Monroe, TN | Tapestry Acres</title>
   <meta name="description" content="Rent a fully set-up motorhome at Tapestry Acres or have an RV delivered to your campsite near Monroe, Tennessee.">
-  <link rel="canonical" href="https://trashpanda62.github.io/tapestry-game/rv-rentals.html">
+  <link rel="canonical" href="https://tapestryacres.com/stay">
   <meta property="og:type" content="website">
   <meta property="og:title" content="RV Rentals &amp; Farm Stays | Tapestry Acres">
   <meta property="og:description" content="Stay beside the pasture or have a fully set-up motorhome delivered to your campsite near Monroe, Tennessee.">
-  <meta property="og:url" content="https://trashpanda62.github.io/tapestry-game/rv-rentals.html">
+  <meta property="og:url" content="https://tapestryacres.com/stay">
   <meta property="og:image" content="https://trashpanda62.github.io/tapestry-game/assets/bg/rv-pasture-sunset.webp">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="RV Rentals &amp; Farm Stays | Tapestry Acres">
   <meta name="twitter:description" content="Stay beside the pasture or have a fully set-up motorhome delivered to your campsite near Monroe, Tennessee.">
   <meta name="twitter:image" content="https://trashpanda62.github.io/tapestry-game/assets/bg/rv-pasture-sunset.webp">
   <link rel="stylesheet" href="assets/site.css">
+  <script src="assets/site-shell.js" defer></script>
+  <script src="assets/state-skeletons.js" defer></script>
+  <script src="assets/journey-analytics.js" defer></script>
+  <script src="assets/site-content.js" defer></script>
+  <link rel="icon" href="https://tapestryacres.com/favicon.ico" sizes="16x16 32x32 48x48">
+  <link rel="icon" href="https://tapestryacres.com/assets/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="https://tapestryacres.com/assets/favicon-48.png" sizes="48x48" type="image/png">
+  <link rel="apple-touch-icon" href="https://tapestryacres.com/assets/apple-touch-icon-180.png" sizes="180x180">
 </head>
-<body>
+<body><a id="skip-to-content" class="skip-link" href="#main-content">Skip to content</a>
   <header class="site-header">
     <div class="header-inner">
       <div class="brand"><img class="brand-mark" src="assets/logo-mark.webp" alt="" aria-hidden="true" width="74" height="120" decoding="async">TAPESTRY ACRES</div>
@@ -35,7 +43,7 @@
   <!-- The nav toggle is wired by assets/site-shell.js, which the build injects into
        every page (scripts/build.mjs). A second inline handler used to live here; both
        flipped aria-expanded on the same click, so the menu never opened. -->
-  <main>
+  <main id="main-content">
     <section class="hero" aria-labelledby="hero-title">
       <!-- The hero was an RV interior — the one thing any RVshare listing can also show.
            This is the actual product: a rig parked on the farm with the herd at the fence.
@@ -649,7 +657,7 @@
          all — do not remove it. */
       var apiBase=(function(){
         var tag=document.querySelector('base');
-        return (tag?new URL(tag.href).pathname:'/s/tapestry-acres/').replace(/\/$/,'');
+        return (tag?new URL(tag.href).pathname:new URL('./',location.href).pathname).replace(/\/$/,'');
       }());
       function loadAvailability(){
         var timeout=new Promise(function(_,reject){setTimeout(function(){reject(new Error('timeout'));},4000);});

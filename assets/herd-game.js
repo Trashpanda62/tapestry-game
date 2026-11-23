@@ -14,7 +14,7 @@
   if (!mount || !core) return;
 
   var baseTag = document.querySelector("base");
-  var base = baseTag ? new URL(baseTag.href).pathname : "/s/tapestry-acres/";
+  var base = baseTag ? new URL(baseTag.href).pathname : new URL("./", location.href).pathname;
   if (base.charAt(base.length - 1) !== "/") base += "/";
   var reducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var pack;
