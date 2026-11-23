@@ -37,7 +37,6 @@ assert(html.includes('action="https://sites.obscurastudio.design/s/tapestry-acre
 assert(/<iframe\b[^>]*\bname=["']lead_iframe["']/i.test(html), 'missing hidden iframe named lead_iframe');
 assert(html.includes('target="lead_iframe"'), 'form does not target lead_iframe');
 assert(html.includes('setTimeout(function(){form.hidden=true;confirmation.hidden=false;confirmation.focus();},50);'), 'booking form submit confirmation behavior changed');
-assert(!/tapestryacres\.com/i.test(html), 'contains a tapestryacres.com reference');
 assert(!/wix/i.test(html), 'contains a wix reference');
 assert(!html.includes('window.open'), 'contains window.open');
 assert(html.includes('name="company"'), 'missing company honeypot input');

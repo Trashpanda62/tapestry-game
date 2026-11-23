@@ -5,7 +5,7 @@
 (function () {
   "use strict";
   var baseTag = document.querySelector("base");
-  var base = (baseTag ? new URL(baseTag.href).pathname : "/s/tapestry-acres/").replace(/\/$/, "");
+  var base = (baseTag ? new URL(baseTag.href).pathname : new URL("./", location.href).pathname).replace(/\/$/, "");
   function apply(payload) {
     var copy = payload.copy || {}, photos = payload.photos || {}, facts = payload.facts || {};
     Object.keys(copy).forEach(function (id) {
@@ -35,6 +35,7 @@
     }
   }
   function run() {
+    if (/\.github\.io$/.test(location.hostname)) return; /* mirror has no Site Manager endpoint */
     fetch(base + "/api/site/content", { cache: "default" })
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (payload) { if (payload) apply(payload); })

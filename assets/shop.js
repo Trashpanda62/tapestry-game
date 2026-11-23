@@ -51,7 +51,7 @@
 
   function route(name) {
     var base = document.querySelector('base');
-    return new URL(name, base ? base.href : location.origin + '/s/tapestry-acres/').pathname;
+    return new URL(name, base ? base.href : new URL('./', location.href).href).pathname;
   }
   function normalize(value) { return String(value || '').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ').trim(); }
   function unique(values) { return Array.from(new Set(values.filter(Boolean))); }
@@ -441,7 +441,7 @@
   // Quick view is where the full text belongs now that the card carries only a teaser.
   function familyDescription(family) { var product = skuById[defaultVariant(family).sku] || productsFor(family)[0]; return cleanCopy((product || {}).description || 'A Tapestry Acres farm-shop good.'); }
   function bindEvents() {
-    if (toggle) toggle.addEventListener('click', function () { toggle.setAttribute('aria-expanded', toggle.getAttribute('aria-expanded') !== 'true'); });
+    /* The nav toggle is owned by assets/site-shell.js; a second handler here cancelled it out. */
     search.addEventListener('input', function () { activeState.query = search.value; suggestionsOpen = true; renderedCount = CHUNK_SIZE; updateSuggestions(); clearTimeout(searchTimer); searchTimer = setTimeout(function () { writeUrl('replace'); render(); }, 90); });
     search.addEventListener('focus', function () { suggestionsOpen = true; updateSuggestions(); });
     search.addEventListener('keydown', function (event) { var options = suggestions ? Array.from(suggestions.querySelectorAll('button')) : []; if (event.key === 'ArrowDown' && options.length) { event.preventDefault(); activeSuggestion = (activeSuggestion + 1) % options.length; options.forEach(function (button, index) { button.setAttribute('aria-selected', String(index === activeSuggestion)); }); } else if (event.key === 'ArrowUp' && options.length) { event.preventDefault(); activeSuggestion = (activeSuggestion - 1 + options.length) % options.length; options.forEach(function (button, index) { button.setAttribute('aria-selected', String(index === activeSuggestion)); }); } else if (event.key === 'Enter' && activeSuggestion >= 0 && options[activeSuggestion]) { event.preventDefault(); chooseSuggestion(options[activeSuggestion].firstChild.textContent); } else if (event.key === 'Escape') { suggestionsOpen = false; suggestions.hidden = true; search.setAttribute('aria-expanded', 'false'); } });
@@ -450,7 +450,7 @@
     document.getElementById('open-filters').addEventListener('click', function () { showDialog(drawerDialog, document.getElementById('open-filters'), document.getElementById('mobile-filter-close')); }); document.getElementById('mobile-filter-close').addEventListener('click', function () { closeDialog(drawerDialog, true); }); document.getElementById('mobile-apply-filters').addEventListener('click', function () { closeDialog(drawerDialog, true); });
     bindDialog(productDialog, document.getElementById('product-detail-close')); bindDialog(drawerDialog, null); window.addEventListener('popstate', function () { readState(); renderedCount = CHUNK_SIZE; syncControls(); render(); }); document.addEventListener('click', function (event) { if (!event.target.closest('.shop-search')) { suggestionsOpen = false; suggestions.hidden = true; search.setAttribute('aria-expanded', 'false'); } });
   }
-  function apiRoute(name) { var base = document.querySelector('base'); return new URL(name, base ? base.href : location.origin + '/s/tapestry-acres/').pathname; }
+  function apiRoute(name) { var base = document.querySelector('base'); return new URL(name, base ? base.href : new URL('./', location.href).href).pathname; }
   // Live price, stock and new products from Square (the Site Manager's
   // Products screen). Best effort: the shop still opens on the static catalog.
   function loadLive() {

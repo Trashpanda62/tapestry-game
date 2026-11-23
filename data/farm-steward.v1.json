@@ -1,0 +1,810 @@
+{
+  "schemaVersion": "1.0.0",
+  "data": {
+    "source": {
+      "herdExport": "C:/dev/tapestry-herd/herd.json",
+      "animalPool": "animals-pool.json",
+      "updated": "2026-07-27",
+      "mode": "game-only; not a care guide"
+    },
+    "pastures": [
+      {
+        "id": "alpaca-meadow",
+        "label": "The Alpaca Meadow",
+        "species": [
+          "Alpaca"
+        ],
+        "fallbackArt": "assets/bg/meadow.webp"
+      },
+      {
+        "id": "highland-fold",
+        "label": "The Highland Fold",
+        "species": [
+          "Highland cattle",
+          "Belted Galloway × Jersey"
+        ],
+        "fallbackArt": "assets/farm/highland-cow-goldenhour.webp"
+      },
+      {
+        "id": "goat-knoll",
+        "label": "The Goat Knoll",
+        "species": [
+          "Goat"
+        ],
+        "fallbackArt": "assets/farm/nigerian-dwarf-goats-barn.webp"
+      },
+      {
+        "id": "pig-pasture",
+        "label": "The Pig Pasture",
+        "species": [
+          "Pig"
+        ],
+        "fallbackArt": "assets/farm/kunekune-pigs-pasture.webp"
+      },
+      {
+        "id": "farmyard",
+        "label": "The Farmyard",
+        "species": [
+          "Mule",
+          "Chicken",
+          "Runner duck",
+          "Turkey"
+        ],
+        "fallbackArt": "assets/farm/poultry-ducks-geese.webp"
+      }
+    ],
+    "taskTypes": [
+      {
+        "id": "feed",
+        "label": "Feed run",
+        "icon": "🌾",
+        "wording": "is waiting on the feed cart",
+        "species": "any",
+        "points": 10
+      },
+      {
+        "id": "water",
+        "label": "Water check",
+        "icon": "💧",
+        "wording": "needs the trough topped up",
+        "species": "any",
+        "points": 10
+      },
+      {
+        "id": "vet",
+        "label": "Vet check",
+        "icon": "🩺",
+        "wording": "is due for a wellness look-over",
+        "species": "any",
+        "points": 15
+      },
+      {
+        "id": "shear",
+        "label": "Shearing day",
+        "icon": "✂️",
+        "wording": "is booked for a fleece trim",
+        "species": [
+          "Alpaca"
+        ],
+        "points": 20
+      },
+      {
+        "id": "herd-move",
+        "label": "Herd move",
+        "icon": "🚜",
+        "wording": "needs walking to fresh grass",
+        "species": [
+          "Highland cattle",
+          "Belted Galloway × Jersey",
+          "Goat",
+          "Pig",
+          "Alpaca",
+          "Mule"
+        ],
+        "points": 15
+      }
+    ],
+    "difficulty": {
+      "rounds": [
+        {
+          "round": 1,
+          "lineupSize": 4,
+          "sameSpeciesDistractors": 0,
+          "timerSeconds": 20,
+          "clueTasks": 0
+        },
+        {
+          "round": 2,
+          "lineupSize": 5,
+          "sameSpeciesDistractors": 1,
+          "timerSeconds": 16,
+          "clueTasks": 0
+        },
+        {
+          "round": 3,
+          "lineupSize": 6,
+          "sameSpeciesDistractors": 2,
+          "timerSeconds": 13,
+          "clueTasks": 1
+        },
+        {
+          "round": 4,
+          "lineupSize": 6,
+          "sameSpeciesDistractors": 3,
+          "timerSeconds": 10,
+          "clueTasks": 2
+        },
+        {
+          "round": 5,
+          "lineupSize": 8,
+          "sameSpeciesDistractors": 5,
+          "timerSeconds": 8,
+          "clueTasks": 2
+        }
+      ]
+    },
+    "animalCards": [
+      {
+        "id": "agnis",
+        "name": "Agnis",
+        "species": "Alpaca",
+        "pastureId": "alpaca-meadow",
+        "photo": null,
+        "art": "assets/portfolio/alpaca-face.webp",
+        "fact": "Fiber-herd girl.",
+        "clueEligible": false
+      },
+      {
+        "id": "alpine",
+        "name": "Alpine",
+        "species": "Highland cattle",
+        "pastureId": "highland-fold",
+        "photo": "assets/herd/alpine.jpg",
+        "art": "assets/farm/highland-cow-goldenhour.webp",
+        "fact": "Steer in the Highland fold (dual-purpose).",
+        "clueEligible": true
+      },
+      {
+        "id": "andy",
+        "name": "Andy",
+        "species": "Alpaca",
+        "pastureId": "alpaca-meadow",
+        "photo": null,
+        "art": "assets/portfolio/alpaca-face.webp",
+        "fact": "Halter-trained boy — the alpacas that go on walks.",
+        "clueEligible": true
+      },
+      {
+        "id": "avalanche",
+        "name": "Avalanche",
+        "species": "Alpaca",
+        "pastureId": "alpaca-meadow",
+        "photo": "assets/herd/avalanche.jpg",
+        "art": "assets/bg/meadow2.webp",
+        "fact": "Fiber-herd girl.",
+        "clueEligible": false
+      },
+      {
+        "id": "baby",
+        "name": "Baby",
+        "species": "Highland cattle",
+        "pastureId": "highland-fold",
+        "photo": "assets/herd/baby.jpg",
+        "art": "assets/farm/highland-cow-goldenhour.webp",
+        "fact": "Cow in the Highland fold.",
+        "clueEligible": true
+      },
+      {
+        "id": "bailey",
+        "name": "Bailey",
+        "species": "Alpaca",
+        "pastureId": "alpaca-meadow",
+        "photo": "assets/herd/bailey.jpg",
+        "art": "assets/portfolio/alpaca-face.webp",
+        "fact": "Fiber-herd girl.",
+        "clueEligible": false
+      },
+      {
+        "id": "bianca",
+        "name": "Bianca",
+        "species": "Alpaca",
+        "pastureId": "alpaca-meadow",
+        "photo": "assets/herd/bianca.jpg",
+        "art": "assets/portfolio/alpaca-face.webp",
+        "fact": "Fiber-herd girl.",
+        "clueEligible": false
+      },
+      {
+        "id": "blonde",
+        "name": "Blonde",
+        "species": "Highland cattle",
+        "pastureId": "highland-fold",
+        "photo": "assets/herd/blonde.jpg",
+        "art": "assets/farm/highland-calf-closeup.webp",
+        "fact": "Cow in the Highland fold.",
+        "clueEligible": true
+      },
+      {
+        "id": "bubbles",
+        "name": "Bubbles",
+        "species": "Goat",
+        "pastureId": "goat-knoll",
+        "photo": "assets/herd/bubbles.jpg",
+        "art": "assets/bg/goats.webp",
+        "fact": "2yo; too small to breed; friendly.",
+        "clueEligible": true
+      },
+      {
+        "id": "buddy",
+        "name": "Buddy",
+        "species": "Goat",
+        "pastureId": "goat-knoll",
+        "photo": null,
+        "art": "assets/farm/nigerian-dwarf-goats-barn.webp",
+        "fact": "Wether.",
+        "clueEligible": false
+      },
+      {
+        "id": "cal",
+        "name": "Cal",
+        "species": "Belted Galloway × Jersey",
+        "pastureId": "highland-fold",
+        "photo": null,
+        "art": "assets/bg/highland2.webp",
+        "fact": "Belted Galloway × Jersey steer; headed for butcher soon.",
+        "clueEligible": true
+      },
+      {
+        "id": "captain",
+        "name": "Captain",
+        "species": "Alpaca",
+        "pastureId": "alpaca-meadow",
+        "photo": "assets/herd/captain.jpg",
+        "art": "assets/portfolio/alpaca-face.webp",
+        "fact": "Halter-trained boy — the alpacas that go on walks.",
+        "clueEligible": true
+      },
+      {
+        "id": "carolina",
+        "name": "Carolina",
+        "species": "Belted Galloway × Jersey",
+        "pastureId": "highland-fold",
+        "photo": "assets/herd/carolina.jpg",
+        "art": "assets/bg/highland2.webp",
+        "fact": "Belted Galloway × Jersey cow carrying William Wallace's calf; due ~1-2 months.",
+        "clueEligible": true
+      },
+      {
+        "id": "casper",
+        "name": "Casper",
+        "species": "Alpaca",
+        "pastureId": "alpaca-meadow",
+        "photo": "assets/herd/casper.jpg",
+        "art": "assets/portfolio/alpaca-face.webp",
+        "fact": "Halter-trained boy — the alpacas that go on walks.",
+        "clueEligible": true
+      },
+      {
+        "id": "cedar",
+        "name": "Cedar",
+        "species": "Highland cattle",
+        "pastureId": "highland-fold",
+        "photo": null,
+        "art": "assets/farm/highland-calf-closeup.webp",
+        "fact": "Steer in the Highland fold (dual-purpose).",
+        "clueEligible": true
+      },
+      {
+        "id": "chiri-bim",
+        "name": "Chiri Bim",
+        "species": "Alpaca",
+        "pastureId": "alpaca-meadow",
+        "photo": "assets/herd/chiri-bim.jpg",
+        "art": "assets/portfolio/alpaca-face.webp",
+        "fact": "Alpaca at Tapestry Acres.",
+        "clueEligible": true
+      },
+      {
+        "id": "chord",
+        "name": "Chord",
+        "species": "Alpaca",
+        "pastureId": "alpaca-meadow",
+        "photo": "assets/herd/chord.jpg",
+        "art": "assets/portfolio/alpaca-face.webp",
+        "fact": "Halter-trained boy — the alpacas that go on walks.",
+        "clueEligible": true
+      },
+      {
+        "id": "daisy",
+        "name": "Daisy",
+        "species": "Highland cattle",
+        "pastureId": "highland-fold",
+        "photo": "assets/herd/daisy.jpg",
+        "art": "assets/farm/highland-calf-closeup.webp",
+        "fact": "Cow in the Highland fold.",
+        "clueEligible": true
+      },
+      {
+        "id": "donkey",
+        "name": "Donkey",
+        "species": "Goat",
+        "pastureId": "goat-knoll",
+        "photo": null,
+        "art": "assets/farm/nigerian-dwarf-goats-barn.webp",
+        "fact": "Wether (escaped the freezer).",
+        "clueEligible": true
+      },
+      {
+        "id": "donna",
+        "name": "Donna",
+        "species": "Alpaca",
+        "pastureId": "alpaca-meadow",
+        "photo": "assets/herd/donna.jpg",
+        "art": "assets/portfolio/alpaca-face.webp",
+        "fact": "Fiber-herd girl.",
+        "clueEligible": false
+      },
+      {
+        "id": "dude",
+        "name": "Dude",
+        "species": "Goat",
+        "pastureId": "goat-knoll",
+        "photo": "assets/herd/dude.jpg",
+        "art": "assets/farm/nigerian-dwarf-goats-barn.webp",
+        "fact": "Herd buck.",
+        "clueEligible": false
+      },
+      {
+        "id": "ella",
+        "name": "Ella",
+        "species": "Goat",
+        "pastureId": "goat-knoll",
+        "photo": "assets/herd/ella.jpg",
+        "art": "assets/farm/nigerian-dwarf-goats-barn.webp",
+        "fact": "LaMancha.",
+        "clueEligible": false
+      },
+      {
+        "id": "espresso-bean",
+        "name": "Espresso Bean",
+        "species": "Highland cattle",
+        "pastureId": "highland-fold",
+        "photo": null,
+        "art": "assets/farm/highland-cow-goldenhour.webp",
+        "fact": "Steer in the Highland fold (dual-purpose).",
+        "clueEligible": true
+      },
+      {
+        "id": "et",
+        "name": "ET",
+        "species": "Alpaca",
+        "pastureId": "alpaca-meadow",
+        "photo": "assets/herd/et.jpg",
+        "art": "assets/bg/meadow2.webp",
+        "fact": "Halter-trained boy — the alpacas that go on walks.",
+        "clueEligible": true
+      },
+      {
+        "id": "eve",
+        "name": "Eve",
+        "species": "Alpaca",
+        "pastureId": "alpaca-meadow",
+        "photo": "assets/herd/eve.jpg",
+        "art": "assets/portfolio/alpaca-face.webp",
+        "fact": "Fiber-herd girl.",
+        "clueEligible": false
+      },
+      {
+        "id": "fancy",
+        "name": "Fancy",
+        "species": "Goat",
+        "pastureId": "goat-knoll",
+        "photo": "assets/herd/fancy.jpg",
+        "art": "assets/bg/goats.webp",
+        "fact": "Milking doe.",
+        "clueEligible": false
+      },
+      {
+        "id": "felicity",
+        "name": "Felicity",
+        "species": "Goat",
+        "pastureId": "goat-knoll",
+        "photo": "assets/herd/felicity.jpg",
+        "art": "assets/bg/goats.webp",
+        "fact": "Goat at Tapestry Acres.",
+        "clueEligible": false
+      },
+      {
+        "id": "fiona",
+        "name": "Fiona",
+        "species": "Goat",
+        "pastureId": "goat-knoll",
+        "photo": "assets/herd/fiona.jpg",
+        "art": "assets/bg/goats.webp",
+        "fact": "Milking doe.",
+        "clueEligible": false
+      },
+      {
+        "id": "freidrick",
+        "name": "Freidrick",
+        "species": "Goat",
+        "pastureId": "goat-knoll",
+        "photo": "assets/herd/freidrick.jpg",
+        "art": "assets/bg/goats.webp",
+        "fact": "Intake male.",
+        "clueEligible": false
+      },
+      {
+        "id": "freya",
+        "name": "Freya",
+        "species": "Goat",
+        "pastureId": "goat-knoll",
+        "photo": "assets/herd/freya.jpg",
+        "art": "assets/bg/goats.webp",
+        "fact": "Milking doe.",
+        "clueEligible": false
+      },
+      {
+        "id": "gabbie",
+        "name": "Gabbie",
+        "species": "Goat",
+        "pastureId": "goat-knoll",
+        "photo": "assets/herd/gabbie.jpg",
+        "art": "assets/farm/nigerian-dwarf-goats-barn.webp",
+        "fact": "Milking doe; feisty.",
+        "clueEligible": false
+      },
+      {
+        "id": "georgia",
+        "name": "Georgia",
+        "species": "Belted Galloway × Jersey",
+        "pastureId": "highland-fold",
+        "photo": null,
+        "art": "assets/bg/highland2.webp",
+        "fact": "Belted Galloway × Jersey cow carrying William Wallace's calf; due ~1-2 months.",
+        "clueEligible": true
+      },
+      {
+        "id": "goose",
+        "name": "Goose",
+        "species": "Alpaca",
+        "pastureId": "alpaca-meadow",
+        "photo": "assets/herd/goose.jpg",
+        "art": "assets/bg/meadow2.webp",
+        "fact": "Halter-trained boy — the alpacas that go on walks.",
+        "clueEligible": true
+      },
+      {
+        "id": "jimini",
+        "name": "Jimini",
+        "species": "Goat",
+        "pastureId": "goat-knoll",
+        "photo": "assets/herd/jimini.jpg",
+        "art": "assets/farm/nigerian-dwarf-goats-barn.webp",
+        "fact": "Wether.",
+        "clueEligible": false
+      },
+      {
+        "id": "joey",
+        "name": "Joey",
+        "species": "Alpaca",
+        "pastureId": "alpaca-meadow",
+        "photo": "assets/herd/joey.jpg",
+        "art": "assets/bg/meadow2.webp",
+        "fact": "Halter-trained boy — the alpacas that go on walks. Cream fleece, buck teeth, shaggy fawn topknot. **Contest star (2026-07-05):** face of the Tapestry Acres",
+        "clueEligible": true
+      },
+      {
+        "id": "kalua",
+        "name": "Kalua",
+        "species": "Alpaca",
+        "pastureId": "alpaca-meadow",
+        "photo": "assets/herd/kalua.jpg",
+        "art": "assets/portfolio/alpaca-face.webp",
+        "fact": "Fiber-herd girl.",
+        "clueEligible": false
+      },
+      {
+        "id": "laverne",
+        "name": "Laverne",
+        "species": "Mule",
+        "pastureId": "farmyard",
+        "photo": "assets/herd/laverne.jpg",
+        "art": "assets/bg/meadow.webp",
+        "fact": "Decorative; intended for hay rides. Pair with Shirley.",
+        "clueEligible": true
+      },
+      {
+        "id": "margot",
+        "name": "Margot",
+        "species": "Goat",
+        "pastureId": "goat-knoll",
+        "photo": "assets/herd/margot.jpg",
+        "art": "assets/farm/nigerian-dwarf-goats-barn.webp",
+        "fact": "Milking doe — best milker.",
+        "clueEligible": true
+      },
+      {
+        "id": "marsala",
+        "name": "Marsala",
+        "species": "Highland cattle",
+        "pastureId": "highland-fold",
+        "photo": "assets/herd/marsala.jpg",
+        "art": "assets/farm/highland-cow-goldenhour.webp",
+        "fact": "Steer in the Highland fold (dual-purpose).",
+        "clueEligible": true
+      },
+      {
+        "id": "marshmallow",
+        "name": "Marshmallow",
+        "species": "Highland cattle",
+        "pastureId": "highland-fold",
+        "photo": "assets/herd/marshmallow.jpg",
+        "art": "assets/farm/highland-calf-closeup.webp",
+        "fact": "Cow in the Highland fold.",
+        "clueEligible": true
+      },
+      {
+        "id": "mauve",
+        "name": "mauve",
+        "species": "Alpaca",
+        "pastureId": "alpaca-meadow",
+        "photo": "assets/herd/mauve.jpg",
+        "art": "assets/portfolio/alpaca-face.webp",
+        "fact": "Alpaca at Tapestry Acres.",
+        "clueEligible": true
+      },
+      {
+        "id": "may",
+        "name": "May",
+        "species": "Highland cattle",
+        "pastureId": "highland-fold",
+        "photo": "assets/herd/may.jpg",
+        "art": "assets/farm/highland-cow-goldenhour.webp",
+        "fact": "Cow in the Highland fold.",
+        "clueEligible": true
+      },
+      {
+        "id": "merida",
+        "name": "Merida",
+        "species": "Highland cattle",
+        "pastureId": "highland-fold",
+        "photo": "assets/herd/merida.jpg",
+        "art": "assets/bg/highland.webp",
+        "fact": "Cow in the Highland fold (formerly Doce).",
+        "clueEligible": true
+      },
+      {
+        "id": "mini",
+        "name": "Mini",
+        "species": "Highland cattle",
+        "pastureId": "highland-fold",
+        "photo": null,
+        "art": "assets/farm/highland-cow-goldenhour.webp",
+        "fact": "Cow in the Highland fold.",
+        "clueEligible": true
+      },
+      {
+        "id": "no-name",
+        "name": "no name",
+        "species": "Goat",
+        "pastureId": "goat-knoll",
+        "photo": "assets/herd/no-name.jpg",
+        "art": "assets/bg/goats.webp",
+        "fact": "Goat at Tapestry Acres.",
+        "clueEligible": false
+      },
+      {
+        "id": "olaf",
+        "name": "Olaf",
+        "species": "Alpaca",
+        "pastureId": "alpaca-meadow",
+        "photo": "assets/herd/olaf.jpg",
+        "art": "assets/portfolio/alpaca-face.webp",
+        "fact": "Halter-trained boy — the alpacas that go on walks.",
+        "clueEligible": true
+      },
+      {
+        "id": "oreo",
+        "name": "Oreo",
+        "species": "Goat",
+        "pastureId": "goat-knoll",
+        "photo": "assets/herd/oreo.jpg",
+        "art": "assets/bg/goats.webp",
+        "fact": "LaMancha.",
+        "clueEligible": false
+      },
+      {
+        "id": "peggy-sue",
+        "name": "Peggy Sue",
+        "species": "Alpaca",
+        "pastureId": "alpaca-meadow",
+        "photo": "assets/herd/peggy-sue.jpg",
+        "art": "assets/portfolio/alpaca-face.webp",
+        "fact": "Fiber-herd girl.",
+        "clueEligible": false
+      },
+      {
+        "id": "pippa",
+        "name": "Pippa",
+        "species": "Goat",
+        "pastureId": "goat-knoll",
+        "photo": "assets/herd/pippa.jpg",
+        "art": "assets/farm/nigerian-dwarf-goats-barn.webp",
+        "fact": "Goat at Tapestry Acres.",
+        "clueEligible": false
+      },
+      {
+        "id": "poppy",
+        "name": "Poppy",
+        "species": "Pig",
+        "pastureId": "pig-pasture",
+        "photo": "assets/herd/poppy.jpg",
+        "art": "assets/farm/kunekune-pigs-pasture.webp",
+        "fact": "Pig at Tapestry Acres.",
+        "clueEligible": false
+      },
+      {
+        "id": "robbie",
+        "name": "Robbie",
+        "species": "Goat",
+        "pastureId": "goat-knoll",
+        "photo": "assets/herd/robbie.jpg",
+        "art": "assets/bg/goats.webp",
+        "fact": "Goat at Tapestry Acres.",
+        "clueEligible": false
+      },
+      {
+        "id": "sasha",
+        "name": "Sasha",
+        "species": "Highland cattle",
+        "pastureId": "highland-fold",
+        "photo": "assets/herd/sasha.jpg",
+        "art": "assets/farm/highland-cow-goldenhour.webp",
+        "fact": "Cow in the Highland fold.",
+        "clueEligible": true
+      },
+      {
+        "id": "seth",
+        "name": "Seth",
+        "species": "Alpaca",
+        "pastureId": "alpaca-meadow",
+        "photo": "assets/herd/seth.jpg",
+        "art": "assets/portfolio/alpaca-face.webp",
+        "fact": "Halter-trained boy — the alpacas that go on walks.",
+        "clueEligible": true
+      },
+      {
+        "id": "sheridan",
+        "name": "Sheridan",
+        "species": "Alpaca",
+        "pastureId": "alpaca-meadow",
+        "photo": "assets/herd/sheridan.jpg",
+        "art": "assets/portfolio/alpaca-face.webp",
+        "fact": "Halter-trained boy — the alpacas that go on walks.",
+        "clueEligible": true
+      },
+      {
+        "id": "shirley",
+        "name": "Shirley",
+        "species": "Mule",
+        "pastureId": "farmyard",
+        "photo": null,
+        "art": "assets/bg/meadow.webp",
+        "fact": "Decorative; intended for hay rides. Pair with Laverne.",
+        "clueEligible": true
+      },
+      {
+        "id": "snowflake",
+        "name": "Snowflake",
+        "species": "Alpaca",
+        "pastureId": "alpaca-meadow",
+        "photo": "assets/herd/snowflake.jpg",
+        "art": "assets/portfolio/alpaca-face.webp",
+        "fact": "Fiber-herd girl.",
+        "clueEligible": false
+      },
+      {
+        "id": "soloman",
+        "name": "Soloman",
+        "species": "Alpaca",
+        "pastureId": "alpaca-meadow",
+        "photo": "assets/herd/soloman.jpg",
+        "art": "assets/bg/meadow2.webp",
+        "fact": "Halter-trained boy — the alpacas that go on walks.",
+        "clueEligible": true
+      },
+      {
+        "id": "spaz",
+        "name": "Spaz",
+        "species": "Alpaca",
+        "pastureId": "alpaca-meadow",
+        "photo": "assets/herd/spaz.jpg",
+        "art": "assets/portfolio/alpaca-face.webp",
+        "fact": "Halter-trained boy — the alpacas that go on walks.",
+        "clueEligible": true
+      },
+      {
+        "id": "splat",
+        "name": "splat",
+        "species": "Goat",
+        "pastureId": "goat-knoll",
+        "photo": "assets/herd/splat.jpg",
+        "art": "assets/farm/nigerian-dwarf-goats-barn.webp",
+        "fact": "Goat at Tapestry Acres.",
+        "clueEligible": false
+      },
+      {
+        "id": "sven",
+        "name": "Sven",
+        "species": "Alpaca",
+        "pastureId": "alpaca-meadow",
+        "photo": "assets/herd/sven.jpg",
+        "art": "assets/portfolio/alpaca-face.webp",
+        "fact": "Halter-trained boy — the alpacas that go on walks.",
+        "clueEligible": true
+      },
+      {
+        "id": "unnamed-dappled",
+        "name": "Unnamed Dappled",
+        "species": "Goat",
+        "pastureId": "goat-knoll",
+        "photo": "assets/herd/unnamed-dappled.jpg",
+        "art": "assets/bg/goats.webp",
+        "fact": "Goat at Tapestry Acres.",
+        "clueEligible": false
+      },
+      {
+        "id": "unnamed-kid",
+        "name": "Unnamed Kid",
+        "species": "Goat",
+        "pastureId": "goat-knoll",
+        "photo": "assets/herd/unnamed-kid.jpg",
+        "art": "assets/bg/goats.webp",
+        "fact": "Goat at Tapestry Acres.",
+        "clueEligible": false
+      },
+      {
+        "id": "viola",
+        "name": "Viola",
+        "species": "Pig",
+        "pastureId": "pig-pasture",
+        "photo": "assets/herd/viola.jpg",
+        "art": "assets/cards/piglet.jpg",
+        "fact": "Pig at Tapestry Acres.",
+        "clueEligible": false
+      },
+      {
+        "id": "william-wallace",
+        "name": "William Wallace",
+        "species": "Highland cattle",
+        "pastureId": "highland-fold",
+        "photo": "assets/herd/william-wallace.jpg",
+        "art": "assets/farm/highland-calf-closeup.webp",
+        "fact": "Bull and herd sire of the Tapestry Acres Highland fold (12 head). Dual-purpose herd (beef + breeding stock). Leads the named Highland cattle at 396 Taylor Crossroads.",
+        "clueEligible": true
+      },
+      {
+        "id": "yeti",
+        "name": "Yeti",
+        "species": "Alpaca",
+        "pastureId": "alpaca-meadow",
+        "photo": null,
+        "art": "assets/bg/meadow2.webp",
+        "fact": "Halter-trained boy — the alpacas that go on walks.",
+        "clueEligible": true
+      }
+    ],
+    "session": {
+      "schemaVersion": 2,
+      "storageKey": "tapestry-farm-steward-v2",
+      "roundTasks": 5,
+      "scorePerCorrect": 10,
+      "speedBonusMax": 5,
+      "dailyStreak": true,
+      "reducedMotionSafe": true,
+      "keyboardSafe": true,
+      "touchSafe": true
+    }
+  }
+}

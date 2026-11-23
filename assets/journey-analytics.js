@@ -6,6 +6,7 @@
     var payload = {};
     ["event", "route", "href", "clickTier", "sku"].forEach(function (key) { if (typeof detail[key] === "string") payload[key] = detail[key].slice(0, 400); });
     allowedUtm.forEach(function (key) { if (typeof detail[key] === "string") payload[key] = detail[key].slice(0, 160); });
+    if (/\.github\.io$/.test(location.hostname)) return; /* mirror has no event endpoint */
     var body = JSON.stringify(payload);
     try {
       var beacon = new Blob([body], { type: "application/json" });
