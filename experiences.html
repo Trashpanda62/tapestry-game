@@ -141,7 +141,7 @@
           var priceMatch=experience.price.match(/[\d.]+/);
           var offer={"@type":"Offer","url":"https://trashpanda62.github.io/tapestry-game/experiences.html#"+experience.id,"priceCurrency":"USD","availability":"https://schema.org/InStock"};
           if(priceMatch)offer.price=priceMatch[0];
-          return {"@type":"Event","name":experience.name,"description":experience.longDesc,"image":"https://trashpanda62.github.io/tapestry-game/"+experience.image,"eventAttendanceMode":"https://schema.org/OfflineEventAttendanceMode","location":{"@type":"Place","name":"Tapestry Acres","address":{"@type":"PostalAddress","streetAddress":"396 Taylor Crossroads Rd","addressLocality":"Monroe","addressRegion":"TN","addressCountry":"US"}},"offers":offer};
+          return {"@type":"Service","name":experience.name,"description":experience.longDesc,"image":"https://trashpanda62.github.io/tapestry-game/"+experience.image,"provider":{"@type":"LocalBusiness","name":"Tapestry Acres","url":"https://trashpanda62.github.io/tapestry-game/","telephone":"(931) 823-3266","address":{"@type":"PostalAddress","streetAddress":"396 Taylor Crossroads Rd","addressLocality":"Monroe","addressRegion":"TN","addressCountry":"US"}},"offers":offer};
         })};
         var script=document.createElement('script');script.type='application/ld+json';script.textContent=JSON.stringify(data);document.head.appendChild(script);
       }
