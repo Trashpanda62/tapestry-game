@@ -162,7 +162,7 @@
         <source type="image/webp" srcset="assets/farm-shop/hero-640.webp 640w, assets/farm-shop/hero-1125.webp 1125w" sizes="100vw">
         <img data-photo="home.photo.hero" id="hero-image" src="assets/farm-shop/hero-1125.webp" width="1125" height="900" fetchpriority="high" decoding="async" alt="An alpaca resting in the pasture in front of the Tapestry Acres farm store">
       </picture></div>
-      <div class="hero-copy"><h1 data-slot="home.h.hero" id="hero-title">Alpaca goods and freeze dried treats from our family farm</h1><p data-slot="home.p.hero" id="hero-subline">Soft yarn, warm socks and blankets, and crunchy freeze dried candy, made and sold at Tapestry Acres in Monroe, Tennessee.</p><div class="hero-actions"><a data-slot="home.b.hero-primary" class="btn" href="shop.html">Shop the farm store</a><a data-slot="home.b.hero-secondary" class="btn secondary" href="freeze-dried.html">Freeze dried treats</a></div><p data-slot="home.p.trust" class="hero-trust">110 acres · Upper Cumberland Valley · real farm, real animals</p><div class="flourish" aria-hidden="true">❖ ✳ ❖</div></div>
+      <div class="hero-copy"><h1 data-slot="home.h.hero" id="hero-title">Alpaca goods and freeze dried treats from our family farm</h1><p data-slot="home.p.hero" id="hero-subline">Soft yarn, warm socks and blankets, and crunchy freeze dried candy, sold at our family farm in Monroe, Tennessee.</p><div class="hero-actions"><a data-slot="home.b.hero-primary" class="btn" href="shop.html">Shop the farm store</a><a data-slot="home.b.hero-secondary" class="btn secondary" href="freeze-dried.html">Freeze dried treats</a></div><p data-slot="home.p.trust" class="hero-trust">110 acres · Upper Cumberland Valley · real farm, real animals</p><div class="flourish" aria-hidden="true">❖ ✳ ❖</div></div>
     </section>
     <div class="page">
       <section class="content-section" aria-labelledby="shopby-title">
@@ -333,7 +333,7 @@
             /* Product markup is generated from the same live rows, so price and availability never go stale. */
             var ld=document.createElement('script');ld.type='application/ld+json';
             ld.textContent=JSON.stringify({'@context':'https://schema.org','@type':'ItemList',name:'Featured alpaca goods from the Tapestry Acres farm shop',itemListElement:items.map(function(item,index){
-              return {'@type':'ListItem',position:index+1,item:{'@type':'Product',name:item.title,image:new URL(item.src,location.href).href,brand:{'@type':'Brand',name:'Tapestry Acres'},offers:{'@type':'Offer',price:item.price.toFixed(2),priceCurrency:'USD',availability:'https://schema.org/InStock',url:new URL(S.shopHref(item.title),location.href).href}}};
+              return {'@type':'ListItem',position:index+1,item:{'@type':'Product',name:item.title,image:new URL(item.src,location.href).href,offers:{'@type':'Offer',price:item.price.toFixed(2),priceCurrency:'USD',availability:'https://schema.org/InStock',url:new URL(S.shopHref(item.title),location.href).href}}};
             })});
             document.head.appendChild(ld);
           }

@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-23T23:57:25.492Z",
-  "releaseHash": "7fe6498ee662ed26913bd07ded5b40a6fbfd58aa4e772198572e02b8de6083ca",
+  "generatedAt": "2026-11-24T00:07:33.210Z",
+  "releaseHash": "78b07456bb566252bba174a86d809c2cd3ec2a8e7c191b5cef9e4a8fb84663e7",
   "fileCount": 810,
-  "totalBytes": 36489942,
+  "totalBytes": 36489870,
   "rows": [
     {
       "id": "LOCK",

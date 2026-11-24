@@ -4,9 +4,9 @@
   "rows": [
     {
       "route": "Home",
-      "htmlBytes": 33805,
+      "htmlBytes": 33751,
       "requests": 13,
-      "transferBytes": 657402,
+      "transferBytes": 657348,
       "resources": [
         "assets/bg/alpaca-fence-sunset.webp",
         "assets/bg/highland2.webp",
@@ -57,9 +57,9 @@
     },
     {
       "route": "Shop",
-      "htmlBytes": 18918,
+      "htmlBytes": 18909,
       "requests": 9,
-      "transferBytes": 164554,
+      "transferBytes": 164545,
       "resources": [
         "assets/journey-analytics.8eec07a550e5.js",
         "assets/logo-mark.webp",
