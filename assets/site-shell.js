@@ -113,7 +113,7 @@
     var navFooter = document.createElement("nav");
     navFooter.className = "site-footer-nav";
     navFooter.setAttribute("aria-label", "Footer navigation");
-    navFooter.innerHTML = '<a href="index.html">Home</a><a href="shop.html">Shop</a><a href="freeze-dried.html">Freeze Dried</a><a href="animals.html">Our Herd</a><a href="experiences.html">Experiences</a><a href="rv-rentals.html">Stays &amp; RV</a><a href="meet-the-herd.html">Herd Game</a><a class="site-bag-link" href="bag.html">Bag</a><a href="mailto:tapestryacres@gmail.com">Contact</a><a href="https://maps.google.com/?q=396+Taylor+Crossroads+Rd+Monroe+TN" target="_blank" rel="noopener">Directions</a>';
+    navFooter.innerHTML = '<a href="index.html">Home</a><a href="shop.html">Shop</a><a href="freeze-dried.html">Freeze Dried</a><a href="farm-meats.html">Farm Meats</a><a href="animals.html">Our Herd</a><a href="experiences.html">Experiences</a><a href="rv-rentals.html">Stays &amp; RV</a><a href="meet-the-herd.html">Herd Game</a><a class="site-bag-link" href="bag.html">Bag</a><a href="mailto:tapestryacres@gmail.com">Contact</a><a href="https://maps.google.com/?q=396+Taylor+Crossroads+Rd+Monroe+TN" target="_blank" rel="noopener">Directions</a>';
     footer.appendChild(navFooter);
     refreshBagLinks();
   }

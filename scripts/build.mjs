@@ -32,6 +32,7 @@ const legacySourceRoutes = {
   "checkout.html": "/checkout",
   "404.html": "/404",
   "freeze-dried.html": "/freeze-dried",
+  "farm-meats.html": "/farm-meats",
   "thanks.html": "/thanks",
   "rv-admin.html": "/rv-admin"
 };

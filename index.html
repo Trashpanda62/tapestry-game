@@ -140,6 +140,9 @@
     .field-label{margin:0 0 8px; color:var(--accent); font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase}
     .visit-grid{grid-template-columns:repeat(3,1fr)}
     .visit-lead{max-width:62ch; margin:0 auto 26px; text-align:center; color:var(--muted)}
+    .fm-feature{padding:34px; border:1px solid var(--cardborder); border-radius:24px; background:var(--card); box-shadow:var(--shadow); text-align:center}
+    .fm-feature h2{margin:0 0 14px; font-size:clamp(2rem,5vw,2.65rem)}
+    .fm-feature p{max-width:60ch; margin:0 auto 18px}
     @media(max-width:860px){.fd-feature{grid-template-columns:1fr; padding:24px}.shop-by,.visit-grid{grid-template-columns:1fr 1fr}.product-grid.featured{grid-template-columns:1fr 1fr}}
     @media(max-width:560px){.shop-by,.visit-grid{grid-template-columns:1fr}.shop-by .hub-card{min-height:0}.product-grid.featured{gap:12px}.product-card .card-copy{padding:12px 14px}.product-card .card-copy h3{font-size:15px}}
   </style>
@@ -149,7 +152,7 @@
     <div class="header-inner">
       <div class="brand"><img class="brand-mark" src="assets/logo-mark.webp" alt="" aria-hidden="true" width="74" height="120" decoding="async">TAPESTRY ACRES</div>
       <button class="site-nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="site-nav"><span aria-hidden="true"></span></button>
-      <nav class="site-nav" id="site-nav" aria-label="Primary navigation"><a href="shop.html">Shop</a><a href="freeze-dried.html">Freeze Dried</a><a href="animals.html">Our Herd</a><a href="experiences.html">Visit &amp; Stay</a><a href="index.html#our-story">About</a></nav>
+      <nav class="site-nav" id="site-nav" aria-label="Primary navigation"><a href="shop.html">Shop</a><a href="freeze-dried.html">Freeze Dried</a><a href="farm-meats.html">Farm Meats</a><a href="animals.html">Our Herd</a><a href="experiences.html">Visit &amp; Stay</a><a href="index.html#our-story">About</a></nav>
     </div>
   </header>
   <!-- The nav toggle is wired by assets/site-shell.js, which the build injects into
@@ -187,6 +190,10 @@
       <section class="content-section fd-feature" aria-labelledby="fd-title">
         <img data-photo="home.photo.freeze-dried" src="assets/freeze-dried/crunchy-rainbows-label.webp" loading="lazy" decoding="async" width="1000" height="623" alt="The Tapestry Acres Crunchy Rainbows label: freeze-dried fruit-flavored candy, net weight 4 oz">
         <div><p class="field-label">New from the farm</p><h2 data-slot="home.h.fd" id="fd-title">Freeze dried candy</h2><p data-slot="home.p.fd">Small batches, freeze dried on our family farm. Each piece puffs up light and crunchy, with the same flavor as the candy it started as.</p><p class="fd-names">Crunchy Rainbows and Crunchy Boulders</p><a class="btn" href="freeze-dried.html">See the freeze dried treats →</a></div>
+      </section>
+
+      <section class="content-section fm-feature" aria-labelledby="fm-title">
+        <p class="field-label">Direct from the farm</p><h2 data-slot="home.h.fm" id="fm-title">Farm meats</h2><p data-slot="home.p.fm">Order meat straight from our family farm in Monroe. Send a reservation request, and we will confirm what is available, the price and your farm pickup.</p><a class="btn" href="farm-meats.html">Reserve farm meat →</a>
       </section>
 
       <section class="content-section editorial-sequence" aria-labelledby="chapter-title">

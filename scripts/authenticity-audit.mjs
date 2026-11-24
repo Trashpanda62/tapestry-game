@@ -3,7 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('../dist/', import.meta.url));
-const routes = ['index.html', 'experiences.html', 'shop.html', 'freeze-dried.html', 'animals.html', 'rv-rentals.html', 'meet-the-herd.html'];
+const routes = ['index.html', 'experiences.html', 'shop.html', 'freeze-dried.html', 'farm-meats.html', 'animals.html', 'rv-rentals.html', 'meet-the-herd.html'];
 const read = (file) => readFile(path.join(root, file), 'utf8');
 const assert = (ok, message) => { if (!ok) throw new Error(`[authenticity] ${message}`); };
 const pages = await Promise.all(routes.map(read));

@@ -36,6 +36,10 @@
       "path": "/freeze-dried"
     },
     {
+      "source": "farm-meats.html",
+      "path": "/farm-meats"
+    },
+    {
       "source": "bag.html",
       "path": "/bag"
     },

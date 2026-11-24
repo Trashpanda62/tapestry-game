@@ -60,7 +60,7 @@
     "test": "node --test",
     "audit:links": "node scripts/link-audit.mjs",
     "audit:images": "node scripts/image-geometry-audit.mjs",
-    "test:pages": "node --test 404.test.mjs animals.test.mjs catalog-data.test.mjs experiences.test.mjs freeze-dried.test.mjs home.test.mjs meet-the-herd.test.mjs rv-rentals.test.mjs seo.test.mjs shop.test.mjs",
+    "test:pages": "node --test 404.test.mjs animals.test.mjs catalog-data.test.mjs experiences.test.mjs freeze-dried.test.mjs farm-meats.test.mjs home.test.mjs meet-the-herd.test.mjs rv-rentals.test.mjs seo.test.mjs shop.test.mjs",
     "test:availability": "node --test test/rv-availability.test.mjs"
   }
 }

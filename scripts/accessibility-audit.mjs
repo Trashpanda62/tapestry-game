@@ -3,7 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('../dist', import.meta.url));
-const routes = ['index.html', 'experiences.html', 'book.html', 'shop.html', 'freeze-dried.html', 'bag.html', 'checkout.html', 'animals.html', 'rv-rentals.html', 'meet-the-herd.html', '404.html', 'thanks.html'];
+const routes = ['index.html', 'experiences.html', 'book.html', 'shop.html', 'freeze-dried.html', 'farm-meats.html', 'bag.html', 'checkout.html', 'animals.html', 'rv-rentals.html', 'meet-the-herd.html', '404.html', 'thanks.html'];
 const fail = (file, message) => { throw new Error(`[a11y] ${file}: ${message}`); };
 
 function luminance(hex) {

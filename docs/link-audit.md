@@ -1,6 +1,6 @@
 # Link audit
 
-Generated from `dist/` · base path `/s/tapestry-acres` · 119 internal anchors across 13 pages.
+Generated from `dist/` · base path `/s/tapestry-acres` · 141 internal anchors across 14 pages.
 
 Guards against the `<base href>` fragment bug: a bare `href="#x"` resolves against the
 base, not the current route, so in-page anchors silently became links to the home page.
@@ -10,6 +10,7 @@ base, not the current route, so in-page anchors silently became links to the hom
 | 404.html | /404 | `/s/tapestry-acres/404#main-content` | `/s/tapestry-acres/404#main-content` |
 | 404.html | /404 | `/s/tapestry-acres/shop` | `/s/tapestry-acres/shop` |
 | 404.html | /404 | `/s/tapestry-acres/freeze-dried` | `/s/tapestry-acres/freeze-dried` |
+| 404.html | /404 | `/s/tapestry-acres/farm-meats` | `/s/tapestry-acres/farm-meats` |
 | 404.html | /404 | `/s/tapestry-acres/animals` | `/s/tapestry-acres/animals` |
 | 404.html | /404 | `/s/tapestry-acres/experiences` | `/s/tapestry-acres/experiences` |
 | 404.html | /404 | `/s/tapestry-acres/#our-story` | `/s/tapestry-acres/#our-story` |
@@ -17,6 +18,7 @@ base, not the current route, so in-page anchors silently became links to the hom
 | animals.html | /animals | `/s/tapestry-acres/animals#main-content` | `/s/tapestry-acres/animals#main-content` |
 | animals.html | /animals | `/s/tapestry-acres/shop` | `/s/tapestry-acres/shop` |
 | animals.html | /animals | `/s/tapestry-acres/freeze-dried` | `/s/tapestry-acres/freeze-dried` |
+| animals.html | /animals | `/s/tapestry-acres/farm-meats` | `/s/tapestry-acres/farm-meats` |
 | animals.html | /animals | `/s/tapestry-acres/animals` | `/s/tapestry-acres/animals` |
 | animals.html | /animals | `/s/tapestry-acres/experiences` | `/s/tapestry-acres/experiences` |
 | animals.html | /animals | `/s/tapestry-acres/#our-story` | `/s/tapestry-acres/#our-story` |
@@ -24,6 +26,7 @@ base, not the current route, so in-page anchors silently became links to the hom
 | bag.html | /bag | `/s/tapestry-acres/bag#main-content` | `/s/tapestry-acres/bag#main-content` |
 | bag.html | /bag | `/s/tapestry-acres/shop` | `/s/tapestry-acres/shop` |
 | bag.html | /bag | `/s/tapestry-acres/freeze-dried` | `/s/tapestry-acres/freeze-dried` |
+| bag.html | /bag | `/s/tapestry-acres/farm-meats` | `/s/tapestry-acres/farm-meats` |
 | bag.html | /bag | `/s/tapestry-acres/animals` | `/s/tapestry-acres/animals` |
 | bag.html | /bag | `/s/tapestry-acres/experiences` | `/s/tapestry-acres/experiences` |
 | bag.html | /bag | `/s/tapestry-acres/#our-story` | `/s/tapestry-acres/#our-story` |
@@ -32,6 +35,7 @@ base, not the current route, so in-page anchors silently became links to the hom
 | book.html | /book | `/s/tapestry-acres/book#main-content` | `/s/tapestry-acres/book#main-content` |
 | book.html | /book | `/s/tapestry-acres/shop` | `/s/tapestry-acres/shop` |
 | book.html | /book | `/s/tapestry-acres/freeze-dried` | `/s/tapestry-acres/freeze-dried` |
+| book.html | /book | `/s/tapestry-acres/farm-meats` | `/s/tapestry-acres/farm-meats` |
 | book.html | /book | `/s/tapestry-acres/animals` | `/s/tapestry-acres/animals` |
 | book.html | /book | `/s/tapestry-acres/experiences` | `/s/tapestry-acres/experiences` |
 | book.html | /book | `/s/tapestry-acres/#our-story` | `/s/tapestry-acres/#our-story` |
@@ -39,20 +43,31 @@ base, not the current route, so in-page anchors silently became links to the hom
 | checkout.html | /checkout | `/s/tapestry-acres/checkout#main-content` | `/s/tapestry-acres/checkout#main-content` |
 | checkout.html | /checkout | `/s/tapestry-acres/shop` | `/s/tapestry-acres/shop` |
 | checkout.html | /checkout | `/s/tapestry-acres/freeze-dried` | `/s/tapestry-acres/freeze-dried` |
+| checkout.html | /checkout | `/s/tapestry-acres/farm-meats` | `/s/tapestry-acres/farm-meats` |
 | checkout.html | /checkout | `/s/tapestry-acres/animals` | `/s/tapestry-acres/animals` |
 | checkout.html | /checkout | `/s/tapestry-acres/experiences` | `/s/tapestry-acres/experiences` |
 | checkout.html | /checkout | `/s/tapestry-acres/#our-story` | `/s/tapestry-acres/#our-story` |
 | experiences.html | /experiences | `/s/tapestry-acres/experiences#main-content` | `/s/tapestry-acres/experiences#main-content` |
 | experiences.html | /experiences | `/s/tapestry-acres/shop` | `/s/tapestry-acres/shop` |
 | experiences.html | /experiences | `/s/tapestry-acres/freeze-dried` | `/s/tapestry-acres/freeze-dried` |
+| experiences.html | /experiences | `/s/tapestry-acres/farm-meats` | `/s/tapestry-acres/farm-meats` |
 | experiences.html | /experiences | `/s/tapestry-acres/animals` | `/s/tapestry-acres/animals` |
 | experiences.html | /experiences | `/s/tapestry-acres/experiences` | `/s/tapestry-acres/experiences` |
 | experiences.html | /experiences | `/s/tapestry-acres/#our-story` | `/s/tapestry-acres/#our-story` |
 | experiences.html | /experiences | `/s/tapestry-acres/stay` | `/s/tapestry-acres/stay` |
 | experiences.html | /experiences | `/s/tapestry-acres/shop` | `/s/tapestry-acres/shop` |
+| farm-meats.html | /farm-meats | `/s/tapestry-acres/farm-meats#main-content` | `/s/tapestry-acres/farm-meats#main-content` |
+| farm-meats.html | /farm-meats | `/s/tapestry-acres/shop` | `/s/tapestry-acres/shop` |
+| farm-meats.html | /farm-meats | `/s/tapestry-acres/freeze-dried` | `/s/tapestry-acres/freeze-dried` |
+| farm-meats.html | /farm-meats | `/s/tapestry-acres/farm-meats` | `/s/tapestry-acres/farm-meats` |
+| farm-meats.html | /farm-meats | `/s/tapestry-acres/animals` | `/s/tapestry-acres/animals` |
+| farm-meats.html | /farm-meats | `/s/tapestry-acres/experiences` | `/s/tapestry-acres/experiences` |
+| farm-meats.html | /farm-meats | `/s/tapestry-acres/#our-story` | `/s/tapestry-acres/#our-story` |
+| farm-meats.html | /farm-meats | `/s/tapestry-acres/farm-meats#request` | `/s/tapestry-acres/farm-meats#request` |
 | freeze-dried.html | /freeze-dried | `/s/tapestry-acres/freeze-dried#main-content` | `/s/tapestry-acres/freeze-dried#main-content` |
 | freeze-dried.html | /freeze-dried | `/s/tapestry-acres/shop` | `/s/tapestry-acres/shop` |
 | freeze-dried.html | /freeze-dried | `/s/tapestry-acres/freeze-dried` | `/s/tapestry-acres/freeze-dried` |
+| freeze-dried.html | /freeze-dried | `/s/tapestry-acres/farm-meats` | `/s/tapestry-acres/farm-meats` |
 | freeze-dried.html | /freeze-dried | `/s/tapestry-acres/animals` | `/s/tapestry-acres/animals` |
 | freeze-dried.html | /freeze-dried | `/s/tapestry-acres/experiences` | `/s/tapestry-acres/experiences` |
 | freeze-dried.html | /freeze-dried | `/s/tapestry-acres/#our-story` | `/s/tapestry-acres/#our-story` |
@@ -60,6 +75,7 @@ base, not the current route, so in-page anchors silently became links to the hom
 | index.html | / | `/s/tapestry-acres/#main-content` | `/s/tapestry-acres/#main-content` |
 | index.html | / | `/s/tapestry-acres/shop` | `/s/tapestry-acres/shop` |
 | index.html | / | `/s/tapestry-acres/freeze-dried` | `/s/tapestry-acres/freeze-dried` |
+| index.html | / | `/s/tapestry-acres/farm-meats` | `/s/tapestry-acres/farm-meats` |
 | index.html | / | `/s/tapestry-acres/animals` | `/s/tapestry-acres/animals` |
 | index.html | / | `/s/tapestry-acres/experiences` | `/s/tapestry-acres/experiences` |
 | index.html | / | `/s/tapestry-acres/#our-story` | `/s/tapestry-acres/#our-story` |
@@ -74,6 +90,7 @@ base, not the current route, so in-page anchors silently became links to the hom
 | index.html | / | `/s/tapestry-acres/shop` | `/s/tapestry-acres/shop` |
 | index.html | / | `/s/tapestry-acres/shop` | `/s/tapestry-acres/shop` |
 | index.html | / | `/s/tapestry-acres/freeze-dried` | `/s/tapestry-acres/freeze-dried` |
+| index.html | / | `/s/tapestry-acres/farm-meats` | `/s/tapestry-acres/farm-meats` |
 | index.html | / | `/s/tapestry-acres/animals` | `/s/tapestry-acres/animals` |
 | index.html | / | `/s/tapestry-acres/shop?cat=Yarn%20%26%20Fiber` | `/s/tapestry-acres/shop?cat=Yarn%20%26%20Fiber` |
 | index.html | / | `/s/tapestry-acres/experiences` | `/s/tapestry-acres/experiences` |
@@ -85,6 +102,7 @@ base, not the current route, so in-page anchors silently became links to the hom
 | meet-the-herd.html | /herd | `/s/tapestry-acres/herd#main-content` | `/s/tapestry-acres/herd#main-content` |
 | meet-the-herd.html | /herd | `/s/tapestry-acres/shop` | `/s/tapestry-acres/shop` |
 | meet-the-herd.html | /herd | `/s/tapestry-acres/freeze-dried` | `/s/tapestry-acres/freeze-dried` |
+| meet-the-herd.html | /herd | `/s/tapestry-acres/farm-meats` | `/s/tapestry-acres/farm-meats` |
 | meet-the-herd.html | /herd | `/s/tapestry-acres/animals` | `/s/tapestry-acres/animals` |
 | meet-the-herd.html | /herd | `/s/tapestry-acres/experiences` | `/s/tapestry-acres/experiences` |
 | meet-the-herd.html | /herd | `/s/tapestry-acres/#our-story` | `/s/tapestry-acres/#our-story` |
@@ -93,12 +111,14 @@ base, not the current route, so in-page anchors silently became links to the hom
 | rv-admin.html | /rv-admin | `/s/tapestry-acres/rv-admin#main-content` | `/s/tapestry-acres/rv-admin#main-content` |
 | rv-admin.html | /rv-admin | `/s/tapestry-acres/shop` | `/s/tapestry-acres/shop` |
 | rv-admin.html | /rv-admin | `/s/tapestry-acres/freeze-dried` | `/s/tapestry-acres/freeze-dried` |
+| rv-admin.html | /rv-admin | `/s/tapestry-acres/farm-meats` | `/s/tapestry-acres/farm-meats` |
 | rv-admin.html | /rv-admin | `/s/tapestry-acres/animals` | `/s/tapestry-acres/animals` |
 | rv-admin.html | /rv-admin | `/s/tapestry-acres/experiences` | `/s/tapestry-acres/experiences` |
 | rv-admin.html | /rv-admin | `/s/tapestry-acres/#our-story` | `/s/tapestry-acres/#our-story` |
 | rv-rentals.html | /stay | `/s/tapestry-acres/stay#main-content` | `/s/tapestry-acres/stay#main-content` |
 | rv-rentals.html | /stay | `/s/tapestry-acres/shop` | `/s/tapestry-acres/shop` |
 | rv-rentals.html | /stay | `/s/tapestry-acres/freeze-dried` | `/s/tapestry-acres/freeze-dried` |
+| rv-rentals.html | /stay | `/s/tapestry-acres/farm-meats` | `/s/tapestry-acres/farm-meats` |
 | rv-rentals.html | /stay | `/s/tapestry-acres/animals` | `/s/tapestry-acres/animals` |
 | rv-rentals.html | /stay | `/s/tapestry-acres/experiences` | `/s/tapestry-acres/experiences` |
 | rv-rentals.html | /stay | `/s/tapestry-acres/#our-story` | `/s/tapestry-acres/#our-story` |
@@ -114,6 +134,7 @@ base, not the current route, so in-page anchors silently became links to the hom
 | shop.html | /shop | `/s/tapestry-acres/shop#main-content` | `/s/tapestry-acres/shop#main-content` |
 | shop.html | /shop | `/s/tapestry-acres/shop` | `/s/tapestry-acres/shop` |
 | shop.html | /shop | `/s/tapestry-acres/freeze-dried` | `/s/tapestry-acres/freeze-dried` |
+| shop.html | /shop | `/s/tapestry-acres/farm-meats` | `/s/tapestry-acres/farm-meats` |
 | shop.html | /shop | `/s/tapestry-acres/animals` | `/s/tapestry-acres/animals` |
 | shop.html | /shop | `/s/tapestry-acres/experiences` | `/s/tapestry-acres/experiences` |
 | shop.html | /shop | `/s/tapestry-acres/#our-story` | `/s/tapestry-acres/#our-story` |
@@ -122,6 +143,7 @@ base, not the current route, so in-page anchors silently became links to the hom
 | thanks.html | /thanks | `/s/tapestry-acres/thanks#main-content` | `/s/tapestry-acres/thanks#main-content` |
 | thanks.html | /thanks | `/s/tapestry-acres/shop` | `/s/tapestry-acres/shop` |
 | thanks.html | /thanks | `/s/tapestry-acres/freeze-dried` | `/s/tapestry-acres/freeze-dried` |
+| thanks.html | /thanks | `/s/tapestry-acres/farm-meats` | `/s/tapestry-acres/farm-meats` |
 | thanks.html | /thanks | `/s/tapestry-acres/animals` | `/s/tapestry-acres/animals` |
 | thanks.html | /thanks | `/s/tapestry-acres/experiences` | `/s/tapestry-acres/experiences` |
 | thanks.html | /thanks | `/s/tapestry-acres/#our-story` | `/s/tapestry-acres/#our-story` |

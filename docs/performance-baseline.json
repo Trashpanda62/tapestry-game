@@ -4,9 +4,9 @@
   "rows": [
     {
       "route": "Home",
-      "htmlBytes": 33751,
+      "htmlBytes": 34546,
       "requests": 13,
-      "transferBytes": 657348,
+      "transferBytes": 658183,
       "resources": [
         "assets/bg/alpaca-fence-sunset.webp",
         "assets/bg/highland2.webp",
@@ -16,7 +16,7 @@
         "assets/logo-mark.webp",
         "assets/logo-seal.webp",
         "assets/site-content.36e7d6efda2b.js",
-        "assets/site-shell.2bfc15b18647.js",
+        "assets/site-shell.e14d076f4c1c.js",
         "assets/site.b360933e4568.css",
         "assets/state-skeletons.6b9a8cfb71f6.js",
         "assets/storefront.bfb46a52fa6a.js",
@@ -25,15 +25,15 @@
     },
     {
       "route": "Experiences",
-      "htmlBytes": 20142,
+      "htmlBytes": 20195,
       "requests": 8,
-      "transferBytes": 115828,
+      "transferBytes": 115921,
       "resources": [
         "assets/journey-analytics.8eec07a550e5.js",
         "assets/logo-mark.webp",
         "assets/logo-seal.webp",
         "assets/site-content.36e7d6efda2b.js",
-        "assets/site-shell.2bfc15b18647.js",
+        "assets/site-shell.e14d076f4c1c.js",
         "assets/site.b360933e4568.css",
         "assets/state-skeletons.6b9a8cfb71f6.js",
         "experiences.html"
@@ -41,15 +41,15 @@
     },
     {
       "route": "Book",
-      "htmlBytes": 37719,
+      "htmlBytes": 37772,
       "requests": 8,
-      "transferBytes": 133405,
+      "transferBytes": 133498,
       "resources": [
         "assets/journey-analytics.8eec07a550e5.js",
         "assets/logo-mark.webp",
         "assets/logo-seal.webp",
         "assets/site-content.36e7d6efda2b.js",
-        "assets/site-shell.2bfc15b18647.js",
+        "assets/site-shell.e14d076f4c1c.js",
         "assets/site.b360933e4568.css",
         "assets/state-skeletons.6b9a8cfb71f6.js",
         "book.html"
@@ -57,16 +57,16 @@
     },
     {
       "route": "Shop",
-      "htmlBytes": 18909,
+      "htmlBytes": 18962,
       "requests": 9,
-      "transferBytes": 164545,
+      "transferBytes": 164638,
       "resources": [
         "assets/journey-analytics.8eec07a550e5.js",
         "assets/logo-mark.webp",
         "assets/logo-seal.webp",
         "assets/shop.8ac0cd2c33d8.js",
         "assets/site-content.36e7d6efda2b.js",
-        "assets/site-shell.2bfc15b18647.js",
+        "assets/site-shell.e14d076f4c1c.js",
         "assets/site.b360933e4568.css",
         "assets/state-skeletons.6b9a8cfb71f6.js",
         "shop.html"
@@ -74,16 +74,16 @@
     },
     {
       "route": "Bag",
-      "htmlBytes": 5523,
+      "htmlBytes": 5576,
       "requests": 9,
-      "transferBytes": 105053,
+      "transferBytes": 105146,
       "resources": [
         "assets/bag.a84fa47a20da.js",
         "assets/journey-analytics.8eec07a550e5.js",
         "assets/logo-mark.webp",
         "assets/logo-seal.webp",
         "assets/site-content.36e7d6efda2b.js",
-        "assets/site-shell.2bfc15b18647.js",
+        "assets/site-shell.e14d076f4c1c.js",
         "assets/site.b360933e4568.css",
         "assets/state-skeletons.6b9a8cfb71f6.js",
         "bag.html"
@@ -91,16 +91,16 @@
     },
     {
       "route": "Checkout",
-      "htmlBytes": 5997,
+      "htmlBytes": 6050,
       "requests": 9,
-      "transferBytes": 107013,
+      "transferBytes": 107106,
       "resources": [
         "assets/checkout.43c3a8b709ab.js",
         "assets/journey-analytics.8eec07a550e5.js",
         "assets/logo-mark.webp",
         "assets/logo-seal.webp",
         "assets/site-content.36e7d6efda2b.js",
-        "assets/site-shell.2bfc15b18647.js",
+        "assets/site-shell.e14d076f4c1c.js",
         "assets/site.b360933e4568.css",
         "assets/state-skeletons.6b9a8cfb71f6.js",
         "checkout.html"
@@ -108,9 +108,9 @@
     },
     {
       "route": "Herd",
-      "htmlBytes": 10160,
+      "htmlBytes": 10213,
       "requests": 11,
-      "transferBytes": 393082,
+      "transferBytes": 393175,
       "resources": [
         "assets/bg/meadow.webp",
         "assets/farm-steward-core.171797fe7f2a.js",
@@ -119,7 +119,7 @@
         "assets/logo-mark.webp",
         "assets/logo-seal.webp",
         "assets/site-content.36e7d6efda2b.js",
-        "assets/site-shell.2bfc15b18647.js",
+        "assets/site-shell.e14d076f4c1c.js",
         "assets/site.b360933e4568.css",
         "assets/state-skeletons.6b9a8cfb71f6.js",
         "meet-the-herd.html"

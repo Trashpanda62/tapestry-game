@@ -23,7 +23,7 @@ assert(/site-nav-toggle/.test(home) && /aria-expanded/.test(home), 'mobile menu 
 // cannot discard their cache key.
 assert(/src="assets\/site-shell(?:\.[a-f0-9]{12})?\.js"/.test(home), 'home page does not load the shared nav shell');
 assert(/addEventListener\(["']click["']/.test(shell) && /aria-expanded/.test(shell), 'nav shell lacks a keyboard-activatable click handler');
-const shellPages = ['index.html', 'experiences.html', 'shop.html', 'freeze-dried.html', 'animals.html', 'rv-rentals.html', 'meet-the-herd.html', 'book.html', 'bag.html', 'checkout.html', 'thanks.html', '404.html'];
+const shellPages = ['index.html', 'experiences.html', 'shop.html', 'freeze-dried.html', 'farm-meats.html', 'animals.html', 'rv-rentals.html', 'meet-the-herd.html', 'book.html', 'bag.html', 'checkout.html', 'thanks.html', '404.html'];
 for (const name of shellPages) {
   const page = await read(name);
   assert(!/site-nav-toggle["']\)[\s\S]{0,200}?addEventListener/.test(page), `${name} re-binds the nav toggle inline; the shared shell already owns it (double-bind leaves the menu permanently closed)`);
